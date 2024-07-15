@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 </head>
 <body>
+<header>
 <div class="header_outline">
 <div class="header_innerBox">
  <img  class="header_logo" src="${pageContext.request.contextPath}/resources/images/mainLogo.png">
@@ -21,8 +22,7 @@
     <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/alarm.png">
     <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/setting.png">
  </div>
-
-
 </div>
+</header>
 </body>
 </html>

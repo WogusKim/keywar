@@ -9,5 +9,8 @@
 </head>
 <body>
 
+<%@ include file="/WEB-INF/views/header.jsp" %> 
+
+메인 내용입니다
 </body>
 </html>
