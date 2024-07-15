@@ -18,6 +18,6 @@
 	    오른쪽
 	</div> 
 </div>
-
+style="color: white; width: 40%; height: 30px;"
 </body>
 </html>
