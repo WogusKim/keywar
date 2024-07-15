@@ -25,6 +25,7 @@
 </head>
 <body>
 	<div class="content_left">
+
 		<div class="menu-tree">
 		    <ul>
 		        <li class="menu-item">Menu 1
@@ -47,6 +48,7 @@
 		        <li>Menu 3</li>
 		    </ul>
 		</div>
+
 	</div>
 <script>
 document.querySelectorAll('.menu-item').forEach(item => {

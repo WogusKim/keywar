@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -34,6 +36,21 @@ public class HomeController {
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "main";
+		
+	}
+	@RequestMapping("/login")
+	public String login(HttpServletRequest request, Model model) {		
+		return "login/login";
+	}
+	@RequestMapping("/findPassword")
+	public String findPW(HttpServletRequest request, Model model) {
+		
+		return "login/findPassword";
+	}
+	
+	@RequestMapping("/todo")
+	public String todo() {		
+		return "todo";
 	}
 	
 }
