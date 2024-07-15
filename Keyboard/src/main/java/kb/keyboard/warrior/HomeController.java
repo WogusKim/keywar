@@ -36,10 +36,10 @@ public class HomeController {
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "main";
+		
 	}
 	@RequestMapping("/login")
-	public String login(HttpServletRequest request, Model model) {
-		
+	public String login(HttpServletRequest request, Model model) {		
 		return "login/login";
 	}
 	@RequestMapping("/findPassword")
@@ -48,5 +48,9 @@ public class HomeController {
 		return "login/findPassword";
 	}
 	
+	@RequestMapping("/todo")
+	public String todo() {		
+		return "todo";
+	}
 	
 }
