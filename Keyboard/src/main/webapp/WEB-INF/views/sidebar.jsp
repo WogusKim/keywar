@@ -11,6 +11,8 @@
 <body>
 	<div class="content_left">
 		왼쪽
+		
+		
 	</div>
 </body>
 </html>  
