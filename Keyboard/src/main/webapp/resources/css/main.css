@@ -18,10 +18,12 @@ body{
     display : flex;
     justify-content: space-between;
     align-items : center;
+    min-width: 500px;
 }
 .header_innerBox{
     display: flex;
     align-items: center;
+    min-width: 300px;
 }
 .header_innerText{
     font-size: 30px;
@@ -73,12 +75,13 @@ body{
 .fullContent{
 	width : 35%;
 	height : 40%;
-	margin-top: 15px;
 	border-radius: 10px;
 	background-color : white;
 	opacity:0.8;
 	align-items: center;
 	text-align: center;
+	min-height : 300px;
+	min-width: 300px;
 }
 .inputText{
 	color: black; 
