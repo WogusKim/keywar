@@ -11,7 +11,7 @@ import kb.keyboard.warrior.Command;
 
 
 @Component
-public class SampleCommand implements Command {
+public class MemoSampleCommand implements Command {
 
     
 
