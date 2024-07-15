@@ -15,7 +15,40 @@
 <div class="content_outline">
 	<%@ include file="/WEB-INF/views/sidebar.jsp" %>
 	<div class="content_right">
-	    오른쪽
+	    
+	    <div class="board_top">
+	    	<div class="board_inner">
+	    		<div class="card_top">
+		    		<h2 class="card_title">환율</h2>
+		    		<a href="#" class="link-icon">바로가기</a>
+	    		</div>
+	    		<hr>
+
+	    	</div>
+	    	<div class="board_inner">
+	    		<div class="card_top">
+		    		<h2 class="card_title">증시</h2>
+		    		<a href="#" class="link-icon">바로가기</a>
+	    		</div>
+	    		<hr>
+	    	</div>
+	    	<div class="board_inner">
+	    		<div class="card_top">
+		    		<h2 class="card_title">금리</h2>
+		    		<a href="#" class="link-icon">바로가기</a>
+	    		</div>
+	    		<hr>
+	    	</div>
+	    </div>
+	    
+	    <div class="board_bottom">
+	    	<div class="board_inner2">
+				
+	    	</div>
+	    	<div class="board_inner2">
+
+	    	</div>
+	    </div>
 	</div> 
 </div>
 
