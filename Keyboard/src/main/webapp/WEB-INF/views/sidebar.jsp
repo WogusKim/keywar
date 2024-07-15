@@ -9,14 +9,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 </head>
 <body>
-<div class="content_outline">
-
- <div class="content_left">
-    왼쪽
-</div>
-<div class="content_right">
-    오른쪽
-</div> 
-</div> 
+	<div class="content_left">
+		왼쪽
+	</div>
 </body>
 </html>  
