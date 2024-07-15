@@ -3,8 +3,10 @@ html {
     margin: 0;   
 }
 body{
-    background-color: #FFE580;
-    font-family: 'KB湲덉쑖 蹂몃Ц泥� Light';
+
+    background-color: #BDE2CE;
+    font-family: 'KB금융 본문체 Light';
+
     padding: 15px;
     height: calc(100% - 60px);
     margin: 0; 
@@ -18,10 +20,12 @@ body{
     display : flex;
     justify-content: space-between;
     align-items : center;
+    min-width: 500px;
 }
 .header_innerBox{
     display: flex;
     align-items: center;
+    min-width: 300px;
 }
 .header_innerText{
     font-size: 30px;
@@ -79,16 +83,26 @@ body{
     display: flex;
 }
 .fullContent{
-	width : 40%;
+	width : 35%;
 	height : 40%;
-	margin-top: 15px;
 	border-radius: 10px;
 	background-color : white;
 	opacity:0.8;
+	align-items: center;
+	text-align: center;
+	min-height : 300px;
+	min-width: 300px;
 }
 .inputText{
 	color: black; 
 	width: 40%; 
+	height: 30px;
+	margin-top: 15px;
+	font-size: 15px;
+}
+.inputText1{
+	color: black; 
+	width: 90%; 
 	height: 30px;
 	margin-top: 15px;
 	font-size: 15px;
@@ -100,7 +114,7 @@ body{
 .loginButton{
 	margin-top: 15px;
 	border: none;
-	width : 20%;
+	width : 30%;
 	font-size: 20px;
 	font-family: 'KB湲덉쑖 蹂몃Ц泥� Light';
 	background-color: #FFEE00;
@@ -115,5 +129,4 @@ body{
 	font-size: 20px;
 	font-family: 'KB湲덉쑖 蹂몃Ц泥� Light';
 	background-color: #FFEE00;
-	
 }

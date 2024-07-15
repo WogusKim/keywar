@@ -42,6 +42,11 @@ public class HomeController {
 	public String login(HttpServletRequest request, Model model) {		
 		return "login/login";
 	}
+	@RequestMapping("/findPassword")
+	public String findPW(HttpServletRequest request, Model model) {
+		
+		return "login/findPassword";
+	}
 	
 	@RequestMapping("/todo")
 	public String todo() {		
