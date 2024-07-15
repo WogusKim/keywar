@@ -1,0 +1,44 @@
+body{
+    /* background-color: #b9b9b9; */
+    background-color: #FFE580;
+    font-family: 'KB금융 본문체 Light';
+}
+.header_outline{
+    background-color : white;
+    border-radius: 10px;
+    margin: auto;
+    width: 98%;
+    height: 50px;
+    padding-left : 30px;
+    display : flex;
+    justify-content: space-between;
+    align-items : center;
+    }
+.header_innerBox{
+    width: 30%;
+    display: flex;
+    align-items: center;
+}
+.header_innerText{
+    font-size: 25px;
+    font-family: 'KB금융 본문체 Light';
+    font-weight: bold;
+}
+.header_logo{
+    width: 50px; 
+    height: 50px; 
+    object-fit: contain;
+    margin-right: 10px;
+    display: inline-block;
+}
+.header_iconArea{
+    display: flex;
+    justify-content: space-between;
+    width: 10%;
+    margin-right: 20px;
+}
+.header_icon{
+    width: 30px; 
+    height: 30px; 
+    object-fit: contain;
+}

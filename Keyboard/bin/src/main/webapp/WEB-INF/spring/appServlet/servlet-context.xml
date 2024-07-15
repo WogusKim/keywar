@@ -24,29 +24,23 @@
 	<context:component-scan base-package="kb.keyboard.warrior" />
 	
 <!-- 		
-		데이터 객체 등록  우리 팀(키보드 워리어)에 맞게 수정완료
-		-->
+		데이터 객체 등록  우리 팀(키보드 워리어)에 맞게 수정해야함. / 일단 복붙
 	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<beans:property name="driverClassName" value ="com.mysql.cj.jdbc.Driver"/>
-		<beans:property name="url" value="jdbc:mysql://183.111.125.38:3306/warrior?serverTimezone=UTC&amp;useSSL=false"/>
- 	    <beans:property name="username" value="manager"/>
-		<beans:property name="password" value="!Q@W3e4r"/> 
+		<beans:property name="url" value="jdbc:mysql://localhost:3306/lahan?serverTimezone=UTC&amp;useSSL=false"/> 이 부분은 false로 해줘라
+ 	    <beans:property name="username" value="root"/>
+		<beans:property name="password" value="qwe123!@#"/> 
 	</beans:bean>
 
 
-	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<beans:property name="dataSource" ref="dataSource"></beans:property>
 		<beans:property name="mapperLocations" 
-			value="classpath:kb/keyboard/warrior/dao/mapper/*.xml"></beans:property>
-	</beans:bean>
+		value="classpath:kb/keyboard/warrior/dao/mapper/*.xml"></beans:property>
+		</beans:bean>
 	
 	<beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<beans:constructor-arg index="0" ref="sqlSessionFactory"></beans:constructor-arg>
-	</beans:bean>
-	
-	<beans:bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<beans:property name="maxUploadSize" value="5242880" />
-	</beans:bean>
+	<beans:constructor-arg index="0" ref="sqlSessionFactory"></beans:constructor-arg>
+	</beans:bean> -->
 
 </beans:beans>
