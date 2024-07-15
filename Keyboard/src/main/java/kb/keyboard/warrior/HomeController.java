@@ -39,10 +39,13 @@ public class HomeController {
 		
 	}
 	@RequestMapping("/login")
-	public String login(HttpServletRequest request, Model model) {
-		
+	public String login(HttpServletRequest request, Model model) {		
 		return "login/login";
 	}
 	
+	@RequestMapping("/todo")
+	public String todo() {		
+		return "todo";
+	}
 	
 }
