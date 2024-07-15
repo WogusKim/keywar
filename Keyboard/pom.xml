@@ -171,6 +171,14 @@
 			<version>4.7</version>
 			<scope>test</scope>
 		</dependency>        
+		
+		<dependency>
+		    <groupId>commons-fileupload</groupId>
+		    <artifactId>commons-fileupload</artifactId>
+		    <version>1.4</version> <!-- 버전은 필요에 따라 조정할 수 있음 -->
+		</dependency>
+		
+		
 	</dependencies>
     <build>
         <plugins>
