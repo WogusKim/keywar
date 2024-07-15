@@ -1,4 +1,4 @@
-package kb.keyboard.warrior.user.command;
+package kb.keyboard.warrior.wiki.command;
 
 import java.util.Map;
 
@@ -11,7 +11,7 @@ import kb.keyboard.warrior.Command;
 
 
 @Component
-public class SampleCommand implements Command {
+public class WikiSampleCommand implements Command {
 
     
 
