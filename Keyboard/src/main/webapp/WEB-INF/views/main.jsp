@@ -10,7 +10,8 @@
 <body>
 
 <%@ include file="/WEB-INF/views/header.jsp" %> 
+<%@ include file="/WEB-INF/views/sidebar.jsp" %> 
 
-메인 내용입니다
+
 </body>
 </html>
