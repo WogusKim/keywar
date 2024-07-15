@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 </head>
+
 <body>
 <header>
 <div class="header_outline">
