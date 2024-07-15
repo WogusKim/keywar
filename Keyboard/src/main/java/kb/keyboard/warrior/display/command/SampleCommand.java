@@ -13,21 +13,5 @@ import kb.keyboard.warrior.Command;
 @Component
 public class SampleCommand implements Command {
 
-    
-
-	@Override
-	public void execute(Model model) {
-		// TODO Auto-generated method stub
-
-		Map<String, Object> map = model.asMap();
-		HttpServletRequest request = (HttpServletRequest) map.get("request");
-
-//		HttpSession session = request.getSession();
-		
-	  
-	}
-	
-	
-
-	
+    	
 }
