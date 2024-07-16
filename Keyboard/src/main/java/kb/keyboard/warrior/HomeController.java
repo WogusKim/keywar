@@ -53,4 +53,8 @@ public class HomeController {
 		return "todo";
 	}
 	
+	@RequestMapping("/memo")
+	public String memo() {		
+		return "memo";
+	}
 }
