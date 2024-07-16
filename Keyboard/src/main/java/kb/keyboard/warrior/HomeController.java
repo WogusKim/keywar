@@ -28,5 +28,9 @@ public class HomeController {
 	public String notice() {		
 		return "notice";
 	}
+	@RequestMapping("/noticeForm")
+	public String noticeForm() {		
+		return "noticeForm";
+	}
 
 }
