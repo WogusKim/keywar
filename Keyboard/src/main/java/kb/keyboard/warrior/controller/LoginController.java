@@ -3,12 +3,14 @@ package kb.keyboard.warrior.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kb.keyboard.warrior.dao.*;
 import kb.keyboard.warrior.dto.*;
@@ -38,6 +40,16 @@ public class LoginController {
 		System.out.println("비밀번호 재설정 화면 진입");
 		return "login/resetPassword";
 	}
+	@RequestMapping("/resetPasswordAction")
+	public String resetPWAction(HttpServletRequest request, Model model, UserDTO dto) {
+		System.out.println("./resetPasswordAction");
+		System.out.println("비밀번호 바꿀 직원의 직원번호 : "+dto.getUserno());
+		LoginDao dao = sqlSession.getMapper(LoginDao.class);
+		dao.UpdatePw(dto.getUserno(), dto.getUserpw());
+		return "redirect:login";
+	}
+	
+	
 	
 	@RequestMapping("/loginAction")
 	public String loginAction(HttpServletRequest request, Model model, UserDTO dto) {
@@ -53,6 +65,7 @@ public class LoginController {
 			System.out.println("직원 이름 : " +list.getUsername());
 			if(list.getUserpw().equals(list.getUserno())) {
 				System.out.println("비밀번호 초기상태 ! 비밀번호 변경이 필요합니다.");
+				model.addAttribute("userno", list.getUserno());
 				return "redirect:/resetPassword";
 			}
 			
