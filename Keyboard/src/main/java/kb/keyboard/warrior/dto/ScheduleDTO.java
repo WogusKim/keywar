@@ -7,21 +7,21 @@ public class ScheduleDTO {
  private String userno;       // 사번
  private String title;        // 제목
  private String content;      // 내용
- private String startdate;      // 시작일
- private String duedate;        // 마감일
+ private String startDate;      // 시작일
+ private String endDate;        // 마감일
  private String shareto;      // 공유 대상(개인, 팀, 부서 등)
  private String status;       // 상태
 
  public ScheduleDTO() {
  }
 
- public ScheduleDTO(String scheduleid, String userno, String title, String content, String startdate, String duedate, String shareto, String status) {
+ public ScheduleDTO(String scheduleid, String userno, String title, String content, String startDate, String endDate, String shareto, String status) {
      this.scheduleid = scheduleid;
      this.userno = userno;
      this.title = title;
      this.content = content;
-     this.startdate = startdate;
-     this.duedate = duedate;
+     this.startDate = startDate;
+     this.endDate = endDate;
      this.shareto = shareto;
      this.status = status;
  }
@@ -59,20 +59,20 @@ public class ScheduleDTO {
      this.content = content;
  }
 
- public String getStartdate() {
-     return startdate;
+ public String getstartDate() {
+     return startDate;
  }
 
- public void setStartdate(String startdate) {
-     this.startdate = startdate;
+ public void setstartDate(String startDate) {
+     this.startDate = startDate;
  }
 
- public String getDuedate() {
-     return duedate;
+ public String getendDate() {
+     return endDate;
  }
 
- public void setDuedate(String duedate) {
-     this.duedate = duedate;
+ public void setendDate(String endDate) {
+     this.endDate = endDate;
  }
 
  public String getShareto() {
