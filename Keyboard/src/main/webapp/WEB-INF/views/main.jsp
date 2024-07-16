@@ -193,7 +193,7 @@
 			    		<div class="card_top">
 						    <div class="title_and_link">
 						        <h3 class="card_title">울지점 공지</h3>
-						        <a href="#" class="link-icon">바로가기</a>
+						        <a href="${pageContext.request.contextPath}/notice" class="link-icon">바로가기</a>
 						    </div>
 				    	</div>
 			    		<hr>

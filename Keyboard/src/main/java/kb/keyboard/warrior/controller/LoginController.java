@@ -62,7 +62,8 @@ public class LoginController {
 		UserDTO list = dao.login(dto.getUserno(), dto.getUserpw());
 		if(list!=null) {
 			HttpSession session = request.getSession();
-			session.setAttribute("id", list.getUserno()); // 세션에 값 넣기
+			session.setAttribute("userno", list.getUserno()); // 세션에 값 넣기
+			session.setAttribute("deptno", list.getDeptno()); // 세션에 값 넣기
 			System.out.println("로그인 성공!  사번 : " +list.getUserno());
 			System.out.println("비밀번호 : " +list.getUserpw());
 			System.out.println("직원 이름 : " +list.getUsername());
