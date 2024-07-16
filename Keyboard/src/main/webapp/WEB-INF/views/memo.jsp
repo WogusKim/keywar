@@ -16,13 +16,21 @@
 	color: white;
 	border-radius: 10px;
 	cursor: pointer;
-	margin-top: 5px;
+	margin-top: 15px;
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+	margin-right : 450px
 }
 
 .addButton1:hover {
 	background-color: #3d6db5;
 }
+
+ul li {
+    position: relative;
+    padding-right: 30px; /* 버튼 공간 확보를 위해 오른쪽 패딩 추가 */
+    margin-bottom: 10px; /* li 요소 사이에 간격 추가 */
+}
+
 </style>
 </head>
 
@@ -44,10 +52,10 @@
 						<h2 class="card_title">나의 메모</h2>
 						<hr>
 						<ul>
-							<li>궁민상사 대표님 010-5555-7777</li>
-							<li>트랜디프로모션 담당자 010-3127-4782</li>
-							<li>글로벌인터네셔널 경리 02-4154-5415</li>
-							<li>국민건강보험공단 1355</li>
+							<li>궁민상사 대표님 010-5555-7777<button class="deleteButton">X</button></li>
+							<li>트랜디프로모션 담당자 010-3127-4782<button class="deleteButton">X</button></li>
+							<li>글로벌인터네셔널 경리 02-4154-5415<button class="deleteButton">X</button></li>
+							<li>국민건강보험공단 1355<button class="deleteButton">X</button></li>
 						</ul>
 					</div>
 
@@ -56,16 +64,16 @@
 						<h2 class="card_title">부점 메모</h2>
 						<hr>
 						<ul>
-							<li>궁민상사 대표님 010-5555-7777</li>
-							<li>트랜디프로모션 담당자 010-3127-4782</li>
-							<li>글로벌인터네셔널 경리 02-4154-5415</li>
-							<li>국민건강보험공단 1355</li>
+							<li>궁민상사 대표님 010-5555-7777<button class="deleteButton">X</button></li>
+							<li>트랜디프로모션 담당자 010-3127-4782<button class="deleteButton">X</button></li>
+							<li>글로벌인터네셔널 경리 02-4154-5415<button class="deleteButton">X</button></li>
+							<li>국민건강보험공단 1355<button class="deleteButton">X</button></li>
 						</ul>
 					</div>
 				</div>
 
-				<input type="button" value="추가하기" class="addButton"> <input
-					type="button" value="추가하기" class="addButton1">
+				<input type="button" value="추가하기" class="addButton1"> <input
+					type="button" value="추가하기" class="addButton">
 
 			</div>
 		</div>

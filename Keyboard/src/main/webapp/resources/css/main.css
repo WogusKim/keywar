@@ -90,9 +90,9 @@ body{
     justify-content: flex-start;    /* 내부 요소들을 상단에 배치 */
     align-items: center;            /* 내부 요소들을 수평 중앙에 배치 */
     width: 100%;
-    height: 100%;
+    height:  100%;
     padding: 18px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -351,15 +351,33 @@ body{
     color: white;
     border-radius: 10px;
     cursor: pointer;
-    margin-top: 5px;
+    margin-top: 15px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    margin-right : 705px
 }
 
 .addButton:hover { /* yeji */
     background-color: #3d6db5;
 }
 
+.deleteButton { /* yeji */
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: none;
+    background-color: #E65050; 
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    text-align: center;
+    line-height: 20px; /* 버튼 높이와 동일하게 설정하여 텍스트를 중앙에 배치 */
+    font-size: 14px; 
+    position: absolute;
+    right: 10px;
+}
+
+.deleteButton:hover { /* yeji */
+    background-color: #B53D3D;
+}
 /* 우하단 탭 영역 관련 css */
 
 /* 탭 영역 전체 설정 */
