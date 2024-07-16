@@ -29,19 +29,19 @@ public class MemoController {
 		
 		return "memo/calendar";
 	}
-	@RequestMapping("/memo")
-	public String memo(HttpServletRequest request, Model model) {
-		System.out.println("메모창 진입");
-		
-		return "memo/memo";
-	}
+//	@RequestMapping("/memo")
+//	public String memo(HttpServletRequest request, Model model) {
+//		System.out.println("메모창 진입");
+//		
+//		return "memo/memo";
+//	}
 	
-	@RequestMapping("/notice")
-	public String notice(HttpServletRequest request, Model model) {
-		System.out.println("공지 진입");
-		
-		return "memo/notice";
-	}
-	
+//	@RequestMapping("/notice")
+//	public String notice(HttpServletRequest request, Model model) {
+//		System.out.println("공지 진입");
+//		
+//		return "memo/notice";
+//	}
+//	
 
 }
