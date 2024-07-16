@@ -68,7 +68,9 @@
 		    		<div class="card_top">
 					    <div class="title_and_link">
 					        <h2 class="card_title">To Do List</h2>
-					        <a href="./todo" class="link-icon">바로가기</a>
+
+					        <a href="${pageContext.request.contextPath}/todo" class="link-icon">바로가기</a>
+
 					    </div>
 			    	</div>
 			    	<hr>
@@ -88,8 +90,10 @@
 		    		<div class="card_top">
 					    <div class="title_and_link">
 					        <h2 class="card_title">My Memo</h2>
-					        <a href="./memo" class="link-icon">바로가기</a>
-					    </div>
+
+					        <a href="${pageContext.request.contextPath}/memo" class="link-icon">바로가기</a>
+					    </div>					    
+
 			    	</div>
 			    	<hr>
 			    	<div class="memo_list">
