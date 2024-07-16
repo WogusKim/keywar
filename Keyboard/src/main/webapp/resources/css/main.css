@@ -119,22 +119,22 @@ body{
 .board_memo1 { /* yeji */
     border-radius: 10px;
     background-color: white;
-    width: 50%; /* 좌우 각각의 메모가 절반씩 차지하도록 설정 */
+    width: 100%; /* 좌우 각각의 메모가 절반씩 차지하도록 설정 */
     padding: 10px;
     margin-bottom: 10px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    margin-right: 10px;
+
     height: 600px; /* 높이 설정 */
 }
 
 .board_memo2 { /* yeji */
     border-radius: 10px;
     background-color: white;
-    width: 50%; /* 좌우 각각의 메모가 절반씩 차지하도록 설정 */
+    width: 100%; /* 좌우 각각의 메모가 절반씩 차지하도록 설정 */
     padding: 10px;
     margin-bottom: 10px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    margin-left: 10px;
+
     height: 600px; /* 높이 설정 */
 }
 
@@ -356,6 +356,14 @@ body{
 	font-family: textL;
 	background-color: #FFEE00;
 	
+}
+
+.memoboardDiv{/* yeji */
+ display: block; 
+ width: 50%; 
+ padding-left: 10px;
+ padding-right: 10px;
+
 }
 
 .addButton { /* yeji */
