@@ -37,9 +37,9 @@ public class LoginController {
 	@RequestMapping("/loginAction")
 	public String loginAction(HttpServletRequest request, Model model, UserDTO dto) {
 		System.out.println("일단 로그인 실행");
-//		
-//		LoginDao dao = sqlSession.getMapper(LoginDao.class);
-//		List<UserDTO> list = dao.login(dto.getUserno(), dto.getUserpw());
+		
+		LoginDao dao = sqlSession.getMapper(LoginDao.class);
+		List<UserDTO> list = dao.login(dto.getUserno(), dto.getUserpw());
 //		if(list.size()!=0) {
 //			 System.out.println("로그인 성공 사번 : " +list.get(0).getUserno());
 //			return "reditrect:/";
@@ -54,11 +54,10 @@ public class LoginController {
 //			}
 //		}
 	
-		System.out.println(request.getAttribute("userno"));
-	
-		
 		System.out.println("입력한 직원번호 : "+dto.getUserno());
-		return "login";
+		System.out.println("입력한 비밀번호 : "+dto.getUserpw());
+		
+		return "redirect:login";
 	}
 	
 
