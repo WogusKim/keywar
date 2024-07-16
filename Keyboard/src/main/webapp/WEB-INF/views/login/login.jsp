@@ -33,9 +33,9 @@ function submitForm() {
 <div class="fullContent">
 	<h1 style ="margin-top:50px;">로그인</h1>
 <a href="./findPassword" style="float: right; margin-right: 50px; color: gray;"><span>비밀번호 찾기</span></a><br>
-	<form action="/loginAction" method="post" id="loginForm">
-		<span class="input_text">직원번호</span> <input type="text" class="inputText" placeholder="직원번호를 입력하세요" />  <br> 
-		<span class="input_text">비밀번호</span>  <input type="password" class="inputText"  placeholder="비밀번호를 입력하세요"/> <br>
+	<form action="./loginAction" method="post" id="loginForm">
+		<span class="input_text">직원번호</span> <input type="text" class="inputText" placeholder="직원번호를 입력하세요" name="userno" id="userno" />  <br> 
+		<span class="input_text">비밀번호</span>  <input type="password" class="inputText"  placeholder="비밀번호를 입력하세요" name="userpw" id="userpw"/> <br>
 		<input type="button" value="로그인" class="loginButton" onclick="submitForm()">
 	</form>
 
