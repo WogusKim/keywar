@@ -8,16 +8,15 @@ html {
     height: 100%;
     margin: 0;   
 }
-body{
 
+body{
     background-color: #BDE2CE;
     font-family: 'KB금융 본문체 Light';
-
-
     padding: 15px;
     height: calc(100% - 60px);
     margin: 0; 
 }
+
 .header_outline{
     background-color : white;
     border-radius: 10px;
@@ -29,7 +28,6 @@ body{
     align-items : center;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     min-width: 500px;
-
 }
 .header_innerBox{
     display: flex;
