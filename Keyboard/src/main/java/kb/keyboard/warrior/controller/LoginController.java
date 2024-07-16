@@ -3,12 +3,14 @@ package kb.keyboard.warrior.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kb.keyboard.warrior.dao.*;
 import kb.keyboard.warrior.dto.*;
@@ -33,32 +35,54 @@ public class LoginController {
 		
 		return "login/findPassword";
 	}
+	@RequestMapping("/resetPassword")
+	public String resetPW(HttpServletRequest request, Model model) {
+		System.out.println("비밀번호 재설정 화면 진입");
+		return "login/resetPassword";
+	}
+	@RequestMapping("/resetPasswordAction")
+	public String resetPWAction(HttpServletRequest request, Model model, UserDTO dto) {
+		System.out.println("./resetPasswordAction");
+		System.out.println("비밀번호 바꿀 직원의 직원번호 : "+dto.getUserno());
+		LoginDao dao = sqlSession.getMapper(LoginDao.class);
+		dao.UpdatePw(dto.getUserno(), dto.getUserpw());
+		System.out.println("비밀번호 변경완료 ~~");
+		return "redirect:login";
+	}
+	
+	
 	
 	@RequestMapping("/loginAction")
-	public String loginAction(HttpServletRequest request, Model model, UserDTO dto) {
-		System.out.println("일단 로그인 실행");
-//		
-//		LoginDao dao = sqlSession.getMapper(LoginDao.class);
-//		List<UserDTO> list = dao.login(dto.getUserno(), dto.getUserpw());
-//		if(list.size()!=0) {
-//			 System.out.println("로그인 성공 사번 : " +list.get(0).getUserno());
-//			return "reditrect:/";
-//		}else {
-//			
-//			if(dao.isRightUserno(dto.getUserno())!=null) {
-//				System.out.println("비밀번호가 잘못되었습니다.");
-//				return "login";
-//			}else {
-//				System.out.println("잘못된 직원번호입니다.");
-//				return "login";
-//			}
-//		}
-	
-		System.out.println(request.getAttribute("userno"));
-	
+	public String loginAction(HttpServletRequest request, Model model, UserDTO dto, RedirectAttributes attributes) {
 		
 		System.out.println("입력한 직원번호 : "+dto.getUserno());
-		return "login";
+		System.out.println("입력한 비밀번호 : "+dto.getUserpw());
+		
+		LoginDao dao = sqlSession.getMapper(LoginDao.class);
+		UserDTO list = dao.login(dto.getUserno(), dto.getUserpw());
+		if(list!=null) {
+			HttpSession session = request.getSession();
+			session.setAttribute("id", list.getUserno()); // 세션에 값 넣기
+			System.out.println("로그인 성공!  사번 : " +list.getUserno());
+			System.out.println("비밀번호 : " +list.getUserpw());
+			System.out.println("직원 이름 : " +list.getUsername());
+			if(list.getUserpw().equals(list.getUserno())) {
+				System.out.println("비밀번호 초기상태 ! 비밀번호 변경이 필요합니다.");
+				attributes.addFlashAttribute("userno", list.getUserno());
+				return "redirect:/resetPassword";
+			}
+			
+			return "redirect:/";
+		}else {
+			
+			if(dao.isRightUserno(dto.getUserno())!=null) {
+				System.out.println("비밀번호가 잘못되었습니다.");
+				return "redirect:login";
+			}else {
+				System.out.println("잘못된 직원번호입니다.");
+				return "redirect:login";
+			}
+		}
 	}
 	
 

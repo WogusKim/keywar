@@ -6,7 +6,8 @@ import kb.keyboard.warrior.dto.*;
 
 public interface LoginDao {
 
-	public List<UserDTO> login(String id, String pw);
+	public UserDTO login(String id, String pw);
 	public void findPw(UserDTO dto);
 	public UserDTO isRightUserno(String userno);
+	public void UpdatePw(String id, String pw);
 }
