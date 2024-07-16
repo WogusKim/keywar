@@ -55,8 +55,8 @@ public class LoginController {
 	@RequestMapping("/loginAction")
 	public String loginAction(HttpServletRequest request, Model model, UserDTO dto, RedirectAttributes attributes) {
 		
-		System.out.println("입력한 직원번호 : "+dto.getUserno());
-		System.out.println("입력한 비밀번호 : "+dto.getUserpw());
+		System.out.println("입력한 직원번호 : "+ dto.getUserno());
+		System.out.println("입력한 비밀번호 : "+ dto.getUserpw());
 		
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
 		UserDTO list = dao.login(dto.getUserno(), dto.getUserpw());
@@ -75,7 +75,6 @@ public class LoginController {
 			
 			return "redirect:/";
 		}else {
-			
 			if(dao.isRightUserno(dto.getUserno())!=null) {
 				System.out.println("비밀번호가 잘못되었습니다.");
 				return "redirect:login";

@@ -33,9 +33,9 @@ function submitForm() {
 	<h1 style ="margin-top:50px;">비밀번호 찾기</h1>
 
 	<form action="/findPwAction" method="post" id="findPwForm">
-	<table style="width: 90%; margin-left: 20px;">
+	<table style="width: 80%; margin: auto;">
 	<tr>
-	<td style="width:30%;"><span class="input_text"> 직원번호</span> </td><td style="width:70%;"><input type="text" class="inputText1" placeholder="직원번호를 입력하세요" /></td>
+	<td style="width:20%;"><span class="input_text"> 직원번호</span> </td><td style="width:40%;"><input type="text" class="inputText1" placeholder="직원번호를 입력하세요" /></td>
 	</tr>
 	<tr>
 	<td><span class="input_text"> 핸드폰번호</span> </td><td><input type="text" class="inputText1" placeholder="핸드폰 번호를 입력하세요" /></td>

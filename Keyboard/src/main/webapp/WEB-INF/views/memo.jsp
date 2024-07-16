@@ -9,27 +9,14 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <style>
-.addButton1 {
-	padding: 10px 15px;
-	border: none;
-	background-color: #508AE6;
-	color: white;
-	border-radius: 10px;
-	cursor: pointer;
-	margin-top: 15px;
-	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-	margin-right : 450px
-}
-
-.addButton1:hover {
-	background-color: #3d6db5;
-}
 
 ul li {
     position: relative;
     padding-right: 30px; /* 버튼 공간 확보를 위해 오른쪽 패딩 추가 */
     margin-bottom: 10px; /* li 요소 사이에 간격 추가 */
 }
+
+
 
 </style>
 </head>
@@ -45,8 +32,9 @@ ul li {
 
 			<div class="board_back1">
 				<!-- 민트 배경 -->
-				<div style="display: flex;">
+				<div style="display: flex;  width: 100%; ">
 					<!-- 나의메모와 부점메모 묶음 -->
+					<div class="memoboardDiv">
 					<div class="board_memo1">
 						<!-- 흰 배경 -->
 						<h2 class="card_title">나의 메모</h2>
@@ -57,8 +45,10 @@ ul li {
 							<li>글로벌인터네셔널 경리 02-4154-5415<button class="deleteButton">X</button></li>
 							<li>국민건강보험공단 1355<button class="deleteButton">X</button></li>
 						</ul>
+					</div> <input type="button" value="추가하기" class="addButton"> 
 					</div>
-
+					
+					<div class="memoboardDiv">
 					<div class="board_memo2">
 						<!-- 흰 배경 -->
 						<h2 class="card_title">부점 메모</h2>
@@ -70,10 +60,12 @@ ul li {
 							<li>국민건강보험공단 1355<button class="deleteButton">X</button></li>
 						</ul>
 					</div>
+					
+					<input type="button" value="추가하기" class="addButton">
+					</div>
 				</div>
 
-				<input type="button" value="추가하기" class="addButton1"> <input
-					type="button" value="추가하기" class="addButton">
+				
 
 			</div>
 		</div>
