@@ -12,8 +12,8 @@
 	background-repeat : no-repeat;
 	background-size : cover;
 	text-align: center;
-	
 	}
+	
 </style>
 
 <script>

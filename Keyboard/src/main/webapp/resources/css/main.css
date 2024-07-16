@@ -9,14 +9,15 @@ html {
     margin: 0;   
 }
 
-body{
 
+body{
     background-color: #BDE2CE;
     font-family: 'textL';
     padding: 15px;
     height: calc(100% - 60px);
     margin: 0; 
 }
+
 .header_outline{
     background-color : white;
     border-radius: 10px;
@@ -28,7 +29,6 @@ body{
     align-items : center;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     min-width: 500px;
-
 }
 .header_innerBox{
     display: flex;
@@ -199,6 +199,8 @@ body{
 }
 
 .board_inner2 {	
+	display: flex;
+	justify-content: space-between;
     border-radius: 10px;
     background-color: white;
     width: 49%;                    /* 각 내부 요소의 너비를 30%로 설정 */
@@ -208,12 +210,81 @@ body{
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+.board_inner_inner {	
+    border-radius: 10px;
+    background-color: white;
+    width: 49%;                    /* 각 내부 요소의 너비를 30%로 설정 */
+    height: 100%;                  /* 높이를 부모와 같게 설정 */
+    padding: 10px;
+	background-color: #BDE2CE;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.board_inner3 {	
+    border-radius: 10px;
+    background-color: white;
+    width: 49%;                    /* 각 내부 요소의 너비를 30%로 설정 */
+    height: 100%;                  /* 높이를 부모와 같게 설정 */
+    padding: 10px;
+    margin-right: 10px;            /* 요소 사이의 마진 설정 */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.rankbox {
+    flex: 1; /* flex-grow 속성을 사용하여 사용 가능한 공간을 균등하게 차지하도록 설정 */
+    padding: 10px; /* 내부 패딩 */
+    margin-right: 10px; /* 오른쪽에 마진 추가 */
+    height: 100%;
+    background-color: #BDE2CE;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.rankbox:last-child {
+    margin-right: 0; /* 마지막 rankbox의 마진 제거 */
+}
+
+.tab_rank {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	height: 100%;
+}
+
+/*댓글좋아요박스*/
+.reply_like {
+	border-radius: 10px;
+	background-color: #BDE2CE;
+	padding: 15px;
+	height: 100%;
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.tab_table {
+	padding:5px;
+}
+/*댓글좋아요박스*/
+
+
+
 .card_top {
     display: flex;
-    justify-content: space-between; /* 필요에 따라 flex-end로 변경 */
-    align-items: center;
+    flex-direction: column; /* 세로 정렬로 변경 */
+    align-items: flex-start; /* 왼쪽 정렬 */
     width: 100%; /* 컨테이너 전체 너비를 확보 */
     padding: 0 10px; /* 좌우 패딩을 추가하여 내용이 테두리에 닿지 않도록 함 */
+}
+
+.card_top .title_and_link {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.div_underline {
+	border-bottom: 1px solid #ccc; /* 밑줄 추가 */
+    padding-bottom: 10px; /* 내용과 선 사이의 간격 조정 */
 }
 
 .card_title {
@@ -221,6 +292,7 @@ body{
     margin-top: 5px;
     margin-bottom: 5px;
 }
+
 
 .link-icon {
     display: inline-block;
@@ -288,3 +360,100 @@ body{
     background-color: #3d6db5;
 }
 
+/* 우하단 탭 영역 관련 css */
+
+/* 탭 영역 전체 설정 */
+.tab_area {
+    display: flex;
+    justify-content: space-between;
+    background-color: #BDE2CE; /* 기본 배경색 */
+    padding: 10px 80px 10px 80px;
+    border-radius: 10px;
+}
+
+/* 각 탭의 기본 스타일 */
+.tab {
+    cursor: pointer;
+    padding: 10px;
+    font-weight: bold;
+    background-color: #BDE2CE; /* 탭의 배경색 */
+    border-radius: 5px; /* 탭의 모서리 둥글게 */
+    margin-right: 5px; /* 탭 사이의 간격 */
+    transition: background-color 0.3s ease; /* 배경색 변경 효과 부드럽게 */
+}
+
+
+/* 마지막 탭의 마진 제거 */
+.tab:last-child {
+    margin-right: 0;
+}
+
+/* 활성화된 탭의 스타일 */
+.tab.active {
+    background-color: white; /* 활성 탭의 배경색 변경 */
+    color: blue; /* 활성 탭의 글자색 변경 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
+}
+
+/* 탭 내용 영역 */
+.tab_content {
+    display: none; /* 기본적으로 숨김 처리 */
+    background-color: white;
+    height: 84%;
+    padding: 10px 0px 10px 0px;
+    border-radius: 0 0 10px 10px;
+}
+
+/* 활성화된 탭 내용 영역 표시 */
+.active {
+    display: block;
+}
+
+/* 환율 */
+.currency-body {
+	width: 100%;
+	margin-top:10px;
+
+}
+
+.currency-body .currency-row {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.currency-body .currency-row1 {
+    display: flex;
+    align-items: center;
+    padding: 10px 0px;
+    border-bottom: 1px solid #eee;
+}
+
+.currency-body .currency-row:last-child {
+    border-bottom: none;
+}
+
+.currency-row img {
+    width: 50px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.currency-row1 span {
+    flex: 1;
+    text-align: center;
+}
+
+.currency-row span {
+    flex: 1;
+    text-align: right;
+    padding-right: 10px;
+}
+
+hr {
+    border: none;       /* 기존 테두리를 제거 */
+    height: 1px;        /* 높이 설정 */
+    background-color: #000; /* 배경색을 검은색으로 설정 */
+    margin: 10px 0;     /* 상하 여백 추가 */
+}
