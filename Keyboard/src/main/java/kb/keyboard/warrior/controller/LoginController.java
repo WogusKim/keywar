@@ -33,10 +33,14 @@ public class LoginController {
 		
 		return "login/findPassword";
 	}
+	@RequestMapping("/resetPassword")
+	public String resetPW(HttpServletRequest request, Model model) {
+		System.out.println("비밀번호 재설정 화면 진입");
+		return "login/resetPassword";
+	}
 	
 	@RequestMapping("/loginAction")
 	public String loginAction(HttpServletRequest request, Model model, UserDTO dto) {
-		System.out.println("일단 로그인 실행");
 		
 		System.out.println("입력한 직원번호 : "+dto.getUserno());
 		System.out.println("입력한 비밀번호 : "+dto.getUserpw());
@@ -46,8 +50,12 @@ public class LoginController {
 		if(list!=null) {
 			System.out.println("로그인 성공!  사번 : " +list.getUserno());
 			System.out.println("비밀번호 : " +list.getUserpw());
-			System.out.println("비밀번호 : " +list.getUsername());
-			 
+			System.out.println("직원 이름 : " +list.getUsername());
+			if(list.getUserpw().equals(list.getUserno())) {
+				System.out.println("비밀번호 초기상태 ! 비밀번호 변경이 필요합니다.");
+				return "redirect:/resetPassword";
+			}
+			
 			return "redirect:/";
 		}else {
 			
