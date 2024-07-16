@@ -68,19 +68,38 @@
 		    		<div class="card_top">
 					    <div class="title_and_link">
 					        <h2 class="card_title">To Do List</h2>
-					        <a href="#" class="link-icon">바로가기</a>
+					        <a href="./todo" class="link-icon">바로가기</a>
 					    </div>
 			    	</div>
 			    	<hr>
+			    	<div class="todo_list">
+						<ul>
+						    <li class="todo_item"><input type="checkbox" id="todo1"><label for="todo1">문서 작성하기</label></li>
+						    <li class="todo_item"><input type="checkbox" id="todo2"><label for="todo2">회의 준비</label></li>
+						    <li class="todo_item"><input type="checkbox" id="todo3"><label for="todo3">이메일 확인 및 답변</label></li>
+						    <li class="todo_item"><input type="checkbox" id="todo2"><label for="todo2">회의하기</label></li>
+						</ul>
+						<div class="todo_rate">
+							<span>0 / 4</span>
+						</div>
+			        </div>
 				</div>
 				<div class="board_inner_inner">
 		    		<div class="card_top">
 					    <div class="title_and_link">
 					        <h2 class="card_title">My Memo</h2>
-					        <a href="#" class="link-icon">바로가기</a>
-					    </div>					    
+					        <a href="./memo" class="link-icon">바로가기</a>
+					    </div>
 			    	</div>
 			    	<hr>
+			    	<div class="memo_list">
+			    		<ul>
+			    			<li>메모메모메모메모</li>
+			    			<li>메모메모</li>
+			    			<li>메모메모메모메모메모메모</li>
+			    			<li>메모메모메모메모</li>
+			    		</ul>
+			    	</div>
 				</div>
 	    	</div>
 	    	<div class="board_inner3">
@@ -244,6 +263,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('.todo_list input[type="checkbox"]');
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                this.parentNode.classList.add('checked');
+            } else {
+                this.parentNode.classList.remove('checked');
+            }
+
+            // 추후 서버 업데이트 로직 구현
+            // 예: updateTaskStatus(this.id, this.checked);
+        });
+    });
+});
 </script>
 </body>
 </html>
