@@ -24,5 +24,9 @@ public class HomeController {
 	public String memo() {		
 		return "memo";
 	}
+	@RequestMapping("/notice")
+	public String notice() {		
+		return "notice";
+	}
 
 }
