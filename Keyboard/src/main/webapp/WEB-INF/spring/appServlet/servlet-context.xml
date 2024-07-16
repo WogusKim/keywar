@@ -28,14 +28,14 @@
 		<beans:property name="driverClassName" value ="com.mysql.cj.jdbc.Driver"/>
 
 		<!-- 서버용 버전 -->
-<!-- 	<beans:property name="url" value="jdbc:mysql://183.111.125.38:3306/note?serverTimezone=UTC&amp;useSSL=false"/>
+ 		<beans:property name="url" value="jdbc:mysql://183.111.125.38:3306/note?serverTimezone=UTC&amp;useSSL=false"/>
  	    <beans:property name="username" value="manager"/>
-		<beans:property name="password" value="!Q@W3e4r"/>  -->
+		<beans:property name="password" value="!Q@W3e4r"/> 
 		
-		<!-- 로컬 테스트용 버전 -->
-		<beans:property name="url" value="jdbc:mysql://localhost:3306/note?serverTimezone=UTC&amp;useSSL=false"/> <!--이 부분은 false로 해줘라-->
+		<!-- 로컬 테스트용 버전 --> <!--이 부분은 false로 해줘라-->
+<!--	<beans:property name="url" value="jdbc:mysql://localhost:3306/note?serverTimezone=UTC&amp;useSSL=false"/>
  	    <beans:property name="username" value="root"/>
-		<beans:property name="password" value="qwe123!@#"/> 
+		<beans:property name="password" value="qwe123!@#"/>  -->
 
 	</beans:bean>
 

@@ -20,8 +20,7 @@ body {
 
 function checkPw(){
 	if($("#userpw").val()==$("#pw2").val()){
-		alert("비밀번호 검증 완료");
-		alert($("#userno").val());
+		alert("비밀번호가 정상적으로 등록되었습니다.");
 		 submitForm();
 	}else{
 		alert("비밀번호가 서로 다릅니다.");
@@ -47,7 +46,7 @@ function submitForm() {
 	<form action="./resetPasswordAction" method="post" id="resetPasswordForm" >
 	<table style="width: 80%; margin: auto;">
 	<tr>
-	<td style="width: 20%"><span class="input_text">비밀번호</span></td><td style="width: 40%"> <input type="text" class="inputText1" placeholder=" 사용하실 비밀번호를 입력하세요" name="userpw" id="userpw" /></td>
+	<td style="width: 20%"><span class="input_text">비밀번호</span></td><td style="width: 40%"> <input type="password" class="inputText1" placeholder=" 사용하실 비밀번호를 입력하세요" name="userpw" id="userpw" /></td>
 	</tr>
 	<tr>
 	<td><span class="input_text">비밀번호 확인</span> </td><td> <input type="password" class="inputText1"  placeholder=" 다시 한 번 비밀번호를 입력하세요" name="pw2" id="pw2"/></td>
