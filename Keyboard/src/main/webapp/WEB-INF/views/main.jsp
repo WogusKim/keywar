@@ -27,28 +27,20 @@
 				    <div class="currency-body">
 						<div class="currency-row1">
 							<span>&nbsp;</span>
+							<span>국가</span>
 						    <span>매입</span>
 						    <span>매도</span>
 						    <span>기준환율</span>
 						</div>
-				        <div class="currency-row">
-				            <img src="${pageContext.request.contextPath}/resources/images/flags/us.png" alt="USA">
-				            <span>xxxxtyyy</span>
-				            <span>1,349.57</span>
-				            <span>1,349.57</span>
-				        </div>
-				        <div class="currency-row">
-				            <img src="${pageContext.request.contextPath}/resources/images/flags/jp.png" alt="Japan">
-				            <span>1,373.60</span>
-				            <span>1,349.57</span>
-				            <span>1,349.57</span>
-				        </div>
-				        <div class="currency-row">
-				            <img src="${pageContext.request.contextPath}/resources/images/flags/cn.png" alt="China">
-				            <span>1,373.60</span>
-				            <span>1,349.57</span>
-				            <span>1,349.57</span>
-				        </div>
+					    <c:forEach var="rate" items="${ratesFavorite}" begin="1" end="3">
+					        <div class="currency-row">
+					            <img src="${pageContext.request.contextPath}/resources/images/flags/${rate.currencyCode}.png" alt="${rate.currencyCode}">
+					            <span>${rate.currencyCode}</span>
+					            <span>${rate.cashBuy}</span>
+					            <span>${rate.cashSell}</span>
+					            <span>${rate.standardRate}</span>
+					        </div>
+					    </c:forEach>
 				    </div>
 				</div>
 	    	</div>
