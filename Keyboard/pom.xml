@@ -135,8 +135,12 @@
         </dependency>
         <!-- 비동기 처리관련  -->
 
-
-
+		<!-- 크롤링 처리 관련 -->
+		<dependency>
+		    <groupId>org.jsoup</groupId>
+		    <artifactId>jsoup</artifactId>
+		    <version>1.13.1</version>
+		</dependency>
 
 		<!-- @Inject -->
 		<dependency>
