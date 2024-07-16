@@ -13,7 +13,7 @@
 <body>
 <header>
 <div class="header_outline">
-<div class="header_innerBox">
+<div class="header_innerBox" onclick="">
  <img  class="header_logo" src="${pageContext.request.contextPath}/resources/images/mainLogo.png">
  <div class="header_innerText">김국민의 업무노트</div>
 </div>
