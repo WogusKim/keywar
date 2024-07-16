@@ -15,7 +15,6 @@
 	width: 100%;
 	height: 95%;
 	padding: 10px;
-	/* margin-bottom: 10px; /* 아래쪽에 여백 추가 */ */
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 
 }
@@ -26,6 +25,17 @@
 	width: 100%;
 	height: 80%;
 }
+
+.aa input[type="text"] {
+	width: 100%;
+	height: 40px; /* 적절한 높이 설정 */
+	padding: 10px;
+	font-size: 16px; /* 글씨 크기 조정 */
+	border: 1px solid #ccc; /* 테두리 설정 */
+	border-radius: 5px; /* 모서리 둥글게 */
+	box-sizing: border-box; /* 박스 사이징 설정 */
+}
+
 </style>
 </head>
 
@@ -45,9 +55,9 @@
 					<h2 class="card_title">부점 공지사항 작성</h2>
 					<hr>
 						<div class="aa" >
-							<input type="text">
+							<input type="text" placeholder="공지사항을 작성하세요">
 						</div>
-					
+
 				</div>
 				<input type="button" value="추가하기" class="addButton">
 			</div>
