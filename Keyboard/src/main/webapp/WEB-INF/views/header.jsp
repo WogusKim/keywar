@@ -18,7 +18,7 @@
  <div class="header_innerText">김국민의 업무노트</div>
 </div>
  <div class="header_iconArea">
-    <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/calendar.png">
+    <a href="${pageContext.request.contextPath}/calendar"><img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/calendar.png"></a>
     <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/mypage.png">
     <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/alarm.png">
     <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/setting.png">
