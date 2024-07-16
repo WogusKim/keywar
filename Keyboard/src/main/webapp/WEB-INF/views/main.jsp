@@ -33,7 +33,7 @@
 						</div>
 				        <div class="currency-row">
 				            <img src="${pageContext.request.contextPath}/resources/images/flags/us.png" alt="USA">
-				            <span>xxxx</span>
+				            <span>xxxxtyyy</span>
 				            <span>1,349.57</span>
 				            <span>1,349.57</span>
 				        </div>
