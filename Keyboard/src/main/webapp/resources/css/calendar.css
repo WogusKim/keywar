@@ -1,0 +1,39 @@
+#calendar {
+    width: 100%;
+    max-width: 1400px; /* 최대 너비 설정 */
+    margin: 0 auto; /* 가운데 정렬 */
+    
+}
+
+.fc-view {
+    font-size: 14px; /* 각 셀의 글꼴 크기 설정 */
+}
+
+.fc-scroller {
+    height: 600px; /* 스크롤러 높이 설정 */
+}
+
+/* FullCalendar 전체 스타일 */
+.fc {
+    width: 100%; /* 달력의 너비 설정 */
+    margin: 0 auto; /* 가운데 정렬 */
+}
+
+/* FullCalendar 이벤트 스타일 */
+.fc-event {
+    background-color: #3788d8; /* 이벤트 배경색 */
+    color: #ffffff; /* 이벤트 텍스트 색상 */
+    border-color: #3788d8; /* 이벤트 테두리 색상 */
+}
+
+.fc-event-title {
+    font-size: 14px; /* 이벤트 제목 폰트 크기 */
+}
+
+
+#calendar .fc-view-container .fc-view table thead tr th.fc-day-header {
+    background-color: #BDE2CE; /* 원하는 배경색 */
+    color: #000000; /* 원하는 글자색 */
+    padding: 10px; /* 패딩 조정 */
+}
+

@@ -7,6 +7,7 @@ public class UserDTO {
  private String username;  // 이름
  private String userpw;    // 비밀번호
  private String deptno;    // 점번
+ private String teamno;    // 점번
  private String phoneno;   // 전화번호
  private String mail;      // 메일아이디
  private String hiredate;    // 입사일
@@ -17,11 +18,12 @@ public class UserDTO {
  public UserDTO() {
  }
 
- public UserDTO(String userno, String username, String userpw, String deptno, String phoneno, String mail, String hiredate, String gender, String birthdate, String regdate) {
+ public UserDTO(String userno, String username, String userpw, String deptno, String teamno, String phoneno, String mail, String hiredate, String gender, String birthdate, String regdate) {
      this.userno = userno;
      this.username = username;
      this.userpw = userpw;
      this.deptno = deptno;
+     this.teamno = teamno;
      this.phoneno = phoneno;
      this.mail = mail;
      this.hiredate = hiredate;
@@ -61,6 +63,14 @@ public class UserDTO {
 
  public void setDeptno(String deptno) {
      this.deptno = deptno;
+ }
+ 
+ public String getTeamno() {
+	return teamno;
+ }
+
+ public void setTeamno(String teamno) {
+	this.teamno = teamno;
  }
 
  public String getPhoneno() {

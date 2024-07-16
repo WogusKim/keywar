@@ -72,8 +72,8 @@ body{
 
 }
 .content_right{
-	flex-direction: column;   /* 자식 요소를 수직으로 정렬 */
-    justify-content: space-between; /* 상단과 하단에 자식 요소를 정렬하고, 나머지 공간을 중간에 배분 */
+	flex-direction: column;   /* �옄�떇 �슂�냼瑜� �닔吏곸쑝濡� �젙�젹 */
+    justify-content: space-between; /* �긽�떒怨� �븯�떒�뿉 �옄�떇 �슂�냼瑜� �젙�젹�븯怨�, �굹癒몄� 怨듦컙�쓣 以묎컙�뿉 諛곕텇 */
     border-radius: 10px;
     background-color: white;
     padding: 20px;
@@ -107,80 +107,102 @@ body{
 }
 
 .board_top{
-    display: flex;                 /* Flexbox를 활성화합니다 */
-    justify-content: space-between; /* 내부 요소들 사이에 균등 간격을 제공합니다 */
-    align-items: center;           /* 내부 요소들을 세로 중앙에 배치합니다 */
+    display: flex;                 /* Flexbox瑜� �솢�꽦�솕�빀�땲�떎 */
+    justify-content: space-between; /* �궡遺� �슂�냼�뱾 �궗�씠�뿉 洹좊벑 媛꾧꺽�쓣 �젣怨듯빀�땲�떎 */
+    align-items: center;           /* �궡遺� �슂�냼�뱾�쓣 �꽭濡� 以묒븰�뿉 諛곗튂�빀�땲�떎 */
     border-radius: 10px;
     background-color: #BDE2CE;
     width: 100%;
-    height: 45%;                   /* 컨테이너 높이 설정 */
+    height: 45%;                   /* 而⑦뀒�씠�꼫 �넂�씠 �꽕�젙 */
     padding: 18px;   
-    margin-bottom: 20px;              /* 내부 요소와의 간격을 위해 패딩 추가 */
+    margin-bottom: 20px;              /* �궡遺� �슂�냼���쓽 媛꾧꺽�쓣 �쐞�빐 �뙣�뵫 異붽� */
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .board_inner {	
     border-radius: 10px;
     background-color: white;
-    width: 32%;                    /* 각 내부 요소의 너비를 30%로 설정 */
-    height: 100%;                  /* 높이를 부모와 같게 설정 */
+    width: 32%;                    /* 媛� �궡遺� �슂�냼�쓽 �꼫鍮꾨�� 30%濡� �꽕�젙 */
+    height: 100%;                  /* �넂�씠瑜� 遺�紐⑥� 媛숆쾶 �꽕�젙 */
     padding: 10px;
-    margin-right: 10px;            /* 요소 사이의 마진 설정 */
+    margin-right: 10px;            /* �슂�냼 �궗�씠�쓽 留덉쭊 �꽕�젙 */
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* 마지막 board_inner 요소의 마진을 제거합니다 */
+/* 留덉�留� board_inner �슂�냼�쓽 留덉쭊�쓣 �젣嫄고빀�땲�떎 */
 .board_inner:last-child {
     margin-right: 0;
 }
 
 .board_bottom{
-    display: flex;                 /* Flexbox를 활성화합니다 */
-    justify-content: space-between; /* 내부 요소들 사이에 균등 간격을 제공합니다 */
-    align-items: center;           /* 내부 요소들을 세로 중앙에 배치합니다 */
+    display: flex;                 /* Flexbox瑜� �솢�꽦�솕�빀�땲�떎 */
+    justify-content: space-between; /* �궡遺� �슂�냼�뱾 �궗�씠�뿉 洹좊벑 媛꾧꺽�쓣 �젣怨듯빀�땲�떎 */
+    align-items: center;           /* �궡遺� �슂�냼�뱾�쓣 �꽭濡� 以묒븰�뿉 諛곗튂�빀�땲�떎 */
     border-radius: 10px;
     background-color: #BDE2CE;
     width: 100%;
-    height: 52%;                   /* 컨테이너 높이 설정 */
+    height: 52%;                   /* 而⑦뀒�씠�꼫 �넂�씠 �꽕�젙 */
     padding: 18px; 
     margin-bottom: 20px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);	
 }
 
 .board_bottom:last-child {
-    margin-bottom: 0; /* 마지막 요소의 마진 제거 */
+    margin-bottom: 0; /* 留덉�留� �슂�냼�쓽 留덉쭊 �젣嫄� */
 }
 
 .board_inner2 {	
     border-radius: 10px;
     background-color: white;
-    width: 49%;                    /* 각 내부 요소의 너비를 30%로 설정 */
-    height: 100%;                  /* 높이를 부모와 같게 설정 */
+    width: 49%;                    /* 媛� �궡遺� �슂�냼�쓽 �꼫鍮꾨�� 30%濡� �꽕�젙 */
+    height: 100%;                  /* �넂�씠瑜� 遺�紐⑥� 媛숆쾶 �꽕�젙 */
     padding: 10px;
-    margin-right: 10px;            /* 요소 사이의 마진 설정 */
+    margin-right: 10px;            /* �슂�냼 �궗�씠�쓽 留덉쭊 �꽕�젙 */
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
-
+.board_calendar_bottom{
+    display: flex;                 /* Flexbox瑜� �솢�꽦�솕�빀�땲�떎 */
+    justify-content: space-between; /* �궡遺� �슂�냼�뱾 �궗�씠�뿉 洹좊벑 媛꾧꺽�쓣 �젣怨듯빀�땲�떎 */
+    align-items: center;           /* �궡遺� �슂�냼�뱾�쓣 �꽭濡� 以묒븰�뿉 諛곗튂�빀�땲�떎 */
+    border-radius: 10px;
+    background-color: #BDE2CE;
+    width: 100%;
+    height: 100%;                   /* 而⑦뀒�씠�꼫 �넂�씠 �꽕�젙 */
+    padding: 18px; 
+    margin-bottom: 20px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);	
+}
+/*
+.board_calendar {	
+    border-radius: 10px;
+    background-color: white;
+    width: 100%;                    
+    height: 100%;                  
+    padding: 10px;
+    margin-right: 10px; 
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+*/
 .card_top {
     display: flex;
-    justify-content: space-between; /* 필요에 따라 flex-end로 변경 */
+    justify-content: space-between; /* �븘�슂�뿉 �뵲�씪 flex-end濡� 蹂�寃� */
     align-items: center;
-    width: 100%; /* 컨테이너 전체 너비를 확보 */
-    padding: 0 10px; /* 좌우 패딩을 추가하여 내용이 테두리에 닿지 않도록 함 */
+    width: 100%; /* 而⑦뀒�씠�꼫 �쟾泥� �꼫鍮꾨�� �솗蹂� */
+    padding: 0 10px; /* 醫뚯슦 �뙣�뵫�쓣 異붽��븯�뿬 �궡�슜�씠 �뀒�몢由ъ뿉 �떯吏� �븡�룄濡� �븿 */
 }
 
 .card_title {
-    margin-right: auto; /* 제목과 아이콘 사이의 공간 자동 조정 */
+    margin-right: auto; /* �젣紐⑷낵 �븘�씠肄� �궗�씠�쓽 怨듦컙 �옄�룞 議곗젙 */
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
 .link-icon {
     display: inline-block;
-    width: 25px; /* 너비 증가 */
-    height: 25px; /* 높이 조정, 필요에 따라 auto로 설정 */
-    background-image: url('../images/icons/link.png'); /* 이미지 경로 확인 */
-    background-size: contain; /* 이미지가 비율을 유지하면서 컨테이너에 맞게 조정됨 */
+    width: 25px; /* �꼫鍮� 利앷� */
+    height: 25px; /* �넂�씠 議곗젙, �븘�슂�뿉 �뵲�씪 auto濡� �꽕�젙 */
+    background-image: url('../images/icons/link.png'); /* �씠誘몄� 寃쎈줈 �솗�씤 */
+    background-size: contain; /* �씠誘몄�媛� 鍮꾩쑉�쓣 �쑀吏��븯硫댁꽌 而⑦뀒�씠�꼫�뿉 留욊쾶 議곗젙�맖 */
     text-indent: 100%;
     white-space: nowrap;
     overflow: hidden;
