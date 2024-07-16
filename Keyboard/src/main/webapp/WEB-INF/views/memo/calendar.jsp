@@ -38,43 +38,63 @@
 
         // 서버에 이벤트 저장 요청을 보낼 수도 있음
         // $.post('/save-event', { title, startDate, endDate });
-        
-        const eventData = {
-	        title: title,
-	        startDate: startDate,
-	        endDate: endDate,
-	        content: content,
-	        shareto: shareto
-    	};
-        
-        
-
-        $('#calendar').fullCalendar('renderEvent', {
-            title: title,
-            startDate: startDate,
-            endDate: endDate
-        }, true); // stick? = true
-
-        $('#addEventModal').modal('hide');
+        // Ajax 요청
+        $.ajax({
+            url: '${pageContext.request.contextPath}/calendarsave', // 서버에 저장할 API 엔드포인트
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ title, startDate, endDate, content, shareto }),
+            success: function(response) {
+                // 성공적으로 저장되었을 때의 처리
+                console.log('일정이 성공적으로 저장되었습니다.');
+                $('#calendar').fullCalendar('renderEvent', {
+                    title: title,
+                    startDate: startDate,
+                    endDate: endDate,
+                    content: content,
+                    shareto: shareto
+                }, true); // stick? = true
+                $('#addEventModal').modal('hide');
+            },
+            error: function(xhr, status, error) {
+                // 에러 발생 시 처리
+                console.error('일정 저장 중 오류가 발생했습니다:', error);
+                alert('일정 저장 중 오류가 발생했습니다. 다시 시도해주세요.');
+            }
+        });
     }
 
     function updateEvent() {
-        const id = $('#editEventForm #editEventId').val();
         const title = $('#editEventForm #editEventTitle').val();
         const startDate = $('#editEventForm #editEventStartDate').val();
         const endDate = $('#editEventForm #editEventEndDate').val();
+        const content = $('#editEventForm #editEventContent').val();
+        const shareto = $('#editEventForm #editEventShareto').val();
 
-        // 서버에 이벤트 수정 요청을 보낼 수도 있음
-        // $.post('/update-event', { id, title, startDate, endDate });
-
-        // FullCalendar에서 이벤트 업데이트
-        const event = $('#calendar').fullCalendar('clientEvents', id)[0];
-        event.title = title;
-        event.startDate = startDate;
-        event.endDate = endDate;
-        $('#calendar').fullCalendar('updateEvent', event);
-
-        $('#editEventModal').modal('hide');
+        // Ajax 요청
+        $.ajax({
+            url: '${pageContext.request.contextPath}/calendaredit/${id}', // 수정할 이벤트의 ID를 포함한 API 엔드포인트
+            method: 'POST', // PUT 또는 POST 요청 사용
+            contentType: 'application/json',
+            data: JSON.stringify({ title, startDate, endDate, content, shareto }),
+            success: function(response) {
+                // 성공적으로 업데이트되었을 때의 처리
+                console.log('일정이 성공적으로 업데이트되었습니다.');
+                const event = $('#calendar').fullCalendar('clientEvents', id)[0];
+                event.title = title;
+                event.startDate = startDate;
+                event.endDate = endDate;
+                event.content = content;
+                event.shareto = shareto;
+                $('#calendar').fullCalendar('updateEvent', event);
+                $('#editEventModal').modal('hide');
+            },
+            error: function(xhr, status, error) {
+                // 에러 발생 시 처리
+                console.error('일정 업데이트 중 오류가 발생했습니다:', error);
+                alert('일정 업데이트 중 오류가 발생했습니다. 다시 시도해주세요.');
+            }
+        });
     }
 
     $(document).ready(function() {
