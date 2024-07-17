@@ -20,6 +20,7 @@ import kb.keyboard.warrior.dto.ScheduleDTO;
 import kb.keyboard.warrior.memo.command.MemoCommand;
 import kb.keyboard.warrior.memo.command.MemoViewCommand;
 import kb.keyboard.warrior.memo.command.TodoViewCommand;
+import kb.keyboard.warrior.memo.command.noticeViewCommand;
 import kb.keyboard.warrior.util.Constant;
 
 
@@ -66,7 +67,7 @@ public class MemoController {
         
         dao.scheduleNew(dto);
 
-        return "ì¼ì •ì´ ì„±ê³µì ìœ¼ë¡œ ì €ì¥ë˜ì—ˆìŠµë‹ˆë‹¤.";
+        return "redirect:/memo/calendar";
     }
 	
     @RequestMapping(value = "/calendaredit", method = RequestMethod.POST) 
@@ -74,7 +75,7 @@ public class MemoController {
     public String editEvent(@RequestBody ScheduleDTO dto) {
         ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
         dao.scheduleEdit(dto);
-        return "ì¼ì •ì´ ì„±ê³µì ìœ¼ë¡œ ìˆ˜ì •ë˜ì—ˆìŠµë‹ˆë‹¤.";
+        return "redirect:/memo/calendar";
     }
     
     @RequestMapping(value = "/calendardelete", method = RequestMethod.POST) 
@@ -82,7 +83,7 @@ public class MemoController {
     public String deleteEvent(@RequestParam String scheduleid) {
         ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
         dao.scheduleDelete(scheduleid);
-        return "ì¼ì •ì´ ì„±ê³µì ìœ¼ë¡œ ì‚­ì œë˜ì—ˆìŠµë‹ˆë‹¤.";
+        return "redirect:/memo/calendar";
     }
 
 	
@@ -102,22 +103,39 @@ public class MemoController {
     }
 	
 
-	@RequestMapping("/memo") // memoView
+    @RequestMapping("/memo") //memo view
     public String memoView(HttpSession session, Model model) {
         System.out.println("memoView()");
 
         String userno = (String) session.getAttribute("userno");
-        if (userno != null) {
-            command = new MemoViewCommand(userno);
+        String deptno = (String) session.getAttribute("deptno");
+        System.out.println("·Î±×ÀÎ µÈ »ç¶÷ ´©±¸¾ß? " + userno);
+        System.out.println("ºÎÁ¡ÄÚµå ´©±¸¾ß? " + deptno);
+        if (userno != null && deptno != null) {
+            command = new MemoViewCommand(userno, deptno);
             command.execute(model);
         } else {
-            System.out.println("User number not found in session.");
+            System.out.println("User number or dept number not found in session.");
         }
 
         return "memo";
     }
 	
+    @RequestMapping("/notice") //notice view
+    public String noticeView(HttpSession session, Model model) {
+        System.out.println("noticeView()");
 
+        String userno = (String) session.getAttribute("userno");
+        String deptno = (String) session.getAttribute("deptno");
+        System.out.println("·Î±×ÀÎ µÈ »ç¶÷ ´©±¸¾ß? " + userno);
+        System.out.println("ºÎÁ¡ÄÚµå ´©±¸¾ß? " + deptno);
+        if (userno != null && deptno != null) {
+            command = new noticeViewCommand(userno, deptno);
+            command.execute(model);
+        } else {
+            System.out.println("User number or dept number not found in session.");
+        }
 
-
+        return "notice";
+    }
 }

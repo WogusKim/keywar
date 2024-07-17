@@ -64,15 +64,10 @@ public class HomeController {
 	    
 	    //Memo Data
 	    
-	    
-	    
+	    	    
 	    return "main";
 	}
 
-	@RequestMapping("/notice")
-	public String notice() {		
-		return "notice";
-	}
 	@RequestMapping("/noticeForm")
 	public String noticeForm() {		
 		return "noticeForm";
