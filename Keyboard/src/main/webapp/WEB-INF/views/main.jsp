@@ -28,8 +28,8 @@
 						<div class="currency-row1">
 							<span>&nbsp;</span>
 							<span>국가</span>
-						    <span>매입</span>
 						    <span>매도</span>
+						    <span>매입</span>
 						    <span>기준환율</span>
 						</div>
 					    <c:forEach var="rate" items="${ratesFavorite}" begin="1" end="3">
@@ -87,7 +87,6 @@
 		    		<div class="card_top">
 					    <div class="title_and_link">
 					        <h2 class="card_title">My Memo</h2>
-
 					        <a href="${pageContext.request.contextPath}/memo" class="link-icon">바로가기</a>
 					    </div>					    
 
