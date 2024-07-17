@@ -43,7 +43,7 @@ function submitForm() {
     height: 100%; ">
 <div class="fullContent">
 	<h1 style ="margin-top:50px;">로그인</h1>
-<span> <img alt="초기 비밀번호 안내" src="${pageContext.request.contextPath}/resources/images/info.png" style="float: right; margin-right: 50px;" >   <a href="./findPassword" style="float: right; margin-right: 10px; color: gray;" id="info">비밀번호 찾기</a></span>
+<span> <img alt="초기 비밀번호 안내" src="${pageContext.request.contextPath}/resources/images/info.png" style="float: right; margin-right: 50px;" >   <a href="./findPassword" style="float: right; margin-right: 10px; color: gray;" id="info">비밀번호 변경</a></span>
 <br>
 
 
