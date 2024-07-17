@@ -63,6 +63,8 @@
             }
         });
     }
+    
+    
 
     function updateSchedule() {
         const title = $('#editScheduleForm #editScheduleTitle').val();
