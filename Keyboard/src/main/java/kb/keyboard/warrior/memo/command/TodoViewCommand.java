@@ -19,7 +19,7 @@ public class TodoViewCommand implements MemoCommand{
 		
 		SqlSession sqlSession = Constant.sqlSession;
 		MemoDao dao = sqlSession.getMapper(MemoDao.class);
-		model.addAttribute("list", dao.noticeView()); // 데이터 사라지면 안되니까, list라는 이름으로 model에 담아야지. 그래야 컨트롤러 통해서 뷰에 갈 수 있지.
+		//model.addAttribute("list", dao.noticeView()); // 데이터 사라지면 안되니까, list라는 이름으로 model에 담아야지. 그래야 컨트롤러 통해서 뷰에 갈 수 있지.
 		
 	}
 
