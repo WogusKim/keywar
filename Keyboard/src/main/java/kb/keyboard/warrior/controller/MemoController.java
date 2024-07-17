@@ -10,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import kb.keyboard.warrior.dao.*;
-import kb.keyboard.warrior.dto.*;
 
 
 
@@ -25,23 +23,9 @@ public class MemoController {
 	
 	@RequestMapping("/calendar")
 	public String calendar(HttpServletRequest request, Model model) {		
-		System.out.println("´Ş·ÂÃ¢ ÁøÀÔ");
+		System.out.println("ìº˜ë¦°ë”");
 		
 		return "memo/calendar";
 	}
-//	@RequestMapping("/memo")
-//	public String memo(HttpServletRequest request, Model model) {
-//		System.out.println("¸Ş¸ğÃ¢ ÁøÀÔ");
-//		
-//		return "memo/memo";
-//	}
-	
-//	@RequestMapping("/notice")
-//	public String notice(HttpServletRequest request, Model model) {
-//		System.out.println("°øÁö ÁøÀÔ");
-//		
-//		return "memo/notice";
-//	}
-//	
 
 }
