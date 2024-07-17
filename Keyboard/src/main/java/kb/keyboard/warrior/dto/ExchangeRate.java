@@ -1,5 +1,6 @@
 package kb.keyboard.warrior.dto;
 
+//È¯À²DTO
 public class ExchangeRate {
 
     private String currencyCode;
