@@ -1,8 +1,8 @@
 package kb.keyboard.warrior.util;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.apache.ibatis.session.SqlSession;
 
 public class Constant {
 
-	public static JdbcTemplate template;
+	public static SqlSession sqlSession;
 }
