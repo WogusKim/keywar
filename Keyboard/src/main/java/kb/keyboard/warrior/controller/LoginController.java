@@ -101,7 +101,7 @@ public class LoginController {
 	}
 	
 	
-	@RequestMapping(value = "/findPw",  produces = "application/json", consumes = "application/json", methhod = RequestMethod.POST ) // , method=RequestMethod.POST // consumes = "application/json"	/*	*/
+	@RequestMapping(value = "/findPw",  produces = "application/json", consumes = "application/json", method = RequestMethod.POST ) // , method=RequestMethod.POST // consumes = "application/json"	/*	*/
 	public @ResponseBody String findPw(@RequestBody  UserDTO userdto) throws Exception {
 		System.out.println("findPw 실행");
 		System.out.println("넘겨받은 값 있는지 확인 : " + userdto.getUserno());
