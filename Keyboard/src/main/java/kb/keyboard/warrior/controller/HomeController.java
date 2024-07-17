@@ -69,10 +69,6 @@ public class HomeController {
 	    return "main";
 	}
 
-	@RequestMapping("/memo")
-	public String memo() {		
-		return "memo";
-	}
 	@RequestMapping("/notice")
 	public String notice() {		
 		return "notice";

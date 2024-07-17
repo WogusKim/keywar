@@ -9,4 +9,8 @@
     SELECT * FROM todolist WHERE userno = #{param1} AND isdone = 0 ORDER BY todoid
 </select>
 
+<select id="memoView" resultType="kb.keyboard.warrior.dto.MyMemoDTO">
+    SELECT * FROM mymemo WHERE userno = #{param1} ORDER BY memoid
+</select>
+
 </mapper>

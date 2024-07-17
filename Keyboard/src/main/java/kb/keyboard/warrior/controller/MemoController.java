@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kb.keyboard.warrior.dao.ScheduleDao;
 import kb.keyboard.warrior.dto.ScheduleDTO;
 import kb.keyboard.warrior.memo.command.MemoCommand;
+import kb.keyboard.warrior.memo.command.MemoViewCommand;
 import kb.keyboard.warrior.memo.command.TodoViewCommand;
 import kb.keyboard.warrior.util.Constant;
 
@@ -100,5 +101,23 @@ public class MemoController {
         return "todo";
     }
 	
+
+	@RequestMapping("/memo") // memoView
+    public String memoView(HttpSession session, Model model) {
+        System.out.println("memoView()");
+
+        String userno = (String) session.getAttribute("userno");
+        if (userno != null) {
+            command = new MemoViewCommand(userno);
+            command.execute(model);
+        } else {
+            System.out.println("User number not found in session.");
+        }
+
+        return "memo";
+    }
+	
+
+
 
 }
