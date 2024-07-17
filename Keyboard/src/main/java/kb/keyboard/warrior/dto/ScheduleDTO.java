@@ -3,14 +3,14 @@ package kb.keyboard.warrior.dto;
 
 //ScheduleDTO.java
 public class ScheduleDTO {
- private String scheduleid;   // 일정 id
- private String userno;       // 사번
- private String title;        // 제목
- private String content;      // 내용
- private String startDate;      // 시작일
- private String endDate;        // 마감일
- private String shareto;      // 공유 대상(개인, 팀, 부서 등)
- private String status;       // 상태
+ private String scheduleid;   // 
+ private String userno;       // 
+ private String title;        // 
+ private String content;      // 
+ private String startDate;      // 
+ private String endDate;        // 
+ private String shareto;      // share to who(personal, team, branch/dept)
+ private String status;       // 
 
  public ScheduleDTO() {
  }

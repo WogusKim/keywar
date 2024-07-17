@@ -3,9 +3,9 @@ package kb.keyboard.warrior.dto;
 
 //ScheduleShareDTO.java
 public class ScheduleShareDTO {
- private String userno;    // 사번
- private String shareto;   // 공유대상(개인, 팀, 부서 등) 개인 1, 팀 2, 부서 3
- private String sharecolor;// 캘린더에 기록하는 색상
+ private String userno;    // 
+ private String shareto;   // share to who(personal, team, branch/dept)
+ private String sharecolor;// color on calendar
 
  public ScheduleShareDTO() {
  }
