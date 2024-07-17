@@ -7,18 +7,19 @@ public class TodoListDTO {
  private String todoid;   // 할 일 id
  private String userno;   // 사번
  private String task;     // 할 일
+ private String startdate;    // 시작일
  private String duedate;    // 마감일
- private String status;   // 상태
+ private String isdone;   // 상태
 
  public TodoListDTO() {
  }
 
- public TodoListDTO(String todoid, String userno, String task, String duedate, String status) {
+ public TodoListDTO(String todoid, String userno, String task, String duedate, String isdone) {
      this.todoid = todoid;
      this.userno = userno;
      this.task = task;
      this.duedate = duedate;
-     this.status = status;
+     this.isdone = isdone;
  }
 
  // Getters and Setters
@@ -46,7 +47,17 @@ public class TodoListDTO {
      this.task = task;
  }
 
- public String getDuedate() {
+ 
+ 
+ public String getStartdate() {
+	return startdate;
+}
+
+public void setStartdate(String startdate) {
+	this.startdate = startdate;
+}
+
+public String getDuedate() {
      return duedate;
  }
 
@@ -54,11 +65,11 @@ public class TodoListDTO {
      this.duedate = duedate;
  }
 
- public String getStatus() {
-     return status;
+ public String getIsdone() {
+     return isdone;
  }
 
- public void setStatus(String status) {
-     this.status = status;
+ public void setIsdone(String isdone) {
+     this.isdone = isdone;
  }
 }

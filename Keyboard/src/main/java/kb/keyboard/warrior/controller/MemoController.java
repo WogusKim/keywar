@@ -1,6 +1,7 @@
 package kb.keyboard.warrior.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import kb.keyboard.warrior.memo.command.MemoCommand;
 import kb.keyboard.warrior.memo.command.TodoViewCommand;
 import kb.keyboard.warrior.util.Constant;
-
 
 
 
@@ -27,8 +27,7 @@ public class MemoController {
 		Constant.sqlSession = this.sqlSession;
 	}
 
-	
-	
+		
 	@RequestMapping("/calendar")
 	public String calendar(HttpServletRequest request, Model model) {		
 		System.out.println("달력창 진입");
@@ -37,12 +36,19 @@ public class MemoController {
 	}
 	
 	@RequestMapping("/todo") // todolist view
-	public String todoView(Model model) {
-		System.out.println("todoView()");
-		command = new TodoViewCommand();
-		command.execute(model);
-		return "todo";
-	}
+    public String todoView(HttpSession session, Model model) {
+        System.out.println("todoView()");
+
+        String userno = (String) session.getAttribute("userno");
+        if (userno != null) {
+            command = new TodoViewCommand(userno);
+            command.execute(model);
+        } else {
+            System.out.println("User number not found in session.");
+        }
+
+        return "todo";
+    }
 	
 //	@RequestMapping("/memo")
 //	public String memo(HttpServletRequest request, Model model) {
