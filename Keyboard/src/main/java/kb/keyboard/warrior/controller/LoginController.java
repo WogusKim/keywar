@@ -27,7 +27,7 @@ public class LoginController {
 	
 	@RequestMapping("/login")
 	public String login(HttpServletRequest request, Model model) {		
-		System.out.println("·Î±×ÀÎ Ã¢ ÁøÀÔ");
+		System.out.println("ë¡œê·¸ì¸ ì°½ ì§„ì…");
 		return "login/login";
 	}
 	@RequestMapping("/findPassword")
@@ -37,16 +37,16 @@ public class LoginController {
 	}
 	@RequestMapping("/resetPassword")
 	public String resetPW(HttpServletRequest request, Model model) {
-		System.out.println("ºñ¹Ğ¹øÈ£ Àç¼³Á¤ È­¸é ÁøÀÔ");
+		System.out.println("ë¹„ë°€ë²ˆí˜¸ ì¬ì„¤ì • í™”ë©´ ì§„ì…");
 		return "login/resetPassword";
 	}
 	@RequestMapping("/resetPasswordAction")
 	public String resetPWAction(HttpServletRequest request, Model model, UserDTO dto) {
 		System.out.println("./resetPasswordAction");
-		System.out.println("ºñ¹Ğ¹øÈ£ ¹Ù²Ü Á÷¿øÀÇ Á÷¿ø¹øÈ£ : "+dto.getUserno());
+		System.out.println("ë¹„ë°€ë²ˆí˜¸ ë°”ê¿€ ì§ì›ì˜ ì§ì›ë²ˆí˜¸ : "+dto.getUserno());
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
 		dao.UpdatePw(dto.getUserno(), dto.getUserpw());
-		System.out.println("ºñ¹Ğ¹øÈ£ º¯°æ¿Ï·á ~~");
+		System.out.println("ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ì™„ë£Œ ~~");
 		return "redirect:login";
 	}
 	
@@ -55,20 +55,20 @@ public class LoginController {
 	@RequestMapping("/loginAction")
 	public String loginAction(HttpServletRequest request, Model model, UserDTO dto, RedirectAttributes attributes) {
 		
-		System.out.println("ÀÔ·ÂÇÑ Á÷¿ø¹øÈ£ : "+ dto.getUserno());
-		System.out.println("ÀÔ·ÂÇÑ ºñ¹Ğ¹øÈ£ : "+ dto.getUserpw());
+		System.out.println("ì…ë ¥í•œ ì§ì›ë²ˆí˜¸ : "+ dto.getUserno());
+		System.out.println("ì…ë ¥í•œ ë¹„ë°€ë²ˆí˜¸ : "+ dto.getUserpw());
 		
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
 		UserDTO list = dao.login(dto.getUserno(), dto.getUserpw());
 		if(list!=null) {
 			HttpSession session = request.getSession();
-			session.setAttribute("userno", list.getUserno()); // ¼¼¼Ç¿¡ °ª ³Ö±â
-			session.setAttribute("deptno", list.getDeptno()); // ¼¼¼Ç¿¡ °ª ³Ö±â
-			System.out.println("·Î±×ÀÎ ¼º°ø!  »ç¹ø : " +list.getUserno());
-			System.out.println("ºñ¹Ğ¹øÈ£ : " +list.getUserpw());
-			System.out.println("Á÷¿ø ÀÌ¸§ : " +list.getUsername());
+			session.setAttribute("userno", list.getUserno()); // ì„¸ì…˜ì— ê°’ ë„£ê¸°
+			session.setAttribute("deptno", list.getDeptno()); // ì„¸ì…˜ì— ê°’ ë„£ê¸°
+			System.out.println("ë¡œê·¸ì¸ ì„±ê³µ!  ì‚¬ë²ˆ : " +list.getUserno());
+			System.out.println("ë¹„ë°€ë²ˆí˜¸ : " +list.getUserpw());
+			System.out.println("ì§ì› ì´ë¦„ : " +list.getUsername());
 			if(list.getUserpw().equals(list.getUserno())) {
-				System.out.println("ºñ¹Ğ¹øÈ£ ÃÊ±â»óÅÂ ! ºñ¹Ğ¹øÈ£ º¯°æÀÌ ÇÊ¿äÇÕ´Ï´Ù.");
+				System.out.println("ë¹„ë°€ë²ˆí˜¸ ì´ˆê¸°ìƒíƒœ ! ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ì´ í•„ìš”í•©ë‹ˆë‹¤.");
 				attributes.addFlashAttribute("userno", list);
 				return "redirect:/resetPassword";
 			}
@@ -76,10 +76,10 @@ public class LoginController {
 			return "redirect:/";
 		}else {
 			if(dao.isRightUserno(dto.getUserno())!=null) {
-				System.out.println("ºñ¹Ğ¹øÈ£°¡ Àß¸øµÇ¾ú½À´Ï´Ù.");
+				System.out.println("ë¹„ë°€ë²ˆí˜¸ê°€ ì˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤.");
 				return "redirect:login";
 			}else {
-				System.out.println("Àß¸øµÈ Á÷¿ø¹øÈ£ÀÔ´Ï´Ù.");
+				System.out.println("ì˜ëª»ëœ ì§ì›ë²ˆí˜¸ì…ë‹ˆë‹¤.");
 				return "redirect:login";
 			}
 		}
