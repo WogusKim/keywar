@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kb.keyboard.warrior.dao.ToDoDao">
+
+  	<select id="getToDoList" resultType="kb.keyboard.warrior.dto.TodoListDTO">
+       select * from todolist where userno = #{param} and isdone = 0 order by todoid
+    </select>
+
+</mapper>

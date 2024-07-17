@@ -68,21 +68,18 @@
 		    		<div class="card_top">
 					    <div class="title_and_link">
 					        <h2 class="card_title">To Do List</h2>
-
 					        <a href="${pageContext.request.contextPath}/todo" class="link-icon">바로가기</a>
-
 					    </div>
 			    	</div>
 			    	<hr>
 			    	<div class="todo_list">
-						<ul>
-						    <li class="todo_item"><input type="checkbox" id="todo1"><label for="todo1">문서 작성하기</label></li>
-						    <li class="todo_item"><input type="checkbox" id="todo2"><label for="todo2">회의 준비</label></li>
-						    <li class="todo_item"><input type="checkbox" id="todo3"><label for="todo3">이메일 확인 및 답변</label></li>
-						    <li class="todo_item"><input type="checkbox" id="todo2"><label for="todo2">회의하기</label></li>
-						</ul>
+			    		<ul>
+			    			<c:forEach var="todo" items="${todoList}" begin="0" end="4">
+			    				<li class="todo_item"><input type="checkbox">${todo.task}</li>		
+			    			</c:forEach>
+			    		</ul>
 						<div class="todo_rate">
-							<span>0 / 4</span>
+							<span style="text-align: center;">0 / 5</span>
 						</div>
 			        </div>
 				</div>

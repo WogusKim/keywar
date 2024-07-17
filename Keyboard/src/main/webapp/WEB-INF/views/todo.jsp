@@ -48,7 +48,7 @@ li {
         padding: 10px;
         font-size: 16px;
         border: 1px solid #ccc;
-        border-radius: 5px;
+        border-radius: 10px;
         margin-right: 10px;             /* 입력창과 버튼 사이에 오른쪽 여백 추가 */
     }
 </style>
@@ -106,8 +106,12 @@ li {
                     </ul>
                     <p>현황 3/4</p>
                 </div>
+                
+                <div style="margin-right:80%;">
                 <input type="text" id="new-task" placeholder="할 일을 입력하세요">
                 <input type="button" value="추가하기" class="addButton">
+                </div>
+                
             </div>
         </div>
     </div>

@@ -9,7 +9,6 @@ html {
     margin: 0;   
 }
 
-
 body{
     background-color: #BDE2CE;
     font-family: 'textL';
@@ -110,9 +109,8 @@ body{
     border-radius: 10px;
     background-color: white;
     width: 100%;
-    height: 100%;
+    height: 95%;
     padding: 10px;
-    margin-bottom: 10px;            /* 아래쪽에 여백 추가 */
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -321,7 +319,7 @@ body{
 
 .fullContent{
 	width : 35%;
-	height : 40%;
+	height : 45%;
 	border-radius: 10px;
 	background-color : white;
 	opacity:0.8;
@@ -355,7 +353,6 @@ body{
 	font-size: 20px;
 	font-family: textL;
 	background-color: #FFEE00;
-	
 }
 
 .memoboardDiv{/* yeji */
@@ -513,27 +510,20 @@ hr {
     align-items: center;
 }
 
-
-.todo_item.checked label {
-    text-decoration: line-through; /* 완료된 항목에 취소선 */
-    color: #888; /* 색상 변경 */
+.todo_rate {
+    text-align: right; /* 오른쪽 정렬 */
+    width: 100%; /* 너비 100% 설정 */
+    padding: 10px; /* 패딩 설정 */
 }
 
-.todo_item label {
-    flex: 1; /* 라벨을 항목의 나머지 공간에 채우기 */
+.checked {
+    text-decoration: line-through; /* 완료된 항목에 취소선 */
+    color: #888; /* 색상 변경 */
 }
 
 .todo_item input[type="checkbox"] {
     margin-right: 10px; /* 체크박스와 라벨 사이 간격 */
 }
-
-.todo_rate {
-	align-items: right;
-}
-
-
-
-
 
 .memo_list {
     margin-top: 20px;
