@@ -93,24 +93,24 @@ public class LoginController {
 	}
 	
 	
-	@RequestMapping(value = "/findPw",  produces = "application/json", method = RequestMethod.POST ) // , method=RequestMethod.POST // consumes = "application/json"	/*, consumes = "application/json"	*/
+	@RequestMapping(value = "/findPw",  produces = "application/json", consumes = "application/json", method = RequestMethod.POST ) // , method=RequestMethod.POST // consumes = "application/json"	/*, consumes = "application/json"	*/
 	public @ResponseBody String findPw(@RequestBody UserDTO userdto) throws Exception {
-		System.out.println("findPw ½ÇÇà");
-		System.out.println("³Ñ°Ü¹ŞÀº °ª ÀÖ´ÂÁö È®ÀÎ : " + userdto.getUserno());
+		System.out.println("findPw ì‹¤í–‰");
+		System.out.println("ë„˜ê²¨ë°›ì€ ê°’ ìˆëŠ”ì§€ í™•ì¸ : " + userdto.getUserno());
 		
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
 		UserDTO dto = dao.findPw(userdto);
 		
 
 		if (dto != null) {
-				System.out.println("¸ğµÎ ÀÏÄ¡ÇÏ´Â Á÷¿øÁ¤º¸ Ã£¾Ò´Ù ! ºÎ¼­¹øÈ£  : " +dto.getDeptno());
+				System.out.println("ëª¨ë‘ ì¼ì¹˜í•˜ëŠ” ì§ì›ì •ë³´ ì°¾ì•˜ë‹¤ ! ë¶€ì„œë²ˆí˜¸  : " +dto.getDeptno());
 		} else {
-			System.out.println("DBÁ¶È¸ °á°ú ¾øÀ½");
+			System.out.println("DBì¡°íšŒ ê²°ê³¼ ì—†ìŒ");
 			dto = new UserDTO();
 		}
 
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.enable(SerializationFeature.INDENT_OUTPUT); //µé¿©¾²±â ¼³Á¤(¿É¼Ç)
+		mapper.enable(SerializationFeature.INDENT_OUTPUT); //ë“¤ì—¬ì“°ê¸° ì„¤ì •(ì˜µì…˜)
 
 		String json = mapper.writeValueAsString(dto);
 		return json;
