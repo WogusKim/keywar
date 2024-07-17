@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kb.keyboard.warrior.memo.command.MemoCommand;
+import kb.keyboard.warrior.memo.command.MemoViewCommand;
 import kb.keyboard.warrior.memo.command.TodoViewCommand;
 import kb.keyboard.warrior.util.Constant;
 
@@ -50,12 +51,22 @@ public class MemoController {
         return "todo";
     }
 	
-//	@RequestMapping("/memo")
-//	public String memo(HttpServletRequest request, Model model) {
-//		System.out.println("메모창 진입");
-//		
-//		return "memo/memo";
-//	}
+	@RequestMapping("/memo") // memoView
+    public String memoView(HttpSession session, Model model) {
+        System.out.println("memoView()");
+
+        String userno = (String) session.getAttribute("userno");
+        if (userno != null) {
+            command = new MemoViewCommand(userno);
+            command.execute(model);
+        } else {
+            System.out.println("User number not found in session.");
+        }
+
+        return "memo";
+    }
+	
+
 	
 //	@RequestMapping("/notice")
 //	public String notice(HttpServletRequest request, Model model) {

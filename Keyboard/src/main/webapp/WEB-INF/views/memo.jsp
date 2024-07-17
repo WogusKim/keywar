@@ -40,10 +40,9 @@ ul li {
 						<h2 class="card_title">나의 메모</h2>
 						<hr>
 						<ul>
-							<li>궁민상사 대표님 010-5555-7777<button class="deleteButton">X</button></li>
-							<li>트랜디프로모션 담당자 010-3127-4782<button class="deleteButton">X</button></li>
-							<li>글로벌인터네셔널 경리 02-4154-5415<button class="deleteButton">X</button></li>
-							<li>국민건강보험공단 1355<button class="deleteButton">X</button></li>
+						 <c:forEach items="${memo}" var="dto">
+							<li>${dto.content}&nbsp;${dto.createdate}<button class="deleteButton">X</button></li>
+						</c:forEach>
 						</ul>
 					</div> <input type="button" value="추가하기" class="addButton"> 
 					</div>
