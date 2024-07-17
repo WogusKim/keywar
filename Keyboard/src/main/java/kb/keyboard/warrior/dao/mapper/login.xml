@@ -10,6 +10,10 @@
   	<select id="isRightUserno" resultType="kb.keyboard.warrior.dto.UserDTO">
        select * from user where userno = #{param1}
     </select>
+  	<select id="findPw" parameterType="kb.keyboard.warrior.dto.UserDTO"
+  	resultType="kb.keyboard.warrior.dto.UserDTO">
+       select * from user where userno = #{userno} and mail = #{mail} and phoneno = #{phoneno}
+    </select>
     <update id="UpdatePw">
     	update user set userpw = #{param2} where userno = #{param1}
     </update>

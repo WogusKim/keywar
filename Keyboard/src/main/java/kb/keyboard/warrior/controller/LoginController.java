@@ -1,19 +1,23 @@
 package kb.keyboard.warrior.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import kb.keyboard.warrior.dao.*;
-import kb.keyboard.warrior.dto.*;
+//import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.SerializationFeature;
+import kb.keyboard.warrior.dao.LoginDao;
+import kb.keyboard.warrior.dto.UserDTO;
 
 
 
@@ -27,7 +31,7 @@ public class LoginController {
 	
 	@RequestMapping("/login")
 	public String login(HttpServletRequest request, Model model) {		
-		System.out.println("ë¡œê·¸ì¸ ì°½ ì§„ì…");
+		System.out.println("·Î±×ÀÎ Ã¢ ÁøÀÔ");
 		return "login/login";
 	}
 	@RequestMapping("/findPassword")
@@ -35,18 +39,28 @@ public class LoginController {
 		
 		return "login/findPassword";
 	}
+	
+	@RequestMapping("/findPwAction")
+	public String findPWAction(HttpServletRequest request, Model model) {
+		System.out.println("/findPwAction enter");
+		return "login/findPassword";
+	}
+	
+	
+	
+	
 	@RequestMapping("/resetPassword")
 	public String resetPW(HttpServletRequest request, Model model) {
-		System.out.println("ë¹„ë°€ë²ˆí˜¸ ì¬ì„¤ì • í™”ë©´ ì§„ì…");
+		System.out.println("ºñ¹Ğ¹øÈ£ Àç¼³Á¤ È­¸é ÁøÀÔ");
 		return "login/resetPassword";
 	}
 	@RequestMapping("/resetPasswordAction")
 	public String resetPWAction(HttpServletRequest request, Model model, UserDTO dto) {
 		System.out.println("./resetPasswordAction");
-		System.out.println("ë¹„ë°€ë²ˆí˜¸ ë°”ê¿€ ì§ì›ì˜ ì§ì›ë²ˆí˜¸ : "+dto.getUserno());
+		System.out.println("ºñ¹Ğ¹øÈ£ ¹Ù²Ü Á÷¿øÀÇ Á÷¿ø¹øÈ£ : "+dto.getUserno());
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
 		dao.UpdatePw(dto.getUserno(), dto.getUserpw());
-		System.out.println("ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ì™„ë£Œ ~~");
+		System.out.println("ºñ¹Ğ¹øÈ£ º¯°æ¿Ï·á ~~");
 		return "redirect:login";
 	}
 	
@@ -55,20 +69,21 @@ public class LoginController {
 	@RequestMapping("/loginAction")
 	public String loginAction(HttpServletRequest request, Model model, UserDTO dto, RedirectAttributes attributes) {
 		
-		System.out.println("ì…ë ¥í•œ ì§ì›ë²ˆí˜¸ : "+ dto.getUserno());
-		System.out.println("ì…ë ¥í•œ ë¹„ë°€ë²ˆí˜¸ : "+ dto.getUserpw());
+		System.out.println("ÀÔ·ÂÇÑ Á÷¿ø¹øÈ£ : "+ dto.getUserno());
+		System.out.println("ÀÔ·ÂÇÑ ºñ¹Ğ¹øÈ£ : "+ dto.getUserpw());
 		
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
 		UserDTO list = dao.login(dto.getUserno(), dto.getUserpw());
 		if(list!=null) {
 			HttpSession session = request.getSession();
-			session.setAttribute("userno", list.getUserno()); // ì„¸ì…˜ì— ê°’ ë„£ê¸°
-			session.setAttribute("deptno", list.getDeptno()); // ì„¸ì…˜ì— ê°’ ë„£ê¸°
-			System.out.println("ë¡œê·¸ì¸ ì„±ê³µ!  ì‚¬ë²ˆ : " +list.getUserno());
-			System.out.println("ë¹„ë°€ë²ˆí˜¸ : " +list.getUserpw());
-			System.out.println("ì§ì› ì´ë¦„ : " +list.getUsername());
+//			String userno = (String)session.getAttribute("userno");  //¼¼¼Ç¿¡¼­ °ª ²¨³»±â
+			session.setAttribute("userno", list.getUserno()); // ¼¼¼Ç¿¡ °ª ³Ö±â
+			session.setAttribute("deptno", list.getDeptno()); // ¼¼¼Ç¿¡ °ª ³Ö±â
+			System.out.println("·Î±×ÀÎ ¼º°ø!  »ç¹ø : " +list.getUserno());
+			System.out.println("ºñ¹Ğ¹øÈ£ : " +list.getUserpw());
+			System.out.println("Á÷¿ø ÀÌ¸§ : " +list.getUsername());
 			if(list.getUserpw().equals(list.getUserno())) {
-				System.out.println("ë¹„ë°€ë²ˆí˜¸ ì´ˆê¸°ìƒíƒœ ! ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ì´ í•„ìš”í•©ë‹ˆë‹¤.");
+				System.out.println("ºñ¹Ğ¹øÈ£ ÃÊ±â»óÅÂ ! ºñ¹Ğ¹øÈ£ º¯°æÀÌ ÇÊ¿äÇÕ´Ï´Ù.");
 				attributes.addFlashAttribute("userno", list);
 				return "redirect:/resetPassword";
 			}
@@ -76,13 +91,42 @@ public class LoginController {
 			return "redirect:/";
 		}else {
 			if(dao.isRightUserno(dto.getUserno())!=null) {
-				System.out.println("ë¹„ë°€ë²ˆí˜¸ê°€ ì˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤.");
+				System.out.println("ºñ¹Ğ¹øÈ£°¡ Àß¸øµÇ¾ú½À´Ï´Ù.");
 				return "redirect:login";
 			}else {
-				System.out.println("ì˜ëª»ëœ ì§ì›ë²ˆí˜¸ì…ë‹ˆë‹¤.");
+				System.out.println("Àß¸øµÈ Á÷¿ø¹øÈ£ÀÔ´Ï´Ù.");
 				return "redirect:login";
 			}
 		}
 	}
+	
+	
+	@RequestMapping(value = "/findPw",  produces = "application/json", consumes = "application/json", method = RequestMethod.POST ) // , method=RequestMethod.POST // consumes = "application/json"	/*	*/
+	public @ResponseBody String findPw(@RequestBody  UserDTO userdto) throws Exception {
+		System.out.println("findPw ½ÇÇà");
+		System.out.println("³Ñ°Ü¹ŞÀº °ª ÀÖ´ÂÁö È®ÀÎ : " + userdto.getUserno());
+		
+		LoginDao dao = sqlSession.getMapper(LoginDao.class);
+		UserDTO dto = dao.findPw(userdto);
+		
+
+		if (dto != null) {
+				System.out.println("¸ğµÎ ÀÏÄ¡ÇÏ´Â Á÷¿øÁ¤º¸ Ã£¾Ò´Ù ! ºÎ¼­¹øÈ£  : " +dto.getDeptno());
+		} else {
+			System.out.println("DBÁ¶È¸ °á°ú ¾øÀ½");
+			dto = new UserDTO();
+		}
+
+		ObjectMapper mapper = new ObjectMapper();
+//		mapper.enable(SerializationFeature.INDENT_OUTPUT); //µé¿©¾²±â ¼³Á¤(¿É¼Ç)
+
+		String json = mapper.writeValueAsString(dto);
+		return json;
+	}
+
+	
+	
+	
+	
 
 }

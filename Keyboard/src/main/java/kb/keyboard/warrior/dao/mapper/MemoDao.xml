@@ -5,5 +5,8 @@
   
 <mapper namespace="kb.keyboard.warrior.dao.MemoDao">
 
+<select id="todoView" resultType="kb.keyboard.warrior.dto.TodoListDTO">
+    SELECT * FROM todolist WHERE userno = #{param1} AND isdone = 0 ORDER BY todoid
+</select>
 
 </mapper>

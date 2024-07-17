@@ -23,7 +23,6 @@ import kb.keyboard.warrior.util.Constant;
 
 
 
-
 @Controller
 public class MemoController {
 	
@@ -35,6 +34,7 @@ public class MemoController {
 		this.sqlSession = sqlSession;
 		Constant.sqlSession = this.sqlSession;
 	}
+
 
 	
 	
@@ -54,18 +54,15 @@ public class MemoController {
     @RequestMapping(value = "/calendarsave", method = RequestMethod.POST)
     @ResponseBody
     public String saveEvent(HttpServletRequest request, Model model, ScheduleDTO dto) {
-        // 세션에서 사용자 정보 가져오기
+        
         HttpSession session = request.getSession();
         String userno = (String) session.getAttribute("userno");
 
-        // eventData에 사용자 정보 추가
         dto.setUserno(userno);
         dto.setStatus("1");
 
-        // dao 부르기 위해 getMapper 넣음 
         ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
         
-        // 일정 저장
         dao.scheduleNew(dto);
 
         return "일정이 성공적으로 저장되었습니다.";
@@ -86,28 +83,22 @@ public class MemoController {
         dao.scheduleDelete(scheduleid);
         return "일정이 성공적으로 삭제되었습니다.";
     }
+
 	
 	@RequestMapping("/todo") // todolist view
-	public String todoView(Model model) {
-		System.out.println("todoView()");
-		command = new TodoViewCommand();
-		command.execute(model);
-		return "todo";
-	}
+    public String todoView(HttpSession session, Model model) {
+        System.out.println("todoView()");
+
+        String userno = (String) session.getAttribute("userno");
+        if (userno != null) {
+            command = new TodoViewCommand(userno);
+            command.execute(model);
+        } else {
+            System.out.println("User number not found in session.");
+        }
+
+        return "todo";
+    }
 	
-//	@RequestMapping("/memo")
-//	public String memo(HttpServletRequest request, Model model) {
-//		System.out.println("�޸�â ����");
-//		
-//		return "memo/memo";
-//	}
-	
-//	@RequestMapping("/notice")
-//	public String notice(HttpServletRequest request, Model model) {
-//		System.out.println("���� ����");
-//		
-//		return "memo/notice";
-//	}
-//	
 
 }

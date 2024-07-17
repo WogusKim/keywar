@@ -20,6 +20,53 @@
 function submitForm() {
     document.getElementById('findPwForm').submit();
 }
+
+function checkInfo() {
+ 	 var promoCode = $("#userno").val();
+ 	 console.log(promoCode);
+ 	 console.log(typeof(promoCode));
+ 	 	fetch('${pageContext.request.contextPath}/findPw',{   
+ 	 		
+ 	 		method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            	
+                userno: promoCode,
+                phoneno: $("#phoneno").val(),
+                mail: $("#mail").val()
+            })
+ 	 	})
+ 	 	
+	    .then(response => {
+	        if (!response.ok) {
+	            throw new Error('Network response was not ok');
+	        }
+	        return response.json();
+	    })
+	    .then(result => {
+	        console.log(result);
+	        // 여기서 가져온 데이터를 처리할 수 있습니다.
+	        if(result.userno!=null){
+	        	alert("정보가 정상적으로 확인되었습니다.");
+	        // 	$("#Prm_code").val($("#prtmCode").val());
+	        }else{
+	        	alert("입력하신 정보가 시스템과 일치하지 않습니다.");
+	        //	$("#Prm_code").val("");
+	        }
+	    })
+	    .catch(error => {
+	        console.error('Fetch Error:', error);
+	        // 에러 처리 로직을 추가할 수 있습니다.
+	    });
+}
+
+
+
+
+
+
 </script>
 </head>
 <body>
@@ -44,11 +91,10 @@ function submitForm() {
 	<td><span class="input_text">이메일</span> </td><td><input type="text" class="inputText1" placeholder="이메일 주소를 입력하세요"  name="mail" id="mail" /></td>
 	</tr>
 	<tr>
-		<td colspan="2"><input type="button" value="비밀번호 찾기" class="loginButton" onclick="submitForm()"> </td>
+		<td colspan="2"><input type="button" value="비밀번호 찾기" class="loginButton" onclick="checkInfo()"> </td>
 	</tr>
-		
-	
 	</table>
+	<input type="hidden" id="key" name="key" value="itiscorrect" />
 	</form>
 
 </div>
