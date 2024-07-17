@@ -1,4 +1,4 @@
-package kb.keyboard.warrior;
+package kb.keyboard.warrior.controller;
 
 
 import java.util.List;
@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import kb.keyboard.warrior.CurrencyRateCrawler;
 import kb.keyboard.warrior.dao.LoginDao;
 import kb.keyboard.warrior.dao.ToDoDao;
 import kb.keyboard.warrior.dto.ExchangeRate;
@@ -68,11 +69,6 @@ public class HomeController {
 	    return "main";
 	}
 
-	
-	@RequestMapping("/todo")
-	public String todo() {		
-		return "todo";
-	}
 	@RequestMapping("/memo")
 	public String memo() {		
 		return "memo";

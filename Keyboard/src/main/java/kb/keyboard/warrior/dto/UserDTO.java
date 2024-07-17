@@ -3,18 +3,18 @@ package kb.keyboard.warrior.dto;
 
 //UserDTO.java
 public class UserDTO {
- private String userno;    // »ç¹ø
- private String username;  // ÀÌ¸§
- private String userpw;    // ºñ¹Ğ¹øÈ£
- private String deptno;    // Á¡¹ø
- private String teamno;    // Á¡¹ø
- private String phoneno;   // ÀüÈ­¹øÈ£
- private String mail;      // ¸ŞÀÏ¾ÆÀÌµğ
- private String hiredate;    // ÀÔ»çÀÏ
- private String gender;    // ¼ºº°
- private String birthdate;   // »ı³â¿ùÀÏ
- private String regdate;     // µî·ÏÀÏ
-
+    private String userno;    // ì‚¬ìš©ìë²ˆí˜¸
+    private String username;  // ì´ë¦„
+    private String userpw;    // ë¹„ë°€ë²ˆí˜¸
+    private String deptno;    // ë¶€ì„œë²ˆí˜¸
+    private String teamno;    // íŒ€ë²ˆí˜¸
+    private String phoneno;   // ì „í™”ë²ˆí˜¸
+    private String mail;      // ì´ë©”ì¼
+    private String hiredate;  // ì…ì‚¬ì¼
+    private String gender;    // ì„±ë³„
+    private String birthdate; // ìƒë…„ì›”ì¼
+    private String regdate;   // ë“±ë¡ì¼
+    
  public UserDTO() {
  }
 
