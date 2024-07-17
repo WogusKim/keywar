@@ -69,11 +69,6 @@ public class HomeController {
 	    return "main";
 	}
 
-	
-	@RequestMapping("/todo")
-	public String todo() {		
-		return "todo";
-	}
 	@RequestMapping("/memo")
 	public String memo() {		
 		return "memo";

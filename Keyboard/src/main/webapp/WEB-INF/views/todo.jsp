@@ -107,7 +107,7 @@ li {
                     <p>현황 3/4</p>
                 </div>
                 
-                <div style="margin-right:80%;">
+                <div style="margin-right:70%;">
                 <input type="text" id="new-task" placeholder="할 일을 입력하세요">
                 <input type="button" value="추가하기" class="addButton">
                 </div>
