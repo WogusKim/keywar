@@ -8,9 +8,9 @@
 <title>헤더</title>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
-    
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-    
+   
     </script>
 </head>
 
