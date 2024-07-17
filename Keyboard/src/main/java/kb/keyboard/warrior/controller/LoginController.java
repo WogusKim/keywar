@@ -1,26 +1,23 @@
 package kb.keyboard.warrior.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
-import kb.keyboard.warrior.dao.*;
-import kb.keyboard.warrior.dto.*;
+//import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.SerializationFeature;
+import kb.keyboard.warrior.dao.LoginDao;
+import kb.keyboard.warrior.dto.UserDTO;
 
 
 
@@ -42,6 +39,16 @@ public class LoginController {
 		
 		return "login/findPassword";
 	}
+	
+	@RequestMapping("/findPwAction")
+	public String findPWAction(HttpServletRequest request, Model model) {
+		System.out.println("/findPwAction enter");
+		return "login/findPassword";
+	}
+	
+	
+	
+	
 	@RequestMapping("/resetPassword")
 	public String resetPW(HttpServletRequest request, Model model) {
 		System.out.println("비밀번호 재설정 화면 진입");
@@ -69,6 +76,7 @@ public class LoginController {
 		UserDTO list = dao.login(dto.getUserno(), dto.getUserpw());
 		if(list!=null) {
 			HttpSession session = request.getSession();
+//			String userno = (String)session.getAttribute("userno");  //세션에서 값 꺼내기
 			session.setAttribute("userno", list.getUserno()); // 세션에 값 넣기
 			session.setAttribute("deptno", list.getDeptno()); // 세션에 값 넣기
 			System.out.println("로그인 성공!  사번 : " +list.getUserno());
@@ -93,8 +101,8 @@ public class LoginController {
 	}
 	
 	
-	@RequestMapping(value = "/findPw",  produces = "application/json", method = RequestMethod.POST ) // , method=RequestMethod.POST // consumes = "application/json"	/*, consumes = "application/json"	*/
-	public @ResponseBody String findPw(@RequestBody UserDTO userdto) throws Exception {
+	@RequestMapping(value = "/findPw",  produces = "application/json", consumes = "application/json", methhod = RequestMethod.POST ) // , method=RequestMethod.POST // consumes = "application/json"	/*	*/
+	public @ResponseBody String findPw(@RequestBody  UserDTO userdto) throws Exception {
 		System.out.println("findPw 실행");
 		System.out.println("넘겨받은 값 있는지 확인 : " + userdto.getUserno());
 		
@@ -110,7 +118,7 @@ public class LoginController {
 		}
 
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.enable(SerializationFeature.INDENT_OUTPUT); //들여쓰기 설정(옵션)
+//		mapper.enable(SerializationFeature.INDENT_OUTPUT); //들여쓰기 설정(옵션)
 
 		String json = mapper.writeValueAsString(dto);
 		return json;

@@ -93,9 +93,8 @@ function checkInfo() {
 	<tr>
 		<td colspan="2"><input type="button" value="비밀번호 찾기" class="loginButton" onclick="checkInfo()"> </td>
 	</tr>
-		
-	
 	</table>
+	<input type="hidden" id="key" name="key" value="itiscorrect" />
 	</form>
 
 </div>
