@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import kb.keyboard.warrior.memo.command.MemoCommand;
 import kb.keyboard.warrior.memo.command.MemoViewCommand;
 import kb.keyboard.warrior.memo.command.TodoViewCommand;
+import kb.keyboard.warrior.memo.command.noticeViewCommand;
 import kb.keyboard.warrior.util.Constant;
 
 
@@ -51,29 +52,39 @@ public class MemoController {
         return "todo";
     }
 	
-	@RequestMapping("/memo") // memoView
+    @RequestMapping("/memo") //memo view
     public String memoView(HttpSession session, Model model) {
         System.out.println("memoView()");
 
         String userno = (String) session.getAttribute("userno");
-        if (userno != null) {
-            command = new MemoViewCommand(userno);
+        String deptno = (String) session.getAttribute("deptno");
+        System.out.println("로그인 된 사람 누구야? " + userno);
+        System.out.println("부점코드 누구야? " + deptno);
+        if (userno != null && deptno != null) {
+            command = new MemoViewCommand(userno, deptno);
             command.execute(model);
         } else {
-            System.out.println("User number not found in session.");
+            System.out.println("User number or dept number not found in session.");
         }
 
         return "memo";
     }
 	
+    @RequestMapping("/notice") //notice view
+    public String noticeView(HttpSession session, Model model) {
+        System.out.println("noticeView()");
 
-	
-//	@RequestMapping("/notice")
-//	public String notice(HttpServletRequest request, Model model) {
-//		System.out.println("공지 진입");
-//		
-//		return "memo/notice";
-//	}
-//	
+        String userno = (String) session.getAttribute("userno");
+        String deptno = (String) session.getAttribute("deptno");
+        System.out.println("로그인 된 사람 누구야? " + userno);
+        System.out.println("부점코드 누구야? " + deptno);
+        if (userno != null && deptno != null) {
+            command = new noticeViewCommand(userno, deptno);
+            command.execute(model);
+        } else {
+            System.out.println("User number or dept number not found in session.");
+        }
 
+        return "notice";
+    }
 }

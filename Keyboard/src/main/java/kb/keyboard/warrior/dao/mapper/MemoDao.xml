@@ -2,15 +2,35 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+
 <mapper namespace="kb.keyboard.warrior.dao.MemoDao">
 
-<select id="todoView" resultType="kb.keyboard.warrior.dto.TodoListDTO">
-    SELECT * FROM todolist WHERE userno = #{param1} AND isdone = 0 ORDER BY todoid
-</select>
+	<select id="todoView"
+		resultType="kb.keyboard.warrior.dto.TodoListDTO">
+		SELECT * FROM todolist WHERE userno = #{param1} AND isdone
+		= 0 ORDER BY
+		todoid
+	</select>
 
-<select id="memoView" resultType="kb.keyboard.warrior.dto.MyMemoDTO">
-    SELECT * FROM mymemo WHERE userno = #{param1} ORDER BY memoid
-</select>
+	<select id="memoView1"
+		resultType="kb.keyboard.warrior.dto.MyMemoDTO">
+		SELECT * FROM mymemo WHERE userno = #{userno} ORDER BY
+		memoid
+	</select>
+
+	<select id="memoView2"
+		resultType="kb.keyboard.warrior.dto.DeptMemoDTO">
+		SELECT * FROM deptmemo WHERE deptno = #{deptno} ORDER BY
+		memoid
+	</select>
+
+	<select id="noticeView"
+		resultType="kb.keyboard.warrior.dto.NoticeDTO">
+		SELECT * FROM notice n 
+        LEFT JOIN user u ON n.author = u.userno 
+        WHERE u.deptno = #{param1} 
+        ORDER BY noticeid
+	</select>
+
 
 </mapper>

@@ -23,7 +23,7 @@
 
 .notice .deleteButton1 {
 	width: 20px;
-    height: 20px;
+	height: 20px;
 	position: absolute;
 	top: 10px;
 	right: 10px;
@@ -33,12 +33,13 @@
 	padding: 0;
 	border-radius: 50%;
 	cursor: pointer;
-	 font-size: 14px;
-	 text-align: center;
-    line-height: 20px; /* 버튼 높이와 동일하게 설정하여 텍스트를 중앙에 배치 */
+	font-size: 14px;
+	text-align: center;
+	line-height: 20px; /* 버튼 높이와 동일하게 설정하여 텍스트를 중앙에 배치 */
 }
+
 .deleteButton1:hover { /* yeji */
-    background-color: #B53D3D;
+	background-color: #B53D3D;
 }
 
 .board_todo1 {
@@ -49,11 +50,11 @@
 	padding: 10px;
 	/* margin-bottom: 10px; /* 아래쪽에 여백 추가 */ */
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-
 }
+
 .aa {
 	display: flex;
-	flex-wrap:wrap;
+	flex-wrap: wrap;
 	border-radius: 10px;
 	width: 100%;
 	height: 80%;
@@ -76,18 +77,14 @@
 					<!-- 흰 배경 -->
 					<h2 class="card_title">부점 공지사항</h2>
 					<hr>
-						<div class="aa" >
-							<div class="notice">포스트잇입니다.<button class="deleteButton1" onclick="deleteNotice(this)">X</button></div>
-							<div class="notice">포스트잇두개야 두개~ 두개<button class="deleteButton1" onclick="deleteNotice(this)">X</button></div>
-							<div class="notice">포스트잇 세개야 세개 세개째 작성했어<button class="deleteButton1" onclick="deleteNotice(this)">X</button></div>
-							<div class="notice">포스트잇 네개~~~네개!!!<button class="deleteButton1" onclick="deleteNotice(this)">X</button></div>
-							<div class="notice">포스트잇 네개~~~네개!!!<button class="deleteButton1" onclick="deleteNotice(this)">X</button></div>
-							<div class="notice">포스트잇두개야 두개~ 두개<button class="deleteButton1" onclick="deleteNotice(this)">X</button></div>
-							<div class="notice">포스트잇 세개야 세개 세개째 작성했어<button class="deleteButton1" onclick="deleteNotice(this)">X</button></div>
-							<div class="notice">포스트잇두개야 두개~ 두개<button class="deleteButton1" onclick="deleteNotice(this)">X</button></div>
-							<div class="notice">포스트잇 세개야 세개 세개째 작성했어<button class="deleteButton1" onclick="deleteNotice(this)">X</button></div>
-						</div>
-					
+					<div class="aa">
+						<c:forEach items="${notice}" var="dto">
+							<div class="notice">
+								<br>${dto.title}<br>${dto.content}
+								<button class="deleteButton1" onclick="deleteNotice(this)">X</button>
+							</div>
+						</c:forEach>
+					</div>
 				</div>
 				<input type="button" value="추가하기" class="addButton">
 			</div>
