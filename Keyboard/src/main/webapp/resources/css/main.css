@@ -321,7 +321,7 @@ body{
 
 .fullContent{
 	width : 35%;
-	height : 40%;
+	height : 45%;
 	border-radius: 10px;
 	background-color : white;
 	opacity:0.8;
@@ -355,7 +355,6 @@ body{
 	font-size: 20px;
 	font-family: textL;
 	background-color: #FFEE00;
-	
 }
 
 .memoboardDiv{/* yeji */

@@ -69,7 +69,7 @@ public class LoginController {
 			System.out.println("직원 이름 : " +list.getUsername());
 			if(list.getUserpw().equals(list.getUserno())) {
 				System.out.println("비밀번호 초기상태 ! 비밀번호 변경이 필요합니다.");
-				attributes.addFlashAttribute("userno", list.getUserno());
+				attributes.addFlashAttribute("userno", list);
 				return "redirect:/resetPassword";
 			}
 			
@@ -84,6 +84,5 @@ public class LoginController {
 			}
 		}
 	}
-	
 
 }
