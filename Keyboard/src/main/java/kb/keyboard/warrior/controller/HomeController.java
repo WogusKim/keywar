@@ -1,6 +1,7 @@
 package kb.keyboard.warrior.controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -16,9 +17,11 @@ import kb.keyboard.warrior.CoffixRateCrawler;
 import kb.keyboard.warrior.CurrencyRateCrawler;
 import kb.keyboard.warrior.MorRateCrawler;
 import kb.keyboard.warrior.dao.LoginDao;
+import kb.keyboard.warrior.dao.MemoDao;
 import kb.keyboard.warrior.dao.ToDoDao;
 import kb.keyboard.warrior.dto.ExchangeRateDTO;
 import kb.keyboard.warrior.dto.MorCoffixDTO;
+import kb.keyboard.warrior.dto.MyMemoDTO;
 import kb.keyboard.warrior.dto.TodoListDTO;
 
 /**
@@ -76,12 +79,14 @@ public class HomeController {
 	    }
 	    
 	    //To Do List Ã³¸®
-	    ToDoDao dao = sqlSession.getMapper(ToDoDao.class);
-	    List<TodoListDTO> todoList = dao.getToDoList(userno);
+	    ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
+	    List<TodoListDTO> todoList = todoDao.getToDoList(userno);
 	    model.addAttribute("todoList", todoList);
 	    
 	    //Memo Data
-	    
+	    MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
+	    List<MyMemoDTO> memoList = memoDao.memoView1(userno);
+	    model.addAttribute("memoList", memoList);
 	    	    
 	    return "main";
 	}
