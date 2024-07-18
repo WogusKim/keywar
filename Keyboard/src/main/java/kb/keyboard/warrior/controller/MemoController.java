@@ -20,6 +20,8 @@ import kb.keyboard.warrior.dto.ScheduleDTO;
 import kb.keyboard.warrior.memo.command.MemoCommand;
 import kb.keyboard.warrior.memo.command.MemoViewCommand;
 import kb.keyboard.warrior.memo.command.TodoViewCommand;
+import kb.keyboard.warrior.memo.command.deptmemoWriteCommand;
+import kb.keyboard.warrior.memo.command.mymemoWriteCommand;
 import kb.keyboard.warrior.memo.command.noticeDeleteCommand;
 import kb.keyboard.warrior.memo.command.noticeViewCommand;
 import kb.keyboard.warrior.memo.command.noticeWriteCommand;
@@ -175,5 +177,42 @@ public class MemoController {
 			System.out.println("User number number not found in session.");
 		}
 		return "redirect:notice";
+	}
+	
+	@RequestMapping("/mymemoWrite") // mymemo write action
+	public String mymemoWrite(HttpSession session, HttpServletRequest request, Model model) {
+		System.out.println("mymemoWrite()");
+
+		String userno = (String) session.getAttribute("userno");
+		System.out.println("나의메모 액션 로그인 된 사람 누구야? " + userno);
+		model.addAttribute("request", request);
+		model.addAttribute("userno", userno);
+		if (userno != null) {
+			command = new mymemoWriteCommand();
+			command.execute(model);
+		} else {
+			System.out.println("User number number not found in session.");
+		}
+		return "redirect:memo";
+	}
+	
+	@RequestMapping("/deptmemoWrite") // deptmemo write action
+	public String deptmemoWrite(HttpSession session, HttpServletRequest request, Model model) {
+		System.out.println("deptmemoWrite()");
+
+		String userno = (String) session.getAttribute("userno");
+		String deptno = (String) session.getAttribute("deptno");
+		System.out.println("부점메모 액션 로그인 된 사람 누구야? " + userno);
+		System.out.println("부점메모 액션 부점은 어디야? " + deptno);
+		model.addAttribute("request", request);
+		model.addAttribute("userno", userno);
+		model.addAttribute("deptno", deptno);
+		if (userno != null && deptno != null) {
+			command = new deptmemoWriteCommand();
+			command.execute(model);
+		} else {
+			System.out.println("User number or dept number not found in session.");
+		}
+		return "redirect:memo";
 	}
 }
