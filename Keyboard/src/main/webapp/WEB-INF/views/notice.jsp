@@ -81,7 +81,8 @@
 						<c:forEach items="${notice}" var="dto">
 							<div class="notice">
 								<br>${dto.title}<br>${dto.content}
-								<button class="deleteButton1" onclick="deleteNotice(this)">X</button>
+								<a href="./noticeDelete?noticeid=${dto.noticeid}&userno=${dto.userno}"
+									class="deleteButton1">X</a>
 							</div>
 						</c:forEach>
 					</div>
