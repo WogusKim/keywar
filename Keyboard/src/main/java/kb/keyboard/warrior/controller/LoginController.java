@@ -11,13 +11,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.fasterxml.jackson.databind.SerializationFeature;
 import kb.keyboard.warrior.dao.LoginDao;
-import kb.keyboard.warrior.dto.UserDTO;
+import kb.keyboard.warrior.dto.*;
 
 
 
@@ -44,6 +45,24 @@ public class LoginController {
 	public String findPWAction(HttpServletRequest request, Model model) {
 		System.out.println("/findPwAction enter");
 		return "login/findPassword";
+	}
+	
+	@RequestMapping("/setNewPassword")
+	public String setNewPassword(HttpServletRequest request, Model model,  PageDTO pagedto, UserDTO userdto) {//
+		System.out.println("/setNewPassword enter  -->");
+		if(pagedto.getKey()!=null&&pagedto.getKey().equals("itiscorrect")) {
+			System.out.println(pagedto.getKey());
+			LoginDao dao = sqlSession.getMapper(LoginDao.class);
+			userdto = dao.isRightUserno(userdto.getUserno());
+			
+			System.out.println(userdto.getDeptno());  // 값 잘 가져왔는지 확인
+			
+			model.addAttribute("pagedto", pagedto);
+			model.addAttribute("userdto", userdto);
+			return "login/setPw";
+		}
+		System.out.println("잘못된 접근, 메인 화면으로 돌아갑니다.");
+		return "redirect:/";
 	}
 	
 	
@@ -76,12 +95,9 @@ public class LoginController {
 		UserDTO list = dao.login(dto.getUserno(), dto.getUserpw());
 		if(list!=null) {
 			HttpSession session = request.getSession();
-//			String userno = (String)session.getAttribute("userno");  //세션에서 값 꺼내기
 			session.setAttribute("userno", list.getUserno()); // 세션에 값 넣기
 			session.setAttribute("deptno", list.getDeptno()); // 세션에 값 넣기
 			System.out.println("로그인 성공!  사번 : " +list.getUserno());
-			System.out.println("비밀번호 : " +list.getUserpw());
-			System.out.println("직원 이름 : " +list.getUsername());
 			if(list.getUserpw().equals(list.getUserno())) {
 				System.out.println("비밀번호 초기상태 ! 비밀번호 변경이 필요합니다.");
 				attributes.addFlashAttribute("userno", list);

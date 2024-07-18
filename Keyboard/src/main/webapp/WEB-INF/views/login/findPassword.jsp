@@ -50,10 +50,10 @@ function checkInfo() {
 	        // 여기서 가져온 데이터를 처리할 수 있습니다.
 	        if(result.userno!=null){
 	        	alert("정보가 정상적으로 확인되었습니다.");
-	        // 	$("#Prm_code").val($("#prtmCode").val());
+	        	 $("#key").val("itiscorrect")
+	        	 submitForm();
 	        }else{
-	        	alert("입력하신 정보가 시스템과 일치하지 않습니다.");
-	        //	$("#Prm_code").val("");
+	        	alert("입력하신 정보가 등록된 정보와 일치하지 않습니다.");
 	        }
 	    })
 	    .catch(error => {
@@ -79,7 +79,7 @@ function checkInfo() {
 <div class="fullContent" >
 	<h1 style ="margin-top:50px;">비밀번호 찾기</h1>
 
-	<form action="/findPwAction" method="post" id="findPwForm" style="height: 100%">
+	<form action="${pageContext.request.contextPath}/setNewPassword" method="post" id="findPwForm" style="height: 100%">
 	<table style="width: 80%; margin: auto; height: 60%;">
 	<tr>
 	<td style="width:20%;"><span class="input_text"> 직원번호</span> </td><td style="width:40%;"><input type="text" class="inputText1" placeholder="직원번호를 입력하세요" name="userno" id="userno"/></td>
@@ -91,14 +91,18 @@ function checkInfo() {
 	<td><span class="input_text">이메일</span> </td><td><input type="text" class="inputText1" placeholder="이메일 주소를 입력하세요"  name="mail" id="mail" /></td>
 	</tr>
 	<tr>
-		<td colspan="2"><input type="button" value="비밀번호 찾기" class="loginButton" onclick="checkInfo()"> </td>
+		<td colspan="2"><input type="button" value="비밀번호 찾기" class="loginButton" onclick="checkInfo()" style="width: 35%;"> </td>
 	</tr>
 	</table>
-	<input type="hidden" id="key" name="key" value="itiscorrect" />
+	<input type="hidden" id="key" name="key" value="itisuncorrect" />
 	</form>
 
 </div>
 </div>
+<script>
+
+
+</script>
 
 
 </body>
