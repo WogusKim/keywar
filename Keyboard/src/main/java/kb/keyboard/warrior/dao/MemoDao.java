@@ -14,7 +14,7 @@ public interface MemoDao {
 	public ArrayList<MyMemoDTO> memoView1(String userno);
 	public ArrayList<DeptMemoDTO> memoView2(String deptno);
 	public ArrayList<NoticeDTO> noticeView(String deptno);
-	public void noticeWrite(String title, String content);
+	public void noticeWrite(String title, String content, String userno, String deptno);
 
 
 
