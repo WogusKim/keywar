@@ -22,7 +22,6 @@ public class noticeViewCommand implements MemoCommand {
 	public void execute(Model model) {
 		SqlSession sqlSession = Constant.sqlSession;
 		MemoDao dao = sqlSession.getMapper(MemoDao.class);
-		System.out.println("11 " + deptno);
 		model.addAttribute("notice", dao.noticeView(deptno));
 	}
 }

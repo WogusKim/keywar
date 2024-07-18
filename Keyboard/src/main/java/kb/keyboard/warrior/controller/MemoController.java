@@ -21,6 +21,7 @@ import kb.keyboard.warrior.memo.command.MemoCommand;
 import kb.keyboard.warrior.memo.command.MemoViewCommand;
 import kb.keyboard.warrior.memo.command.TodoViewCommand;
 import kb.keyboard.warrior.memo.command.noticeViewCommand;
+import kb.keyboard.warrior.memo.command.noticeWriteCommand;
 import kb.keyboard.warrior.util.Constant;
 
 
@@ -138,4 +139,18 @@ public class MemoController {
 
         return "notice";
     }
+    
+	@RequestMapping("/noticeform") //notice form
+	public String noticeForm() {
+		return "noticeForm";
+	}
+	
+	@RequestMapping("/noticeWrite") // notice write action
+	public String noticeWrite(HttpServletRequest request, Model model) {
+		System.out.println("noticeWrite()");
+		model.addAttribute("request", request);
+		command = new noticeWriteCommand();
+		command.execute(model);
+		return "redirect:notice";
+	}
 }
