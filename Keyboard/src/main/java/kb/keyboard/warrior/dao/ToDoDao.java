@@ -7,5 +7,9 @@ import kb.keyboard.warrior.dto.TodoListDTO;
 public interface ToDoDao {
 
 	List<TodoListDTO> getToDoList(String userno);
+
+	//메인 ToDoList 변경
+	void checkTodo(String todoId);
+	void unCheckTodo(String todoId);
 	
 }

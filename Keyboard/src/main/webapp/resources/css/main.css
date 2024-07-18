@@ -13,7 +13,7 @@ body{
     background-color: #BDE2CE;
     font-family: 'textL';
     padding: 15px;
-    height: calc(100% - 60px);
+    height: 95%;
     margin: 0; 
 }
 
@@ -21,7 +21,7 @@ body{
     background-color : white;
     border-radius: 10px;
     width: auto;
-    height: 60px;
+    height: 70px;
     padding-left : 30px;
     display : flex;
     justify-content: space-between;

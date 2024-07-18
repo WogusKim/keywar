@@ -5,7 +5,14 @@
 <mapper namespace="kb.keyboard.warrior.dao.ToDoDao">
 
   	<select id="getToDoList" resultType="kb.keyboard.warrior.dto.TodoListDTO">
-       select * from todolist where userno = #{param} and isdone = 0 order by todoid
+       select * from todolist where userno = #{param} order by todoid
     </select>
+    
+    <update id="checkTodo">
+    	update todolist set isdone = 1 where todoid = #{param}
+    </update>
+    <update id = "unCheckTodo">
+    	update todolist set isdone = 0 where todoid = #{param}
+    </update>
 
 </mapper>
