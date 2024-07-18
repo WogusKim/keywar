@@ -43,12 +43,18 @@
 	</delete>
 
 	<insert id="mymemoWrite">
-		INSERT INTO mymemo (userno, content) values (#{param1}, #{param2})
+		INSERT INTO mymemo (userno, content) values
+		(#{param1}, #{param2})
 	</insert>
-	
-		<insert id="deptmemoWrite">
-		INSERT INTO deptmemo (deptno, userno, content) values (#{param1}, #{param2}, #{param3})
+
+	<insert id="deptmemoWrite">
+		INSERT INTO deptmemo (deptno, userno, content) values
+		(#{param1}, #{param2}, #{param3})
 	</insert>
+
+	<delete id="mymemoDelete">
+		DELETE FROM mymemo WHERE memoid = #{param1}
+	</delete>
 
 
 
