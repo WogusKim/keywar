@@ -136,14 +136,19 @@
 			    	</div>
 			    	<hr>
 			    	<div class="todo_list">
-			    		<ul>
-			    			<c:forEach var="todo" items="${todoList}" begin="0" end="4">
-			    				<li class="todo_item"><input type="checkbox">${todo.task}</li>		
-			    			</c:forEach>
-			    		</ul>
+			    	
+						<ul>
+						    <c:forEach var="todo" items="${todoList}">
+						        <li class="todo_item ${todo.isdone == 1 ? 'checked' : ''}">
+						            <input type="checkbox" onclick="checkTodo(${todo.todoid}, this.checked)" ${todo.isdone == 1 ? 'checked' : ''} data-todoid="${todo.todoid}" data-done="${todo.isdone}">
+						            ${todo.todoid} / ${todo.task}
+						        </li>
+						    </c:forEach>
+						</ul>
 						<div class="todo_rate">
-							<span style="text-align: center;">0 / 5</span>
+						    <span id="todo_rate" style="text-align: center;">0 / ${todoList.size()}</span>
 						</div>
+
 			        </div>
 				</div>
 				<div class="board_inner_inner">
@@ -152,7 +157,6 @@
 					        <h2 class="card_title">My Memo</h2>
 					        <a href="${pageContext.request.contextPath}/memo" class="link-icon">바로가기</a>
 					    </div>					    
-
 			    	</div>
 			    	<hr>
 			    	<div class="memo_list">
@@ -295,16 +299,20 @@
 </div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // 모든 탭에 클릭 이벤트 리스너 추가
-    document.querySelectorAll('.tab').forEach(tab => {
+    // 완료 현황 업데이트
+    updateTodoCount();
+    
+    // 탭 활성화 로직
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
         tab.addEventListener('click', function() {
             // 모든 탭에서 'active' 클래스 제거
-            document.querySelectorAll('.tab').forEach(t => {
+            tabs.forEach(t => {
                 t.classList.remove('active');
-            });
-            // 모든 탭 내용에서 'active' 클래스 제거
-            document.querySelectorAll('.tab_content').forEach(content => {
-                content.classList.remove('active');
+                const content = document.querySelector('#' + t.getAttribute('data-tab'));
+                if (content) {
+                    content.classList.remove('active');
+                }
             });
             // 클릭된 탭에 'active' 클래스 추가
             this.classList.add('active');
@@ -315,32 +323,32 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // 페이지 로드 시 첫 번째 탭 활성화
+    // 할 일 목록의 체크박스 상태에 따라 클래스 적용
+    const todos = document.querySelectorAll('.todo_list input[type="checkbox"]');
+    todos.forEach(checkbox => {
+        const listItem = checkbox.parentNode;
+        if (checkbox.checked) {
+            listItem.classList.add('checked');  // 체크된 항목에 클래스 추가
+        }
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                listItem.classList.add('checked');
+            } else {
+                listItem.classList.remove('checked');
+            }
+            checkTodo(this.getAttribute('data-todoid'), this.checked);
+        });
+    });
+
+    // 첫 번째 탭 자동 활성화
     const firstTab = document.querySelector('.tab:first-child');
-    const firstContentId = firstTab ? firstTab.getAttribute('data-tab') : null;
-    const firstContent = document.querySelector('#' + firstContentId);
-    if (firstTab && firstContent) {
-        firstTab.classList.add('active');
-        firstContent.classList.add('active');
+    if (firstTab) {
+        firstTab.click(); // 이벤트를 강제로 호출하여 첫 탭을 활성화
     }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    const checkboxes = document.querySelectorAll('.todo_list input[type="checkbox"]');
 
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            if (this.checked) {
-                this.parentNode.classList.add('checked');
-            } else {
-                this.parentNode.classList.remove('checked');
-            }
 
-            // 추후 서버 업데이트 로직 구현
-            // 예: updateTaskStatus(this.id, this.checked);
-        });
-    });
-});
 
 function toggleRateTable(table) {
     const morRates = document.getElementById('morRates');
@@ -355,6 +363,45 @@ function toggleRateTable(table) {
     }
 }
 
+//TODOLIST 업데이트로직
+function checkTodo(todoid, isChecked) {
+    console.log("Todo ID:", todoid); // 확인용 로그
+    var isCheckedNum = isChecked ? 1 : 0;
+    console.log("Is Done:", isCheckedNum); // 확인용 로그
+    
+    var checkbox = document.querySelector('input[data-todoid="' + todoid + '"]');
+    checkbox.dataset.done = isCheckedNum; // 체크박스 상태 업데이트
+    updateTodoCount();
+    
+    // 서버에 업데이트 요청
+    fetch('${pageContext.request.contextPath}/todolistCheck',{   
+        
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+        	todoid: todoid,
+        	isdone: isCheckedNum
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data); // 성공 시 로그
+    })
+    .catch((error) => {
+        console.error('Error:', error); // 오류 시 로그
+    });
+}
+
+function updateTodoCount() {
+    var checkboxes = document.querySelectorAll('.todo_list input[type="checkbox"]');
+    var total = checkboxes.length;
+    var completed = Array.from(checkboxes).filter(cb => cb.checked).length;
+
+    // 완료된 개수와 전체 개수 업데이트
+    document.getElementById('todo_rate').textContent = completed + ' / ' + total;
+}
 </script>
 </body>
 </html>

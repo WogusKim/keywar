@@ -6,7 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,8 +17,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kb.keyboard.warrior.dao.LoginDao;
 import kb.keyboard.warrior.dao.ScheduleDao;
+import kb.keyboard.warrior.dao.ToDoDao;
 import kb.keyboard.warrior.dto.ScheduleDTO;
+import kb.keyboard.warrior.dto.TodoListDTO;
+import kb.keyboard.warrior.dto.UserDTO;
 import kb.keyboard.warrior.memo.command.MemoCommand;
 import kb.keyboard.warrior.memo.command.MemoViewCommand;
 import kb.keyboard.warrior.memo.command.TodoViewCommand;
@@ -96,6 +102,30 @@ public class MemoController {
 
 		return "todo";
 	}
+	
+	//home todolist check
+	@RequestMapping(value = "/todolistCheck",  produces = "application/json", consumes = "application/json", method = RequestMethod.POST ) // , method=RequestMethod.POST // consumes = "application/json"	/*	*/
+	public @ResponseBody String findPw(@RequestBody TodoListDTO todoListDto) throws Exception {
+		
+		String todoId = todoListDto.getTodoid();
+		String isDone = todoListDto.getIsdone();
+		//테스트
+		System.out.println(todoId);
+		System.out.println(isDone);
+		
+		ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
+		
+		if (isDone.equals("1")) {
+			//완료처리
+			todoDao.checkTodo(todoId);
+		} else {
+			todoDao.unCheckTodo(todoId);
+		}
+
+		return "{\"status\":\"success\"}";
+	}
+
+	
 
 	@RequestMapping("/memo") // memo view
 	public String memoView(HttpSession session, Model model) {
