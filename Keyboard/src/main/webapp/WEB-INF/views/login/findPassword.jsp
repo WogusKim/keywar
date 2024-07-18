@@ -77,7 +77,7 @@ function checkInfo() {
     align-items: center;
     height: 100%; ">
 <div class="fullContent" >
-	<h1 style ="margin-top:50px;">비밀번호 찾기</h1>
+	<h1 style ="margin-top:50px;">비밀번호 재설정</h1>
 
 	<form action="${pageContext.request.contextPath}/setNewPassword" method="post" id="findPwForm" style="height: 100%">
 	<table style="width: 80%; margin: auto; height: 60%;">
@@ -91,7 +91,7 @@ function checkInfo() {
 	<td><span class="input_text">이메일</span> </td><td><input type="text" class="inputText1" placeholder="이메일 주소를 입력하세요"  name="mail" id="mail" /></td>
 	</tr>
 	<tr>
-		<td colspan="2"><input type="button" value="비밀번호 찾기" class="loginButton" onclick="checkInfo()" style="width: 35%;"> </td>
+		<td colspan="2"><input type="button" value="비밀번호 재설정" class="loginButton" onclick="checkInfo()" style="width: 35%;"> </td>
 	</tr>
 	</table>
 	<input type="hidden" id="key" name="key" value="itisuncorrect" />

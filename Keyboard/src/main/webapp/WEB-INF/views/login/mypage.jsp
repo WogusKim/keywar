@@ -8,6 +8,6 @@
 <title>김국민의 업무노트 : 마이페이지</title>
 </head>
 <body>
-
+<%@ include file="/WEB-INF/views/header.jsp" %>
 </body>
 </html>
