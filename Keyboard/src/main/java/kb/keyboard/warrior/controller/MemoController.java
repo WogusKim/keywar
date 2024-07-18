@@ -20,6 +20,7 @@ import kb.keyboard.warrior.dto.ScheduleDTO;
 import kb.keyboard.warrior.memo.command.MemoCommand;
 import kb.keyboard.warrior.memo.command.MemoViewCommand;
 import kb.keyboard.warrior.memo.command.TodoViewCommand;
+import kb.keyboard.warrior.memo.command.noticeDeleteCommand;
 import kb.keyboard.warrior.memo.command.noticeViewCommand;
 import kb.keyboard.warrior.memo.command.noticeWriteCommand;
 import kb.keyboard.warrior.util.Constant;
@@ -97,7 +98,7 @@ public class MemoController {
 		return "todo";
 	}
 
-	@RequestMapping("/memo") // memo view
+	@RequestMapping("/memo") // memo view 재욱오빠랑 바꾼거
 	public String memoView(HttpSession session, Model model) {
 		System.out.println("memoView()");
 
@@ -107,7 +108,7 @@ public class MemoController {
 		System.out.println("부점코드 누구야? " + deptno);
 		if (userno != null && deptno != null) {
 			MemoViewCommand command = new MemoViewCommand();
-			command.execute(model,userno,deptno);
+			command.execute(model, userno, deptno);
 		} else {
 			System.out.println("User number or dept number not found in session.");
 		}
@@ -154,6 +155,24 @@ public class MemoController {
 			command.execute(model);
 		} else {
 			System.out.println("User number or dept number not found in session.");
+		}
+		return "redirect:notice";
+	}
+
+	@RequestMapping("/noticeDelete")
+	public String noticeDelete(HttpSession session, HttpServletRequest request, Model model) {
+		System.out.println("noticeDelete()");
+
+		String userno = (String) session.getAttribute("userno"); //세션에서 꺼내와.
+		System.out.println("공지사항 삭제 로그인 된 사람 누구야? " + userno); //세션확인
+		model.addAttribute("request", request); //리퀘스트로 담아온 인덱스넘버랑 유저 모델에 넣어.
+		System.out.println("리퀘스트 안에 뭐있어? " + model);
+
+		if (userno != null) {
+			noticeDeleteCommand command = new noticeDeleteCommand();
+			command.execute(model,userno);
+		} else {
+			System.out.println("User number number not found in session.");
 		}
 		return "redirect:notice";
 	}

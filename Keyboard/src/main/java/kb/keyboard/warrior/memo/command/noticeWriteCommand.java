@@ -15,7 +15,7 @@ public class noticeWriteCommand implements MemoCommand {
 	@Override
 	public void execute(Model model) {
 		// TODO Auto-generated method stub
-		
+		//모델에 지금 리퀘스트,userno,deptno들어있잖아. 아래 두줄은 모델에서 리퀘스트 꺼내는거야.
 		Map<String, Object> map = model.asMap(); //모델에 담겨져 있는 애들을 맵형태로 치환 스트링은 리퀘스트
 		HttpServletRequest request = (HttpServletRequest) map.get("request"); //키를 호출하면 밸류값을 가져옴.
 		String title = request.getParameter("title");
@@ -23,7 +23,6 @@ public class noticeWriteCommand implements MemoCommand {
 		
 		String userno = (String) map.get("userno");
 		String deptno = (String) map.get("deptno");
-
 		
 		SqlSession sqlSession = Constant.sqlSession;
 		MemoDao dao = sqlSession.getMapper(MemoDao.class);
