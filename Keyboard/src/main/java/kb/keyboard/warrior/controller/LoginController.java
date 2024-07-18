@@ -155,10 +155,30 @@ public class LoginController {
 		UserDTO dto = dao.isRightUserno(userno);
 		model.addAttribute("dto", dto);
 		
-		return "login/mypage";
+		return "login/editProfile";
 	}
 	
-	
+	// Regarding Asynchronous  -- 아직 닉네임 컬럼이 없어서 변경은 못함.
+	@RequestMapping(value = "/changeNickname",  produces = "application/json", consumes = "application/json", method = RequestMethod.POST ) // , method=RequestMethod.POST // consumes = "application/json"	/*	*/
+	public @ResponseBody String changeNickname(@RequestBody  UserDTO userdto) throws Exception {
+		System.out.println("changeNickname 실행");
+		System.out.println("넘겨받은 값 있는지 확인 : " + userdto.getNickname());
+		
+		LoginDao dao = sqlSession.getMapper(LoginDao.class);
+		UserDTO dto = dao.isRightUserno(userdto.getUserno());
+
+		if (dto != null) {
+				System.out.println("모두 일치하는 직원정보 찾았다 ! 부서번호  : " +dto.getDeptno());
+		} else {
+			System.out.println("DB조회 결과 없음");
+			dto = new UserDTO();
+		}
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		String json = mapper.writeValueAsString(dto);
+		return json;
+	}
 	
 	
 	
