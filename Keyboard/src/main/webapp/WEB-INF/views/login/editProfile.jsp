@@ -11,49 +11,73 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
+.imageEditButton{
+	background-color: #EBF8FE;
+	border-radius: 10px;
+	border: none;
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+	margin : 5px;
+	font-size: 15px;
+	width: 130px;
+	height: 30px;
+	cursor: pointer;
+	font-family: 'textL';
+	margin-top : 15px;
+}
+.editBox{
+	margin : auto;
+	width : 30%;
+/* 	background-color: #EBF8FE; */
+	margin-top: 20px;
 
-
+}
+.editText{
+	border:1px; 
+/* 	background-color: #EBF8FE; */
+	font-size: 20px;
+	text-align: center;
+	height: 40px;
+	
+}
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var box1 = document.getElementById('switchBox1');
-        var box2 = document.getElementById('switchBox2');
-        var box3 = document.getElementById('switchBox3');
-        var buttons = document.querySelectorAll('.mypageButton');
-
-        function updateButtonStyles(activeButton) {
-            buttons.forEach(function(button) {
-                button.classList.remove('pushedButton');
-            });
-            activeButton.classList.add('pushedButton');
-        }
-
-        function btn1() {
-            box1.style.display = 'block';
-            box2.style.display = 'none';
-            box3.style.display = 'none';
-            updateButtonStyles(this);
-        }
-
-        function btn2() {
-            box1.style.display = 'none';
-            box2.style.display = 'block';
-            box3.style.display = 'none';
-            updateButtonStyles(this);
-        }
-
-        function btn3() {
-            box1.style.display = 'none';
-            box2.style.display = 'none';
-            box3.style.display = 'block';
-            updateButtonStyles(this);
-        }
-
-        document.querySelector('.mypageButton:nth-child(1)').addEventListener('click', btn1);
-        document.querySelector('.mypageButton:nth-child(2)').addEventListener('click', btn2);
-        document.querySelector('.mypageButton:nth-child(3)').addEventListener('click', btn3);
-    });
+function changeNickname(){
+	 var nickname = $("#nickname").val();
+	 var userno = $("#userno").val();
+ 	 console.log(nickname);
+ 	 	fetch('${pageContext.request.contextPath}/changeNickname',{   
+ 	 		
+ 	 		method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            	userno: userno,
+                nickname: nickname
+            })
+ 	 	})
+ 	 	
+	    .then(response => {
+	        if (!response.ok) {
+	            throw new Error('Network response was not ok');
+	        }
+	        return response.json();
+	    })
+	    .then(result => {
+	        console.log(result);
+	        // 여기서 가져온 데이터를 처리할 수 있습니다.
+	        if(result.userno!=null){
+	        	alert("정상적으로 처리되었습니다.");	        	
+	        }else{
+	        	alert("변경 중 오류가 발생하였습니다.");
+	        }
+	    })
+	    .catch(error => {
+	        console.error('Fetch Error:', error);
+	        // 에러 처리 로직을 추가할 수 있습니다.
+	    });
+}
 </script>
 
 </head>
@@ -66,68 +90,30 @@
 		<div class="board_currency">
 			<div class="board_currency_inner" style="background-color: #92D1BA; ">
 				<div class="outlineBox">
-					<div style="float: left;"><h2 class="card_title">마이페이지</h2></div><div style="float: right;"><img class="header_icon" style="margin-top: 5px;" src="${pageContext.request.contextPath}/resources/images/setting.png"></div>
+					<div style="float: left;"><h2 class="card_title">마이페이지 수정</h2></div><div style="float: right;">
+					<a href="${pageContext.request.contextPath}/editProfile"> <img class="header_icon" style="margin-top: 5px;" src="${pageContext.request.contextPath}/resources/images/setting.png"> </a></div>
 				</div>
 				<hr>
-				<div class="outlineBox" style="height: 40%">
-				<div class="white_Box" style="width: 25%; text-align: center;"> 
+				<div class="outlineBox" style="height: 85%">
+				<div class="white_Box" style="width: 100%; text-align: center;"> 
+				<div style="height: 15%;">
+				</div>
 				<div class="box" style="background: #BDBDBD; ">
     				<img class="profile" src="${pageContext.request.contextPath}/resources/images/background.jpg">
 				</div>
-				<h3 class="stress_Text" style="margin-top: 15px;" >${dto.username } </h3>
-				
-				<!-- 좋아요 + 팔로우 표시 -->
-				<div class="profileArea" >
-					<img src="${pageContext.request.contextPath}/resources/images/heart16.png" > <span>875</span>
-					<img src="${pageContext.request.contextPath}/resources/images/follow16.png" > <span>74</span>
-				</div>
+				<button class=" imageEditButton ">프로필 사진 변경</button> <br>
+				<div class="editBox"><span style="font-size: 20px;">별명 </span> <input type="text" value="${dto.username }" class="editText" id="nickname" name="nickname"/> </div>
+				<button  class="imageEditButton" style="background-color: #92D1BA;" onclick="changeNickname()">저장하기</button>
+								
 				
 				<div> </div>
 				
 				
 				</div>
-				<div class="white_Box" style="width: 73%"> 
-					<div class="outlineBox" ><h3 class="stress_Text" >나의 활동</h3> 
-					<div>
-					<button class="mypageButton pushedButton">내가 남긴 댓글</button><button class="mypageButton" >좋아하는 게시물</button><button class="mypageButton">팔로우</button>
-					</div>
-					</div>
-					<div class="switchBox" id="switchBox1" style="display: block;"> 1 1 11 1 11 1 1 </div>
-					<div class="switchBox" id="switchBox2" style="display: none;"> 2 2 2 2 2 2 2 2 2 2 2</div>
-					<div class="switchBox" id="switchBox3" style="display: none;"> 3 3 3 3 3 3 3 3 3 3 </div>
 				
 				</div>
-				</div>
-				
-				<div class="outlineBox" style="height: 45%">
-				<div class="white_Box" style="width: 100%; margin-top: 20px;"> 
-				<h3 class="stress_Text">내가 작성한 업무노트 </h3>
-				
-				<table style="margin: 5px; width: 100%; margin-top: 20px;">
-				<colgroup>
-       	 			<col style="width: 65%;">
-       	 			<col style="width: 7%;">
-       	 			<col style="width: 7%;">
-       	 			<col style="width: 7%;">
-       	 			<col style="width: 7%;">
-       	 			<col style="width: 7%;">
-    			</colgroup>
-    			<tbody>
-				<tr><!-- 여기 DB에서 가져와서 포문 돌릴거임 !! -->
-				<td>제목</td>
-				<td><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/heart16.png"><a href="#" class="aTag"> 좋아요</a></td>
-				<td ><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/chat16.png"><a href="#" class="aTag"> 댓글</a></td> <!-- 여기 한글 대신 DB에 저장된 다른 숫자 등 보이게 할 거임. -->
-				<td><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/eyes.png"><a href="#" class="aTag"> 조회수</a></td>
-				<td style="text-align: center;"><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/edit.png"><a href="#" class="aTag"> 수정</a></td>
-				<td style="text-align: center;"><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/delete.png"><a href="#" class="aTag"> 삭제</a></td>
-				</tr>
-				</tbody>
-				</table>
-				
-				
-				
-				</div>
-				</div>
+				<input type="hidden" name="userno" id="userno" value="${dto.userno}" />
+		
 			</div>
 		</div>
 

@@ -134,7 +134,8 @@ min-width: 100px;
 		<div class="board_currency">
 			<div class="board_currency_inner" style="background-color: #92D1BA; ">
 				<div class="outlineBox">
-					<div style="float: left;"><h2 class="card_title">마이페이지</h2></div><div style="float: right;"><img class="header_icon" style="margin-top: 5px;" src="${pageContext.request.contextPath}/resources/images/setting.png"></div>
+					<div style="float: left;"><h2 class="card_title">마이페이지</h2></div><div style="float: right;">
+						<a href="${pageContext.request.contextPath}/editProfile"> <img class="header_icon" style="margin-top: 5px;" src="${pageContext.request.contextPath}/resources/images/setting.png"> </a></div>
 				</div>
 				<hr>
 				<div class="outlineBox" style="height: 40%">

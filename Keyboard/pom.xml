@@ -148,6 +148,28 @@
             <version>2.9.8 </version>
         </dependency> -->
         <!-- 비동기 처리관련  -->
+        
+        
+        <!--  비밀번호 암호화 관련 -->
+        <!-- Spring-Security -->
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-web</artifactId>
+    		<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-config</artifactId>
+    		<version>${org.springframework-version}</version>
+		</dependency>
+ 
+		<!-- Spring-Security-Taglibs -->
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-taglibs</artifactId>
+    		<version>${org.springframework-version}</version>
+		</dependency>
+        
 		<!-- 크롤링 처리 관련 -->
 		<dependency>
 		    <groupId>org.jsoup</groupId>

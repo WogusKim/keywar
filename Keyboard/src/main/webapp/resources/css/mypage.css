@@ -1,4 +1,4 @@
-@charset "EUC-KR";
+@charset "UTF-8";
 
 .content_innerBox {
     border-radius: 10px;
@@ -69,4 +69,5 @@ min-width: 100px;
 }
 .aTag{
     text-decoration: none;
+    color: black;
 }
