@@ -495,6 +495,51 @@ hr {
     margin: 10px 0;     /* 상하 여백 추가 */
 }
 
+/* mor, cofix*/
+.rates_box {
+	width : 100%;
+	margin-top: 5px;
+	padding: 5px;
+}
+
+.rate-toggle-buttons {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.toggle-button {
+    padding: 5px 10px;
+    margin-right: 5px;
+    cursor: pointer;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+}
+
+.toggle-button:hover {
+    background-color: #e2e2e2;
+}
+
+.rate-table {
+    width: 100%;
+    margin-top: 5px;
+    border-collapse: collapse;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.rate-header, .rate-cell {
+	font-size: 14px;
+    border: 1px solid #ccc;
+    padding: 6px;
+    text-align: center;
+}
+
+.rate-header {
+	font-weight: bold;
+    background-color: #f2f2f2;
+}
+
+/* mor, cofix*/
+
 .todo_list {
     margin-top: 20px;
 }

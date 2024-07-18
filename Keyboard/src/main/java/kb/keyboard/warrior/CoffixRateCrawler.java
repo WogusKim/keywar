@@ -11,8 +11,8 @@ import java.util.List;
 
 import kb.keyboard.warrior.dto.MorCoffixDTO;
 
-public class MorRateCrawler {
-    private static final String URL = "https://obank.kbstar.com/quics?page=C019205"; // 예시 URL
+public class CoffixRateCrawler {
+    private static final String URL = "https://obank.kbstar.com/quics?page=C019206"; // 예시 URL
 
     public List<MorCoffixDTO> fetchMorRates() {
         List<MorCoffixDTO> rates = new ArrayList<MorCoffixDTO>();
