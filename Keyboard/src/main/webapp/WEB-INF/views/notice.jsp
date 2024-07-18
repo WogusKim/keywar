@@ -86,7 +86,9 @@
 						</c:forEach>
 					</div>
 				</div>
+				<a href="noticeForm">
 				<input type="button" value="추가하기" class="addButton">
+				</a>
 			</div>
 		</div>
 	</div>

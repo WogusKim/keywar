@@ -26,11 +26,15 @@
 
 	<select id="noticeView"
 		resultType="kb.keyboard.warrior.dto.NoticeDTO">
-		SELECT * FROM notice n 
-        LEFT JOIN user u ON n.author = u.userno 
-        WHERE u.deptno = #{param1} 
-        ORDER BY noticeid
+		SELECT * FROM notice n
+		LEFT JOIN user u ON n.author = u.userno
+		WHERE u.deptno = #{param1}
+		ORDER BY noticeid
 	</select>
+
+	<insert id="noticeWrite">
+		INSERT INTO notice (title, content) values (#{param1}, #{param2})
+	</insert>
 
 
 </mapper>
