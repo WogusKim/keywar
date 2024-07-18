@@ -237,7 +237,7 @@ body{
     width: 49%;                    /* 각 내부 요소의 너비를 30%로 설정 */
     height: 100%;                  /* 높이를 부모와 같게 설정 */
     padding: 10px;
-    margin-right: 10px;            /* 요소 사이의 마진 설정 */
+    
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 

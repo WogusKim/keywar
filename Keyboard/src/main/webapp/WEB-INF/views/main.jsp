@@ -157,10 +157,9 @@
 			    	<hr>
 			    	<div class="memo_list">
 			    		<ul>
-			    			<li>메모메모메모메모</li>
-			    			<li>메모메모</li>
-			    			<li>메모메모메모메모메모메모</li>
-			    			<li>메모메모메모메모</li>
+			    			<c:forEach var="memo" items="${memoList}" begin="0" end="4">
+			    				<li>${memo.content} (${memo.createdate})</li>
+			    			</c:forEach>
 			    		</ul>
 			    	</div>
 				</div>
