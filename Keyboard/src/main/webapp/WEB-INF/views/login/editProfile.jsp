@@ -8,79 +8,11 @@
 <title>김국민의 업무노트 : 마이페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/display.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 
-.content_innerBox {
-    border-radius: 10px;
-	width: 100%; 
-	height: 100%;
-	background-color: #BDE2CE;
-	padding: 18px;
-    margin-bottom: 10px;
-	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-}
-.outlineBox{
-	display: flex; 
-	justify-content: space-between;
-}   
-.white_Box{
-	background-color: white;
-	border-radius: 10px;
-	height: 100%;
-	padding: 20px;
-	margin-bottom: 15px;
-	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-	margin: 5px;
-}
-.stress_Text{
-	margin: 5px;
-}
-.mypageButton{
-	background-color: #EBF8FE;
-	border-radius: 10px;
-	border: none;
-	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-	margin : 5px;
-	font-size: 15px;
-	width: 130px;
-	height: 27px;
-	cursor: pointer;
 
-}
-.pushedButton{
-	background-color: #92D1BA;
-}
-/* mypage profile box */
-.box {
-    width: 150px;
-    height: 150px; 
-    border-radius: 70%;
-    overflow: hidden;
-    margin: auto;
-}
-/* mypage profile image */
-.profile {  
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-.switchBox{
-	width: 100%; 
-	height: 80%; 
-	margin-top: 10px; 
-	padding: 10px;
-}
-.profileArea{
-width:40%; 
-margin:auto; 
-display: flex; 
-justify-content: space-between;
-min-width: 100px;
-}
-.aTag{
-    text-decoration: none;
-}
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

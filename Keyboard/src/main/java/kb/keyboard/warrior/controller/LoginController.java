@@ -145,6 +145,19 @@ public class LoginController {
 		return "login/mypage";
 	}
 	
+	// Regarding mypage
+	@RequestMapping("/editProfile")
+	public String editProfile(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		String userno = (String) session.getAttribute("userno");	
+		System.out.println("세션에 있는 userno : "+ userno);
+		LoginDao dao = sqlSession.getMapper(LoginDao.class);
+		UserDTO dto = dao.isRightUserno(userno);
+		model.addAttribute("dto", dto);
+		
+		return "login/mypage";
+	}
+	
 	
 	
 	
