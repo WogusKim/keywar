@@ -5,22 +5,22 @@
 <mapper namespace="kb.keyboard.warrior.dao.ScheduleDao">
 
     <insert id="scheduleNew" parameterType="kb.keyboard.warrior.dto.ScheduleDTO">
-        INSERT INTO schedules (scheduleid, userno, title, content, startDate, endDate, shareto, status)
+        INSERT INTO schedule (scheduleid, userno, title, content, startDate, endDate, shareto, status)
         VALUES (#{scheduleid}, #{userno}, #{title}, #{content}, #{startDate}, #{endDate}, #{shareto}, #{status})
     </insert>
     
 	<select id="scheduleLoad" parameterType="string" resultType="kb.keyboard.warrior.dto.ScheduleDTO">
-        SELECT * FROM schedules WHERE userno = #{userno}
+        SELECT * FROM schedule WHERE userno = #{userno}
     </select>
 
     <update id="scheduleEdit" parameterType="kb.keyboard.warrior.dto.ScheduleDTO">
-        UPDATE schedules
+        UPDATE schedule
         SET title=#{title}, content=#{content}, startDate=#{startDate}, endDate=#{endDate}, shareto=#{shareto}
         WHERE scheduleid = #{scheduleid}
     </update>
 
     <delete id="scheduleDelete" parameterType="string">
-        DELETE FROM schedules WHERE scheduleid = #{scheduleid}
+        DELETE FROM schedule WHERE scheduleid = #{scheduleid}
     </delete>
         
     

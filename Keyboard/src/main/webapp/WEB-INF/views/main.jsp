@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ page import="java.util.List" %>
+<%@ page import="kb.keyboard.warrior.dto.StockDTO" %>
+<%@ page import="kb.keyboard.warrior.StockKoreaCrawler" %>
+<%@ page import="kb.keyboard.warrior.StockInterCrawler" %>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -7,6 +11,8 @@
 <meta charset="UTF-8">
 <title>메인 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+
+
 </head>
 <body>
 
@@ -50,6 +56,49 @@
 				        <h2 class="card_title">증시</h2>
 				        <a href="#" class="link-icon">바로가기</a>
 				    </div>
+				    
+				    <div class="stock-body">
+				        <div class="stock-row1">
+				            <span>&nbsp;</span>
+				            <span>지수</span>
+				            <span>현재가</span>
+				            <span>변동수치</span>
+				            <span>변동폭</span>
+				        </div>
+				        <%
+				            StockKoreaCrawler koreaCrawler = new StockKoreaCrawler();
+				            List<StockDTO> koreaStocks = koreaCrawler.fetchIndexData();
+				
+				            StockInterCrawler interCrawler = new StockInterCrawler();
+				            List<StockDTO> interStocks = interCrawler.fetchIndexData();
+				
+				            for (StockDTO stock : koreaStocks) {
+				                if (stock.getIndexName().contains("코스피") || stock.getIndexName().contains("코스닥")) {
+				                    out.println("<div class='stock-row'>");
+				                    out.println("<span>" + stock.getIndexName() + "</span>");
+				                    out.println("<span>" + stock.getCurrentPrice() + "</span>");
+				                    out.println("<span>" + stock.getPriceChange() + "</span>");
+				                    out.println("<span>" + stock.getChangePercentage() + "%</span>");
+				                    out.println("</div>");
+				                }
+				            }
+				
+				            for (StockDTO stock : interStocks) {
+				                if (stock.getIndexName().contains("S&P 500") || stock.getIndexName().contains("나스닥")) {
+				                    out.println("<div class='stock-row'>");
+				                    out.println("<span>" + stock.getIndexName() + "</span>");
+				                    out.println("<span>" + stock.getCurrentPrice() + "</span>");
+				                    out.println("<span>" + stock.getPriceChange() + "</span>");
+				                    out.println("<span>" + stock.getChangePercentage() + "%</span>");
+				                    out.println("</div>");
+				                }
+				            }
+				        %>
+				    </div>
+				    
+				    
+				    
+				    
 		    	</div>
 	    	</div>
 	    	<div class="board_inner">
