@@ -24,133 +24,137 @@ import kb.keyboard.warrior.memo.command.noticeViewCommand;
 import kb.keyboard.warrior.memo.command.noticeWriteCommand;
 import kb.keyboard.warrior.util.Constant;
 
-
-
 @Controller
 public class MemoController {
-	
+
 	MemoCommand command = null;
 	private SqlSession sqlSession;
-	
+
 	@Autowired
 	public MemoController(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
 		Constant.sqlSession = this.sqlSession;
 	}
 
+	@RequestMapping("/calendar")
+	public String calendar(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		String userno = (String) session.getAttribute("userno");
 
-	
-	
-    @RequestMapping("/calendar")
-    public String calendar(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession();
-        String userno = (String) session.getAttribute("userno");
+		ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+		List<ScheduleDTO> scheduleList = dao.scheduleLoad(userno);
 
-        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
-        List<ScheduleDTO> scheduleList = dao.scheduleLoad(userno);
+		model.addAttribute("scheduleList", scheduleList);
 
-        model.addAttribute("scheduleList", scheduleList);
+		return "memo/calendar";
+	}
 
-        return "memo/calendar";
-    }
-	
-    @RequestMapping(value = "/calendarsave", method = RequestMethod.POST)
-    @ResponseBody
-    public String saveEvent(HttpServletRequest request, Model model, ScheduleDTO dto) {
-        
-        HttpSession session = request.getSession();
-        String userno = (String) session.getAttribute("userno");
+	@RequestMapping(value = "/calendarsave", method = RequestMethod.POST)
+	@ResponseBody
+	public String saveEvent(HttpServletRequest request, Model model, ScheduleDTO dto) {
 
-        dto.setUserno(userno);
-        dto.setStatus("1");
+		HttpSession session = request.getSession();
+		String userno = (String) session.getAttribute("userno");
 
-        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
-        
-        dao.scheduleNew(dto);
+		dto.setUserno(userno);
+		dto.setStatus("1");
 
-        return "redirect:/memo/calendar";
-    }
-	
-    @RequestMapping(value = "/calendaredit", method = RequestMethod.POST) 
-    @ResponseBody
-    public String editEvent(@RequestBody ScheduleDTO dto) {
-        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
-        dao.scheduleEdit(dto);
-        return "redirect:/memo/calendar";
-    }
-    
-    @RequestMapping(value = "/calendardelete", method = RequestMethod.POST) 
-    @ResponseBody
-    public String deleteEvent(@RequestParam String scheduleid) {
-        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
-        dao.scheduleDelete(scheduleid);
-        return "redirect:/memo/calendar";
-    }
+		ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
 
-	
+		dao.scheduleNew(dto);
+
+		return "redirect:/memo/calendar";
+	}
+
+	@RequestMapping(value = "/calendaredit", method = RequestMethod.POST)
+	@ResponseBody
+	public String editEvent(@RequestBody ScheduleDTO dto) {
+		ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+		dao.scheduleEdit(dto);
+		return "redirect:/memo/calendar";
+	}
+
+	@RequestMapping(value = "/calendardelete", method = RequestMethod.POST)
+	@ResponseBody
+	public String deleteEvent(@RequestParam String scheduleid) {
+		ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+		dao.scheduleDelete(scheduleid);
+		return "redirect:/memo/calendar";
+	}
+
 	@RequestMapping("/todo") // todolist view
-    public String todoView(HttpSession session, Model model) {
-        System.out.println("todoView()");
+	public String todoView(HttpSession session, Model model) {
+		System.out.println("todoView()");
 
-        String userno = (String) session.getAttribute("userno");
-        if (userno != null) {
-            command = new TodoViewCommand(userno);
-            command.execute(model);
-        } else {
-            System.out.println("User number not found in session.");
-        }
+		String userno = (String) session.getAttribute("userno");
+		if (userno != null) {
+			command = new TodoViewCommand(userno);
+			command.execute(model);
+		} else {
+			System.out.println("User number not found in session.");
+		}
 
-        return "todo";
-    }
-	
+		return "todo";
+	}
 
-    @RequestMapping("/memo") //memo view
-    public String memoView(HttpSession session, Model model) {
-        System.out.println("memoView()");
+	@RequestMapping("/memo") // memo view
+	public String memoView(HttpSession session, Model model) {
+		System.out.println("memoView()");
 
-        String userno = (String) session.getAttribute("userno");
-        String deptno = (String) session.getAttribute("deptno");
-        System.out.println("로그인 된 사람 누구야? " + userno);
-        System.out.println("부점코드 누구야? " + deptno);
-        if (userno != null && deptno != null) {
-            command = new MemoViewCommand(userno, deptno);
-            command.execute(model);
-        } else {
-            System.out.println("User number or dept number not found in session.");
-        }
+		String userno = (String) session.getAttribute("userno");
+		String deptno = (String) session.getAttribute("deptno");
+		System.out.println("로그인 된 사람 누구야? " + userno);
+		System.out.println("부점코드 누구야? " + deptno);
+		if (userno != null && deptno != null) {
+			MemoViewCommand command = new MemoViewCommand();
+			command.execute(model,userno,deptno);
+		} else {
+			System.out.println("User number or dept number not found in session.");
+		}
 
-        return "memo";
-    }
-	
-    @RequestMapping("/notice") //notice view
-    public String noticeView(HttpSession session, Model model) {
-        System.out.println("noticeView()");
+		return "memo";
+	}
 
-        String userno = (String) session.getAttribute("userno");
-        String deptno = (String) session.getAttribute("deptno");
-        System.out.println("로그인 된 사람 누구야? " + userno);
-        System.out.println("부점코드 누구야? " + deptno);
-        if (userno != null && deptno != null) {
-            command = new noticeViewCommand(userno, deptno);
-            command.execute(model);
-        } else {
-            System.out.println("User number or dept number not found in session.");
-        }
+	@RequestMapping("/notice") // notice view
+	public String noticeView(HttpSession session, Model model) {
+		System.out.println("noticeView()");
 
-        return "notice";
-    }
-    
-	@RequestMapping("/noticeform") //notice form
+		String userno = (String) session.getAttribute("userno");
+		String deptno = (String) session.getAttribute("deptno");
+		System.out.println("로그인 된 사람 누구야? " + userno);
+		System.out.println("부점코드 누구야? " + deptno);
+		if (userno != null && deptno != null) {
+			command = new noticeViewCommand(userno, deptno);
+			command.execute(model);
+		} else {
+			System.out.println("User number or dept number not found in session.");
+		}
+
+		return "notice";
+	}
+
+	@RequestMapping("/noticeform") // notice form
 	public String noticeForm() {
 		return "noticeForm";
 	}
-	
+
 	@RequestMapping("/noticeWrite") // notice write action
-	public String noticeWrite(HttpServletRequest request, Model model) {
+	public String noticeWrite(HttpSession session, HttpServletRequest request, Model model) {
 		System.out.println("noticeWrite()");
+
+		String userno = (String) session.getAttribute("userno");
+		String deptno = (String) session.getAttribute("deptno");
+		System.out.println("공지사항 액션 로그인 된 사람 누구야? " + userno);
+		System.out.println("공지사항 액션 부점코드 누구야? " + deptno);
 		model.addAttribute("request", request);
-		command = new noticeWriteCommand();
-		command.execute(model);
+		model.addAttribute("userno", userno);
+		model.addAttribute("deptno", deptno);
+		if (userno != null && deptno != null) {
+			command = new noticeWriteCommand();
+			command.execute(model);
+		} else {
+			System.out.println("User number or dept number not found in session.");
+		}
 		return "redirect:notice";
 	}
 }

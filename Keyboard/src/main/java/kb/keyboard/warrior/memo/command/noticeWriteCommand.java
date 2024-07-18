@@ -11,7 +11,7 @@ import kb.keyboard.warrior.dao.MemoDao;
 import kb.keyboard.warrior.util.Constant;
 
 public class noticeWriteCommand implements MemoCommand {
-
+	
 	@Override
 	public void execute(Model model) {
 		// TODO Auto-generated method stub
@@ -21,9 +21,13 @@ public class noticeWriteCommand implements MemoCommand {
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		
+		String userno = (String) map.get("userno");
+		String deptno = (String) map.get("deptno");
+
+		
 		SqlSession sqlSession = Constant.sqlSession;
 		MemoDao dao = sqlSession.getMapper(MemoDao.class);
-		dao.noticeWrite(title,content);
+		dao.noticeWrite(title,content,userno,deptno);
 
 	}
 

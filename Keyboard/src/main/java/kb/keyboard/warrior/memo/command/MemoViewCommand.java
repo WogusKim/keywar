@@ -11,18 +11,9 @@ import kb.keyboard.warrior.dto.DeptMemoDTO;
 import kb.keyboard.warrior.util.Constant;
 
 
-public class MemoViewCommand implements MemoCommand{
+public class MemoViewCommand {
 
-	private String userno;
-    private String deptno;
-
-    public MemoViewCommand(String userno, String deptno) {
-        this.userno = userno;
-        this.deptno = deptno;
-    }
-
-    @Override
-    public void execute(Model model) {
+    public void execute(Model model, String userno, String deptno) {
         SqlSession sqlSession = Constant.sqlSession;
         MemoDao dao = sqlSession.getMapper(MemoDao.class);
         
@@ -31,4 +22,5 @@ public class MemoViewCommand implements MemoCommand{
         model.addAttribute("memo1", listMyMemo);
         model.addAttribute("memo2", listDeptMemo);
     }
+    
 }
