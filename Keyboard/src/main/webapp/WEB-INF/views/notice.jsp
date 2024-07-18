@@ -48,7 +48,6 @@
 	width: 100%;
 	height: 95%;
 	padding: 10px;
-	/* margin-bottom: 10px; /* 아래쪽에 여백 추가 */ */
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 

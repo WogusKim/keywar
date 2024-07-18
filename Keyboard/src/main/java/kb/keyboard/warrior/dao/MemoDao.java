@@ -17,6 +17,9 @@ public interface MemoDao {
 	
 	public void noticeWrite(String title, String content, String userno, String deptno);
 	public void noticeDelete(String noticeid);
+	
+	public void mymemoWrite(String userno, String mymemocontent);
+	public void deptmemoWrite(String deptno, String userno, String deptmemocontent);
 
 
 

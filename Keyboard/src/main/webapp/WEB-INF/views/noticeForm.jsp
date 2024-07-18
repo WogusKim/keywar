@@ -11,9 +11,9 @@
 <style>
 .board_todo1 {
 	border-radius: 10px;
-	background-color: white;
-	width: 100%;
-	height: 95%;
+	background-color: white; 
+	width: 100%; 
+	height: 95%; 
 	padding: 10px;
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
@@ -26,18 +26,14 @@
 	height: 80%;
 }
 
-.aa input[type="text"], .aa textarea {
+.aaa {
 	width: 100%;
+	height: 40px; /* 적절한 높이 설정 */
 	padding: 10px;
-	font-size: 16px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	box-sizing: border-box;
-}
-
-.aa textarea {
-	resize: vertical; /* 세로 크기만 조정 가능 */
-	height: 150px; /* 고정 높이 설정 */
+	font-size: 16px; /* 글씨 크기 조정 */
+	border: 1px solid #ccc; /* 테두리 설정 */
+	border-radius: 5px; /* 모서리 둥글게 */
+	box-sizing: border-box; /* 박스 사이징 설정 */
 }
 </style>
 </head>
@@ -51,16 +47,14 @@
 		<div class="content_right">
 			<!-- 여기까지 기본세팅(흰 배경) -->
 
-			<div class="board_back">
-				<!-- 민트 배경 -->
-				<form action="noticeWrite" method="post">
-				<div class="board_todo1">
-					<!-- 흰 배경 -->
+			<div class="board_back" style="height: 95%;"> <!-- 민트 배경 -->
+				<form action="noticeWrite" method="post" style="width: 100%; height: 95%;">
+				<div class="board_todo1"> <!-- 흰 배경 -->
 					<h2 class="card_title">부점 공지사항 작성</h2>
 					<hr>
 						<div class="aa">
-							<input type="text" name="title" placeholder="제목을 작성하세요">
-							<textarea name="content" placeholder="공지사항을 작성하세요"></textarea>
+							<input class="aaa" type="text" name="title" placeholder="제목을 작성하세요">
+							<input class="aaa" style="height: 80%;" type="text" name="content" placeholder="공지사항을 작성하세요">
 						</div>
 				</div>
 
