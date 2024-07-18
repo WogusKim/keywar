@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import kb.keyboard.warrior.dto.ExchangeRate;
+import kb.keyboard.warrior.dto.ExchangeRateDTO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,13 +13,13 @@ import java.util.List;
 
 
 public class CurrencyRateCrawler {
-    public List<ExchangeRate> fetchExchangeRates() {
-        List<ExchangeRate> rates = new ArrayList<ExchangeRate>();
+    public List<ExchangeRateDTO> fetchExchangeRates() {
+        List<ExchangeRateDTO> rates = new ArrayList<ExchangeRateDTO>();
         try {
             Document doc = Jsoup.connect("https://obank.kbstar.com/quics?page=C101423#CP").get();
             Elements rows = doc.select("table.tType01 tbody tr");
             for (Element row : rows) {
-                ExchangeRate rate = new ExchangeRate();
+                ExchangeRateDTO rate = new ExchangeRateDTO();
                 rate.setCurrencyCode(row.select("td:eq(0) a").text());
                 rate.setCurrencyName(row.select("td:eq(1)").text());
                 rate.setStandardRate(parseDouble(row.select("td:eq(2)").text()));

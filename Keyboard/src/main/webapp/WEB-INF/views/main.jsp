@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,9 +22,9 @@
 				<div class="card_top">
 				    <div class="title_and_link div_underline">
 				        <h2 class="card_title">환율</h2>
-				        <a href="#" class="link-icon">바로가기</a>
+				        <a href="${pageContext.request.contextPath}/currency" class="link-icon">바로가기</a>
 				    </div>
-				    
+
 				    <div class="currency-body">
 						<div class="currency-row1">
 							<span>&nbsp;</span>
@@ -56,8 +57,70 @@
 	    		<div class="card_top">
 				    <div class="title_and_link div_underline">
 				        <h2 class="card_title">금리</h2>
-				        <a href="#" class="link-icon">바로가기</a>
+				        <a href="${pageContext.request.contextPath}/interestRate" class="link-icon">바로가기</a>
 				    </div>
+					<div class="rates_box">				  
+						<!-- Toggle -->
+						<div class="rate-toggle-buttons">
+						    <button class="toggle-button" onclick="toggleRateTable('mor')">MOR</button>
+						    <button class="toggle-button" onclick="toggleRateTable('cofix')">COFIX</button>
+						</div>
+						
+						<!-- Table -->
+						<table class="rate-table">
+						    <thead>
+						        <tr>
+						            <th class="rate-header"></th>
+						            <th class="rate-header">구분</th>
+						            <th class="rate-header">as-is</th>
+						            <th class="rate-header">to-be</th>
+						            <th class="rate-header">증감</th>
+						        </tr>
+						    </thead>
+						    <tbody id="morRates" class="rate-content">
+						        <tr>
+						            <th class="rate-header" rowspan="4">MOR</th>
+						            <td class="rate-cell">3개월</td>
+						            <td class="rate-cell">${mor[0].previousWeekRate}</td>
+						            <td class="rate-cell">${mor[0].currentWeekRate}</td>
+						            <td class="rate-cell">${mor[0].change}</td>
+						        </tr>
+						        <tr>
+						            <td class="rate-cell">6개월</td>
+						            <td class="rate-cell">${mor[1].previousWeekRate}</td>
+						            <td class="rate-cell">${mor[1].currentWeekRate}</td>
+						            <td class="rate-cell">${mor[1].change}</td>
+						        </tr>
+						        <tr>
+						            <td class="rate-cell">12개월</td>
+						            <td class="rate-cell">${mor[2].previousWeekRate}</td>
+						            <td class="rate-cell">${mor[2].currentWeekRate}</td>
+						            <td class="rate-cell">${mor[2].change}</td>
+						        </tr>
+						        <tr>
+						            <td class="rate-cell">60개월</td>
+						            <td class="rate-cell">${mor[5].previousWeekRate}</td>
+						            <td class="rate-cell">${mor[5].currentWeekRate}</td>
+						            <td class="rate-cell">${mor[5].change}</td>
+						        </tr>
+						    </tbody>
+						    <tbody id="cofixRates" class="rate-content" style="display: none;">
+						        <tr>
+						            <th class="rate-header" rowspan="2">COFIX</th>
+						            <td class="rate-cell">신규</td>
+						            <td class="rate-cell">${cofix[0].previousWeekRate}</td>
+						            <td class="rate-cell">${cofix[0].currentWeekRate}</td>
+						            <td class="rate-cell">${cofix[0].change}</td>
+						        </tr>
+						        <tr>
+						            <td class="rate-cell">신잔액</td>
+						            <td class="rate-cell">${cofix[2].previousWeekRate}</td>
+						            <td class="rate-cell">${cofix[2].currentWeekRate}</td>
+						            <td class="rate-cell">${cofix[2].change}</td>
+						        </tr>
+						    </tbody>
+						</table>
+					</div>
 		    	</div>
 	    	</div>
 	    </div>
@@ -279,6 +342,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+function toggleRateTable(table) {
+    const morRates = document.getElementById('morRates');
+    const cofixRates = document.getElementById('cofixRates');
+
+    if (table === 'mor') {
+        morRates.style.display = '';
+        cofixRates.style.display = 'none';
+    } else if (table === 'cofix') {
+        cofixRates.style.display = '';
+        morRates.style.display = 'none';
+    }
+}
+
 </script>
 </body>
 </html>
