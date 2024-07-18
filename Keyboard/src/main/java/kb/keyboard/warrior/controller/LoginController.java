@@ -27,64 +27,14 @@ public class LoginController {
 	
 	@Autowired
 	public SqlSession sqlSession;
-	/* RCommand command = null; */
-
 	
+
+	// Regarding login
 	@RequestMapping("/login")
 	public String login(HttpServletRequest request, Model model) {		
 		System.out.println("로그인 창 진입");
 		return "login/login";
 	}
-	@RequestMapping("/findPassword")
-	public String findPW(HttpServletRequest request, Model model) {
-		
-		return "login/findPassword";
-	}
-	
-	@RequestMapping("/findPwAction")
-	public String findPWAction(HttpServletRequest request, Model model) {
-		System.out.println("/findPwAction enter");
-		return "login/findPassword";
-	}
-	
-	@RequestMapping("/setNewPassword")
-	public String setNewPassword(HttpServletRequest request, Model model,  PageDTO pagedto, UserDTO userdto) {//
-		System.out.println("/setNewPassword enter  -->");
-		if(pagedto.getKey()!=null&&pagedto.getKey().equals("itiscorrect")) {
-			System.out.println(pagedto.getKey());
-			LoginDao dao = sqlSession.getMapper(LoginDao.class);
-			userdto = dao.isRightUserno(userdto.getUserno());
-			
-			System.out.println(userdto.getDeptno());  // 값 잘 가져왔는지 확인
-			
-			model.addAttribute("pagedto", pagedto);
-			model.addAttribute("userdto", userdto);
-			return "login/setPw";
-		}
-		System.out.println("잘못된 접근, 메인 화면으로 돌아갑니다.");
-		return "redirect:/";
-	}
-	
-	
-	
-	
-	@RequestMapping("/resetPassword")
-	public String resetPW(HttpServletRequest request, Model model) {
-		System.out.println("비밀번호 재설정 화면 진입");
-		return "login/resetPassword";
-	}
-	@RequestMapping("/resetPasswordAction")
-	public String resetPWAction(HttpServletRequest request, Model model, UserDTO dto) {
-		System.out.println("./resetPasswordAction");
-		System.out.println("비밀번호 바꿀 직원의 직원번호 : "+dto.getUserno());
-		LoginDao dao = sqlSession.getMapper(LoginDao.class);
-		dao.UpdatePw(dto.getUserno(), dto.getUserpw());
-		System.out.println("비밀번호 변경완료 ~~");
-		return "redirect:login";
-	}
-	
-	
-	
 	@RequestMapping("/loginAction")
 	public String loginAction(HttpServletRequest request, Model model, UserDTO dto, RedirectAttributes attributes) {
 		
@@ -117,6 +67,50 @@ public class LoginController {
 	}
 	
 	
+	
+	
+	
+	
+	// Regarding password reset 
+	@RequestMapping("/findPassword")
+	public String findPW(HttpServletRequest request, Model model) {
+		
+		return "login/findPassword";
+	}
+	
+	@RequestMapping("/setNewPassword")
+	public String setNewPassword(HttpServletRequest request, Model model,  PageDTO pagedto, UserDTO userdto) {//
+		System.out.println("/setNewPassword enter  -->");
+		if(pagedto.getKey()!=null&&pagedto.getKey().equals("itiscorrect")) {
+			System.out.println(pagedto.getKey());
+			LoginDao dao = sqlSession.getMapper(LoginDao.class);
+			userdto = dao.isRightUserno(userdto.getUserno());
+			
+			System.out.println(userdto.getDeptno());  // 값 잘 가져왔는지 확인
+			
+			model.addAttribute("pagedto", pagedto);
+			model.addAttribute("userdto", userdto);
+			return "login/setPw";
+		}
+		System.out.println("잘못된 접근, 메인 화면으로 돌아갑니다.");
+		return "redirect:/";
+	}
+	
+	@RequestMapping("/resetPassword")
+	public String resetPW(HttpServletRequest request, Model model) {
+		System.out.println("비밀번호 재설정 화면 진입");
+		return "login/resetPassword";
+	}
+	@RequestMapping("/resetPasswordAction")
+	public String resetPWAction(HttpServletRequest request, Model model, UserDTO dto) {
+		System.out.println("./resetPasswordAction");
+		System.out.println("비밀번호 바꿀 직원의 직원번호 : "+dto.getUserno());
+		LoginDao dao = sqlSession.getMapper(LoginDao.class);
+		dao.UpdatePw(dto.getUserno(), dto.getUserpw());
+		System.out.println("비밀번호 변경완료 ~~");
+		return "redirect:login";
+	}
+	// Regarding Asynchronous
 	@RequestMapping(value = "/findPw",  produces = "application/json", consumes = "application/json", method = RequestMethod.POST ) // , method=RequestMethod.POST // consumes = "application/json"	/*	*/
 	public @ResponseBody String findPw(@RequestBody  UserDTO userdto) throws Exception {
 		System.out.println("findPw 실행");
@@ -124,7 +118,6 @@ public class LoginController {
 		
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
 		UserDTO dto = dao.findPw(userdto);
-		
 
 		if (dto != null) {
 				System.out.println("모두 일치하는 직원정보 찾았다 ! 부서번호  : " +dto.getDeptno());
@@ -134,7 +127,6 @@ public class LoginController {
 		}
 
 		ObjectMapper mapper = new ObjectMapper();
-//		mapper.enable(SerializationFeature.INDENT_OUTPUT); //들여쓰기 설정(옵션)
 
 		String json = mapper.writeValueAsString(dto);
 		return json;
