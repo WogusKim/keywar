@@ -17,7 +17,11 @@
     <update id="UpdatePw">
     	update user set userpw = #{param2} where userno = #{param1}
     </update>
-    
+	<select id="getFavoriteCurrency" resultType="kb.keyboard.warrior.dto.ExchangeFavoriteDTO">
+	    SELECT userno, currency
+	    FROM favorite_currency
+	    WHERE userno = #{param}
+	</select>
     
     
 </mapper>

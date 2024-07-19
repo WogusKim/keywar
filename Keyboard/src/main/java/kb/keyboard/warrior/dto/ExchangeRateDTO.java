@@ -12,7 +12,8 @@ public class ExchangeRateDTO {
     private Double cashSell;
     private Double usdRate;
     private String rateChangeLink;
-    
+    private String isFavorite;
+
 	public String getCurrencyCode() {
 		return currencyCode;
 	}
@@ -67,7 +68,12 @@ public class ExchangeRateDTO {
 	public void setRateChangeLink(String rateChangeLink) {
 		this.rateChangeLink = rateChangeLink;
 	}
-    
+	public String getIsFavorite() {
+		return isFavorite;
+	}
+	public void setIsFavorite(String isFavorite) {
+		this.isFavorite = isFavorite;
+	}
     
    
     
