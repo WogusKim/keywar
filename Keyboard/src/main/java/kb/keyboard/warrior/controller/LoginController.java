@@ -72,6 +72,12 @@ public class LoginController {
 	
 	
 	// Regarding password reset 
+	@RequestMapping("/testPage")
+	public String testPage(HttpServletRequest request, Model model) {
+		
+		return "login/testPage";
+	}
+	// Regarding password reset 
 	@RequestMapping("/findPassword")
 	public String findPW(HttpServletRequest request, Model model) {
 		

@@ -84,6 +84,7 @@
 									class="deleteButton1">X</a>
 							</div>
 						</c:forEach>
+						
 					</div>
 				</div>
 				<a href="noticeForm">

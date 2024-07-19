@@ -157,6 +157,14 @@
     		<artifactId>spring-security-core</artifactId>
     		<version>${org.springframework-version}</version>
 		</dependency>
+		
+		<!-- 웹소켓 의존성 추가(알림) -->
+		<dependency>
+ 			<groupId>org.springframework</groupId>
+		    <artifactId>spring-websocket</artifactId>
+		    <version>4.3.25.RELEASE</version>
+		</dependency>
+		
 		<!-- 크롤링 처리 관련 -->
 		<dependency>
 		    <groupId>org.jsoup</groupId>
