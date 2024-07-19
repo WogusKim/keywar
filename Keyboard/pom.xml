@@ -159,11 +159,12 @@
 		</dependency>
 		
 		<!-- 웹소켓 의존성 추가(알림) -->
-		<dependency>
+		<!-- 스프링 프레임워크 3.1.1 미지원 (spring 4부터 사용가능)-->
+<!-- 		<dependency>
  			<groupId>org.springframework</groupId>
 		    <artifactId>spring-websocket</artifactId>
 		    <version>4.3.25.RELEASE</version>
-		</dependency>
+		</dependency> -->
 		
 		<!-- 크롤링 처리 관련 -->
 		<dependency>
