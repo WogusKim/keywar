@@ -22,6 +22,7 @@ public interface MemoDao {
 	public void deptmemoWrite(String deptno, String userno, String deptmemocontent);
 	
 	public void mymemoDelete(String memoid);
+	public void deptmemoDelete(String memoid);
 
 
 

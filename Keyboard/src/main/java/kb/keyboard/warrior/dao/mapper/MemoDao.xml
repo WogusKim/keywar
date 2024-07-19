@@ -56,6 +56,10 @@
 		DELETE FROM mymemo WHERE memoid = #{param1}
 	</delete>
 
+	<delete id="deptmemoDelete">
+		DELETE FROM deptmemo WHERE memoid = #{param1}
+	</delete>
+
 
 
 </mapper>

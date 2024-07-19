@@ -192,8 +192,9 @@ ul li {
 							<hr>
 							<ul>
 								<c:forEach items="${memo2}" var="dto2">
-									<li>${dto2.content}&nbsp;${dto2.createdate}<button
-											class="deleteButton">X</button></li>
+									<li>${dto2.content}&nbsp;${dto2.createdate}<a
+										href="./deptmemoDelete?memoid=${dto2.memoid}&deptno=${dto2.deptno}"
+										class="deleteButton">X</a></li>
 								</c:forEach>
 							</ul>
 						</div>
