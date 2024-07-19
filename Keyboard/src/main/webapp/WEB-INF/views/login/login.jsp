@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +16,7 @@ body {
 	text-align: center;
 }
 </style>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 const info =  document.getElementById('info');
 

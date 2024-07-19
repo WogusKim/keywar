@@ -78,7 +78,11 @@ display: flex;
 justify-content: space-between;
 min-width: 100px;
 }
+.aTag{
+    text-decoration: none;
+}
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var box1 = document.getElementById('switchBox1');
@@ -130,7 +134,8 @@ min-width: 100px;
 		<div class="board_currency">
 			<div class="board_currency_inner" style="background-color: #92D1BA; ">
 				<div class="outlineBox">
-					<div style="float: left;"><h2 class="card_title">마이페이지</h2></div><div style="float: right;"><img class="header_icon" style="margin-top: 5px;" src="${pageContext.request.contextPath}/resources/images/setting.png"></div>
+					<div style="float: left;"><h2 class="card_title">마이페이지</h2></div><div style="float: right;">
+						<a href="${pageContext.request.contextPath}/editProfile"> <img class="header_icon" style="margin-top: 5px;" src="${pageContext.request.contextPath}/resources/images/setting.png"> </a></div>
 				</div>
 				<hr>
 				<div class="outlineBox" style="height: 40%">
@@ -167,7 +172,26 @@ min-width: 100px;
 				<div class="white_Box" style="width: 100%; margin-top: 20px;"> 
 				<h3 class="stress_Text">내가 작성한 업무노트 </h3>
 				
-				
+				<table style="margin: 5px; width: 100%; margin-top: 20px;">
+				<colgroup>
+       	 			<col style="width: 65%;">
+       	 			<col style="width: 7%;">
+       	 			<col style="width: 7%;">
+       	 			<col style="width: 7%;">
+       	 			<col style="width: 7%;">
+       	 			<col style="width: 7%;">
+    			</colgroup>
+    			<tbody>
+				<tr><!-- 여기 DB에서 가져와서 포문 돌릴거임 !! -->
+				<td>제목</td>
+				<td><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/heart16.png"><a href="#" class="aTag"> 좋아요</a></td>
+				<td ><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/chat16.png"><a href="#" class="aTag"> 댓글</a></td> <!-- 여기 한글 대신 DB에 저장된 다른 숫자 등 보이게 할 거임. -->
+				<td><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/eyes.png"><a href="#" class="aTag"> 조회수</a></td>
+				<td style="text-align: center;"><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/edit.png"><a href="#" class="aTag"> 수정</a></td>
+				<td style="text-align: center;"><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/delete.png"><a href="#" class="aTag"> 삭제</a></td>
+				</tr>
+				</tbody>
+				</table>
 				
 				
 				
@@ -178,31 +202,6 @@ min-width: 100px;
 
 	</div>
 </div>
-
-<!-- 
-<script>
-	var box1 = document.getElementById('switchBox1');
-	var box2 = document.getElementById('switchBox2');
-	var box3 = document.getElementById('switchBox3');
-	
-	function btn1(){
-		box1.style.display ='block';
-		box2.style.display ='none';
-		box3.style.display ='none';
-	}
-	function btn2(){
-		box1.style.display ='none';
-		box2.style.display ='block';
-		box3.style.display ='none';
-	}
-	function btn3(){
-		box1.style.display ='none';
-		box2.style.display ='none';
-		box3.style.display ='block';
-	}
-
-</script> -->
-
 
 </body>
 </html>
