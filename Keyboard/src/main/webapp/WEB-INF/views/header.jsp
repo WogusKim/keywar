@@ -98,13 +98,13 @@
  <div class="header_iconArea">
     <a href="${pageContext.request.contextPath}/calendar"><img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/calendar.png"></a>
     <a href="${pageContext.request.contextPath}/mypage"> <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/mypage.png"></a>
-    <a href="#"  id="notifyButton"><img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/alarm.png"></a>
+    <a href="#;"  id="notifyButton"><img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/alarm.png"></a>
     <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/setting.png">
  </div>
 </div>
 </header>
     <div id="notificationBox" class="notification-box">
-    <div><a href="#" class="deleteButton" id="notifyButton1">X</a></div>
+    <div><a href="#;" class="deleteButton" id="notifyButton1">X</a></div>
         <p>새로운 알림이 있습니다!</p>
     </div>
 
