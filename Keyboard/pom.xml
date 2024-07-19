@@ -212,6 +212,12 @@
 		    <version>1.4</version> <!-- 버전은 필요에 따라 조정할 수 있음 -->
 		</dependency>
 		
+		<!-- json 의존성 추가 -->
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20210307</version>
+		</dependency>
 		
 	</dependencies>
     <build>
