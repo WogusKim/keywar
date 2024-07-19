@@ -19,6 +19,7 @@ import kb.keyboard.warrior.MorRateCrawler;
 import kb.keyboard.warrior.dao.LoginDao;
 import kb.keyboard.warrior.dao.MemoDao;
 import kb.keyboard.warrior.dao.ToDoDao;
+import kb.keyboard.warrior.dto.ExchangeFavoriteDTO;
 import kb.keyboard.warrior.dto.ExchangeRateDTO;
 import kb.keyboard.warrior.dto.MorCoffixDTO;
 import kb.keyboard.warrior.dto.MyMemoDTO;
@@ -42,17 +43,44 @@ public class HomeController {
 		
 		//추후 로그인 여부 체크 필요
 		
-		//환율데이터 처리
+
+		//환율즐겨찾기 확인
+		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
+		List<ExchangeFavoriteDTO> favorites = loginDao.getFavoriteCurrency(userno);
+		
+		String favoriteCurrency1 = "0"; // 기본값: 즐겨찾기가 없음
+		String favoriteCurrency2 = "0"; // 기본값: 즐겨찾기가 없음
+		String favoriteCurrency3 = "0"; // 기본값: 즐겨찾기가 없음
+
+		switch (favorites.size()) {
+		    case 0:
+		        // 즐겨찾기가 전혀 없는 경우, 디폴트 통화를 설정
+		        favoriteCurrency1 = "KOR";
+		        favoriteCurrency2 = "JPY";
+		        favoriteCurrency3 = "EUR";
+		        break;
+		    case 1:
+		        // 즐겨찾기가 하나인 경우
+		        favoriteCurrency1 = favorites.get(0).getCurrency();
+		        break;
+		    case 2:
+		        // 즐겨찾기가 두 개인 경우
+		        favoriteCurrency1 = favorites.get(0).getCurrency();
+		        favoriteCurrency2 = favorites.get(1).getCurrency();
+		        break;
+		    case 3:
+		        // 즐겨찾기가 세 개인 경우
+		        favoriteCurrency1 = favorites.get(0).getCurrency();
+		        favoriteCurrency2 = favorites.get(1).getCurrency();
+		        favoriteCurrency3 = favorites.get(2).getCurrency();
+		        break;
+		}
+		
+		
+		//환율 즐겨찾기 데이터 처리		
 	    CurrencyRateCrawler currencyCrawler = new CurrencyRateCrawler();
-	    List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeRates();
+	    List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeFavoriteRates(favoriteCurrency1, favoriteCurrency2, favoriteCurrency3);
 	    if (!currencyRates.isEmpty()) {
-	    	//추후 내가 즐겨찾기 한 3개의 데이터만 rates 로 해서 넘겨줘야함.
-	    	//List<ExchangeRate> ratesFavorite = new List<ExchangeRate>;
-	    	//ratesFavorite(0) = rate(i)
-	    	//ratesFavorite(0) = rate(j)
-	    	//ratesFavorite(0) = rate(k)
-	    	//내가 설정한 i j k 세개를 가져와야함.
-	    	//model.addAttribute("ratesFavorite", ratesFavorite);
 	        model.addAttribute("ratesFavorite", currencyRates);   
 	    } else {
 	        System.out.println("No rates found.");

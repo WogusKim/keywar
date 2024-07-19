@@ -39,7 +39,7 @@
 						    <span>매입</span>
 						    <span>기준환율</span>
 						</div>
-					    <c:forEach var="rate" items="${ratesFavorite}" begin="1" end="3">
+					    <c:forEach var="rate" items="${ratesFavorite}">
 					        <div class="currency-row">
 					            <img src="${pageContext.request.contextPath}/resources/images/flags/${rate.currencyCode}.png" alt="${rate.currencyCode}">
 					            <span>${rate.currencyCode}</span>
