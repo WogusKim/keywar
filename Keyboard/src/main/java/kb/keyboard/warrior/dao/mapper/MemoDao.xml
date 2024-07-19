@@ -7,8 +7,7 @@
 
 	<select id="todoView"
 		resultType="kb.keyboard.warrior.dto.TodoListDTO">
-		SELECT * FROM todolist WHERE userno = #{param1} AND isdone
-		= 0 ORDER BY
+		SELECT * FROM todolist WHERE userno = #{param1} ORDER BY
 		todoid
 	</select>
 
@@ -59,6 +58,11 @@
 	<delete id="deptmemoDelete">
 		DELETE FROM deptmemo WHERE memoid = #{param1}
 	</delete>
+
+	<insert id="todoWrite">
+		INSERT INTO todolist (userno, task) values
+		(#{param1}, #{param2})
+	</insert>
 
 
 

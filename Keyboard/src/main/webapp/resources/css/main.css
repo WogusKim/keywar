@@ -392,6 +392,8 @@ body{
     font-size: 14px; 
     position: absolute;
     right: 10px;
+    text-decoration: none !important;
+    display: inline-block; /* inline 요소의 기본 속성을 유지하여 위치 및 크기 조정 가능 */
 }
 
 .deleteButton:hover { /* yeji */

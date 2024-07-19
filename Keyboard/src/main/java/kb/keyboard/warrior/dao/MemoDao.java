@@ -23,6 +23,8 @@ public interface MemoDao {
 	
 	public void mymemoDelete(String memoid);
 	public void deptmemoDelete(String memoid);
+	
+	public void todoWrite(String userno, String task);
 
 
 
