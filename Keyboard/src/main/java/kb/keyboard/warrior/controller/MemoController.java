@@ -20,6 +20,7 @@ import kb.keyboard.warrior.dto.ScheduleDTO;
 import kb.keyboard.warrior.memo.command.MemoCommand;
 import kb.keyboard.warrior.memo.command.MemoViewCommand;
 import kb.keyboard.warrior.memo.command.TodoViewCommand;
+import kb.keyboard.warrior.memo.command.deptmemoDeleteCommand;
 import kb.keyboard.warrior.memo.command.deptmemoWriteCommand;
 import kb.keyboard.warrior.memo.command.mymemoDeleteCommand;
 import kb.keyboard.warrior.memo.command.mymemoWriteCommand;
@@ -229,7 +230,24 @@ public class MemoController {
 			mymemoDeleteCommand command = new mymemoDeleteCommand();
 			command.execute(model,userno);
 		} else {
-			System.out.println("User number number not found in session.");
+			System.out.println("User number not found in session.");
+		}
+		return "redirect:memo";
+	}
+	
+	@RequestMapping("/deptmemoDelete")
+	public String deptmemoDelete(HttpSession session, HttpServletRequest request, Model model) {
+		System.out.println("deptmemoDelete()");
+
+		String deptno = (String) session.getAttribute("deptno"); //세션에서 꺼내와.
+		System.out.println("부점 메모 삭제 어디부점이야? " + deptno); //세션확인
+		model.addAttribute("request", request); //리퀘스트로 담아온 인덱스넘버랑 부서번호 모델에 넣어.
+
+		if (deptno != null) {
+			deptmemoDeleteCommand command = new deptmemoDeleteCommand();
+			command.execute(model,deptno);
+		} else {
+			System.out.println("Dept number not found in session.");
 		}
 		return "redirect:memo";
 	}
