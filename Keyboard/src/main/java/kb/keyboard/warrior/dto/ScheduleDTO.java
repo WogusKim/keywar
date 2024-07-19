@@ -59,19 +59,19 @@ public class ScheduleDTO {
      this.content = content;
  }
 
- public String getstartDate() {
+ public String getStartDate() {
      return startDate;
  }
 
- public void setstartDate(String startDate) {
+ public void setStartDate(String startDate) {
      this.startDate = startDate;
  }
 
- public String getendDate() {
+ public String getEndDate() {
      return endDate;
  }
 
- public void setendDate(String endDate) {
+ public void setEndDate(String endDate) {
      this.endDate = endDate;
  }
 
