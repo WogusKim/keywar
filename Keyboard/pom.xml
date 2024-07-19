@@ -154,22 +154,18 @@
         <!-- Spring-Security -->
 		<dependency>
     		<groupId>org.springframework.security</groupId>
-    		<artifactId>spring-security-web</artifactId>
+    		<artifactId>spring-security-core</artifactId>
     		<version>${org.springframework-version}</version>
 		</dependency>
-		<dependency>
-    		<groupId>org.springframework.security</groupId>
-    		<artifactId>spring-security-config</artifactId>
-    		<version>${org.springframework-version}</version>
-		</dependency>
- 
-		<!-- Spring-Security-Taglibs -->
-		<dependency>
-		    <groupId>org.springframework.security</groupId>
-    		<artifactId>spring-security-taglibs</artifactId>
-    		<version>${org.springframework-version}</version>
-		</dependency>
-        
+		
+		<!-- 웹소켓 의존성 추가(알림) -->
+		<!-- 스프링 프레임워크 3.1.1 미지원 (spring 4부터 사용가능)-->
+<!-- 		<dependency>
+ 			<groupId>org.springframework</groupId>
+		    <artifactId>spring-websocket</artifactId>
+		    <version>4.3.25.RELEASE</version>
+		</dependency> -->
+		
 		<!-- 크롤링 처리 관련 -->
 		<dependency>
 		    <groupId>org.jsoup</groupId>

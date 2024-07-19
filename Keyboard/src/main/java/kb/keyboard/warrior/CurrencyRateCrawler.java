@@ -13,7 +13,7 @@ import java.util.List;
 
 
 public class CurrencyRateCrawler {
-    public List<ExchangeRateDTO> fetchExchangeRates() {
+    public List<ExchangeRateDTO> fetchExchangeRates(String favoriteCurrency1, String favoriteCurrency2, String favoriteCurrency3) {
         List<ExchangeRateDTO> rates = new ArrayList<ExchangeRateDTO>();
         try {
             Document doc = Jsoup.connect("https://obank.kbstar.com/quics?page=C101423#CP").get();
@@ -29,7 +29,46 @@ public class CurrencyRateCrawler {
                 rate.setCashSell(parseDouble(row.select("td:eq(6)").text()));
                 rate.setUsdRate(parseDouble(row.select("td:eq(7)").text()));
                 rate.setRateChangeLink(row.select("td:eq(8) a").attr("href"));
+                
+                if (rate.getCurrencyCode().equals(favoriteCurrency1) ||
+                	rate.getCurrencyCode().equals(favoriteCurrency2) ||
+                	rate.getCurrencyCode().equals(favoriteCurrency3)) 
+                {
+                	rate.setIsFavorite("1");
+                }
+                
                 rates.add(rate);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return rates;
+    }
+    
+    public List<ExchangeRateDTO> fetchExchangeFavoriteRates(String favoriteCurrency1, String favoriteCurrency2, String favoriteCurrency3) {
+        List<ExchangeRateDTO> rates = new ArrayList<ExchangeRateDTO>();
+        try {
+            Document doc = Jsoup.connect("https://obank.kbstar.com/quics?page=C101423#CP").get();
+            Elements rows = doc.select("table.tType01 tbody tr");
+            for (Element row : rows) {
+                ExchangeRateDTO rate = new ExchangeRateDTO();
+                rate.setCurrencyCode(row.select("td:eq(0) a").text());
+                rate.setCurrencyName(row.select("td:eq(1)").text());
+                rate.setStandardRate(parseDouble(row.select("td:eq(2)").text()));
+                rate.setTransferSend(parseDouble(row.select("td:eq(3)").text()));
+                rate.setTransferReceive(parseDouble(row.select("td:eq(4)").text()));
+                rate.setCashBuy(parseDouble(row.select("td:eq(5)").text()));
+                rate.setCashSell(parseDouble(row.select("td:eq(6)").text()));
+                rate.setUsdRate(parseDouble(row.select("td:eq(7)").text()));
+                rate.setRateChangeLink(row.select("td:eq(8) a").attr("href"));
+                
+                if (rate.getCurrencyCode().equals(favoriteCurrency1) ||
+                	rate.getCurrencyCode().equals(favoriteCurrency2) ||
+                	rate.getCurrencyCode().equals(favoriteCurrency3)) 
+                {
+                	rates.add(rate);
+                	System.out.println("¡Ò∞‹√£±‚" + rate.getCurrencyCode());
+                }          
             }
         } catch (IOException e) {
             e.printStackTrace();

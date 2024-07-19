@@ -2,7 +2,9 @@ package kb.keyboard.warrior.controller;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,9 +21,12 @@ import kb.keyboard.warrior.MorRateCrawler;
 import kb.keyboard.warrior.dao.LoginDao;
 import kb.keyboard.warrior.dao.MemoDao;
 import kb.keyboard.warrior.dao.ToDoDao;
+import kb.keyboard.warrior.dto.ExchangeFavoriteDTO;
 import kb.keyboard.warrior.dto.ExchangeRateDTO;
+import kb.keyboard.warrior.dto.MenuDTO;
 import kb.keyboard.warrior.dto.MorCoffixDTO;
 import kb.keyboard.warrior.dto.MyMemoDTO;
+import kb.keyboard.warrior.dto.NoticeDTO;
 import kb.keyboard.warrior.dto.TodoListDTO;
 
 /**
@@ -42,17 +47,49 @@ public class HomeController {
 		
 		//추후 로그인 여부 체크 필요
 		
-		//환율데이터 처리
+		//사이드바 (메뉴데이터)
+		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
+		List<MenuDTO> menus = loginDao.getMenus(userno);
+	    setMenuDepth(menus);
+		model.addAttribute("menus", menus);
+		
+
+		//환율즐겨찾기 확인
+		List<ExchangeFavoriteDTO> favorites = loginDao.getFavoriteCurrency(userno);
+		
+		String favoriteCurrency1 = "0"; // 기본값: 즐겨찾기가 없음
+		String favoriteCurrency2 = "0"; // 기본값: 즐겨찾기가 없음
+		String favoriteCurrency3 = "0"; // 기본값: 즐겨찾기가 없음
+
+		switch (favorites.size()) {
+		    case 0:
+		        // 즐겨찾기가 전혀 없는 경우, 디폴트 통화를 설정
+		        favoriteCurrency1 = "USD";
+		        favoriteCurrency2 = "JPY";
+		        favoriteCurrency3 = "EUR";
+		        break;
+		    case 1:
+		        // 즐겨찾기가 하나인 경우
+		        favoriteCurrency1 = favorites.get(0).getCurrency();
+		        break;
+		    case 2:
+		        // 즐겨찾기가 두 개인 경우
+		        favoriteCurrency1 = favorites.get(0).getCurrency();
+		        favoriteCurrency2 = favorites.get(1).getCurrency();
+		        break;
+		    case 3:
+		        // 즐겨찾기가 세 개인 경우
+		        favoriteCurrency1 = favorites.get(0).getCurrency();
+		        favoriteCurrency2 = favorites.get(1).getCurrency();
+		        favoriteCurrency3 = favorites.get(2).getCurrency();
+		        break;
+		}
+		
+		
+		//환율 즐겨찾기 데이터 처리		
 	    CurrencyRateCrawler currencyCrawler = new CurrencyRateCrawler();
-	    List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeRates();
+	    List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeFavoriteRates(favoriteCurrency1, favoriteCurrency2, favoriteCurrency3);
 	    if (!currencyRates.isEmpty()) {
-	    	//추후 내가 즐겨찾기 한 3개의 데이터만 rates 로 해서 넘겨줘야함.
-	    	//List<ExchangeRate> ratesFavorite = new List<ExchangeRate>;
-	    	//ratesFavorite(0) = rate(i)
-	    	//ratesFavorite(0) = rate(j)
-	    	//ratesFavorite(0) = rate(k)
-	    	//내가 설정한 i j k 세개를 가져와야함.
-	    	//model.addAttribute("ratesFavorite", ratesFavorite);
 	        model.addAttribute("ratesFavorite", currencyRates);   
 	    } else {
 	        System.out.println("No rates found.");
@@ -87,6 +124,10 @@ public class HomeController {
 	    MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
 	    List<MyMemoDTO> memoList = memoDao.memoView1(userno);
 	    model.addAttribute("memoList", memoList);
+	    
+	    //Notice Data
+	    List<NoticeDTO> noticeList = memoDao.noticeView(deptno);
+	    model.addAttribute("noticeList", noticeList);
 	    	    
 	    return "main";
 	}
@@ -94,6 +135,27 @@ public class HomeController {
 	@RequestMapping("/noticeForm")
 	public String noticeForm() {		
 		return "noticeForm";
+	}
+
+	public void setMenuDepth(List<MenuDTO> menus) {
+	    // 메뉴 ID와 메뉴 객체를 매핑하는 Map을 생성
+	    Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
+	    for (MenuDTO menu : menus) {
+	        menuMap.put(menu.getId(), menu);
+	    }
+
+	    // 각 메뉴 항목의 depth 계산
+	    for (MenuDTO menu : menus) {
+	        int depth = 0;
+	        Integer parentId = menu.getParentId();
+	        while (parentId != null) {
+	            MenuDTO parent = menuMap.get(parentId);
+	            if (parent == null) break;
+	            depth++;
+	            parentId = parent.getParentId();
+	        }
+	        menu.setDepth(depth);
+	    }
 	}
 
 }

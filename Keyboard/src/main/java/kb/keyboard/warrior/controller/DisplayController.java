@@ -3,22 +3,31 @@ package kb.keyboard.warrior.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kb.keyboard.warrior.CoffixRateCrawler;
 import kb.keyboard.warrior.CurrencyRateCrawler;
 import kb.keyboard.warrior.MorRateCrawler;
 import kb.keyboard.warrior.SoosinRateCrawler;
 import kb.keyboard.warrior.SoosinRateCrawler2;
+import kb.keyboard.warrior.dao.DisplayDao;
+import kb.keyboard.warrior.dao.LoginDao;
+import kb.keyboard.warrior.dao.ToDoDao;
+import kb.keyboard.warrior.dto.ExchangeFavoriteDTO;
 import kb.keyboard.warrior.dto.ExchangeRateDTO;
 import kb.keyboard.warrior.dto.MorCoffixDTO;
 import kb.keyboard.warrior.dto.SoosinRateDTO;
 import kb.keyboard.warrior.dto.SoosinRateDTO2;
+import kb.keyboard.warrior.dto.TodoListDTO;
 
 @Controller
 public class DisplayController {
@@ -27,10 +36,43 @@ public class DisplayController {
 	public SqlSession sqlSession;
 	
 	@RequestMapping("/currency")
-	public String currency(Model model) {	
+	public String currency(Model model, HttpSession session) {	
+		
+		String userno = (String) session.getAttribute("userno");
+		
+		//환율즐겨찾기 확인
+		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
+		List<ExchangeFavoriteDTO> favorites = loginDao.getFavoriteCurrency(userno);
+		String favoriteCurrency1 = "0"; // 기본값: 즐겨찾기가 없음
+		String favoriteCurrency2 = "0"; // 기본값: 즐겨찾기가 없음
+		String favoriteCurrency3 = "0"; // 기본값: 즐겨찾기가 없음
+
+		switch (favorites.size()) {
+		    case 0:
+		        // 즐겨찾기가 전혀 없는 경우, 디폴트 통화를 설정
+		        //favoriteCurrency1 = "KOR";
+		        //favoriteCurrency2 = "JPY";
+		        //favoriteCurrency3 = "EUR";
+		        break;
+		    case 1:
+		        // 즐겨찾기가 하나인 경우
+		        favoriteCurrency1 = favorites.get(0).getCurrency();
+		        break;
+		    case 2:
+		        // 즐겨찾기가 두 개인 경우
+		        favoriteCurrency1 = favorites.get(0).getCurrency();
+		        favoriteCurrency2 = favorites.get(1).getCurrency();
+		        break;
+		    case 3:
+		        // 즐겨찾기가 세 개인 경우
+		        favoriteCurrency1 = favorites.get(0).getCurrency();
+		        favoriteCurrency2 = favorites.get(1).getCurrency();
+		        favoriteCurrency3 = favorites.get(2).getCurrency();
+		        break;
+		}
 		
 	    CurrencyRateCrawler currencyCrawler = new CurrencyRateCrawler();
-	    List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeRates();
+	    List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeRates(favoriteCurrency1, favoriteCurrency2, favoriteCurrency3);
 	    if (!currencyRates.isEmpty()) {
 	        model.addAttribute("rates", currencyRates);   
 	    } else {
@@ -76,5 +118,32 @@ public class DisplayController {
 	    
 		return "display/interestRate";
 	}
+	
+	@RequestMapping(value = "/favoriteCurrency",  produces = "application/json", consumes = "application/json", method = RequestMethod.POST )
+	public @ResponseBody String findPw(@RequestBody ExchangeRateDTO exchangeDto, HttpSession session) throws Exception {
+		
+		String userno = (String) session.getAttribute("userno");
+		String currencyCode = exchangeDto.getCurrencyCode();
+		String isFavorite = exchangeDto.getIsFavorite();
+
+		System.out.println(currencyCode);
+		System.out.println(isFavorite);
+		System.out.println(userno);
+		
+		DisplayDao displayDao = sqlSession.getMapper(DisplayDao.class);
+		
+		
+		if (isFavorite.equals("1")) {
+			//즐겨찾기 추가로직
+			displayDao.favoriteCurrency(userno, currencyCode);
+			
+		} else {
+			//즐겨찾기 해제로직
+			displayDao.unFavoriteCurrency(userno, currencyCode);
+		}
+
+		return "{\"status\":\"success\"}";
+	}
+
 	
 }

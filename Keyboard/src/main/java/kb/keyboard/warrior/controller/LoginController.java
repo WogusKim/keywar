@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 //import com.fasterxml.jackson.databind.SerializationFeature;
 import kb.keyboard.warrior.dao.LoginDao;
 import kb.keyboard.warrior.dto.*;
+import kb.keyboard.warrior.util.PasswordEncoderUtil;
 
 
 
@@ -40,30 +41,29 @@ public class LoginController {
 		
 		System.out.println("입력한 직원번호 : "+ dto.getUserno());
 		System.out.println("입력한 비밀번호 : "+ dto.getUserpw());
+		String encodedPassword  = PasswordEncoderUtil.encodePassword(dto.getUserpw());
 		
+		UserDTO fromDbDto = new UserDTO();
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
-		UserDTO list = dao.login(dto.getUserno(), dto.getUserpw());
-		if(list!=null) {
+		fromDbDto = dao.isRightUserno(dto.getUserno());
+		if(fromDbDto == null) {
+			System.out.println("잘못된 직원번호입니다.");
+			return "redirect:login";
+		}else if(dto.getUserno().equals(fromDbDto.getUserpw())) {
+			System.out.println("비밀번호 초기상태 ! 비밀번호 변경이 필요합니다.");
+			attributes.addFlashAttribute("userno", fromDbDto);
+			return "redirect:/resetPassword";
+		}else if(PasswordEncoderUtil.matches(dto.getUserpw(), fromDbDto.getUserpw())) {
+			System.out.println("로그인 성공");
 			HttpSession session = request.getSession();
-			session.setAttribute("userno", list.getUserno()); // 세션에 값 넣기
-			session.setAttribute("deptno", list.getDeptno()); // 세션에 값 넣기
-			System.out.println("로그인 성공!  사번 : " +list.getUserno());
-			if(list.getUserpw().equals(list.getUserno())) {
-				System.out.println("비밀번호 초기상태 ! 비밀번호 변경이 필요합니다.");
-				attributes.addFlashAttribute("userno", list);
-				return "redirect:/resetPassword";
-			}
-			
+			session.setAttribute("userno", fromDbDto.getUserno()); // 세션에 값 넣기
+			session.setAttribute("deptno", fromDbDto.getDeptno()); // 세션에 값 넣기
 			return "redirect:/";
 		}else {
-			if(dao.isRightUserno(dto.getUserno())!=null) {
-				System.out.println("비밀번호가 잘못되었습니다.");
-				return "redirect:login";
-			}else {
-				System.out.println("잘못된 직원번호입니다.");
-				return "redirect:login";
-			}
+			System.out.println("직원번호는 있는데 비번 오류");
+			return "redirect:login";
 		}
+	
 	}
 	
 	
@@ -71,6 +71,12 @@ public class LoginController {
 	
 	
 	
+	// Regarding password reset 
+	@RequestMapping("/testPage")
+	public String testPage(HttpServletRequest request, Model model) {
+		
+		return "login/testPage";
+	}
 	// Regarding password reset 
 	@RequestMapping("/findPassword")
 	public String findPW(HttpServletRequest request, Model model) {
@@ -82,11 +88,9 @@ public class LoginController {
 	public String setNewPassword(HttpServletRequest request, Model model,  PageDTO pagedto, UserDTO userdto) {//
 		System.out.println("/setNewPassword enter  -->");
 		if(pagedto.getKey()!=null&&pagedto.getKey().equals("itiscorrect")) {
-			System.out.println(pagedto.getKey());
 			LoginDao dao = sqlSession.getMapper(LoginDao.class);
 			userdto = dao.isRightUserno(userdto.getUserno());
-			
-			System.out.println(userdto.getDeptno());  // 값 잘 가져왔는지 확인
+			System.out.println(userdto.getDeptno());  // 값 잘 가져왔는지 확인 비밀번호 바꾸기로 한 사람이 DB에 있는 지 확인
 			
 			model.addAttribute("pagedto", pagedto);
 			model.addAttribute("userdto", userdto);
@@ -106,7 +110,9 @@ public class LoginController {
 		System.out.println("./resetPasswordAction");
 		System.out.println("비밀번호 바꿀 직원의 직원번호 : "+dto.getUserno());
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
-		dao.UpdatePw(dto.getUserno(), dto.getUserpw());
+		String encodedPassword  = PasswordEncoderUtil.encodePassword(dto.getUserpw());
+		
+		dao.UpdatePw(dto.getUserno(), encodedPassword);
 		System.out.println("비밀번호 변경완료 ~~");
 		return "redirect:login";
 	}

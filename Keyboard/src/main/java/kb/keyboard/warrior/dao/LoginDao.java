@@ -10,4 +10,7 @@ public interface LoginDao {
 	public UserDTO findPw(UserDTO dto);
 	public UserDTO isRightUserno(String userno);
 	public void UpdatePw(String id, String pw);
+	public List<ExchangeFavoriteDTO> getFavoriteCurrency(String userno);
+	public List<MenuDTO> getMenus(String userno);
+
 }
