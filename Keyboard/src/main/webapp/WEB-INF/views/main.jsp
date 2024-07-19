@@ -14,6 +14,7 @@
 <meta charset="UTF-8">
 <title>메인 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+<<<<<<< HEAD
 <style>
 .flag {
     display: inline-block;
@@ -164,6 +165,7 @@
     background-position: -160px -704px;
 }
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 

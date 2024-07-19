@@ -148,6 +148,24 @@
             <version>2.9.8 </version>
         </dependency> -->
         <!-- 비동기 처리관련  -->
+        
+        
+        <!--  비밀번호 암호화 관련 -->
+        <!-- Spring-Security -->
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-core</artifactId>
+    		<version>${org.springframework-version}</version>
+		</dependency>
+		
+		<!-- 웹소켓 의존성 추가(알림) -->
+		<!-- 스프링 프레임워크 3.1.1 미지원 (spring 4부터 사용가능)-->
+<!-- 		<dependency>
+ 			<groupId>org.springframework</groupId>
+		    <artifactId>spring-websocket</artifactId>
+		    <version>4.3.25.RELEASE</version>
+		</dependency> -->
+		
 		<!-- 크롤링 처리 관련 -->
 		<dependency>
 		    <groupId>org.jsoup</groupId>

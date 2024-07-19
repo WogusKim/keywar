@@ -3,17 +3,18 @@ package kb.keyboard.warrior.dto;
 
 //UserDTO.java
 public class UserDTO {
-    private String userno;    // 사용자번호
-    private String username;  // 이름
-    private String userpw;    // 비밀번호
-    private String deptno;    // 부서번호
-    private String teamno;    // 팀번호
-    private String phoneno;   // 전화번호
-    private String mail;      // 이메일
-    private String hiredate;  // 입사일
-    private String gender;    // 성별
-    private String birthdate; // 생년월일
-    private String regdate;   // 등록일
+    private String userno;    // �궗�슜�옄踰덊샇
+    private String username;  // �씠由�
+    private String userpw;    // 鍮꾨�踰덊샇
+    private String deptno;    // 遺��꽌踰덊샇
+    private String teamno;    // ��踰덊샇
+    private String phoneno;   // �쟾�솕踰덊샇
+    private String mail;      // �씠硫붿씪
+    private String hiredate;  // �엯�궗�씪
+    private String gender;    // �꽦蹂�
+    private String birthdate; // �깮�뀈�썡�씪
+    private String regdate;   // �벑濡앹씪
+    private String nickname;   // �벑濡앹씪
     
  public UserDTO() {
  }
@@ -32,7 +33,15 @@ public class UserDTO {
      this.regdate = regdate;
  }
 
- // Getters and Setters
+
+// Getters and Setters
+ public String getNickname() {
+	 return nickname;
+ }
+ 
+ public void setNickname(String nickname) {
+	 this.nickname = nickname;
+ }
  public String getUserno() {
      return userno;
  }
