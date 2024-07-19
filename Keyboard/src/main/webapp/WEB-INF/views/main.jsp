@@ -14,7 +14,6 @@
 <meta charset="UTF-8">
 <title>메인 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
-<<<<<<< HEAD
 <style>
 .flag {
     display: inline-block;
