@@ -47,7 +47,7 @@ public class HomeController {
 		
 		//추후 로그인 여부 체크 필요
 		
-		//사이드바 (메뉴)
+		//사이드바 (메뉴데이터)
 		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
 		List<MenuDTO> menus = loginDao.getMenus(userno);
 	    setMenuDepth(menus);
