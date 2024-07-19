@@ -33,6 +33,7 @@ import kb.keyboard.warrior.memo.command.mymemoWriteCommand;
 import kb.keyboard.warrior.memo.command.noticeDeleteCommand;
 import kb.keyboard.warrior.memo.command.noticeViewCommand;
 import kb.keyboard.warrior.memo.command.noticeWriteCommand;
+import kb.keyboard.warrior.memo.command.todoWriteCommand;
 import kb.keyboard.warrior.util.Constant;
 
 @Controller
@@ -280,5 +281,22 @@ public class MemoController {
 			System.out.println("Dept number not found in session.");
 		}
 		return "redirect:memo";
+	}
+	
+	@RequestMapping("/todoWrite") // todo write action
+	public String todoWrite(HttpSession session, HttpServletRequest request, Model model) {
+		System.out.println("todoWrite()");
+
+		String userno = (String) session.getAttribute("userno");
+		System.out.println("todo 액션 로그인 된 사람 누구야? " + userno);
+		model.addAttribute("request", request);
+		model.addAttribute("userno", userno);
+		if (userno != null) {
+			command = new todoWriteCommand();
+			command.execute(model);
+		} else {
+			System.out.println("User number number not found in session.");
+		}
+		return "redirect:todo";
 	}
 }
