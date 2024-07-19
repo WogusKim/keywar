@@ -2,7 +2,9 @@ package kb.keyboard.warrior.controller;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -21,8 +23,10 @@ import kb.keyboard.warrior.dao.MemoDao;
 import kb.keyboard.warrior.dao.ToDoDao;
 import kb.keyboard.warrior.dto.ExchangeFavoriteDTO;
 import kb.keyboard.warrior.dto.ExchangeRateDTO;
+import kb.keyboard.warrior.dto.MenuDTO;
 import kb.keyboard.warrior.dto.MorCoffixDTO;
 import kb.keyboard.warrior.dto.MyMemoDTO;
+import kb.keyboard.warrior.dto.NoticeDTO;
 import kb.keyboard.warrior.dto.TodoListDTO;
 
 /**
@@ -43,9 +47,14 @@ public class HomeController {
 		
 		//추후 로그인 여부 체크 필요
 		
+		//사이드바 (메뉴)
+		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
+		List<MenuDTO> menus = loginDao.getMenus(userno);
+	    setMenuDepth(menus);
+		model.addAttribute("menus", menus);
+		
 
 		//환율즐겨찾기 확인
-		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
 		List<ExchangeFavoriteDTO> favorites = loginDao.getFavoriteCurrency(userno);
 		
 		String favoriteCurrency1 = "0"; // 기본값: 즐겨찾기가 없음
@@ -55,7 +64,7 @@ public class HomeController {
 		switch (favorites.size()) {
 		    case 0:
 		        // 즐겨찾기가 전혀 없는 경우, 디폴트 통화를 설정
-		        favoriteCurrency1 = "KOR";
+		        favoriteCurrency1 = "USD";
 		        favoriteCurrency2 = "JPY";
 		        favoriteCurrency3 = "EUR";
 		        break;
@@ -115,6 +124,10 @@ public class HomeController {
 	    MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
 	    List<MyMemoDTO> memoList = memoDao.memoView1(userno);
 	    model.addAttribute("memoList", memoList);
+	    
+	    //Notice Data
+	    List<NoticeDTO> noticeList = memoDao.noticeView(deptno);
+	    model.addAttribute("noticeList", noticeList);
 	    	    
 	    return "main";
 	}
@@ -122,6 +135,27 @@ public class HomeController {
 	@RequestMapping("/noticeForm")
 	public String noticeForm() {		
 		return "noticeForm";
+	}
+
+	public void setMenuDepth(List<MenuDTO> menus) {
+	    // 메뉴 ID와 메뉴 객체를 매핑하는 Map을 생성
+	    Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
+	    for (MenuDTO menu : menus) {
+	        menuMap.put(menu.getId(), menu);
+	    }
+
+	    // 각 메뉴 항목의 depth 계산
+	    for (MenuDTO menu : menus) {
+	        int depth = 0;
+	        Integer parentId = menu.getParentId();
+	        while (parentId != null) {
+	            MenuDTO parent = menuMap.get(parentId);
+	            if (parent == null) break;
+	            depth++;
+	            parentId = parent.getParentId();
+	        }
+	        menu.setDepth(depth);
+	    }
 	}
 
 }

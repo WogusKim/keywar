@@ -7,6 +7,11 @@
 <meta charset="UTF-8">
 <title>사이드바</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
 <style>
 .menu-tree ul {
     list-style: none;
@@ -27,35 +32,29 @@
 	<div class="content_left">
 
 		<div class="menu-tree">
-		    <ul>
-		        <li class="menu-item">Menu 1
-		            <ul class="submenu">
-		                <li class="menu-item">Submenu 1-1
-		                    <ul class="submenu">
-		                        <li>Submenu 1-1-1</li>
-		                        <li>Submenu 1-1-2</li>
-		                    </ul>
-		                </li>
-		                <li>Submenu 1-2</li>
-		            </ul>
-		        </li>
-		        <li class="menu-item">Menu 2
-		            <ul class="submenu">
-		                <li>Submenu 2-1</li>
-		                <li>Submenu 2-2</li>
-		            </ul>
-		        </li>
-		        <li>Menu 3</li>
-		    </ul>
+
+			
+			<ul id="sortable">
+			    <c:forEach var="menu" items="${menus}">
+			        <li class="ui-state-default" style="margin-left: ${menu.depth * 20}px;">${menu.title}</li>
+			    </c:forEach>
+			</ul>
+
 		</div>
 
 	</div>
+	
 <script>
-document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', function(event) {
-        this.classList.toggle('closed');
-        event.stopPropagation(); // 상위 메뉴의 이벤트가 발생하지 않도록 함
+$(function() {
+    $("#sortable").sortable({
+        placeholder: "ui-state-highlight",
+        update: function(event, ui) {
+            var newOrder = $(this).sortable('toArray', {attribute: 'data-id'});
+            // AJAX를 사용하여 서버에 새 순서 전송
+            $.post('/update-menu-order', {order: newOrder});
+        }
     });
+    $("#sortable").disableSelection();
 });
 </script>
 </body>

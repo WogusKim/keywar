@@ -50,9 +50,9 @@ public class DisplayController {
 		switch (favorites.size()) {
 		    case 0:
 		        // 즐겨찾기가 전혀 없는 경우, 디폴트 통화를 설정
-		        favoriteCurrency1 = "KOR";
-		        favoriteCurrency2 = "JPY";
-		        favoriteCurrency3 = "EUR";
+		        //favoriteCurrency1 = "KOR";
+		        //favoriteCurrency2 = "JPY";
+		        //favoriteCurrency3 = "EUR";
 		        break;
 		    case 1:
 		        // 즐겨찾기가 하나인 경우

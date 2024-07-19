@@ -22,6 +22,19 @@
 	    FROM favorite_currency
 	    WHERE userno = #{param}
 	</select>
-    
-    
+	<select id="getMenus" parameterType="String" resultType="kb.keyboard.warrior.dto.MenuDTO">
+        WITH RECURSIVE MenuTree AS (
+            SELECT id, parent_id, title, link, menu_type, menu_order, userno, 1 AS depth
+            FROM Menu
+            WHERE parent_id IS NULL AND userno = #{userno}
+            UNION ALL
+            SELECT m.id, m.parent_id, m.title, m.link, m.menu_type, m.menu_order, m.userno, mt.depth + 1
+            FROM Menu m
+            JOIN MenuTree mt ON m.parent_id = mt.id
+            WHERE m.userno = #{userno}
+        )
+        SELECT * FROM MenuTree
+        ORDER BY depth, menu_order;
+    </select>
+
 </mapper>
