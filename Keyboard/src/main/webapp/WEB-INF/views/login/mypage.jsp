@@ -83,7 +83,42 @@ min-width: 100px;
 }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var box1 = document.getElementById('switchBox1');
+        var box2 = document.getElementById('switchBox2');
+        var box3 = document.getElementById('switchBox3');
+        var buttons = document.querySelectorAll('.mypageButton');
 
+        function updateButtonStyles(activeButton) {
+            buttons.forEach(function(button) {
+                button.classList.remove('pushedButton');
+            });
+            activeButton.classList.add('pushedButton');
+        }
+        function btn1() {
+            box1.style.display = 'block';
+            box2.style.display = 'none';
+            box3.style.display = 'none';
+            updateButtonStyles(this);
+        }
+        function btn2() {
+            box1.style.display = 'none';
+            box2.style.display = 'block';
+            box3.style.display = 'none';
+            updateButtonStyles(this);
+        }
+        function btn3() {
+            box1.style.display = 'none';
+            box2.style.display = 'none';
+            box3.style.display = 'block';
+            updateButtonStyles(this);
+        }
+        document.querySelector('.mypageButton:nth-child(1)').addEventListener('click', btn1);
+        document.querySelector('.mypageButton:nth-child(2)').addEventListener('click', btn2);
+        document.querySelector('.mypageButton:nth-child(3)').addEventListener('click', btn3);
+    });
+</script>
 
 </head>
 <body>
