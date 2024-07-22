@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -69,4 +70,19 @@ public class AjaxNotificationController {
     	
         return json;
     }
+    
+    
+    @RequestMapping(value = "/testUrl", method = RequestMethod.GET)
+    public String readCheck(HttpServletResponse response, @RequestParam("alertid") String alertid) throws Exception {
+    	System.out.println("alertno : "+alertid);
+    	
+    	AlertDao dao = sqlSession.getMapper(AlertDao.class);
+    	dao.updateIsread(alertid);
+    	
+    	return "redirect:testPage";
+    }
+    
+    
+    
+    
 }
