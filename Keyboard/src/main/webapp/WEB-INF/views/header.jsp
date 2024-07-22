@@ -54,6 +54,8 @@ width: 100%;
     });
     
     function checkForNotifications() {
+    	
+    	
     	fetch(`${pageContext.request.contextPath}/ajaxNotification`, {
             method: 'GET', // HTTP 메서드 설정
             headers: {
