@@ -33,7 +33,7 @@
     });
     </script>
 <style>
-.notify-btn {
+.notify-btn1 {
     background-color: #4CAF50;
     color: white;
     padding: 15px 32px;
@@ -48,11 +48,11 @@
     transition: background-color 0.3s;
 }
 
-.notify-btn:hover {
+.notify-btn1:hover {
     background-color: #45a049;
 }
 /* 알림 박스 스타일 */
-.notification-box {
+.notification-box1 {
     position: fixed;
     top: 85px; /* 위에서 60px 떨어진 위치 */
     right: 15px; /* 오른쪽 끝에서 10px 떨어진 위치 */
@@ -64,7 +64,7 @@
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     display: none; /* 초기에는 박스를 숨깁니다 */
 }
-.deleteButton {
+.deleteButton1 {
 	text-decoration: none;
 	width: 20px;
 	height: 20px;
@@ -103,8 +103,8 @@
  </div>
 </div>
 </header>
-    <div id="notificationBox" class="notification-box">
-    <div><a href="#;" class="deleteButton" id="notifyButton1">X</a></div>
+    <div id="notificationBox" class="notification-box1">
+    <div><a href="#;" class="deleteButton1" id="notifyButton1">X</a></div>
         <p>새로운 알림이 있습니다!</p>
     </div>
 
