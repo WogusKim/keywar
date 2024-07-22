@@ -33,19 +33,21 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
   
-<!--   
-  서블릿 등록
-  <servlet>
-    <description></description>
-    <display-name>AjaxNotificationServlet</display-name>
-    <servlet-name>AjaxNotificationServlet</servlet-name>
-    <servlet-class>kb.keyboard.warrior.controller.AjaxNotificationServlet</servlet-class>
-  </servlet>
-  서블릿 매핑
-  <servlet-mapping>
-    <servlet-name>AjaxNotificationServlet</servlet-name>
-    <url-pattern>/ajaxNotification</url-pattern>
-  </servlet-mapping>
-  
-   -->
+<filter>
+    <filter-name>Set Character Encoding</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+        <param-name>encoding</param-name>
+        <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+        <param-name>forceEncoding</param-name>
+        <param-value>true</param-value>
+    </init-param>
+</filter>
+<filter-mapping>
+    <filter-name>Set Character Encoding</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+
 </web-app>
