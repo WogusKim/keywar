@@ -19,12 +19,13 @@ border:0;
 .alertContent{
 width: 100%;
 }
+.alertContentArea{
+width: 100%;
+}
 </style>
 
-
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --> 
+
 
     <script>
    
@@ -52,6 +53,53 @@ width: 100%;
         });
     });
     
+    function checkForNotifications() {
+    	fetch(`${pageContext.request.contextPath}/ajaxNotification`, {
+            method: 'GET', // HTTP 메서드 설정
+            headers: {
+                'Accept': 'application/json', // 서버로부터 JSON 형식의 응답을 기대
+          //      'Content-Type': 'application/json; charset=utf-8' // 클라이언트가 JSON 형식으로 데이터를 보낼 것임을 명시
+            }
+        })
+        .then(response => {
+        // 응답 상태가 OK(200)인지 확인
+        if (!response.ok) {
+            throw new Error('Network response was not ok.');
+        }
+        return response.json(); // JSON 형태로 응답 본문을 변환
+	    })
+	            .then(data => {
+	        // 데이터를 성공적으로 가져왔을 때 실행
+	        if (Array.isArray(data) && data.length > 0) {
+	            // 새 알림이 있을 경우 처리
+	             $('#alertContentArea').empty();
+
+                // 알림 메시지 추가
+                data.forEach(function(item) {
+                	var alertNo = 'contentNo'+item.alertid;
+                    $('#alertContentArea').append('<div id="'+ alertNo +'" class="alertContent" onclick="getDetail('+item.alertid+')">  </div>');
+                    $('#'+alertNo).append('<p>' + item.message + '</p>');
+                    $('#'+alertNo).append('<p class="alertTimeStamp">' + item.senddate + '</div>');
+                    $('#'+alertNo).append('<hr class="alerthr">');
+                    
+                });
+
+	            console.log(data);
+	            alarmOn(); // 알림 표시 기능 호출
+	        } else {
+	            console.log("No new notifications");
+	        }
+	    })
+	    .catch(error => {
+	        // 네트워크 오류나 JSON 변환 오류 등 예외 처리
+	        console.error('Error:', error);
+	    });
+	        // 다음 체크 주기 설정 (예: 5초)  // 일단 1분으로 해놈~~ 자꾸 떠서
+	        setTimeout(checkForNotifications, 60000);
+	    }
+
+    // 페이지 로드 시 알림 체크 시작
+    window.onload = checkForNotifications;
     
     
   	//알림이 있으면 알림 있는 이미지로 변경하는 내용.
@@ -63,7 +111,9 @@ width: 100%;
     	 var img = document.getElementById('alarm');
         img.src = '${pageContext.request.contextPath}/resources/images/alarm.png';
     }
-    
+    function getDetail(alertno1){
+    	window.location.href = '${pageContext.request.contextPath}/testUrl?alertid='+alertno1;
+    }
     
     
     
@@ -89,10 +139,14 @@ width: 100%;
 </header>
     <div id="notificationBox" class="notification-box1">
     <div><a href="#;" class="deleteButton1" id="notifyButton1">X</a></div>
-    <div id="alertContent" class="alertContent"> 
+    <div id="alertContentArea" class="alertContentArea"> 
+    	<div class="alertContent">
         <p id="alertTitle">새로운 알림이 있습니다!</p>
         <p id="alertTimeStamp" class="alertSendTime" >알림 등록 일시</p>
         <hr class="alerthr">
+        </div>
+        
+        
     </div>
     
     </div>
