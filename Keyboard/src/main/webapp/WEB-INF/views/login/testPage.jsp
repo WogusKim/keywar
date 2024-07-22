@@ -13,28 +13,28 @@
 	<%@ include file="/WEB-INF/views/sidebar.jsp" %>
 	<div class="content_right">
 		
-		<h1>Real-time Notifications</h1>
-    	<ul id="notifications"></ul>
-<script>
-var eventSource = new EventSource('/warrior/subscribe');
+ <h1>Real-time Notifications</h1>
 
-eventSource.onmessage = function(event) {
-    if (event.data && event.data !== "connected") {
-        var notifications = document.getElementById('notifications');
-        var notification = document.createElement('li');
-        notification.appendChild(document.createTextNode('New post: ' + event.data));
-        notifications.appendChild(notification);
+
+    <script>
+    function checkForNotifications() {
+        fetch('/warrior/ajaxNotification')
+            .then(response => response.json())
+            .then(data => {
+                if (data.message !== "No new notifications") {
+                    // 새 알림을 처리하는 로직
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+
+        // 다음 체크 주기 설정 (예: 5초)
+        setTimeout(checkForNotifications, 5000);
     }
-};
 
-eventSource.onerror = function(event) {
-    console.error('EventSource error:', event);
-    console.error('EventSource readyState:', event.target.readyState);
-    console.error('EventSource response text:', event.target.responseText);
-};
+    // 페이지 로드 시 알림 체크 시작
+    window.onload = checkForNotifications;
     </script>
-	
-	
 	</div>
 </div>   
 </body>
