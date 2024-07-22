@@ -41,8 +41,23 @@
 	        // 데이터를 성공적으로 가져왔을 때 실행
 	        if (Array.isArray(data) && data.length > 0) {
 	            // 새 알림이 있을 경우 처리
-	            alert("새 알림이 있습니다!");
-	            alert(data[0].message);
+	           /*  $('#notificationBox').empty();
+
+                // 삭제 버튼 추가
+                $('#notificationBox').append('<div><a href="#;" class="deleteButton1" id="notifyButton1">X</a></div>');
+ */
+                // 알림 메시지 추가
+                data.forEach(function(item) {
+                    $('#notificationBox').append('<p class="notification-item">' + item.message + '</p>');
+                    $('#notificationBox').append('<p class="notification-item">' + item.senddate + '</div>');
+                    $('#notificationBox').append('<div class="notification-item">' + item.message + '</div>');
+                    
+                });
+
+                // 삭제 버튼 클릭 시 동작
+                $('#notifyButton1').on('click', function() {
+                $('#notificationBox').empty();
+                });
 	            console.log(data);
 	            alarmOn(); // 알림 표시 기능 호출
 	        } else {
