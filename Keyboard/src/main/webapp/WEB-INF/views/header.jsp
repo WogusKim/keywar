@@ -98,7 +98,7 @@
  <div class="header_iconArea">
     <a href="${pageContext.request.contextPath}/calendar"><img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/calendar.png"></a>
     <a href="${pageContext.request.contextPath}/mypage"> <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/mypage.png"></a>
-    <a href="#;"  id="notifyButton"><img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/alarm.png"></a>
+    <a href="#;"  id="notifyButton"><img id="alarm" class="header_icon" src="${pageContext.request.contextPath}/resources/images/alarm.png"></a>
     <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/setting.png">
  </div>
 </div>

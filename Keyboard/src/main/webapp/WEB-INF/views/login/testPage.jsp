@@ -29,7 +29,7 @@
             .catch(error => console.error('Error:', error));
 
         // 다음 체크 주기 설정 (예: 5초)
-        setTimeout(checkForNotifications, 5000);
+        setTimeout(checkForNotifications, 60000);
     }
 
     // 페이지 로드 시 알림 체크 시작
