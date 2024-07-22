@@ -5,7 +5,7 @@
 <mapper namespace="kb.keyboard.warrior.dao.AlertDao">
 
 	<select id="getAlert" resultType="kb.keyboard.warrior.dto.AlertDTO">
-		select * from alert where userno = #{param1} isread = 0;
+		select * from alert where userno = #{param1} and isread = 0;
 	</select>
 
 </mapper>

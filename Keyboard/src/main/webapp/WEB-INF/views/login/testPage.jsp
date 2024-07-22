@@ -23,21 +23,39 @@
     <script>
     
     function checkForNotifications() {
-    	 fetch(`${pageContext.request.contextPath}/ajaxNotification`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.message !== "No new notifications") {
-                    // 새 알림을 처리하는 로직
-                    alert(data.message);
-                    alarmOn();
-                
-                }
-            })
-            .catch(error => console.error('Error:', error));
-
-        // 다음 체크 주기 설정 (예: 5초)  // 일단 1분으로 해놈~~ 자꾸 떠서
-        setTimeout(checkForNotifications, 60000);
-    }
+    	fetch(`${pageContext.request.contextPath}/ajaxNotification`, {
+            method: 'GET', // HTTP 메서드 설정
+            headers: {
+                'Accept': 'application/json', // 서버로부터 JSON 형식의 응답을 기대
+          //      'Content-Type': 'application/json; charset=utf-8' // 클라이언트가 JSON 형식으로 데이터를 보낼 것임을 명시
+            }
+        })
+        .then(response => {
+        // 응답 상태가 OK(200)인지 확인
+        if (!response.ok) {
+            throw new Error('Network response was not ok.');
+        }
+        return response.json(); // JSON 형태로 응답 본문을 변환
+	    })
+	            .then(data => {
+	        // 데이터를 성공적으로 가져왔을 때 실행
+	        if (Array.isArray(data) && data.length > 0) {
+	            // 새 알림이 있을 경우 처리
+	            alert("새 알림이 있습니다!");
+	            alert(data[0].message);
+	            console.log(data);
+	            alarmOn(); // 알림 표시 기능 호출
+	        } else {
+	            console.log("No new notifications");
+	        }
+	    })
+	    .catch(error => {
+	        // 네트워크 오류나 JSON 변환 오류 등 예외 처리
+	        console.error('Error:', error);
+	    });
+	        // 다음 체크 주기 설정 (예: 5초)  // 일단 1분으로 해놈~~ 자꾸 떠서
+	        setTimeout(checkForNotifications, 60000);
+	    }
 
     // 페이지 로드 시 알림 체크 시작
     window.onload = checkForNotifications;
