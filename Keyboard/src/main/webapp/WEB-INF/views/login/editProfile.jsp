@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>김국민의 업무노트 : 마이페이지</title>
+<link rel="icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
+<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/display.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css">

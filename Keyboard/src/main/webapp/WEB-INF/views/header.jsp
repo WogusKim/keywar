@@ -6,11 +6,16 @@
 <head>
 <meta charset="UTF-8">
 <title>헤더</title>
+
+
+
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
     <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --> 
 
     <script>
+   
+    
     document.addEventListener('DOMContentLoaded', (event) => {
         const notifyButton = document.getElementById('notifyButton');
         const notifyButton1 = document.getElementById('notifyButton1');
@@ -19,18 +24,36 @@
         notifyButton.addEventListener('click', () => {
             if (notificationBox.style.display === 'none' || notificationBox.style.display === '') {
                 notificationBox.style.display = 'block'; // 박스 보이기
+                alarmOff();
             } else {
-                notificationBox.style.display = 'none'; // 박스 숨기기
+                notificationBox.style.display = 'none'; // 박스 숨기기 
             }
         });
         notifyButton1.addEventListener('click', () => {
             if (notificationBox.style.display === 'none' || notificationBox.style.display === '') {
                 notificationBox.style.display = 'block'; // 박스 보이기
+                alarmOff();
             } else {
                 notificationBox.style.display = 'none'; // 박스 숨기기
             }
         });
     });
+    
+    
+    
+  	//알림이 있으면 알림 있는 이미지로 변경하는 내용.
+    function alarmOn() {
+    	 var img = document.getElementById('alarm');
+        img.src = '${pageContext.request.contextPath}/resources/images/alarm2.png';
+    }
+    function alarmOff() {
+    	 var img = document.getElementById('alarm');
+        img.src = '${pageContext.request.contextPath}/resources/images/alarm.png';
+    }
+    
+    
+    
+    
     </script>
 <style>
 .notify-btn1 {
@@ -86,6 +109,7 @@
 	background-color: #B53D3D;
 }
 </style>
+
 </head>
 
 <body>
@@ -98,7 +122,7 @@
  <div class="header_iconArea">
     <a href="${pageContext.request.contextPath}/calendar"><img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/calendar.png"></a>
     <a href="${pageContext.request.contextPath}/mypage"> <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/mypage.png"></a>
-    <a href="#;"  id="notifyButton"><img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/alarm.png"></a>
+    <a href="#;"  id="notifyButton"><img id="alarm" class="header_icon" src="${pageContext.request.contextPath}/resources/images/alarm.png"></a>
     <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/setting.png">
  </div>
 </div>

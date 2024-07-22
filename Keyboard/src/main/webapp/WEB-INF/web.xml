@@ -33,18 +33,19 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
   
-  <!-- 서블릿 등록 -->
+<!--   
+  서블릿 등록
   <servlet>
     <description></description>
     <display-name>AjaxNotificationServlet</display-name>
     <servlet-name>AjaxNotificationServlet</servlet-name>
     <servlet-class>kb.keyboard.warrior.controller.AjaxNotificationServlet</servlet-class>
   </servlet>
-  <!-- 서블릿 매핑 -->
+  서블릿 매핑
   <servlet-mapping>
     <servlet-name>AjaxNotificationServlet</servlet-name>
     <url-pattern>/ajaxNotification</url-pattern>
   </servlet-mapping>
   
-  
+   -->
 </web-app>

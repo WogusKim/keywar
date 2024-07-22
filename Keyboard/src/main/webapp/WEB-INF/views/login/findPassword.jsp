@@ -6,6 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>김국민의 업무노트 : 비밀번호 변경</title>
+<link rel="icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
+<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
+
 <style>
 	body{
 	background-image: url(${pageContext.request.contextPath}/resources/images/background.jpg);
