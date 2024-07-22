@@ -16,7 +16,7 @@ import kb.keyboard.warrior.util.Post;
 public class NotificationController {
 
 
-    private final CopyOnWriteArrayList<HttpServletResponse> clients = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<HttpServletResponse> clients = new CopyOnWriteArrayList<HttpServletResponse>();
 
     @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
     public void subscribe(HttpServletResponse response) throws IOException {
