@@ -7,9 +7,12 @@
 
 	<select id="todoView"
 		resultType="kb.keyboard.warrior.dto.TodoListDTO">
-		SELECT * FROM todolist WHERE userno = #{param1} ORDER BY
-		todoid
+		SELECT * FROM todolist
+		WHERE userno = #{param1}
+		AND status = 1
+		ORDER BY todoid
 	</select>
+
 
 	<select id="memoView1"
 		resultType="kb.keyboard.warrior.dto.MyMemoDTO">
@@ -63,6 +66,18 @@
 		INSERT INTO todolist (userno, task) values
 		(#{param1}, #{param2})
 	</insert>
+
+	<update id="todoStatus">
+		UPDATE todolist SET status = 0 where todoid =
+		#{param1}
+	</update>
+	
+	 <!-- 공지사항 위치 정보를 업데이트하는 쿼리 -->
+    <update id="updateNoticePosition">
+        UPDATE notice 
+        SET positionX = #{positionX}, positionY = #{positionY} 
+        WHERE noticeid = #{noticeid}
+    </update>
 
 
 

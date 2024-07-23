@@ -40,6 +40,7 @@ public class HomeController {
 
 		//추후 로그인 여부 체크 필요
 		
+
 	    // 세션에서 메뉴 데이터를 먼저 확인
 	    List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
 	    LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
@@ -54,6 +55,7 @@ public class HomeController {
 	        model.addAttribute("menus", menus);  // 이미 세션에 저장된 데이터 사용
 	    }
 	    
+
 
 
 		//환율즐겨찾기 확인

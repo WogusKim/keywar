@@ -174,7 +174,8 @@ ul li {
 							<hr>
 							<ul>
 								<c:forEach items="${memo1}" var="dto1">
-									<li>${dto1.content}&nbsp;${dto1.createdate}<a
+									<li>${dto1.content}&nbsp;${dto1.createdate}
+									<a
 										href="./mymemoDelete?memoid=${dto1.memoid}&userno=${dto1.userno}"
 										class="deleteButton">X</a>
 									</li>

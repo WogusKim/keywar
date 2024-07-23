@@ -25,6 +25,9 @@ public interface MemoDao {
 	public void deptmemoDelete(String memoid);
 	
 	public void todoWrite(String userno, String task);
+	public void todoStatus(String todoid);
+	
+	public void updateNoticePosition(NoticeDTO noticeDTO);
 
 
 

@@ -72,7 +72,7 @@ li.checked .task {
 									onclick="checkTodo(${dto.todoid}, this.checked)"
 									${dto.isdone == 1 ? 'checked' : ''} data-todoid="${dto.todoid}"
 									data-done="${dto.isdone}"> <span class="task">${dto.todoid}&nbsp;&nbsp;${dto.task}</span>
-								</li> <a href="#" class="deleteButton1">X</a>
+								</li> <a href="todoStatus?todoid=${dto.todoid}&userno=${dto.userno}" class="deleteButton1">X</a>
 							</div>
 
 						</c:forEach>

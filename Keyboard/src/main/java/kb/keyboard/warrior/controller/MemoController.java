@@ -9,11 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,8 +24,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
+import kb.keyboard.warrior.dao.MemoDao;
 import kb.keyboard.warrior.dao.ScheduleDao;
 import kb.keyboard.warrior.dao.ToDoDao;
+import kb.keyboard.warrior.dto.NoticeDTO;
 import kb.keyboard.warrior.dto.ScheduleDTO;
 import kb.keyboard.warrior.dto.TodoListDTO;
 import kb.keyboard.warrior.memo.command.MemoCommand;
@@ -36,6 +41,7 @@ import kb.keyboard.warrior.memo.command.mymemoWriteCommand;
 import kb.keyboard.warrior.memo.command.noticeDeleteCommand;
 import kb.keyboard.warrior.memo.command.noticeViewCommand;
 import kb.keyboard.warrior.memo.command.noticeWriteCommand;
+import kb.keyboard.warrior.memo.command.todoStatusCommand;
 import kb.keyboard.warrior.memo.command.todoWriteCommand;
 import kb.keyboard.warrior.util.Constant;
 
@@ -173,14 +179,14 @@ public class MemoController {
 		
 		String todoId = todoListDto.getTodoid();
 		String isDone = todoListDto.getIsdone();
-		//테스트
+		//í…ŒìŠ¤íŠ¸
 		System.out.println(todoId);
 		System.out.println(isDone);
 		
 		ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
 		
 		if (isDone.equals("1")) {
-			//완료처리
+			//ì™„ë£Œì²˜ë¦¬
 			todoDao.checkTodo(todoId);
 		} else {
 			todoDao.unCheckTodo(todoId);
@@ -191,14 +197,14 @@ public class MemoController {
 
 	
 
-	@RequestMapping("/memo") // memo view 재욱오빠랑 바꾼거
+	@RequestMapping("/memo") // memo view ìž¬ìš±ì˜¤ë¹ ëž‘ ë°”ê¾¼ê±°
 	public String memoView(HttpSession session, Model model) {
 		System.out.println("memoView()");
 
 		String userno = (String) session.getAttribute("userno");
 		String deptno = (String) session.getAttribute("deptno");
-		System.out.println("로그인 된 사람 누구야? " + userno);
-		System.out.println("부점코드 누구야? " + deptno);
+		System.out.println("ë¡œê·¸ì¸ ëœ ì‚¬ëžŒ ëˆ„êµ¬ì•¼? " + userno);
+		System.out.println("ë¶€ì ì½”ë“œ ëˆ„êµ¬ì•¼? " + deptno);
 		if (userno != null && deptno != null) {
 			MemoViewCommand command = new MemoViewCommand();
 			command.execute(model, userno, deptno);
@@ -215,8 +221,8 @@ public class MemoController {
 
 		String userno = (String) session.getAttribute("userno");
 		String deptno = (String) session.getAttribute("deptno");
-		System.out.println("로그인 된 사람 누구야? " + userno);
-		System.out.println("부점코드 누구야? " + deptno);
+		System.out.println("ë¡œê·¸ì¸ ëœ ì‚¬ëžŒ ëˆ„êµ¬ì•¼? " + userno);
+		System.out.println("ë¶€ì ì½”ë“œ ëˆ„êµ¬ì•¼? " + deptno);
 		if (userno != null && deptno != null) {
 			command = new noticeViewCommand(userno, deptno);
 			command.execute(model);
@@ -238,8 +244,8 @@ public class MemoController {
 
 		String userno = (String) session.getAttribute("userno");
 		String deptno = (String) session.getAttribute("deptno");
-		System.out.println("공지사항 액션 로그인 된 사람 누구야? " + userno);
-		System.out.println("공지사항 액션 부점코드 누구야? " + deptno);
+		System.out.println("ê³µì§€ì‚¬í•­ ì•¡ì…˜ ë¡œê·¸ì¸ ëœ ì‚¬ëžŒ ëˆ„êµ¬ì•¼? " + userno);
+		System.out.println("ê³µì§€ì‚¬í•­ ì•¡ì…˜ ë¶€ì ì½”ë“œ ëˆ„êµ¬ì•¼? " + deptno);
 		model.addAttribute("request", request);
 		model.addAttribute("userno", userno);
 		model.addAttribute("deptno", deptno);
@@ -256,10 +262,10 @@ public class MemoController {
 	public String noticeDelete(HttpSession session, HttpServletRequest request, Model model) {
 		System.out.println("noticeDelete()");
 
-		String userno = (String) session.getAttribute("userno"); //세션에서 꺼내와.
-		System.out.println("공지사항 삭제 로그인 된 사람 누구야? " + userno); //세션확인
-		model.addAttribute("request", request); //리퀘스트로 담아온 인덱스넘버랑 유저 모델에 넣어.
-		System.out.println("리퀘스트 안에 뭐있어? " + model);
+		String userno = (String) session.getAttribute("userno"); //ì„¸ì…˜ì—ì„œ êº¼ë‚´ì™€.
+		System.out.println("ê³µì§€ì‚¬í•­ ì‚­ì œ ë¡œê·¸ì¸ ëœ ì‚¬ëžŒ ëˆ„êµ¬ì•¼? " + userno); //ì„¸ì…˜í™•ì¸
+		model.addAttribute("request", request); //ë¦¬í€˜ìŠ¤íŠ¸ë¡œ ë‹´ì•„ì˜¨ ì¸ë±ìŠ¤ë„˜ë²„ëž‘ ìœ ì € ëª¨ë¸ì— ë„£ì–´.
+		System.out.println("ë¦¬í€˜ìŠ¤íŠ¸ ì•ˆì— ë­ìžˆì–´? " + model);
 
 		if (userno != null) {
 			noticeDeleteCommand command = new noticeDeleteCommand();
@@ -275,7 +281,7 @@ public class MemoController {
 		System.out.println("mymemoWrite()");
 
 		String userno = (String) session.getAttribute("userno");
-		System.out.println("���Ǹ޸� �׼� �α��� �� ��� ������? " + userno);
+		System.out.println("³ªÀÇ¸Þ¸ð ¾×¼Ç ·Î±×ÀÎ µÈ »ç¶÷ ´©±¸¾ß? " + userno);
 		model.addAttribute("request", request);
 		model.addAttribute("userno", userno);
 		if (userno != null) {
@@ -293,8 +299,8 @@ public class MemoController {
 
 		String userno = (String) session.getAttribute("userno");
 		String deptno = (String) session.getAttribute("deptno");
-		System.out.println("�����޸� �׼� �α��� �� ��� ������? " + userno);
-		System.out.println("�����޸� �׼� ������ ����? " + deptno);
+		System.out.println("ºÎÁ¡¸Þ¸ð ¾×¼Ç ·Î±×ÀÎ µÈ »ç¶÷ ´©±¸¾ß? " + userno);
+		System.out.println("ºÎÁ¡¸Þ¸ð ¾×¼Ç ºÎÁ¡Àº ¾îµð¾ß? " + deptno);
 		model.addAttribute("request", request);
 		model.addAttribute("userno", userno);
 		model.addAttribute("deptno", deptno);
@@ -311,9 +317,9 @@ public class MemoController {
 	public String mymemoDelete(HttpSession session, HttpServletRequest request, Model model) {
 		System.out.println("mymemoDelete()");
 
-		String userno = (String) session.getAttribute("userno"); //���ǿ��� ������.
-		System.out.println("���� �޸� ���� �α��� �� ��� ������? " + userno); //����Ȯ��
-		model.addAttribute("request", request); //������Ʈ�� ��ƿ� �ε����ѹ��� ���� �𵨿� �־�.
+		String userno = (String) session.getAttribute("userno"); //¼¼¼Ç¿¡¼­ ²¨³»¿Í.
+		System.out.println("³ªÀÇ ¸Þ¸ð »èÁ¦ ·Î±×ÀÎ µÈ »ç¶÷ ´©±¸¾ß? " + userno); //¼¼¼ÇÈ®ÀÎ
+		model.addAttribute("request", request); //¸®Äù½ºÆ®·Î ´ã¾Æ¿Â ÀÎµ¦½º³Ñ¹ö¶û À¯Àú ¸ðµ¨¿¡ ³Ö¾î.
 
 		if (userno != null) {
 			mymemoDeleteCommand command = new mymemoDeleteCommand();
@@ -328,9 +334,9 @@ public class MemoController {
 	public String deptmemoDelete(HttpSession session, HttpServletRequest request, Model model) {
 		System.out.println("deptmemoDelete()");
 
-		String deptno = (String) session.getAttribute("deptno"); //���ǿ��� ������.
-		System.out.println("���� �޸� ���� �������̾�? " + deptno); //����Ȯ��
-		model.addAttribute("request", request); //������Ʈ�� ��ƿ� �ε����ѹ��� �μ���ȣ �𵨿� �־�.
+		String deptno = (String) session.getAttribute("deptno"); //¼¼¼Ç¿¡¼­ ²¨³»¿Í.
+		System.out.println("ºÎÁ¡ ¸Þ¸ð »èÁ¦ ¾îµðºÎÁ¡ÀÌ¾ß? " + deptno); //¼¼¼ÇÈ®ÀÎ
+		model.addAttribute("request", request); //¸®Äù½ºÆ®·Î ´ã¾Æ¿Â ÀÎµ¦½º³Ñ¹ö¶û ºÎ¼­¹øÈ£ ¸ðµ¨¿¡ ³Ö¾î.
 
 		if (deptno != null) {
 			deptmemoDeleteCommand command = new deptmemoDeleteCommand();
@@ -346,7 +352,7 @@ public class MemoController {
 		System.out.println("todoWrite()");
 
 		String userno = (String) session.getAttribute("userno");
-		System.out.println("todo �׼� �α��� �� ��� ������? " + userno);
+		System.out.println("todo ¾×¼Ç ·Î±×ÀÎ µÈ »ç¶÷ ´©±¸¾ß? " + userno);
 		model.addAttribute("request", request);
 		model.addAttribute("userno", userno);
 		if (userno != null) {
@@ -357,6 +363,41 @@ public class MemoController {
 		}
 		return "redirect:todo";
 	}
+	
+	@RequestMapping("/todoStatus") // todo status
+	public String todoStatus(HttpSession session, HttpServletRequest request, Model model) {
+		System.out.println("todoStatus()");
+
+		String userno = (String) session.getAttribute("userno");
+		System.out.println("todo »óÅÂº¯°æ ·Î±×ÀÎ µÈ »ç¶÷ ´©±¸¾ß? " + userno);
+		model.addAttribute("request", request);
+		
+		if (userno != null) {
+			todoStatusCommand command = new todoStatusCommand();
+			command.execute(model,userno);
+		} else {
+			System.out.println("User number not found in session.");
+		}
+		return "redirect:todo";
+	}
+	
+	@RequestMapping(value = "/updateNoticePosition", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateNoticePosition(@RequestBody NoticeDTO noticeDTO) {
+		System.out.println("ÀÌµ¿ÀÌµ¿");
+		System.out.println(noticeDTO.getPositionX());
+		System.out.println(noticeDTO.getPositionY());
+		System.out.println(noticeDTO.getNoticeid());
+        // MemoDao ÀÎÅÍÆäÀÌ½º¸¦ ÅëÇØ SQL ¼¼¼ÇÀ» ¾òÀ½
+        MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
+        
+        // °øÁö»çÇ×ÀÇ À§Ä¡¸¦ ¾÷µ¥ÀÌÆ®ÇÏ´Â ¸Þ¼­µå È£Ãâ
+        memoDao.updateNoticePosition(noticeDTO);
+
+        // JSON Çü½ÄÀÇ ÀÀ´äÀ» ¹ÝÈ¯
+        return "{\"status\":\"success\"}";
+    }
+	
 }
 
 
@@ -418,14 +459,14 @@ public class MemoController {
  * events.add(event); // } // // return events; // }
  * 
  * @RequestMapping(value = "/calendar", method = RequestMethod.GET) public
- * String showCalendar(Model model, HttpSession session) { // 여기서 필요한 로직을 추가하여
- * 세션에서 사용자 정보를 가져오고, 필요한 데이터를 모델에 추가할 수 있습니다. ScheduleDao dao =
+ * String showCalendar(Model model, HttpSession session) { // ì—¬ê¸°ì„œ í•„ìš”í•œ ë¡œì§ì„ ì¶”ê°€í•˜ì—¬
+ * ì„¸ì…˜ì—ì„œ ì‚¬ìš©ìž ì •ë³´ë¥¼ ê°€ì ¸ì˜¤ê³ , í•„ìš”í•œ ë°ì´í„°ë¥¼ ëª¨ë¸ì— ì¶”ê°€í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤. ScheduleDao dao =
  * sqlSession.getMapper(ScheduleDao.class); String userno = (String)
  * session.getAttribute("userno"); List<ScheduleDTO> scheduleList =
  * dao.scheduleLoad(userno); model.addAttribute("scheduleList", scheduleList);
- * // 모델에 일정 리스트를 추가하여 JSP에서 사용할 수 있도록 함 System.out.println(userno);
- * System.out.println(scheduleList); return "memo/calendar"; // calendar.jsp 파일을
- * 보여줌 }
+ * // ëª¨ë¸ì— ì¼ì • ë¦¬ìŠ¤íŠ¸ë¥¼ ì¶”ê°€í•˜ì—¬ JSPì—ì„œ ì‚¬ìš©í•  ìˆ˜ ìžˆë„ë¡ í•¨ System.out.println(userno);
+ * System.out.println(scheduleList); return "memo/calendar"; // calendar.jsp íŒŒì¼ì„
+ * ë³´ì—¬ì¤Œ }
  * 
  * // @RequestMapping(value = "/calendarData", method = RequestMethod.GET,
  * produces = "application/json") // @ResponseBody // public ArrayNode
@@ -448,13 +489,13 @@ public class MemoController {
  * 
  * // @RequestMapping(value = "/calendar", method = RequestMethod.GET, produces
  * = "application/json") // @ResponseBody // public List<Map<String, Object>>
- * showCalendarPage(Model model, HttpSession session) { // // 여기서 필요한 로직을 추가하여
- * 세션에서 사용자 정보를 가져오고, 필요한 데이터를 모델에 추가할 수 있습니다. // ScheduleDao dao =
+ * showCalendarPage(Model model, HttpSession session) { // // ì—¬ê¸°ì„œ í•„ìš”í•œ ë¡œì§ì„ ì¶”ê°€í•˜ì—¬
+ * ì„¸ì…˜ì—ì„œ ì‚¬ìš©ìž ì •ë³´ë¥¼ ê°€ì ¸ì˜¤ê³ , í•„ìš”í•œ ë°ì´í„°ë¥¼ ëª¨ë¸ì— ì¶”ê°€í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤. // ScheduleDao dao =
  * sqlSession.getMapper(ScheduleDao.class); // String userno = (String)
  * session.getAttribute("userno"); // List<ScheduleDTO> scheduleList =
  * dao.scheduleLoad(userno); // // JSONObject jsonObj = new JSONObject(); //
  * JSONArray jsonArr = new JSONArray(); // // HashMap<String, Object> hash = new
- * HashMap<String, Object>(); // // // ScheduleDTO에서 CalendarEvent로 변환 //
+ * HashMap<String, Object>(); // // // ScheduleDTOì—ì„œ CalendarEventë¡œ ë³€í™˜ //
  * List<ScheduleDTO> events = new ArrayList<ScheduleDTO>(); // for (ScheduleDTO
  * scheduleDTO : scheduleList) { // hash.put("scheduleid",
  * scheduleDTO.getScheduleid()); // hash.put("title", scheduleDTO.getTitle());
@@ -471,7 +512,7 @@ public class MemoController {
  * // HttpSession session = request.getSession(); // String userno = (String)
  * session.getAttribute("userno"); // // ScheduleDao dao =
  * sqlSession.getMapper(ScheduleDao.class); // List<ScheduleDTO> scheduleList =
- * dao.scheduleLoad(userno); // // // ScheduleDTO에서 CalendarEvent로 변환 //
+ * dao.scheduleLoad(userno); // // // ScheduleDTOì—ì„œ CalendarEventë¡œ ë³€í™˜ //
  * List<ScheduleDTO> events = new ArrayList<ScheduleDTO>(); // for (ScheduleDTO
  * scheduleDTO : scheduleList) { // ScheduleDTO event = new ScheduleDTO(); //
  * event.setScheduleid(scheduleDTO.getScheduleid()); //
@@ -532,23 +573,23 @@ public class MemoController {
  * throws Exception {
  * 
  * String todoId = todoListDto.getTodoid(); String isDone =
- * todoListDto.getIsdone(); // 프린트 System.out.println(todoId);
+ * todoListDto.getIsdone(); // í”„ë¦°íŠ¸ System.out.println(todoId);
  * System.out.println(isDone);
  * 
  * ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
  * 
- * if (isDone.equals("1")) { // 완료 처리 todoDao.checkTodo(todoId); } else {
+ * if (isDone.equals("1")) { // ì™„ë£Œ ì²˜ë¦¬ todoDao.checkTodo(todoId); } else {
  * todoDao.unCheckTodo(todoId); }
  * 
  * return "{\"status\":\"success\"}"; }
  * 
- * @RequestMapping("/memo") // memo view 메모 페이지 public String
+ * @RequestMapping("/memo") // memo view ë©”ëª¨ íŽ˜ì´ì§€ public String
  * memoView(HttpSession session, Model model) {
  * System.out.println("memoView()");
  * 
  * String userno = (String) session.getAttribute("userno"); String deptno =
- * (String) session.getAttribute("deptno"); System.out.println("사용자 번호 확인: " +
- * userno); System.out.println("부서 번호 확인: " + deptno); if (userno != null &&
+ * (String) session.getAttribute("deptno"); System.out.println("ì‚¬ìš©ìž ë²ˆí˜¸ í™•ì¸: " +
+ * userno); System.out.println("ë¶€ì„œ ë²ˆí˜¸ í™•ì¸: " + deptno); if (userno != null &&
  * deptno != null) { MemoViewCommand command = new MemoViewCommand();
  * command.execute(model, userno, deptno); } else {
  * System.out.println("User number or dept number not found in session."); }
@@ -560,8 +601,8 @@ public class MemoController {
  * System.out.println("noticeView()");
  * 
  * String userno = (String) session.getAttribute("userno"); String deptno =
- * (String) session.getAttribute("deptno"); System.out.println("사용자 번호 확인: " +
- * userno); System.out.println("부서 번호 확인: " + deptno); if (userno != null &&
+ * (String) session.getAttribute("deptno"); System.out.println("ì‚¬ìš©ìž ë²ˆí˜¸ í™•ì¸: " +
+ * userno); System.out.println("ë¶€ì„œ ë²ˆí˜¸ í™•ì¸: " + deptno); if (userno != null &&
  * deptno != null) { command = new noticeViewCommand(userno, deptno);
  * command.execute(model); } else {
  * System.out.println("User number or dept number not found in session."); }
@@ -576,8 +617,8 @@ public class MemoController {
  * System.out.println("noticeWrite()");
  * 
  * String userno = (String) session.getAttribute("userno"); String deptno =
- * (String) session.getAttribute("deptno"); System.out.println("사용자 번호 확인: " +
- * userno); System.out.println("부서 번호 확인: " + deptno);
+ * (String) session.getAttribute("deptno"); System.out.println("ì‚¬ìš©ìž ë²ˆí˜¸ í™•ì¸: " +
+ * userno); System.out.println("ë¶€ì„œ ë²ˆí˜¸ í™•ì¸: " + deptno);
  * model.addAttribute("request", request); model.addAttribute("userno", userno);
  * model.addAttribute("deptno", deptno); if (userno != null && deptno != null) {
  * command = new noticeWriteCommand(); command.execute(model); } else {
@@ -588,10 +629,10 @@ public class MemoController {
  * session, HttpServletRequest request, Model model) {
  * System.out.println("noticeDelete()");
  * 
- * String userno = (String) session.getAttribute("userno"); // 사용자 번호 확인
- * System.out.println("사용자 번호 확인: " + userno); // 확인
- * model.addAttribute("request", request); // 요청을 모델에 추가
- * System.out.println("모델에 추가된 요청: " + model);
+ * String userno = (String) session.getAttribute("userno"); // ì‚¬ìš©ìž ë²ˆí˜¸ í™•ì¸
+ * System.out.println("ì‚¬ìš©ìž ë²ˆí˜¸ í™•ì¸: " + userno); // í™•ì¸
+ * model.addAttribute("request", request); // ìš”ì²­ì„ ëª¨ë¸ì— ì¶”ê°€
+ * System.out.println("ëª¨ë¸ì— ì¶”ê°€ëœ ìš”ì²­: " + model);
  * 
  * if (userno != null) { noticeDeleteCommand command = new
  * noticeDeleteCommand(); command.execute(model, userno); } else {
