@@ -655,6 +655,7 @@ hr {
 }
 /* 알림 박스 스타일 */
 .notification-box1 {
+	z-index: 999999999;
     position: fixed;
     top: 85px; /* 위에서 60px 떨어진 위치 */
     right: 15px; /* 오른쪽 끝에서 10px 떨어진 위치 */
@@ -667,6 +668,7 @@ hr {
     border-radius: 5px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     display: none; /* 초기에는 박스를 숨깁니다 */
+    
 }
 .deleteButton1 {
 	text-decoration: none;
