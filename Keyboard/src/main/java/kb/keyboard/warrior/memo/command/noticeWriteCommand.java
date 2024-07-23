@@ -20,13 +20,14 @@ public class noticeWriteCommand implements MemoCommand {
 		HttpServletRequest request = (HttpServletRequest) map.get("request"); //키를 호출하면 밸류값을 가져옴.
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
+		String color = request.getParameter("color");
 		
 		String userno = (String) map.get("userno");
 		String deptno = (String) map.get("deptno");
 		
 		SqlSession sqlSession = Constant.sqlSession;
 		MemoDao dao = sqlSession.getMapper(MemoDao.class);
-		dao.noticeWrite(title,content,userno,deptno);
+		dao.noticeWrite(title,content,color,userno,deptno);
 
 	}
 

@@ -36,8 +36,8 @@
 	</select>
 
 	<insert id="noticeWrite">
-		INSERT INTO notice (title, content, userno, deptno)
-		values (#{param1}, #{param2}, #{param3}, #{param4})
+		INSERT INTO notice (title, content, color, userno, deptno)
+		values (#{param1}, #{param2}, #{param3}, #{param4}, #{param5})
 	</insert>
 
 	<delete id="noticeDelete">

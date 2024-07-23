@@ -11,9 +11,9 @@
 <style>
 .board_todo1 {
 	border-radius: 10px;
-	background-color: white; 
-	width: 100%; 
-	height: 95%; 
+	background-color: white;
+	width: 100%;
+	height: 95%;
 	padding: 10px;
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
@@ -47,19 +47,31 @@
 		<div class="content_right">
 			<!-- 여기까지 기본세팅(흰 배경) -->
 
-			<div class="board_back" style="height: 95%;"> <!-- 민트 배경 -->
-				<form action="noticeWrite" method="post" style="width: 100%; height: 95%;">
-				<div class="board_todo1"> <!-- 흰 배경 -->
-					<h2 class="card_title">부점 공지사항 작성</h2>
-					<hr>
+			<div class="board_back" style="height: 95%;">
+				<!-- 민트 배경 -->
+				<form action="noticeWrite" method="post"
+					style="width: 100%; height: 95%;">
+					<div class="board_todo1">
+						<!-- 흰 배경 -->
+						<h2 class="card_title">부점 공지사항 작성</h2>
+						<hr>
 						<div class="aa">
-							<input class="aaa" type="text" name="title" placeholder="제목을 작성하세요">
-							<input class="aaa" style="height: 80%;" type="text" name="content" placeholder="공지사항을 작성하세요">
+							<input class="aaa" type="text" name="title"
+								placeholder="제목을 작성하세요"> <input class="aaa"
+								style="height: 80%;" type="text" name="content"
+								placeholder="공지사항을 작성하세요"> <select class="aaa"
+								name="color" style="width: 100%; margin-top: 10px;">
+								<option value="" disabled selected>색상을 선택하세요</option>
+								<option value="#FFFB88">노란색</option>
+								<option value="#A0E7E5">하늘색</option>
+								<option value="#B4F8C8">연두색</option>
+								<option value="#FFAEBC">분홍색</option>
+							</select>
 						</div>
-				</div>
+					</div>
 
 
-				<input type="submit" value="추가하기" class="addButton">
+					<input type="submit" value="추가하기" class="addButton">
 				</form>
 			</div>
 		</div>

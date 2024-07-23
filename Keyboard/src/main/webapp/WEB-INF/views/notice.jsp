@@ -22,6 +22,20 @@
 	margin: 10px; /* 포스트잇 간 간격 */
 	position: relative; /* 공지사항들이 기본적으로 나란히 정렬되도록 */
 }
+.notice .title {
+    font-weight: bold; /* 제목을 굵게 표시 */
+    display: block; /* 제목을 별도의 라인에 표시 */
+    margin-top: 5px; /* 내용과의 간격 */
+    margin-bottom: 5px; /* 내용과의 간격 */
+}
+
+.notice .createdate {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	font-size: 12px; /* 작은 글꼴 크기로 날짜 설정 */
+	color: #666; /* 덜 강조 표시를 위한 밝은 색상 */
+}
 
 .notice .deleteButton1 {
 	width: 20px;
@@ -30,6 +44,7 @@
 	top: 10px;
 	right: 10px;
 	background-color: #E65050;
+	text-decoration: none !important;
 	border: none;
 	color: white;
 	padding: 0;
@@ -126,8 +141,13 @@ $(function() {
 					<div class="aa">
 						<c:forEach items="${notice}" var="dto">
 							<div class="notice" data-id="${dto.noticeid}"
-								style="position: absolute; left: ${dto.positionX}px; top: ${dto.positionY}px;">
-								<br>${dto.title}<br>${dto.content} <a
+								style="position: absolute; left: ${dto.positionX}px; top: ${dto.positionY}px; background-color: ${dto.color};">
+								<div class="title">${dto.title}</div>
+								<!-- 제목 굵게 표시 -->
+								${dto.content}
+								<div class="createdate">${dto.createdate}</div>
+								<!-- 날짜 표시 -->
+								<a
 									href="./noticeDelete?noticeid=${dto.noticeid}&userno=${dto.userno}"
 									class="deleteButton1">X</a>
 							</div>

@@ -15,12 +15,14 @@ public class NoticeDTO {
  // 새로운 필드 추가
  private int positionX;        // 공지 위치 x좌표
  private int positionY;        // 공지 위치 y좌표
+ private String color;
 
  public NoticeDTO() {
  }
 
+
 public NoticeDTO(String noticeid, String title, String content, String userno, String deptno, String createdate,
-		String noticestatus, int positionX, int positionY) {
+		String noticestatus, int positionX, int positionY, String color) {
 	super();
 	this.noticeid = noticeid;
 	this.title = title;
@@ -31,7 +33,9 @@ public NoticeDTO(String noticeid, String title, String content, String userno, S
 	this.noticestatus = noticestatus;
 	this.positionX = positionX;
 	this.positionY = positionY;
+	this.color = color;
 }
+
 
 
 
@@ -109,6 +113,15 @@ public int getPositionY() {
 public void setPositionY(int positionY) {
 	this.positionY = positionY;
 }
- 
- 
+
+public String getColor() {
+	return color;
+}
+
+public void setColor(String color) {
+	this.color = color;
+}
+
+
+
 }
