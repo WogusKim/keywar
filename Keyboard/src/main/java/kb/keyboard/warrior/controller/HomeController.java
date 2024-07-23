@@ -47,11 +47,20 @@ public class HomeController {
 		
 		//추후 로그인 여부 체크 필요
 		
-		//사이드바 (메뉴데이터)
-		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
-		List<MenuDTO> menus = loginDao.getMenus(userno);
-	    setMenuDepth(menus);
-		model.addAttribute("menus", menus);
+	    // 세션에서 메뉴 데이터를 먼저 확인
+	    List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
+	    LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
+	    
+	    if (menus == null) {
+	        menus = loginDao.getMenus(userno);
+	        setMenuDepth(menus);
+	        List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
+	        session.setAttribute("menus", topLevelMenus);  // 세션에 메뉴 데이터 저장
+	        model.addAttribute("menus", topLevelMenus);
+	    } else {
+	        model.addAttribute("menus", menus);  // 이미 세션에 저장된 데이터 사용
+	    }
+	    
 		
 
 		//환율즐겨찾기 확인
@@ -157,5 +166,47 @@ public class HomeController {
 	        menu.setDepth(depth);
 	    }
 	}
+	
+	public List<MenuDTO> organizeMenuHierarchy(List<MenuDTO> menus) {
+	    Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
+	    for (MenuDTO menu : menus) {
+	        menuMap.put(menu.getId(), menu);
+	        menu.setChildren(new ArrayList<MenuDTO>());
+	    }
+
+	    for (MenuDTO menu : menus) {
+	        if (menu.getParentId() != null) {
+	            MenuDTO parent = menuMap.get(menu.getParentId());
+	            if (parent != null) {
+	                parent.getChildren().add(menu);
+	            }
+	        }
+	    }
+
+	    List<MenuDTO> topLevelMenus = new ArrayList<MenuDTO>();
+	    for (MenuDTO menu : menus) {
+	        if (menu.getParentId() == null) {
+	            topLevelMenus.add(menu);
+	        }
+	    }
+
+	    // 로깅을 추가하여 각 최상위 메뉴와 해당 자식 메뉴들을 출력
+	    for (MenuDTO menu : topLevelMenus) {
+	        System.out.println("Menu: " + menu.getTitle() + " (ID: " + menu.getId() + ")");
+	        printChildren(menu, "  ");  // 재귀적으로 자식 메뉴들을 출력
+	    }
+
+	    return topLevelMenus;
+	}
+	
+	private void printChildren(MenuDTO menu, String indent) {
+	    for (MenuDTO child : menu.getChildren()) {
+	        System.out.println(indent + "Child Menu: " + child.getTitle() + " (ID: " + child.getId() + ")");
+	        if (!child.getChildren().isEmpty()) {
+	            printChildren(child, indent + "  ");
+	        }
+	    }
+	}
+
 
 }
