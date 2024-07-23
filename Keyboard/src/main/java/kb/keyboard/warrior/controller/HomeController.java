@@ -46,15 +46,11 @@ public class HomeController {
         List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
         LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
 
-        if (menus == null) {
-            menus = loginDao.getMenus(userno);
-            setMenuDepth(menus);
-            List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
-            session.setAttribute("menus", topLevelMenus);  // 세션에 메뉴 데이터 저장
-            model.addAttribute("menus", topLevelMenus);
-        } else {
-            model.addAttribute("menus", menus);  // 이미 세션에 저장된 데이터 사용
-        }
+        menus = loginDao.getMenus(userno);
+        setMenuDepth(menus);
+        List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
+        session.setAttribute("menus", topLevelMenus);  // 세션에 메뉴 데이터 저장
+        model.addAttribute("menus", topLevelMenus);
 
         // 환율 즐겨찾기 확인
         List<ExchangeFavoriteDTO> favorites = loginDao.getFavoriteCurrency(userno);
