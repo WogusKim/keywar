@@ -42,7 +42,6 @@ public class AjaxNotificationController {
         HttpSession session = attrs.getRequest().getSession(false);
         if (session != null) {
             userno = (String) session.getAttribute("userno");
-            System.out.println(userno);
         }
         
         // 알림 데이터 처리
@@ -59,8 +58,6 @@ public class AjaxNotificationController {
     	if(list==null) {
     		 return "{\"message\": \"No new notifications\"}";
     	}
-    	System.out.println(userno +"의 안읽은 알림 개수 : "+list.size());
-    	System.out.println(list.get(0).getMessage());
     	
     	
     	
