@@ -41,44 +41,44 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model, HttpSession session) {
 		
-		//·Î±×ÀÎ¿©ºÎ Ã¼Å©
+		//ï¿½Î±ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ Ã¼Å©
 		String userno = (String) session.getAttribute("userno");
 		String deptno = (String) session.getAttribute("deptno");
 		
-		//ÃßÈÄ ·Î±×ÀÎ ¿©ºÎ Ã¼Å© ÇÊ¿ä
+		//ï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¼Å© ï¿½Ê¿ï¿½
 		
-		//»çÀÌµå¹Ù (¸Þ´ºµ¥ÀÌÅÍ)
+		//ï¿½ï¿½ï¿½Ìµï¿½ï¿½ (ï¿½Þ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
 		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
-		List<MenuDTO> menus = loginDao.getMenus(userno);
-	    setMenuDepth(menus);
-		model.addAttribute("menus", menus);
-		
+//		List<MenuDTO> menus = loginDao.getMenus(userno);
+//	    setMenuDepth(menus);
+//		model.addAttribute("menus", menus);
+//		
 
-		//È¯À²Áñ°ÜÃ£±â È®ÀÎ
+		//È¯ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ È®ï¿½ï¿½
 		List<ExchangeFavoriteDTO> favorites = loginDao.getFavoriteCurrency(userno);
 		
-		String favoriteCurrency1 = "0"; // ±âº»°ª: Áñ°ÜÃ£±â°¡ ¾øÀ½
-		String favoriteCurrency2 = "0"; // ±âº»°ª: Áñ°ÜÃ£±â°¡ ¾øÀ½
-		String favoriteCurrency3 = "0"; // ±âº»°ª: Áñ°ÜÃ£±â°¡ ¾øÀ½
+		String favoriteCurrency1 = "0"; // ï¿½âº»ï¿½ï¿½: ï¿½ï¿½ï¿½Ã£ï¿½â°¡ ï¿½ï¿½ï¿½ï¿½
+		String favoriteCurrency2 = "0"; // ï¿½âº»ï¿½ï¿½: ï¿½ï¿½ï¿½Ã£ï¿½â°¡ ï¿½ï¿½ï¿½ï¿½
+		String favoriteCurrency3 = "0"; // ï¿½âº»ï¿½ï¿½: ï¿½ï¿½ï¿½Ã£ï¿½â°¡ ï¿½ï¿½ï¿½ï¿½
 
 		switch (favorites.size()) {
 		    case 0:
-		        // Áñ°ÜÃ£±â°¡ ÀüÇô ¾ø´Â °æ¿ì, µðÆúÆ® ÅëÈ­¸¦ ¼³Á¤
+		        // ï¿½ï¿½ï¿½Ã£ï¿½â°¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		        favoriteCurrency1 = "USD";
 		        favoriteCurrency2 = "JPY";
 		        favoriteCurrency3 = "EUR";
 		        break;
 		    case 1:
-		        // Áñ°ÜÃ£±â°¡ ÇÏ³ªÀÎ °æ¿ì
+		        // ï¿½ï¿½ï¿½Ã£ï¿½â°¡ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		        favoriteCurrency1 = favorites.get(0).getCurrency();
 		        break;
 		    case 2:
-		        // Áñ°ÜÃ£±â°¡ µÎ °³ÀÎ °æ¿ì
+		        // ï¿½ï¿½ï¿½Ã£ï¿½â°¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		        favoriteCurrency1 = favorites.get(0).getCurrency();
 		        favoriteCurrency2 = favorites.get(1).getCurrency();
 		        break;
 		    case 3:
-		        // Áñ°ÜÃ£±â°¡ ¼¼ °³ÀÎ °æ¿ì
+		        // ï¿½ï¿½ï¿½Ã£ï¿½â°¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		        favoriteCurrency1 = favorites.get(0).getCurrency();
 		        favoriteCurrency2 = favorites.get(1).getCurrency();
 		        favoriteCurrency3 = favorites.get(2).getCurrency();
@@ -86,7 +86,7 @@ public class HomeController {
 		}
 		
 		
-		//È¯À² Áñ°ÜÃ£±â µ¥ÀÌÅÍ Ã³¸®		
+		//È¯ï¿½ï¿½ ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½		
 	    CurrencyRateCrawler currencyCrawler = new CurrencyRateCrawler();
 	    List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeFavoriteRates(favoriteCurrency1, favoriteCurrency2, favoriteCurrency3);
 	    if (!currencyRates.isEmpty()) {
@@ -96,12 +96,12 @@ public class HomeController {
 	    }
 	    
 	    
-	    //Áõ½Ãµ¥ÀÌÅÍ Ã³¸®
+	    //ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
 	    
 	    
 	    
 	    
-	    //±Ý¸®µ¥ÀÌÅÍ Ã³¸®
+	    //ï¿½Ý¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
 	    //MOR
 	    MorRateCrawler morCrawler = new MorRateCrawler();
 	    List<MorCoffixDTO> morRates = morCrawler.fetchMorRates();
@@ -115,7 +115,7 @@ public class HomeController {
 	    	model.addAttribute("cofix", coffixRates);
 	    }
 	    
-	    //To Do List Ã³¸®
+	    //To Do List Ã³ï¿½ï¿½
 	    ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
 	    List<TodoListDTO> todoList = todoDao.getToDoList(userno);
 	    model.addAttribute("todoList", todoList);
@@ -138,13 +138,13 @@ public class HomeController {
 	}
 
 	public void setMenuDepth(List<MenuDTO> menus) {
-	    // ¸Þ´º ID¿Í ¸Þ´º °´Ã¼¸¦ ¸ÅÇÎÇÏ´Â MapÀ» »ý¼º
+	    // ï¿½Þ´ï¿½ IDï¿½ï¿½ ï¿½Þ´ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ Mapï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	    Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
 	    for (MenuDTO menu : menus) {
 	        menuMap.put(menu.getId(), menu);
 	    }
 
-	    // °¢ ¸Þ´º Ç×¸ñÀÇ depth °è»ê
+	    // ï¿½ï¿½ ï¿½Þ´ï¿½ ï¿½×¸ï¿½ï¿½ï¿½ depth ï¿½ï¿½ï¿½
 	    for (MenuDTO menu : menus) {
 	        int depth = 0;
 	        Integer parentId = menu.getParentId();
