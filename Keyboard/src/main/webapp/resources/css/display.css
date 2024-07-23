@@ -22,9 +22,9 @@ body{
     border-radius: 10px;
     background-color: #BDE2CE;
     display: flex;
-    flex-direction: column;         /* ���η� �����ϵ��� ���� */
-    justify-content: flex-start;    /* ���� ��ҵ��� ��ܿ� ��ġ */
-    align-items: center;            /* ���� ��ҵ��� ���� �߾ӿ� ��ġ */
+    flex-direction: column;         /* 세로로 나열하도록 설정 */
+    justify-content: flex-start;    /* 내부 요소들을 상단에 배치 */
+    align-items: center;            /* 내부 요소들을 수평 중앙에 배치 */
     width: 100%;
     height:  100%;
     padding: 18px;
@@ -54,19 +54,19 @@ body{
     text-align: center; /* Center align text within each cell */
     border-bottom: 1px solid #f0f0f0; /* Light grey border for subtle lines */
 }
-/* ȯ�� */
+/* 환율 */
 
-/* �ݸ� */
+/* 금리 */
 
 .interestRates {
 	display: flex;
-	justify-content: space-between; /* ������ �Ӽ� */
+	justify-content: space-between; /* 수정된 속성 */
 	height: 100%;
 }
 
 .half_box {
-	flex: 1; /* �ڽ��� �����̳��� ������ ���� ������ �����ϵ��� ���� */
-	margin: 0 10px; /* �ڽ� ���̿� ���� �߰� */
+	flex: 1; /* 박스가 컨테이너의 가능한 많은 공간을 차지하도록 설정 */
+	margin: 0 10px; /* 박스 사이에 간격 추가 */
 	padding: 15px;
 	height: 70%;
 	border-radius: 10px;
@@ -74,10 +74,10 @@ body{
 }
 
 .half_box h3 {
-	font-size: 20px; /* ����: ��Ʈ ũ�� */
-    color: gray; /* ����: ��Ʈ ���� */
+	font-size: 20px; /* 예시: 폰트 크기 */
+    color: gray; /* 예시: 폰트 색상 */
     margin-top: 5px;
-    margin-bottom: 10px; /* ����: �Ʒ��� ���� */
+    margin-bottom: 10px; /* 예시: 아래쪽 여백 */
 }
 
 

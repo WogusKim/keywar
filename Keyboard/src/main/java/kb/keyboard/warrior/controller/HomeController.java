@@ -1,20 +1,15 @@
 package kb.keyboard.warrior.controller;
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpSession;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import kb.keyboard.warrior.CoffixRateCrawler;
 import kb.keyboard.warrior.CurrencyRateCrawler;
 import kb.keyboard.warrior.MorRateCrawler;
@@ -28,65 +23,63 @@ import kb.keyboard.warrior.dto.MorCoffixDTO;
 import kb.keyboard.warrior.dto.MyMemoDTO;
 import kb.keyboard.warrior.dto.NoticeDTO;
 import kb.keyboard.warrior.dto.TodoListDTO;
-
 /**
  * Handles requests for the application home page.
  */
 @Controller
 public class HomeController {
-
 	@Autowired
 	public SqlSession sqlSession;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model, HttpSession session) {
-		
-		//�α��ο��� üũ
+
+		//로그인여부 체크
 		String userno = (String) session.getAttribute("userno");
 		String deptno = (String) session.getAttribute("deptno");
-		
-		//���� �α��� ���� üũ �ʿ�
-		
-		//���̵�� (�޴�������)
-		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
-//		List<MenuDTO> menus = loginDao.getMenus(userno);
-//	    setMenuDepth(menus);
-//		model.addAttribute("menus", menus);
-//		
 
-		//ȯ�����ã�� Ȯ��
+		//추후 로그인 여부 체크 필요
+
+		//사이드바 (메뉴데이터)
+		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
+		List<MenuDTO> menus = loginDao.getMenus(userno);
+	    setMenuDepth(menus);
+		model.addAttribute("menus", menus);
+
+
+		//환율즐겨찾기 확인
 		List<ExchangeFavoriteDTO> favorites = loginDao.getFavoriteCurrency(userno);
-		
-		String favoriteCurrency1 = "0"; // �⺻��: ���ã�Ⱑ ����
-		String favoriteCurrency2 = "0"; // �⺻��: ���ã�Ⱑ ����
-		String favoriteCurrency3 = "0"; // �⺻��: ���ã�Ⱑ ����
+
+		String favoriteCurrency1 = "0"; // 기본값: 즐겨찾기가 없음
+		String favoriteCurrency2 = "0"; // 기본값: 즐겨찾기가 없음
+		String favoriteCurrency3 = "0"; // 기본값: 즐겨찾기가 없음
 
 		switch (favorites.size()) {
 		    case 0:
-		        // ���ã�Ⱑ ���� ���� ���, ����Ʈ ��ȭ�� ����
+		        // 즐겨찾기가 전혀 없는 경우, 디폴트 통화를 설정
 		        favoriteCurrency1 = "USD";
 		        favoriteCurrency2 = "JPY";
 		        favoriteCurrency3 = "EUR";
 		        break;
 		    case 1:
-		        // ���ã�Ⱑ �ϳ��� ���
+		        // 즐겨찾기가 하나인 경우
 		        favoriteCurrency1 = favorites.get(0).getCurrency();
 		        break;
 		    case 2:
-		        // ���ã�Ⱑ �� ���� ���
+		        // 즐겨찾기가 두 개인 경우
 		        favoriteCurrency1 = favorites.get(0).getCurrency();
 		        favoriteCurrency2 = favorites.get(1).getCurrency();
 		        break;
 		    case 3:
-		        // ���ã�Ⱑ �� ���� ���
+		        // 즐겨찾기가 세 개인 경우
 		        favoriteCurrency1 = favorites.get(0).getCurrency();
 		        favoriteCurrency2 = favorites.get(1).getCurrency();
 		        favoriteCurrency3 = favorites.get(2).getCurrency();
 		        break;
 		}
-		
-		
-		//ȯ�� ���ã�� ������ ó��		
+
+
+		//환율 즐겨찾기 데이터 처리		
 	    CurrencyRateCrawler currencyCrawler = new CurrencyRateCrawler();
 	    List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeFavoriteRates(favoriteCurrency1, favoriteCurrency2, favoriteCurrency3);
 	    if (!currencyRates.isEmpty()) {
@@ -94,14 +87,14 @@ public class HomeController {
 	    } else {
 	        System.out.println("No rates found.");
 	    }
-	    
-	    
-	    //���õ����� ó��
-	    
-	    
-	    
-	    
-	    //�ݸ������� ó��
+
+
+	    //증시데이터 처리
+
+
+
+
+	    //금리데이터 처리
 	    //MOR
 	    MorRateCrawler morCrawler = new MorRateCrawler();
 	    List<MorCoffixDTO> morRates = morCrawler.fetchMorRates();
@@ -114,8 +107,8 @@ public class HomeController {
 	    if (!coffixRates.isEmpty()) {
 	    	model.addAttribute("cofix", coffixRates);
 	    }
-	    
-	    //To Do List ó��
+
+	    //To Do List 처리
 	    ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
 	    List<TodoListDTO> todoList = todoDao.getToDoList(userno);
 	    model.addAttribute("todoList", todoList);
@@ -131,20 +124,19 @@ public class HomeController {
 	    	    
 	    return "main";
 	}
-
 	@RequestMapping("/noticeForm")
 	public String noticeForm() {		
 		return "noticeForm";
 	}
 
 	public void setMenuDepth(List<MenuDTO> menus) {
-	    // �޴� ID�� �޴� ��ü�� �����ϴ� Map�� ����
+	    // 메뉴 ID와 메뉴 객체를 매핑하는 Map을 생성
 	    Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
 	    for (MenuDTO menu : menus) {
 	        menuMap.put(menu.getId(), menu);
 	    }
 
-	    // �� �޴� �׸��� depth ���
+	    // 각 메뉴 항목의 depth 계산
 	    for (MenuDTO menu : menus) {
 	        int depth = 0;
 	        Integer parentId = menu.getParentId();
@@ -157,5 +149,4 @@ public class HomeController {
 	        menu.setDepth(depth);
 	    }
 	}
-
 }
