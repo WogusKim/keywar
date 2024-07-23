@@ -683,7 +683,7 @@ hr {
     display: none; /* 초기에는 박스를 숨깁니다 */
     
 }
-.deleteButton1 {
+.deleteButton11 {
 	text-decoration: none;
 	width: 20px;
 	height: 20px;
@@ -701,6 +701,6 @@ hr {
 	line-height: 20px; /* 버튼 높이와 동일하게 설정하여 텍스트를 중앙에 배치 */
 }
 
-.deleteButton1:hover { /* yeji */
+.deleteButton11:hover { /* yeji */
 	background-color: #B53D3D;
 }
