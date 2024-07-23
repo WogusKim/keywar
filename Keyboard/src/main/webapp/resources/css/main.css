@@ -526,26 +526,39 @@ body{
     align-items: center;
     padding: 10px 0px;
     border-bottom: 1px solid #eee;
-    background-color: #f2f2f2;
 }
 
 .stock-body .stock-row:last-child {
     border-bottom: none;
 }
 
-.stock-row span {
-    flex: 1;
-    text-align: center;
-    padding-right: 10px;
-}
 
 .stock-row1 span {
     flex: 1;
     text-align: center;
 }
 
+.stock-row span {
+    flex: 1;
+    text-align: right; /* 기본적으로 모든 컬럼은 오른쪽 정렬 */
+    padding-right: 10px;
+}
 
+.stock-row span:first-child {
+    text-align: center; /* 첫 번째 컬럼은 가운데 정렬 */
+}
 
+/* 지수가 음수일 때 */
+.stock-row .negative {
+    color: blue;
+    font-weight: bold;
+}
+
+/* 지수가 양수일 때 */
+.stock-row .positive {
+    color: red;
+    font-weight: bold;
+}
 
 hr {
     border: none;       /* 기존 테두리를 제거 */

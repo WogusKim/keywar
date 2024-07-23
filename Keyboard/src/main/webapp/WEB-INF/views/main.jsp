@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<%@ page import="java.util.List" %>
+	<%@ page import="java.text.NumberFormat" %>
 <%@ page import="kb.keyboard.warrior.dto.StockDTO" %>
 <%@ page import="kb.keyboard.warrior.StockKoreaCrawler" %>
 <%@ page import="kb.keyboard.warrior.StockInterCrawler" %>
@@ -55,9 +56,9 @@ document.addEventListener('DOMContentLoaded', function() {
 					        <div class="currency-row">
 					         	<div class="flag flag-${fn:toLowerCase(rate.currencyCode)}"></div>
 					            <span>${rate.currencyCode}</span>
-					            <span>${rate.cashBuy}</span>
-					            <span>${rate.cashSell}</span>
-					            <span>${rate.standardRate}</span>
+					            <span><fmt:formatNumber value="${rate.cashBuy}" type="number" /></span>
+					            <span><fmt:formatNumber value="${rate.cashSell}" type="number" /></span>
+					            <span><fmt:formatNumber value="${rate.standardRate}" type="number" /></span>
 					        </div>
 					    </c:forEach>
 				    </div>
@@ -67,12 +68,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	    		<div class="card_top">
 				    <div class="title_and_link div_underline">
 				        <h2 class="card_title">증시</h2>
-				        <a href="#" class="link-icon">바로가기</a>
+				        <a href="${pageContext.request.contextPath}/stock"  class="link-icon">바로가기</a>
 				    </div>
 				    
 				    <div class="stock-body">
 				        <div class="stock-row1">
-				            <span>&nbsp;</span>
 				            <span>지수</span>
 				            <span>현재가</span>
 				            <span>변동수치</span>
@@ -84,25 +84,34 @@ document.addEventListener('DOMContentLoaded', function() {
 				
 				            StockInterCrawler interCrawler = new StockInterCrawler();
 				            List<StockDTO> interStocks = interCrawler.fetchIndexData();
+				            
+				            // 숫자 포맷터 생성
+				            NumberFormat numberFormat = NumberFormat.getNumberInstance();
 				
 				            for (StockDTO stock : koreaStocks) {
 				                if (stock.getIndexName().contains("코스피") || stock.getIndexName().contains("코스닥")) {
+				                    String changeClass = stock.getChangePercentage() >= 0 ? "positive" : "negative";
+				                    // 결정된 부호를 붙일 변수
+				                    String priceChangePrefix = stock.getChangePercentage() >= 0 ? "+" : "-";
+				                    // String formattedPriceChange = priceChangePrefix + numberFormat.format(stock.getPriceChange());
+				                    
 				                    out.println("<div class='stock-row'>");
 				                    out.println("<span>" + stock.getIndexName() + "</span>");
-				                    out.println("<span>" + stock.getCurrentPrice() + "</span>");
-				                    out.println("<span>" + stock.getPriceChange() + "</span>");
-				                    out.println("<span>" + stock.getChangePercentage() + "%</span>");
+				                    out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getCurrentPrice()) + "</span>");
+				                    out.println("<span class='" + changeClass + "'>" + priceChangePrefix + numberFormat.format(stock.getPriceChange()) + "</span>");
+				                    out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getChangePercentage()) + "%</span>");
 				                    out.println("</div>");
 				                }
 				            }
 				
 				            for (StockDTO stock : interStocks) {
 				                if (stock.getIndexName().contains("S&P 500") || stock.getIndexName().contains("나스닥")) {
+				                    String changeClass = stock.getChangePercentage() >= 0 ? "positive" : "negative";
 				                    out.println("<div class='stock-row'>");
 				                    out.println("<span>" + stock.getIndexName() + "</span>");
-				                    out.println("<span>" + stock.getCurrentPrice() + "</span>");
-				                    out.println("<span>" + stock.getPriceChange() + "</span>");
-				                    out.println("<span>" + stock.getChangePercentage() + "%</span>");
+				                    out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getCurrentPrice()) + "</span>");
+				                    out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getPriceChange()) + "</span>");
+				                    out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getChangePercentage()) + "%</span>");
 				                    out.println("</div>");
 				                }
 				            }

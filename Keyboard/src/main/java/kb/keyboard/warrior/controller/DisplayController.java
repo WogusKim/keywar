@@ -83,6 +83,19 @@ public class DisplayController {
 		return "display/currency";
 	}
 	
+	@RequestMapping("/stock")
+	public String stock(Model model, HttpSession session) {	
+		
+		String userno = (String) session.getAttribute("userno");
+		
+		//환율즐겨찾기 확인
+		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
+		
+		
+		return "display/stock";
+	}
+	
+	
 	@RequestMapping("/interestRate")
 	public String  interestRate(Model model) {
 		
