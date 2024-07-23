@@ -366,6 +366,7 @@ public class MemoController {
         System.out.println(noticeDTO.getPositionX());
         System.out.println(noticeDTO.getPositionY());
         System.out.println(noticeDTO.getNoticeid());
+        System.out.println(noticeDTO.getZindex());
         // MemoDao를 통해 SQL 실행
         MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
 

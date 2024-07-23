@@ -16,13 +16,15 @@ public class NoticeDTO {
  private int positionX;        // 공지 위치 x좌표
  private int positionY;        // 공지 위치 y좌표
  private String color;
+ private int zindex;
 
  public NoticeDTO() {
  }
 
 
+
 public NoticeDTO(String noticeid, String title, String content, String userno, String deptno, String createdate,
-		String noticestatus, int positionX, int positionY, String color) {
+		String noticestatus, int positionX, int positionY, String color, int zindex) {
 	super();
 	this.noticeid = noticeid;
 	this.title = title;
@@ -34,10 +36,8 @@ public NoticeDTO(String noticeid, String title, String content, String userno, S
 	this.positionX = positionX;
 	this.positionY = positionY;
 	this.color = color;
+	this.zindex = zindex;
 }
-
-
-
 
 
 
@@ -122,6 +122,13 @@ public void setColor(String color) {
 	this.color = color;
 }
 
+public int getZindex() {
+	return zindex;
+}
+
+public void setZindex(int zindex) {
+	this.zindex = zindex;
+}
 
 
 }

@@ -94,10 +94,12 @@ $(function() {
             var noticeId = $(this).data("id"); // 공지사항 ID (data-id 속성에서 가져옴)
             var positionX = ui.position.left;
             var positionY = ui.position.top;
+            var zindex = $(this).css("z-index");
             
             console.log(positionX);
             console.log(positionY);
             console.log(noticeId);
+            console.log(zindex);
             
             // fetch API로 위치를 서버에 저장
             fetch('${pageContext.request.contextPath}/updateNoticePosition', {
@@ -108,7 +110,8 @@ $(function() {
                 body: JSON.stringify({
                     noticeid: noticeId,
                     positionX: positionX,
-                    positionY: positionY
+                    positionY: positionY,
+                    zindex: zindex
                 })
             })
             .then(response => response.json())
@@ -144,7 +147,7 @@ $(function() {
 					<div class="aa">
 						<c:forEach items="${notice}" var="dto">
 							<div class="notice" data-id="${dto.noticeid}"
-								style="position: absolute; left: ${dto.positionX}px; top: ${dto.positionY}px; background-color: ${dto.color};">
+								style="position: absolute; left: ${dto.positionX}px; top: ${dto.positionY}px; background-color: ${dto.color};  z-index: ${dto.zindex};">
 								<div class="title">${dto.title}</div>
 								<!-- 제목 굵게 표시 -->
 								${dto.content}
