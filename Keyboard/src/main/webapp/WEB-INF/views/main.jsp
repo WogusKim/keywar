@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				    <div class="currency-body">
 						<div class="currency-row1">
 							<span>&nbsp;</span>
-							<span>통화</span>
+							<span>국가</span>
 						    <span>매도</span>
 						    <span>매입</span>
 						    <span>기준환율</span>
