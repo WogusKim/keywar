@@ -82,9 +82,13 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <script>
 $(function() {
+    var maxZ = 100; // 초기 z-index 최대값 설정
     $(".notice").draggable({
         containment: ".aa", // 이동 영역을 흰 배경 안으로 제한
         scroll: false, // 드래그 중 스크롤 비활성화
+        start: function(event, ui) {
+            $(this).css("z-index", ++maxZ); // 드래그 시작 시 z-index를 증가시켜 최상위로 이동
+        },
         stop: function(event, ui) {
             // 드래그 종료 시 실행
             var noticeId = $(this).data("id"); // 공지사항 ID (data-id 속성에서 가져옴)
@@ -119,7 +123,6 @@ $(function() {
         }
     });
 });
-
 </script>
 </head>
 
