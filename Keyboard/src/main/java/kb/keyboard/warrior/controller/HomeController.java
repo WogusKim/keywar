@@ -44,6 +44,7 @@ public class HomeController {
 
         // 세션에서 메뉴 데이터를 확인 (확인후 없으면 세션 넣기)!!!
         List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
+        
         LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
 
         if (menus == null) {

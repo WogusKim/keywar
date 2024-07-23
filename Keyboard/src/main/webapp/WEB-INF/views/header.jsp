@@ -86,7 +86,7 @@ width: 100%;
                     
                 });
 
-	            console.log(data);
+	            //console.log(data);
 	            alarmOn(); // 알림 표시 기능 호출
 	        } else {
 	            console.log("No new notifications");
