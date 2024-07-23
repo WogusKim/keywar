@@ -42,7 +42,7 @@ public class HomeController {
         // 이후 로그인 여부 체크 필요
 
 
-        // 세션에서 메뉴 데이터를 확인 (확인후 없으면 세션 넣기)
+        // 세션에서 메뉴 데이터를 확인 (확인후 없으면 세션 넣기)!!!
         List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
         LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
 
