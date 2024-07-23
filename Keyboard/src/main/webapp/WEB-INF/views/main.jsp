@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<%@ page import="java.util.List" %>
+	<%@ page import="java.text.NumberFormat" %>
 <%@ page import="kb.keyboard.warrior.dto.StockDTO" %>
 <%@ page import="kb.keyboard.warrior.StockKoreaCrawler" %>
 <%@ page import="kb.keyboard.warrior.StockInterCrawler" %>
@@ -14,164 +15,25 @@
 <meta charset="UTF-8">
 <title>메인 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
-<style>
-.flag {
-    display: inline-block;
-    width: 50px; /* 새로운 너비 */
-    height: 34px; /* 새로운 높이 */
-    background: url('${pageContext.request.contextPath}/resources/images/flags/flag_all.png') no-repeat;
-    background-size: 290px 760px; /* background-size 조정 */
-}
-.flag-krw {
-    background-position: 0 0;
-}
-.flag-usd {
-    background-position: 0 -64px;
-}
-.flag-jpy {
-    background-position: 0 -128px;
-}
-.flag-cny {
-    background-position: 0 -192px;
-}
-.flag-aud {
-    background-position: 0 -256px;
-}
-.flag-gbp {
-    background-position: 0 -320px;
-}
-.flag-cad {
-    background-position: 0 -384px;
-}
-.flag-php {
-    background-position: 0 -448px;
-}
-.flag-hkd {
-    background-position: 0 -512px;
-}
-.flag-thb {
-    background-position: 0 -576px;
-}
-.flag-eur {
-    background-position: 0 -640px;
-}
-.flag-sgd {
-    background-position: -80px 0;
-}
-.flag-inr {
-    background-position: -80px -64px;
-}
-.flag-brl {
-    background-position: -80px -128px;
-}
-.flag-twd {
-    background-position: -80px -192px;
-}
-.flag-myr {
-    background-position: -80px -256px;
-}
-.flag-chf {
-    background-position: -80px -320px;
-}
-.flag-vnd {
-    background-position: -80px -384px;
-}
-.flag-rub {
-    background-position: -80px -448px;
-}
-.flag-idr {
-    background-position: -80px -512px;
-}
-.flag-bdt {
-    background-position: -80px -576px;
-}
-.flag-sek {
-    background-position: -80px -640px;
-}
-.flag-nok {
-    background-position: -160px 0;
-}
-.flag-huf {
-    background-position: -160px -64px;
-}
-.flag-mxn {
-    background-position: -160px -128px;
-}
-.flag-kwd {
-    background-position: -160px -192px;
-}
-.flag-dkk {
-    background-position: -160px -256px;
-}
-.flag-egp {
-    background-position: -160px -320px;
-}
-.flag-pln {
-    background-position: -160px -384px;
-}
-.flag-sar {
-    background-position: -160px -448px;
-}
-.flag-ils {
-    background-position: -160px -512px;
-}
-.flag-pkr {
-    background-position: -160px -576px;
-}
-.flag-bhd {
-    background-position: -160px -640px;
-}
-.flag-jod {
-    background-position: -240px 0;
-}
-.flag-bnd {
-    background-position: -240px -64px;
-}
-.flag-aed {
-    background-position: -240px -128px;
-}
-.flag-mnt {
-    background-position: -240px -192px;
-}
-.flag-kzt {
-    background-position: -240px -256px;
-}
-.flag-try {
-    background-position: -240px -320px;
-}
-.flag-czk {
-    background-position: -240px -384px;
-}
-.flag-qar {
-    background-position: -240px -448px;
-}
-.flag-nzd {
-    background-position: -240px -512px;
-}
-.flag-zar {
-    background-position: -240px -576px;
-}
-.flag-clp {
-    background-position: 0 -704px;
-}
-.flag-omr {
-    background-position: -240px -640px;
-}
-.flag-npr {
-    background-position: -80px -704px;
-}
-.flag-mop {
-    background-position: -160px -704px;
-}
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/flag.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+var contextPath = '${pageContext.request.contextPath}';
+
+document.addEventListener('DOMContentLoaded', function() {
+    var flagElements = document.querySelectorAll('.flag');
+    flagElements.forEach(function(elem) {
+        elem.style.backgroundImage = 'url(' + contextPath + '/resources/images/flags/flag_all.png)';
+    });
+});
+</script>
 </head>
 <body>
 
 <%@ include file="/WEB-INF/views/header.jsp" %>
 
 <div class="content_outline">
-	<%@ include file="/WEB-INF/views/sidebar.jsp" %>
+	<jsp:include page="/WEB-INF/views/sidebar.jsp" />
 	<div class="content_right">
 	    
 	    <div class="board_top">
@@ -185,21 +47,18 @@
 				    <div class="currency-body">
 						<div class="currency-row1">
 							<span>&nbsp;</span>
-							<span>통화</span>
+							<span>국가</span>
 						    <span>매도</span>
 						    <span>매입</span>
 						    <span>기준환율</span>
 						</div>
 					    <c:forEach var="rate" items="${ratesFavorite}">
 					        <div class="currency-row">
-					        <!-- 
-					            <img src="${pageContext.request.contextPath}/resources/images/flags/${rate.currencyCode}.png" alt="${rate.currencyCode}">
-					         -->
 					         	<div class="flag flag-${fn:toLowerCase(rate.currencyCode)}"></div>
 					            <span>${rate.currencyCode}</span>
-					            <span>${rate.cashBuy}</span>
-					            <span>${rate.cashSell}</span>
-					            <span>${rate.standardRate}</span>
+					            <span><fmt:formatNumber value="${rate.cashBuy}" type="number" /></span>
+					            <span><fmt:formatNumber value="${rate.cashSell}" type="number" /></span>
+					            <span><fmt:formatNumber value="${rate.standardRate}" type="number" /></span>
 					        </div>
 					    </c:forEach>
 				    </div>
@@ -209,12 +68,11 @@
 	    		<div class="card_top">
 				    <div class="title_and_link div_underline">
 				        <h2 class="card_title">증시</h2>
-				        <a href="#" class="link-icon">바로가기</a>
+				        <a href="${pageContext.request.contextPath}/stock"  class="link-icon">바로가기</a>
 				    </div>
 				    
 				    <div class="stock-body">
 				        <div class="stock-row1">
-				            <span>&nbsp;</span>
 				            <span>지수</span>
 				            <span>현재가</span>
 				            <span>변동수치</span>
@@ -226,25 +84,34 @@
 				
 				            StockInterCrawler interCrawler = new StockInterCrawler();
 				            List<StockDTO> interStocks = interCrawler.fetchIndexData();
+				            
+				            // 숫자 포맷터 생성
+				            NumberFormat numberFormat = NumberFormat.getNumberInstance();
 				
 				            for (StockDTO stock : koreaStocks) {
 				                if (stock.getIndexName().contains("코스피") || stock.getIndexName().contains("코스닥")) {
+				                    String changeClass = stock.getChangePercentage() >= 0 ? "positive" : "negative";
+				                    // 결정된 부호를 붙일 변수
+				                    String priceChangePrefix = stock.getChangePercentage() >= 0 ? "+" : "-";
+				                    // String formattedPriceChange = priceChangePrefix + numberFormat.format(stock.getPriceChange());
+				                    
 				                    out.println("<div class='stock-row'>");
 				                    out.println("<span>" + stock.getIndexName() + "</span>");
-				                    out.println("<span>" + stock.getCurrentPrice() + "</span>");
-				                    out.println("<span>" + stock.getPriceChange() + "</span>");
-				                    out.println("<span>" + stock.getChangePercentage() + "%</span>");
+				                    out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getCurrentPrice()) + "</span>");
+				                    out.println("<span class='" + changeClass + "'>" + priceChangePrefix + numberFormat.format(stock.getPriceChange()) + "</span>");
+				                    out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getChangePercentage()) + "%</span>");
 				                    out.println("</div>");
 				                }
 				            }
 				
 				            for (StockDTO stock : interStocks) {
 				                if (stock.getIndexName().contains("S&P 500") || stock.getIndexName().contains("나스닥")) {
+				                    String changeClass = stock.getChangePercentage() >= 0 ? "positive" : "negative";
 				                    out.println("<div class='stock-row'>");
 				                    out.println("<span>" + stock.getIndexName() + "</span>");
-				                    out.println("<span>" + stock.getCurrentPrice() + "</span>");
-				                    out.println("<span>" + stock.getPriceChange() + "</span>");
-				                    out.println("<span>" + stock.getChangePercentage() + "%</span>");
+				                    out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getCurrentPrice()) + "</span>");
+				                    out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getPriceChange()) + "</span>");
+				                    out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getChangePercentage()) + "%</span>");
 				                    out.println("</div>");
 				                }
 				            }

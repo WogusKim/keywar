@@ -8,7 +8,7 @@ public interface ScheduleDao {
 		
     void scheduleNew(ScheduleDTO dto);
     List<ScheduleDTO> scheduleLoad(String userno);
-    void scheduleEdit(ScheduleDTO dto);
+    int scheduleEdit(ScheduleDTO dto);
     void scheduleDelete(String scheduleid);
 	
 }

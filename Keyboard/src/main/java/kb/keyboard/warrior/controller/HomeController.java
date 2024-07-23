@@ -1,20 +1,15 @@
 package kb.keyboard.warrior.controller;
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpSession;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import kb.keyboard.warrior.CoffixRateCrawler;
 import kb.keyboard.warrior.CurrencyRateCrawler;
 import kb.keyboard.warrior.MorRateCrawler;
@@ -28,67 +23,74 @@ import kb.keyboard.warrior.dto.MorCoffixDTO;
 import kb.keyboard.warrior.dto.MyMemoDTO;
 import kb.keyboard.warrior.dto.NoticeDTO;
 import kb.keyboard.warrior.dto.TodoListDTO;
-
 /**
  * Handles requests for the application home page.
  */
 @Controller
 public class HomeController {
-
 	@Autowired
 	public SqlSession sqlSession;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model, HttpSession session) {
-		
-		//·Î±×ÀÎ¿©ºÎ Ã¼Å©
+
+		//ë¡œê·¸ì¸ì—¬ë¶€ ì²´í¬
 		String userno = (String) session.getAttribute("userno");
 		String deptno = (String) session.getAttribute("deptno");
-		
-		//ÃßÈÄ ·Î±×ÀÎ ¿©ºÎ Ã¼Å© ÇÊ¿ä
-		
-		//»çÀÌµå¹Ù (¸Ş´ºµ¥ÀÌÅÍ)
-		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
-		/*
-		 * LoginDao loginDao = sqlSession.getMapper(LoginDao.class); List<MenuDTO> menus
-		 * = loginDao.getMenus(userno); setMenuDepth(menus); model.addAttribute("menus",
-		 * menus);
-		 */
+
+		//ì¶”í›„ ë¡œê·¸ì¸ ì—¬ë¶€ ì²´í¬ í•„ìš”
 		
 
-		//È¯À²Áñ°ÜÃ£±â È®ÀÎ
+	    // ì„¸ì…˜ì—ì„œ ë©”ë‰´ ë°ì´í„°ë¥¼ ë¨¼ì € í™•ì¸
+	    List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
+	    LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
+	    
+	    if (menus == null) {
+	        menus = loginDao.getMenus(userno);
+	        setMenuDepth(menus);
+	        List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
+	        session.setAttribute("menus", topLevelMenus);  // ì„¸ì…˜ì— ë©”ë‰´ ë°ì´í„° ì €ì¥
+	        model.addAttribute("menus", topLevelMenus);
+	    } else {
+	        model.addAttribute("menus", menus);  // ì´ë¯¸ ì„¸ì…˜ì— ì €ì¥ëœ ë°ì´í„° ì‚¬ìš©
+	    }
+	    
+
+
+
+		//í™˜ìœ¨ì¦ê²¨ì°¾ê¸° í™•ì¸
 		List<ExchangeFavoriteDTO> favorites = loginDao.getFavoriteCurrency(userno);
-		
-		String favoriteCurrency1 = "0"; // ±âº»°ª: Áñ°ÜÃ£±â°¡ ¾øÀ½
-		String favoriteCurrency2 = "0"; // ±âº»°ª: Áñ°ÜÃ£±â°¡ ¾øÀ½
-		String favoriteCurrency3 = "0"; // ±âº»°ª: Áñ°ÜÃ£±â°¡ ¾øÀ½
+
+		String favoriteCurrency1 = "0"; // æ¹²ê³•ë‚¯åª›Â’: ï§Âå¯ƒâ‘¥ê°¼æ¹²ê³ŒÂ€ Â—Â†ÂÂŒ
+		String favoriteCurrency2 = "0"; // æ¹²ê³•ë‚¯åª›Â’: ï§Âå¯ƒâ‘¥ê°¼æ¹²ê³ŒÂ€ Â—Â†ÂÂŒ
+		String favoriteCurrency3 = "0"; // æ¹²ê³•ë‚¯åª›Â’: ï§Âå¯ƒâ‘¥ê°¼æ¹²ê³ŒÂ€ Â—Â†ÂÂŒ
 
 		switch (favorites.size()) {
 		    case 0:
-		        // Áñ°ÜÃ£±â°¡ ÀüÇô ¾ø´Â °æ¿ì, µğÆúÆ® ÅëÈ­¸¦ ¼³Á¤
+		        // ì¦ê²¨ì°¾ê¸°ê°€ ì „í˜€ ì—†ëŠ” ê²½ìš°, ë””í´íŠ¸ í†µí™”ë¥¼ ì„¤ì •
 		        favoriteCurrency1 = "USD";
 		        favoriteCurrency2 = "JPY";
 		        favoriteCurrency3 = "EUR";
 		        break;
 		    case 1:
-		        // Áñ°ÜÃ£±â°¡ ÇÏ³ªÀÎ °æ¿ì
+		        // ì¦ê²¨ì°¾ê¸°ê°€ í•˜ë‚˜ì¸ ê²½ìš°
 		        favoriteCurrency1 = favorites.get(0).getCurrency();
 		        break;
 		    case 2:
-		        // Áñ°ÜÃ£±â°¡ µÎ °³ÀÎ °æ¿ì
+		        // ì¦ê²¨ì°¾ê¸°ê°€ ë‘ ê°œì¸ ê²½ìš°
 		        favoriteCurrency1 = favorites.get(0).getCurrency();
 		        favoriteCurrency2 = favorites.get(1).getCurrency();
 		        break;
 		    case 3:
-		        // Áñ°ÜÃ£±â°¡ ¼¼ °³ÀÎ °æ¿ì
+		        // ì¦ê²¨ì°¾ê¸°ê°€ ì„¸ ê°œì¸ ê²½ìš°
 		        favoriteCurrency1 = favorites.get(0).getCurrency();
 		        favoriteCurrency2 = favorites.get(1).getCurrency();
 		        favoriteCurrency3 = favorites.get(2).getCurrency();
 		        break;
 		}
-		
-		
-		//È¯À² Áñ°ÜÃ£±â µ¥ÀÌÅÍ Ã³¸®		
+
+
+		//í™˜ìœ¨ ì¦ê²¨ì°¾ê¸° ë°ì´í„° ì²˜ë¦¬		
 	    CurrencyRateCrawler currencyCrawler = new CurrencyRateCrawler();
 	    List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeFavoriteRates(favoriteCurrency1, favoriteCurrency2, favoriteCurrency3);
 	    if (!currencyRates.isEmpty()) {
@@ -96,14 +98,14 @@ public class HomeController {
 	    } else {
 	        System.out.println("No rates found.");
 	    }
-	    
-	    
-	    //Áõ½Ãµ¥ÀÌÅÍ Ã³¸®
-	    
-	    
-	    
-	    
-	    //±İ¸®µ¥ÀÌÅÍ Ã³¸®
+
+
+	    //ì¦ì‹œë°ì´í„° ì²˜ë¦¬
+
+
+
+
+	    //ê¸ˆë¦¬ë°ì´í„° ì²˜ë¦¬
 	    //MOR
 	    MorRateCrawler morCrawler = new MorRateCrawler();
 	    List<MorCoffixDTO> morRates = morCrawler.fetchMorRates();
@@ -116,8 +118,8 @@ public class HomeController {
 	    if (!coffixRates.isEmpty()) {
 	    	model.addAttribute("cofix", coffixRates);
 	    }
-	    
-	    //To Do List Ã³¸®
+
+	    //To Do List ï§£Â˜ç”±
 	    ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
 	    List<TodoListDTO> todoList = todoDao.getToDoList(userno);
 	    model.addAttribute("todoList", todoList);
@@ -133,20 +135,19 @@ public class HomeController {
 	    	    
 	    return "main";
 	}
-
 	@RequestMapping("/noticeForm")
 	public String noticeForm() {		
 		return "noticeForm";
 	}
 
 	public void setMenuDepth(List<MenuDTO> menus) {
-	    // ¸Ş´º ID¿Í ¸Ş´º °´Ã¼¸¦ ¸ÅÇÎÇÏ´Â MapÀ» »ı¼º
+	    // ë©”ë‰´ IDì™€ ë©”ë‰´ ê°ì²´ë¥¼ ë§¤í•‘í•˜ëŠ” Mapì„ ìƒì„±
 	    Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
 	    for (MenuDTO menu : menus) {
 	        menuMap.put(menu.getId(), menu);
 	    }
 
-	    // °¢ ¸Ş´º Ç×¸ñÀÇ depth °è»ê
+	    // ê° ë©”ë‰´ í•­ëª©ì˜ depth ê³„ì‚°
 	    for (MenuDTO menu : menus) {
 	        int depth = 0;
 	        Integer parentId = menu.getParentId();
@@ -160,4 +161,48 @@ public class HomeController {
 	    }
 	}
 
+	
+	public List<MenuDTO> organizeMenuHierarchy(List<MenuDTO> menus) {
+	    Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
+	    for (MenuDTO menu : menus) {
+	        menuMap.put(menu.getId(), menu);
+	        menu.setChildren(new ArrayList<MenuDTO>());
+	    }
+
+	    for (MenuDTO menu : menus) {
+	        if (menu.getParentId() != null) {
+	            MenuDTO parent = menuMap.get(menu.getParentId());
+	            if (parent != null) {
+	                parent.getChildren().add(menu);
+	            }
+	        }
+	    }
+
+	    List<MenuDTO> topLevelMenus = new ArrayList<MenuDTO>();
+	    for (MenuDTO menu : menus) {
+	        if (menu.getParentId() == null) {
+	            topLevelMenus.add(menu);
+	        }
+	    }
+
+	    // ë¡œê¹…ì„ ì¶”ê°€í•˜ì—¬ ê° ìµœìƒìœ„ ë©”ë‰´ì™€ í•´ë‹¹ ìì‹ ë©”ë‰´ë“¤ì„ ì¶œë ¥
+	    for (MenuDTO menu : topLevelMenus) {
+	        System.out.println("Menu: " + menu.getTitle() + " (ID: " + menu.getId() + ")");
+	        printChildren(menu, "  ");  // ì¬ê·€ì ìœ¼ë¡œ ìì‹ ë©”ë‰´ë“¤ì„ ì¶œë ¥
+	    }
+
+	    return topLevelMenus;
+	}
+	
+	private void printChildren(MenuDTO menu, String indent) {
+	    for (MenuDTO child : menu.getChildren()) {
+	        System.out.println(indent + "Child Menu: " + child.getTitle() + " (ID: " + child.getId() + ")");
+	        if (!child.getChildren().isEmpty()) {
+	            printChildren(child, indent + "  ");
+	        }
+	    }
+	}
+
+
 }
+
