@@ -48,7 +48,39 @@
 	background-image: url('${pageContext.request.contextPath}/resources/images/icons/menu_setting.png');
 }
 
-.menu_setting {
+.back-icon {
+	background-image: url('${pageContext.request.contextPath}/resources/images/icons/back.png');
+}
+
+.plus-icon {
+	background-image: url('${pageContext.request.contextPath}/resources/images/icons/plus.png');
+}
+
+.minus-icon {
+	background-image: url('${pageContext.request.contextPath}/resources/images/icons/minus.png');
+}
+
+.menu_back {
+    position: absolute; /* 절대 위치 사용 */
+    right: 10px; /* 우측으로부터 10px 떨어진 위치 */
+    top: 10px; /* 하단으로부터 10px 떨어진 위치 */
+    padding: 10px; /* 패딩 */
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 세로 중앙 정렬 */
+    
+}
+
+.menu_plus {
+    position: absolute; /* 절대 위치 사용 */
+    right: 70px; /* 우측으로부터 10px 떨어진 위치 */
+    bottom: 10px; /* 하단으로부터 10px 떨어진 위치 */
+    padding: 10px; /* 패딩 */
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 세로 중앙 정렬 */
+    
+}
+
+.menu_minus {
     position: absolute; /* 절대 위치 사용 */
     right: 10px; /* 우측으로부터 10px 떨어진 위치 */
     bottom: 10px; /* 하단으로부터 10px 떨어진 위치 */
@@ -71,26 +103,32 @@
     margin-right: 6px;
 }
 
+.selected {
+    font-weight: bold;
+    color: #0000FF; /* 블루 컬러로 강조 */
+}
+
 
 </style>
 </head>
 <body>
-<div class="content_left">
+<div class="menuSetting_l">
     <div class="menu-tree">
         <ul>
             <c:forEach var="menu" items="${menus}">
                 <li>
                 	<div class="menu_list">
 	                    <div class="icon ${menu.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="folder" onclick="toggleFolder(this)"></div>
-	                    <span>${menu.title}</span>
+	                    <span onclick="selectFolder(this, ${menu.id})">${menu.title}</span>
                     </div>
                     <c:if test="${not empty menu.children}">
                         <ul>
                             <c:forEach var="child1" items="${menu.children}">
                                 <li>
                                 	<div class="menu_list">
+                               			<!-- 테스트중 -->
 	                                    <div class="icon ${child1.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="folder" onclick="toggleFolder(this)"></div>
-	                                    <div>${child1.title}</div>
+	                                    <span onclick="selectFolder(this, ${child1.id})">${child1.title}</span>
                                     </div>
                                     <c:if test="${not empty child1.children}">
                                         <ul>
@@ -98,14 +136,14 @@
                                                 <li>
                                                 	<div class="menu_list">
 	                                                    <div class="icon ${child2.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="folder" onclick="toggleFolder(this)"></div>
-	                                                    <span>${child2.title}</span>
+	                                                    <span onclick="selectFolder(this, ${child2.id})">${child2.title}</span>
                                                     </div>
                                                     <c:if test="${not empty child2.children}">
                                                         <ul>
                                                             <c:forEach var="child3" items="${child2.children}">
                                                                 <li><div class="menu_list">
 	                                                                    <div class="icon ${child3.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="folder" onclick="toggleFolder(this)"></div>
-	                                                                    <span>${child3.title}</span>
+	                                                                    <span onclick="selectFolder(this, ${child3.id})">${child3.title}</span>
                                                                     </div>
                                                                     <c:if test="${not empty child3.children}">
                                                                         <ul>
@@ -113,7 +151,7 @@
                                                                                 <li>
                                                                                 	<div class="menu_list">
 	                                                                                    <div class="icon ${child4.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="folder" onclick="toggleFolder(this)"></div>
-	                                                                                    <span>${child4.title}</span>
+	                                                                                    <span onclick="selectFolder(this, ${child4.id})">${child4.title}</span>
                                                                                     </div>
                                                                                 </li>
                                                                             </c:forEach>
@@ -135,9 +173,17 @@
             </c:forEach>
         </ul>
     </div>
-	<div class="menu_setting">
-	    <div class="icon-setting menu-icon"></div>
-	    <a href="${pageContext.request.contextPath}/menuSetting">메뉴 설정</a>
+	<div class="menu_back">
+	    <div class="icon-setting back-icon"></div>
+	    <a href="#" onclick="history.back(); return false;">뒤로가기</a>
+	</div>
+	<div class="menu_plus">
+	    <div class="icon-setting plus-icon"></div>
+	    <a href="#" onclick="#">추가</a>
+	</div>
+	<div class="menu_minus">
+	    <div class="icon-setting minus-icon"></div>
+	    <a href="#" onclick="#">삭제</a>
 	</div>
 </div>
 <script>
@@ -154,6 +200,20 @@ function toggleFolder(element) {
         element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder.png")';
     }
 }
+
+function selectFolder(element, menuId) {
+    // 모든 타이틀에서 'selected' 클래스 제거
+    document.querySelectorAll('.menu_list span').forEach(span => {
+        span.classList.remove('selected');
+    });
+
+    // 클릭된 요소에 'selected' 클래스 추가
+    element.classList.add('selected');
+
+    // 선택된 폴더 ID를 전역 변수로 저장
+    window.selectedFolderId = menuId;
+}
+
 </script>
 </body>
 </html>  

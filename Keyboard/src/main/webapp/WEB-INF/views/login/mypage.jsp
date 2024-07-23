@@ -8,6 +8,9 @@
 <title>김국민의 업무노트 : 마이페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/display.css">
+<link rel="icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
+<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 
@@ -96,28 +99,24 @@ min-width: 100px;
             });
             activeButton.classList.add('pushedButton');
         }
-
         function btn1() {
             box1.style.display = 'block';
             box2.style.display = 'none';
             box3.style.display = 'none';
             updateButtonStyles(this);
         }
-
         function btn2() {
             box1.style.display = 'none';
             box2.style.display = 'block';
             box3.style.display = 'none';
             updateButtonStyles(this);
         }
-
         function btn3() {
             box1.style.display = 'none';
             box2.style.display = 'none';
             box3.style.display = 'block';
             updateButtonStyles(this);
         }
-
         document.querySelector('.mypageButton:nth-child(1)').addEventListener('click', btn1);
         document.querySelector('.mypageButton:nth-child(2)').addEventListener('click', btn2);
         document.querySelector('.mypageButton:nth-child(3)').addEventListener('click', btn3);

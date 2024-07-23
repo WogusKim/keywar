@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kb.keyboard.warrior.dao.AlertDao">
+
+	<select id="getAlert" resultType="kb.keyboard.warrior.dto.AlertDTO">
+		select * from alert where userno = #{param1} and isread = 0;
+	</select>
+	<update id="updateIsread" >
+		UPDATE alert SET isread = 1 WHERE alertid = #{param1};
+	</update>
+
+</mapper>
