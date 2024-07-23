@@ -1,6 +1,10 @@
 package kb.keyboard.warrior.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 //import com.fasterxml.jackson.databind.ObjectMapper;
@@ -186,9 +191,46 @@ public class LoginController {
 		return json;
 	}
 	
-	
-	
-	
-	
+	@RequestMapping(value = "/uploadProfilePicture", method = RequestMethod.POST)
+    public String uploadProfilePicture(HttpServletRequest request, @RequestParam("picture") MultipartFile file, RedirectAttributes attributes) {
+        HttpSession session = request.getSession();
+        String userno = (String) session.getAttribute("userno");
+
+        if (file.isEmpty()) {
+            attributes.addFlashAttribute("message", "파일이 업로드되지 않았습니다.");
+            return "redirect:/editProfile";
+        }
+
+        try {
+            InputStream inputStream = file.getInputStream();
+            LoginDao dao = sqlSession.getMapper(LoginDao.class);
+            dao.updateUserProfilePicture(userno, inputStream);
+            attributes.addFlashAttribute("message", "프로필 사진이 성공적으로 업로드되었습니다.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            attributes.addFlashAttribute("message", "파일 업로드 중 오류가 발생하였습니다.");
+        }
+
+        return "redirect:/editProfile";
+    }
+
+    @RequestMapping("/getUserProfilePicture")
+    public void getUserProfilePicture(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        String userno = (String) session.getAttribute("userno");
+
+        LoginDao dao = sqlSession.getMapper(LoginDao.class);
+        UserDTO user = dao.getUserProfile(userno);
+
+        if (user != null && user.getPicture() != null) {
+            response.setContentType("image/jpeg");
+            try {
+                response.getOutputStream().write(user.getPicture());
+                response.getOutputStream().flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }
