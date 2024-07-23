@@ -22,6 +22,7 @@
                 <div class="board_currency_inner">
                     <h2 class="card_title">환율 리스트</h2>
                     <hr>
+                    <div style=" overflow-y: auto; height: 60%;">
 					<table class="all_currency" summary="환율조회표">
 						<colgroup>
 							<col style="width: 7%;">
@@ -44,10 +45,10 @@
 					            <th scope="col" rowspan="3">USD<br/>환산율</th>
 					        </tr>
 					        <tr>
-					            <th scope="col" rowspan="2">보내실 때</th>
-					            <th scope="col" rowspan="2">받으실 때</th>
-					            <th scope="col" rowspan="2">사실 때</th>
-					            <th scope="col" rowspan="2">파실 때</th>
+					            <th scope="col" rowspan="2">전신환 매도율</th>
+					            <th scope="col" rowspan="2">전신환 매수율</th>
+					            <th scope="col" rowspan="2">현찰 매도율</th>
+					            <th scope="col" rowspan="2">현찰 매수율</th>
 					        </tr>				            
 					    </thead>
 					    <tbody>
@@ -124,6 +125,30 @@
 					    	</c:forEach>
 					    </tbody>
 					</table>
+					</div> 
+					<hr>
+					<!--  환율 계산기 넣을거야 -->
+					<div style="height: 30%; width: 100%; padding: 10px; display: flex;  justify-content: space-between; align-items: center;"> <!-- 여기 환율 계산기 영역임.  -->
+						<div style="width: 130px; height: 100%;"><h2 class="card_title">환율계산기</h2></div>
+						<div style="background-color: green; width: calc(100% - 130px);height: 100%; text-align: center;">
+							<div style="background-color: yellow; height: 50%; width: 100%; display: flex;  justify-content: space-between; align-items: center;"> <!-- 얘가 위에 넣을 거 겉에 박스임.  -->
+							
+							<div style="background-color: #D9D9D9; height: 60%; width: 100%; border-radius: 10px; border-color: #CAC6C6; border: 1px solid; padding: 10px; display: flex;  justify-content: space-between;">
+								<div style="width: 25%; background-color: blue;  height: 100%;">1</div><div style="width: 75%; background-color: pink;  height: 100%;">2</div>
+							</div>
+							</div>
+								<p>=</p>
+							<div style="background-color: red; height: 50%; width: 100%;"> 여기는 두 번째 div
+							</div>
+						
+						</div>
+						
+						
+						 
+					
+					</div>
+					
+					
                 </div>
             </div>
         </div>
