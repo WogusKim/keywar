@@ -49,9 +49,11 @@ public class HomeController {
 		
 		//사이드바 (메뉴데이터)
 		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
-		List<MenuDTO> menus = loginDao.getMenus(userno);
-	    setMenuDepth(menus);
-		model.addAttribute("menus", menus);
+		/*
+		 * LoginDao loginDao = sqlSession.getMapper(LoginDao.class); List<MenuDTO> menus
+		 * = loginDao.getMenus(userno); setMenuDepth(menus); model.addAttribute("menus",
+		 * menus);
+		 */
 		
 
 		//환율즐겨찾기 확인

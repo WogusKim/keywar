@@ -6,9 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import kb.keyboard.warrior.dao.LoginDao;
+import kb.keyboard.warrior.dao.MemoDao;
 import kb.keyboard.warrior.dao.ScheduleDao;
 import kb.keyboard.warrior.dao.ToDoDao;
+import kb.keyboard.warrior.dto.NoticeDTO;
 import kb.keyboard.warrior.dto.ScheduleDTO;
 import kb.keyboard.warrior.dto.TodoListDTO;
-import kb.keyboard.warrior.dto.UserDTO;
 import kb.keyboard.warrior.memo.command.MemoCommand;
 import kb.keyboard.warrior.memo.command.MemoViewCommand;
 import kb.keyboard.warrior.memo.command.TodoViewCommand;
@@ -33,6 +31,7 @@ import kb.keyboard.warrior.memo.command.mymemoWriteCommand;
 import kb.keyboard.warrior.memo.command.noticeDeleteCommand;
 import kb.keyboard.warrior.memo.command.noticeViewCommand;
 import kb.keyboard.warrior.memo.command.noticeWriteCommand;
+import kb.keyboard.warrior.memo.command.todoStatusCommand;
 import kb.keyboard.warrior.memo.command.todoWriteCommand;
 import kb.keyboard.warrior.util.Constant;
 
@@ -299,4 +298,39 @@ public class MemoController {
 		}
 		return "redirect:todo";
 	}
+	
+	@RequestMapping("/todoStatus") // todo status
+	public String todoStatus(HttpSession session, HttpServletRequest request, Model model) {
+		System.out.println("todoStatus()");
+
+		String userno = (String) session.getAttribute("userno");
+		System.out.println("todo 상태변경 로그인 된 사람 누구야? " + userno);
+		model.addAttribute("request", request);
+		
+		if (userno != null) {
+			todoStatusCommand command = new todoStatusCommand();
+			command.execute(model,userno);
+		} else {
+			System.out.println("User number not found in session.");
+		}
+		return "redirect:todo";
+	}
+	
+	@RequestMapping(value = "/updateNoticePosition", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateNoticePosition(@RequestBody NoticeDTO noticeDTO) {
+		System.out.println("이동이동");
+		System.out.println(noticeDTO.getPositionX());
+		System.out.println(noticeDTO.getPositionY());
+		System.out.println(noticeDTO.getNoticeid());
+        // MemoDao 인터페이스를 통해 SQL 세션을 얻음
+        MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
+        
+        // 공지사항의 위치를 업데이트하는 메서드 호출
+        memoDao.updateNoticePosition(noticeDTO);
+
+        // JSON 형식의 응답을 반환
+        return "{\"status\":\"success\"}";
+    }
+	
 }
