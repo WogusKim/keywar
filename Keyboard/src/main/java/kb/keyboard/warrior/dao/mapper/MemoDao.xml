@@ -9,7 +9,8 @@
 		resultType="kb.keyboard.warrior.dto.TodoListDTO">
 		SELECT * FROM todolist
 		WHERE userno = #{param1}
-		AND status = 1
+		AND status =
+		1
 		ORDER BY todoid
 	</select>
 
@@ -36,7 +37,8 @@
 	</select>
 
 	<insert id="noticeWrite">
-		INSERT INTO notice (title, content, color, userno, deptno)
+		INSERT INTO notice (title, content, color, userno,
+		deptno)
 		values (#{param1}, #{param2}, #{param3}, #{param4}, #{param5})
 	</insert>
 
@@ -71,13 +73,15 @@
 		UPDATE todolist SET status = 0 where todoid =
 		#{param1}
 	</update>
-	
-	 <!-- 공지사항 위치 정보를 업데이트하는 쿼리 -->
-    <update id="updateNoticePosition">
-        UPDATE notice 
-        SET positionX = #{positionX}, positionY = #{positionY} 
-        WHERE noticeid = #{noticeid}
-    </update>
+
+	<!-- 공지사항 위치 및 z-index 정보를 업데이트하는 쿼리 -->
+	<update id="updateNoticePosition">
+		UPDATE notice
+		SET positionX = #{positionX},
+		positionY = #{positionY},
+		zindex = #{zindex}  <!-- z-index 업데이트 추가 -->
+		WHERE noticeid = #{noticeid}
+	</update>
 
 
 
