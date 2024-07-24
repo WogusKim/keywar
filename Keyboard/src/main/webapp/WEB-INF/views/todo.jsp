@@ -9,18 +9,18 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <style>
-ul {
+.board_todo ul {
 	list-style-type: none; /* 리스트 스타일을 없앱니다 */
 	padding: 0;
 }
 
-li {
+.board_todo li {
 	margin-bottom: 10px; /* 각 항목 사이에 여백을 줍니다 */
 	display: flex; /* 수평 배치 설정 */
 	align-items: center; /* 수직 가운데 정렬 */
 }
 
-li.checked .task {
+.board_todo li.checked .task {
 	text-decoration: line-through; /* 체크된 항목에만 삭선 적용 */
 }
 
@@ -82,7 +82,7 @@ li.checked .task {
 							${list.size()}</span>
 					</div>
 					<form action="todoWrite" method="post">
-						<div style="margin-top: 20px;">
+						<div>
 							<input type="text" name="task" id="new-task"
 								placeholder="할 일을 입력하세요"> <input type="submit"
 								value="추가하기" class="addButton">

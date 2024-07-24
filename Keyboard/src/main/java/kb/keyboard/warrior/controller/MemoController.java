@@ -332,14 +332,13 @@ public class MemoController {
         String userno = (String) session.getAttribute("userno");
         System.out.println("todo 작성: 유저 번호: " + userno);
         model.addAttribute("request", request);
-        model.addAttribute("userno", userno);
         if (userno != null) {
-            command = new todoWriteCommand();
-            command.execute(model);
+        	todoWriteCommand command = new todoWriteCommand();
+            command.execute(model,userno);
         } else {
             System.out.println("User number not found in session.");
         }
-        return "redirect:todo";
+        return "redirect:/todo";
     }
 
     @RequestMapping("/todoStatus")
