@@ -22,6 +22,7 @@ import kb.keyboard.warrior.dto.MenuDTO;
 import kb.keyboard.warrior.dto.MorCoffixDTO;
 import kb.keyboard.warrior.dto.MyMemoDTO;
 import kb.keyboard.warrior.dto.NoticeDTO;
+import kb.keyboard.warrior.dto.StockFavoriteDTO;
 import kb.keyboard.warrior.dto.TodoListDTO;
 
 /**
@@ -44,9 +45,11 @@ public class HomeController {
 
         // 세션에서 메뉴 데이터를 확인 (확인후 없으면 세션 넣기)!!!
 
+
         List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
         
         LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
+
 
         menus = loginDao.getMenus(userno);
         setMenuDepth(menus);
@@ -65,11 +68,13 @@ public class HomeController {
         switch (favorites.size()) {
             case 0:
                 // 즐겨찾기가 전혀 없는 경우, 디폴트 환율 설정
+
                 favoriteCurrency1 = "USD";
                 favoriteCurrency2 = "JPY";
                 favoriteCurrency3 = "EUR";
                 break;
             case 1:
+
                 // 즐겨찾기가 하나인 경우
                 favoriteCurrency1 = favorites.get(0).getCurrency();
                 break;
@@ -79,12 +84,14 @@ public class HomeController {
                 favoriteCurrency2 = favorites.get(1).getCurrency();
                 break;
             case 3:
+
                 // 즐겨찾기가 세 개인 경우
                 favoriteCurrency1 = favorites.get(0).getCurrency();
                 favoriteCurrency2 = favorites.get(1).getCurrency();
                 favoriteCurrency3 = favorites.get(2).getCurrency();
                 break;
         }
+        
 
         // 환율 즐겨찾기 데이터 처리		
         CurrencyRateCrawler currencyCrawler = new CurrencyRateCrawler();
@@ -94,25 +101,72 @@ public class HomeController {
         } else {
             System.out.println("No rates found.");
         }
+        
+        // 증시 즐겨찾기
+        List<StockFavoriteDTO> stock = loginDao.getFavoriteStock(userno);
+
+
+        String favoriteStock1 = "0"; // 
+        String favoriteStock2 = "0"; // 
+        String favoriteStock3 = "0"; //
+        String favoriteStock4 = "0"; // 
+
+        switch (favorites.size()) {
+            case 0:
+                // 아무것도 즐겨찾기 안했을 경우 기본
+                favoriteStock1 = "KOSPI";
+                favoriteStock2 = "KOSDAQ";
+                favoriteStock3 = "SPI@SPX";
+                favoriteStock4 = "NAS@IXIC";
+                break;
+            case 1:
+            	favoriteStock1 = stock.get(0).getIndexname();
+                break;
+            case 2:
+            	favoriteStock1 = stock.get(0).getIndexname();
+            	favoriteStock2 = stock.get(1).getIndexname();
+                break;
+            case 3:
+            	favoriteStock1 = stock.get(0).getIndexname();
+            	favoriteStock2 = stock.get(1).getIndexname();
+            	favoriteStock3 = stock.get(2).getIndexname();
+                break;
+            case 4:
+            	favoriteStock1 = stock.get(0).getIndexname();
+            	favoriteStock2 = stock.get(1).getIndexname();
+            	favoriteStock3 = stock.get(2).getIndexname();
+            	favoriteStock4 = stock.get(3).getIndexname();
+                break;
+
+        }
+        
+
+        
 
         // MOR 데이터 처리
+
         MorRateCrawler morCrawler = new MorRateCrawler();
         List<MorCoffixDTO> morRates = morCrawler.fetchMorRates();
         if (!morRates.isEmpty()) {
             model.addAttribute("mor", morRates);
         }
 
+
         // COFFIX 데이터 처리
+
         CoffixRateCrawler coffixCrawler = new CoffixRateCrawler();
         List<MorCoffixDTO> coffixRates = coffixCrawler.fetchMorRates();
         if (!coffixRates.isEmpty()) {
             model.addAttribute("cofix", coffixRates);
         }
 
+
         // To Do List 처리
+
         ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
         List<TodoListDTO> todoList = todoDao.getToDoList(userno);
         model.addAttribute("todoList", todoList);
+
 
         // Memo Data 처리
         MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
@@ -132,11 +186,13 @@ public class HomeController {
     }
 
     public void setMenuDepth(List<MenuDTO> menus) {
+
         // 메뉴 ID와 메뉴 객체를 매핑하는 Map을 생성
         Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
         for (MenuDTO menu : menus) {
             menuMap.put(menu.getId(), menu);
         }
+
 
         // 각 메뉴 항목의 depth 계산
         for (MenuDTO menu : menus) {
@@ -174,6 +230,7 @@ public class HomeController {
                 topLevelMenus.add(menu);
             }
         }
+
 
         // 로깅을 추가하여 각 최상위 메뉴와 해당 하위 메뉴들을 출력
         for (MenuDTO menu : topLevelMenus) {
