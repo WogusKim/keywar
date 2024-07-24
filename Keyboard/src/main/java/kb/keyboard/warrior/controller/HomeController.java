@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import kb.keyboard.warrior.CoffixRateCrawler;
 import kb.keyboard.warrior.CurrencyRateCrawler;
 import kb.keyboard.warrior.MorRateCrawler;
+import kb.keyboard.warrior.StockCrawler;
 import kb.keyboard.warrior.dao.LoginDao;
 import kb.keyboard.warrior.dao.MemoDao;
 import kb.keyboard.warrior.dao.ToDoDao;
@@ -22,6 +23,9 @@ import kb.keyboard.warrior.dto.MenuDTO;
 import kb.keyboard.warrior.dto.MorCoffixDTO;
 import kb.keyboard.warrior.dto.MyMemoDTO;
 import kb.keyboard.warrior.dto.NoticeDTO;
+
+import kb.keyboard.warrior.dto.StockDTO;
+
 import kb.keyboard.warrior.dto.StockFavoriteDTO;
 import kb.keyboard.warrior.dto.TodoListDTO;
 
@@ -102,7 +106,9 @@ public class HomeController {
             System.out.println("No rates found.");
         }
         
-        // 증시 즐겨찾기
+
+        // 증시즐찾
+
         List<StockFavoriteDTO> stock = loginDao.getFavoriteStock(userno);
 
 
@@ -111,13 +117,15 @@ public class HomeController {
         String favoriteStock3 = "0"; //
         String favoriteStock4 = "0"; // 
 
-        switch (favorites.size()) {
+
+        switch (stock.size()) {
             case 0:
                 // 아무것도 즐겨찾기 안했을 경우 기본
-                favoriteStock1 = "KOSPI";
-                favoriteStock2 = "KOSDAQ";
-                favoriteStock3 = "SPI@SPX";
-                favoriteStock4 = "NAS@IXIC";
+            	favoriteStock1 = "코스피";
+                favoriteStock2 = "코스닥";
+                favoriteStock3 = "S&P 500";
+                favoriteStock4 = "나스닥 종합";
+
                 break;
             case 1:
             	favoriteStock1 = stock.get(0).getIndexname();
@@ -141,6 +149,16 @@ public class HomeController {
         }
         
 
+
+        // 증시 즐겨찾기 데이터 처리		
+        StockCrawler stockCrawler = new StockCrawler();
+        List<StockDTO> stocks = stockCrawler.fetchFavoriteStocks(favoriteStock1, favoriteStock2, favoriteStock3, favoriteStock4);
+        if (!stocks.isEmpty()) {
+            model.addAttribute("stockFavorite", stocks);   
+        } else {
+            System.out.println("No rates found.");
+        }
+        
         
 
         // MOR 데이터 처리

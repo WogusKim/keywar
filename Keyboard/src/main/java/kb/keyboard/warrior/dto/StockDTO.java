@@ -10,7 +10,9 @@ public class StockDTO {
 	    private double changePercentage; // 변동 퍼센트
 	    private double weekHigh52; // 52주 최고
 	    private double weekLow52; // 52주 최저
-	    private String isfavorite;
+
+	    private String isFavorite;
+
 
 
 		// 기본 생성자
@@ -102,12 +104,14 @@ public class StockDTO {
 	    }
 	    
 	    
-	    public String getIsfavorite() {
-			return isfavorite;
+
+	    public String getisFavorite() {
+			return isFavorite;
 		}
 
-		public void setIsfavorite(String isfavorite) {
-			this.isfavorite = isfavorite;
+		public void setisFavorite(String isFavorite) {
+			this.isFavorite = isFavorite;
+
 		}
 
 	}
