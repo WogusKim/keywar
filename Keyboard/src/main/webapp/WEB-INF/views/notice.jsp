@@ -22,6 +22,20 @@
 	margin: 10px; /* 포스트잇 간 간격 */
 	position: relative; /* 공지사항들이 기본적으로 나란히 정렬되도록 */
 }
+.notice .title {
+    font-weight: bold; /* 제목을 굵게 표시 */
+    display: block; /* 제목을 별도의 라인에 표시 */
+    margin-top: 5px; /* 내용과의 간격 */
+    margin-bottom: 5px; /* 내용과의 간격 */
+}
+
+.notice .createdate {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	font-size: 12px; /* 작은 글꼴 크기로 날짜 설정 */
+	color: #666; /* 덜 강조 표시를 위한 밝은 색상 */
+}
 
 .notice .deleteButton1 {
 	width: 20px;
@@ -30,6 +44,7 @@
 	top: 10px;
 	right: 10px;
 	background-color: #E65050;
+	text-decoration: none !important;
 	border: none;
 	color: white;
 	padding: 0;
@@ -67,18 +82,24 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <script>
 $(function() {
+    var maxZ = 100; // 초기 z-index 최대값 설정
     $(".notice").draggable({
         containment: ".aa", // 이동 영역을 흰 배경 안으로 제한
         scroll: false, // 드래그 중 스크롤 비활성화
+        start: function(event, ui) {
+            $(this).css("z-index", ++maxZ); // 드래그 시작 시 z-index를 증가시켜 최상위로 이동
+        },
         stop: function(event, ui) {
             // 드래그 종료 시 실행
             var noticeId = $(this).data("id"); // 공지사항 ID (data-id 속성에서 가져옴)
             var positionX = ui.position.left;
             var positionY = ui.position.top;
+            var zindex = $(this).css("z-index");
             
             console.log(positionX);
             console.log(positionY);
             console.log(noticeId);
+            console.log(zindex);
             
             // fetch API로 위치를 서버에 저장
             fetch('${pageContext.request.contextPath}/updateNoticePosition', {
@@ -89,7 +110,8 @@ $(function() {
                 body: JSON.stringify({
                     noticeid: noticeId,
                     positionX: positionX,
-                    positionY: positionY
+                    positionY: positionY,
+                    zindex: zindex
                 })
             })
             .then(response => response.json())
@@ -104,7 +126,6 @@ $(function() {
         }
     });
 });
-
 </script>
 </head>
 
@@ -126,8 +147,13 @@ $(function() {
 					<div class="aa">
 						<c:forEach items="${notice}" var="dto">
 							<div class="notice" data-id="${dto.noticeid}"
-								style="position: absolute; left: ${dto.positionX}px; top: ${dto.positionY}px;">
-								<br>${dto.title}<br>${dto.content} <a
+								style="position: absolute; left: ${dto.positionX}px; top: ${dto.positionY}px; background-color: ${dto.color};  z-index: ${dto.zindex};">
+								<div class="title">${dto.title}</div>
+								<!-- 제목 굵게 표시 -->
+								${dto.content}
+								<div class="createdate">${dto.createdate}</div>
+								<!-- 날짜 표시 -->
+								<a
 									href="./noticeDelete?noticeid=${dto.noticeid}&userno=${dto.userno}"
 									class="deleteButton1">X</a>
 							</div>
