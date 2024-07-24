@@ -43,6 +43,7 @@ public class HomeController {
 
 
         // 세션에서 메뉴 데이터를 확인 (확인후 없으면 세션 넣기)!!!
+
         List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
         
         LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
@@ -50,6 +51,7 @@ public class HomeController {
         menus = loginDao.getMenus(userno);
         setMenuDepth(menus);
         List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
+
         session.setAttribute("menus", topLevelMenus);  // 세션에 메뉴 데이터 저장
         model.addAttribute("menus", topLevelMenus);
 

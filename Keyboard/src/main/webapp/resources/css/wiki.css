@@ -1,0 +1,113 @@
+.menu-tree {
+	padding: 10px 20px;
+	height: 100%;
+}
+.menu_list {
+	display: flex;
+	align-item: center;
+	vertical-align: center;
+}
+
+.menu-tree ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 6px;
+}
+
+.menu-tree li {
+    margin-left: 6px;
+    margin-bottom: 5px;
+    padding-left: 0;
+}
+.icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 6px;
+    margin-top: 2px;
+    vertical-align: middle; /* 이 설정은 flex를 사용할 때는 불필요할 수 있습니다 */
+}
+
+
+.menu_back {
+    position: absolute; /* 절대 위치 사용 */
+    right: 10px; /* 우측으로부터 10px 떨어진 위치 */
+    top: 10px; /* 하단으로부터 10px 떨어진 위치 */
+    padding: 10px; /* 패딩 */
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 세로 중앙 정렬 */
+}
+
+.menu_plus {
+    position: absolute; /* 절대 위치 사용 */
+    right: 70px; /* 우측으로부터 10px 떨어진 위치 */
+    bottom: 10px; /* 하단으로부터 10px 떨어진 위치 */
+    padding: 10px; /* 패딩 */
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 세로 중앙 정렬 */
+    
+}
+
+.menu_minus {
+    position: absolute; /* 절대 위치 사용 */
+    right: 10px; /* 우측으로부터 10px 떨어진 위치 */
+    bottom: 10px; /* 하단으로부터 10px 떨어진 위치 */
+    padding: 10px; /* 패딩 */
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 세로 중앙 정렬 */
+    
+}
+
+.hidden {
+    visibility: hidden; /* 요소 숨김 */
+}
+
+.icon-setting {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 6px;
+}
+
+.selected {
+    font-weight: bold;
+    color: #0000FF; /* 블루 컬러로 강조 */
+}
+
+.menu_admin {
+    border-radius: 10px;
+    background-color: #BDE2CE;
+    width: 100%;
+    height:  100%;
+    padding: 18px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    margin-right: 10px;
+}
+
+input[type="text"], input[type="radio"] {
+    margin-right: 5px;
+}
+
+button {
+    padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
