@@ -42,14 +42,14 @@ public class HomeController {
         // 이후 로그인 여부 체크 필요
 
 
-        // 세션에서 메뉴 데이터를 확인 (확인후 없으면 세션 넣기)!!!
+        // 메뉴데이터를 세션과 모델에 전부 담아줌.
         List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
         LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
 
         menus = loginDao.getMenus(userno);
         setMenuDepth(menus);
         List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
-        session.setAttribute("menus", topLevelMenus);  // 세션에 메뉴 데이터 저장
+        session.setAttribute("menus", topLevelMenus);
         model.addAttribute("menus", topLevelMenus);
 
         // 환율 즐겨찾기 확인

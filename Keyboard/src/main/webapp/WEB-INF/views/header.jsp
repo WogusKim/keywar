@@ -97,7 +97,7 @@ width: 100%;
 	        console.error('Error:', error);
 	    });
 	        // 다음 체크 주기 설정 (예: 5초)  // 일단 1분으로 해놈~~ 자꾸 떠서
-	        setTimeout(checkForNotifications, 5000);
+	        setTimeout(checkForNotifications, 5000000);
 	    }
 
     // 페이지 로드 시 알림 체크 시작

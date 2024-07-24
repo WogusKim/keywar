@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kb.keyboard.warrior.dao.WikiDao">
+	
+	<select id="getParentid" resultType="Integer">
+		SELECT parent_id from Menu where id = #{param}
+	</select>
+	
+	<select id="getMaxOrderOfFather" resultType="Integer">
+	    SELECT COALESCE(MAX(menu_order), 0) FROM Menu WHERE parent_id = #{param}
+	</select>
+	
+	<select id="getMaxOrderOfnoParents" resultType="Integer">
+	    SELECT COALESCE(MAX(menu_order), 0) FROM Menu WHERE parent_id IS NULL
+	</select>
+
+	
+	<insert id="insertMenuNoParentsItem">
+		INSERT INTO Menu (title, title_share, link, menuType, menu_order, userno)
+		VALUES (
+		    #{param1}, 
+		    #{param2},
+		    #{param3},
+		    #{param4},
+		    #{param5},
+		    #{param6}
+		);
+	</insert>
+	<insert id="insertMenuNoParentsFolder">
+		INSERT INTO Menu (title, title_share, menuType, menu_order, userno)
+		VALUES (
+		    #{param1}, 
+		    #{param2},
+		    #{param3},
+		    #{param4},
+		    #{param5}
+		);
+	</insert>
+	<insert id="insertMenuHaveParentsItem">
+		INSERT INTO Menu (parent_id, title, title_share, link, menuType, menu_order, userno)
+		VALUES (
+		    #{param1}, 
+		    #{param2},
+		    #{param3},
+		    #{param4},
+		    #{param5},
+		    #{param6},
+		    #{param7}
+		);
+	</insert>
+	<insert id="insertMenuHaveParentsFolder">
+		INSERT INTO Menu (parent_id, title, title_share, menuType, menu_order, userno)
+		VALUES (
+		    #{param1}, 
+		    #{param2},
+		    #{param3},
+		    #{param4},
+		    #{param5},
+		    #{param6}
+		);
+	</insert>
+</mapper>
