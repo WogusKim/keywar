@@ -59,8 +59,10 @@
 					        <c:forEach var="stock" items="${allStocks}">
 					            <tr>
 					                <td>
+
 					                    <input type="checkbox" name="favorite" value="${stock.indexName}"  ${stock.isFavorite == '1' ? 'checked' : ''}
 					                           data-name="${stock.indexName}"  data-favorite="${stock.isFavorite}"
+
 					                           onclick="changeFavorite('${stock.indexName}', this, event)"/>
 					                </td>
 					                <td>${stock.country}</td>
@@ -94,8 +96,10 @@ function changeFavorite(indexName, checkboxElement, event) {
     var isChecked = checkboxElement.checked;
     var totalFavorites = document.querySelectorAll('input[name="favorite"]:checked').length;
     
+
     if (isChecked && totalFavorites > 4) { // 이미 4개가 체크되어 있고, 또 추가하려고 한다면
         alert('즐겨찾기는 최대 4개까지만 가능합니다.');
+
         event.preventDefault(); // 체크박스 변경 이벤트 중지
         checkboxElement.checked = false; // 체크박스 체크 해제
         return; // 함수 종료
@@ -112,6 +116,7 @@ function changeFavorite(indexName, checkboxElement, event) {
             isFavorite: isChecked ? '1' : '0'
         })
     })
+
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);

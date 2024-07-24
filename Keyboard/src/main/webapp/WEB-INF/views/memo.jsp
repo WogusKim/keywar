@@ -9,10 +9,15 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <style>
-ul li {
+.board_back1 ul li {
 	position: relative;
 	padding-right: 30px; /* 버튼 공간 확보를 위해 오른쪽 패딩 추가 */
 	margin-bottom: 10px; /* li 요소 사이에 간격 추가 */
+}
+
+.createdate {
+	color: gray;
+	font-size: 0.9em; /* 원하는 크기로 조정 */
 }
 
 #memoPopup, #deptMemoPopup {
@@ -172,15 +177,17 @@ ul li {
 							<!-- 흰 배경 -->
 							<h2 class="card_title">나의 메모</h2>
 							<hr>
+							<div style =" overflow-y: auto; height: 90%;"> 
 							<ul>
 								<c:forEach items="${memo1}" var="dto1">
-									<li>${dto1.content}&nbsp;${dto1.createdate}
+									<li>${dto1.content}&nbsp;<span class="createdate">${dto1.createdate}</span>
 									<a
 										href="./mymemoDelete?memoid=${dto1.memoid}&userno=${dto1.userno}"
 										class="deleteButton">X</a>
 									</li>
 								</c:forEach>
 							</ul>
+						</div>
 						</div>
 						<input type="button" value="추가하기" class="addButton"
 							onclick="openPopup('memoPopup');">
@@ -191,15 +198,16 @@ ul li {
 							<!-- 흰 배경 -->
 							<h2 class="card_title">부점 메모</h2>
 							<hr>
+							<div style =" overflow-y: auto; height: 90%;"> 
 							<ul>
 								<c:forEach items="${memo2}" var="dto2">
-									<li>${dto2.content}&nbsp;${dto2.createdate}<a
+									<li>${dto2.content}&nbsp;<span class="createdate">${dto2.createdate}</span><a
 										href="./deptmemoDelete?memoid=${dto2.memoid}&deptno=${dto2.deptno}"
 										class="deleteButton">X</a></li>
 								</c:forEach>
 							</ul>
 						</div>
-
+						</div>
 						<input type="button" value="추가하기" class="addButton"
 							onclick="openPopup('deptMemoPopup');">
 					</div>

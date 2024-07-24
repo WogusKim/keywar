@@ -133,7 +133,7 @@ public class DisplayController {
 
         model.addAttribute("allStocks", allStocks);
 //        model.addAttribute("favoriteStocks", favoriteStocks);
-        
+
         System.out.println("모델에 값 추가");
 		
 		return "display/stock";
@@ -203,12 +203,14 @@ public class DisplayController {
 	}
 
 	@RequestMapping(value = "/favoriteStock",  produces = "application/json", consumes = "application/json", method = RequestMethod.POST )
+
 	@ResponseBody
 	public String favoriteStock(@RequestBody StockDTO stockDto, HttpSession session) throws Exception {
 		
 		String userno = (String) session.getAttribute("userno");
 		String indexname = stockDto.getIndexName();
 		String isFavorite = stockDto.getisFavorite();
+
 
 		System.out.println(indexname);
 		System.out.println(isFavorite);
@@ -219,11 +221,13 @@ public class DisplayController {
 		
 		if (isFavorite.equals("1")) {
 			//즐겨찾기 추가로직
+
 			displayDao.favoriteStock(userno, indexname);
 			
 		} else {
 			//즐겨찾기 해제로직
 			displayDao.unFavoriteStock(userno, indexname);
+
 		}
 
 		return "{\"status\":\"success\"}";

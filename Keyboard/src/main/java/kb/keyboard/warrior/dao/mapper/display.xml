@@ -13,11 +13,13 @@
     </update>
     
     <insert id="favoriteStock">
+
     	insert into favorite_stock (userno, indexname) values (#{param1}, #{param2})
     </insert>
     
     <update id="unFavoriteStock">
     	delete from favorite_stock where userno = #{param1} and indexname = #{param2}
+
     </update>
 
 

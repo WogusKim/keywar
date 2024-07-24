@@ -26,6 +26,7 @@ public class StockCrawler {
         return allStocks;
     }
     
+
     public List<StockDTO> fetchAllStocks(String favoriteStock1, String favoriteStock2, String favoriteStock3, String favoriteStock4) {
         List<StockDTO> allStocks = new ArrayList<StockDTO>();
         List<StockDTO> koreaStocks = koreaCrawler.fetchIndexData();
@@ -47,12 +48,13 @@ public class StockCrawler {
         return allStocks;
     }
     
+
     public List<StockDTO> fetchFavoriteStocks(String favoriteStock1, String favoriteStock2, String favoriteStock3, String favoriteStock4) {
         List<StockDTO> allStocks = fetchAllStocks();
         List<StockDTO> favoriteStocks = new ArrayList<StockDTO>();
 
         for (StockDTO stock : allStocks) {
-        	
+
             if (stock.getIndexName().equals(favoriteStock1) ||
                 stock.getIndexName().equals(favoriteStock2) ||
                 stock.getIndexName().equals(favoriteStock3) ||
