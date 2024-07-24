@@ -78,8 +78,24 @@ document.addEventListener('DOMContentLoaded', function() {
 				            <span>변동수치</span>
 				            <span>변동폭</span>
 				        </div>
+				        
+				        <c:forEach var="stockrate" items="${stockFavorite}">
+					        <div class='stock-row'>
+                            <span>${stockrate.indexName}</span>
+                            <span class="${stockrate.changePercentage >= 0 ? 'positive' : 'negative'}">
+                                <fmt:formatNumber value="${stockrate.currentPrice}" pattern="#,##0.00"/>
+                            </span>
+                            <span class="${stockrate.changePercentage >= 0 ? 'positive' : 'negative'}">
+                                <fmt:formatNumber value="${stockrate.priceChange}" pattern="${stockrate.changePercentage >= 0 ? '+' : ''}#,##0.00"/>
+                            </span>
+                            <span class="${stockrate.changePercentage >= 0 ? 'positive' : 'negative'}">
+                                <fmt:formatNumber value="${stockrate.changePercentage}" pattern="${stockrate.changePercentage >= 0 ? '+' : ''}#,##0.00"/>%
+                            </span>
+                        </div>
+					    </c:forEach>
+				        
 				        <%
-				            StockKoreaCrawler koreaCrawler = new StockKoreaCrawler();
+				           /*  StockKoreaCrawler koreaCrawler = new StockKoreaCrawler();
 				            List<StockDTO> koreaStocks = koreaCrawler.fetchIndexData();
 				
 				            StockInterCrawler interCrawler = new StockInterCrawler();
@@ -114,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				                    out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getChangePercentage()) + "%</span>");
 				                    out.println("</div>");
 				                }
-				            }
+				            } */
 				        %>
 				    </div>
 				    

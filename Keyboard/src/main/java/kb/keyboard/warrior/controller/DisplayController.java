@@ -128,11 +128,11 @@ public class DisplayController {
 		        break;
 		}		
 
-        List<StockDTO> allStocks = stockCrawler.fetchAllStocks();
-        List<StockDTO> favoriteStocks = stockCrawler.fetchFavoriteStocks(favoriteStock1, favoriteStock2, favoriteStock3, favoriteStock4);
+        List<StockDTO> allStocks = stockCrawler.fetchAllStocks(favoriteStock1, favoriteStock2, favoriteStock3, favoriteStock4);
+//        List<StockDTO> favoriteStocks = stockCrawler.fetchFavoriteStocks(favoriteStock1, favoriteStock2, favoriteStock3, favoriteStock4);
 
         model.addAttribute("allStocks", allStocks);
-        model.addAttribute("favoriteStocks", favoriteStocks);
+//        model.addAttribute("favoriteStocks", favoriteStocks);
         
         System.out.println("모델에 값 추가");
 		
@@ -203,11 +203,12 @@ public class DisplayController {
 	}
 
 	@RequestMapping(value = "/favoriteStock",  produces = "application/json", consumes = "application/json", method = RequestMethod.POST )
-	public @ResponseBody String favoriteStock(@RequestBody StockDTO stockDto, HttpSession session) throws Exception {
+	@ResponseBody
+	public String favoriteStock(@RequestBody StockDTO stockDto, HttpSession session) throws Exception {
 		
 		String userno = (String) session.getAttribute("userno");
 		String indexname = stockDto.getIndexName();
-		String isFavorite = stockDto.getIsfavorite();
+		String isFavorite = stockDto.getisFavorite();
 
 		System.out.println(indexname);
 		System.out.println(isFavorite);
@@ -218,11 +219,11 @@ public class DisplayController {
 		
 		if (isFavorite.equals("1")) {
 			//즐겨찾기 추가로직
-			displayDao.favoriteCurrency(userno, indexname);
+			displayDao.favoriteStock(userno, indexname);
 			
 		} else {
 			//즐겨찾기 해제로직
-			displayDao.unFavoriteCurrency(userno, indexname);
+			displayDao.unFavoriteStock(userno, indexname);
 		}
 
 		return "{\"status\":\"success\"}";

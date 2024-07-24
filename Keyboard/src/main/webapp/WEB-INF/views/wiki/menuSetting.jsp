@@ -7,38 +7,8 @@
 <meta charset="UTF-8">
 <title>메인 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/wiki.css">
 <style>
-.menu-tree {
-	padding: 10px 20px;
-}
-.menu_list {
-	display: flex;
-	align-item: center;
-	vertical-align: center;
-}
-
-.menu-tree ul {
-    list-style-type: none;
-    padding-left: 0;
-    margin: 6px;
-}
-
-.menu-tree li {
-    margin-left: 6px;
-    margin-bottom: 5px;
-    padding-left: 0;
-}
-.icon {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    margin-right: 6px;
-    margin-top: 2px;
-    vertical-align: middle; /* 이 설정은 flex를 사용할 때는 불필요할 수 있습니다 */
-}
-
 .folder-icon {
     background-image: url('${pageContext.request.contextPath}/resources/images/icons/folder_open.png');
 }
@@ -62,55 +32,6 @@
 .minus-icon {
 	background-image: url('${pageContext.request.contextPath}/resources/images/icons/minus.png');
 }
-
-.menu_back {
-    position: absolute; /* 절대 위치 사용 */
-    right: 10px; /* 우측으로부터 10px 떨어진 위치 */
-    top: 10px; /* 하단으로부터 10px 떨어진 위치 */
-    padding: 10px; /* 패딩 */
-    display: flex; /* Flexbox 사용 */
-    align-items: center; /* 세로 중앙 정렬 */
-    
-}
-
-.menu_plus {
-    position: absolute; /* 절대 위치 사용 */
-    right: 70px; /* 우측으로부터 10px 떨어진 위치 */
-    bottom: 10px; /* 하단으로부터 10px 떨어진 위치 */
-    padding: 10px; /* 패딩 */
-    display: flex; /* Flexbox 사용 */
-    align-items: center; /* 세로 중앙 정렬 */
-    
-}
-
-.menu_minus {
-    position: absolute; /* 절대 위치 사용 */
-    right: 10px; /* 우측으로부터 10px 떨어진 위치 */
-    bottom: 10px; /* 하단으로부터 10px 떨어진 위치 */
-    padding: 10px; /* 패딩 */
-    display: flex; /* Flexbox 사용 */
-    align-items: center; /* 세로 중앙 정렬 */
-    
-}
-
-.hidden {
-    visibility: hidden; /* 요소 숨김 */
-}
-
-.icon-setting {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    margin-right: 6px;
-}
-
-.selected {
-    font-weight: bold;
-    color: #0000FF; /* 블루 컬러로 강조 */
-}
-
 </style>
 </head>
 
@@ -121,6 +42,11 @@
 	<div class="menuSetting_l">
 	    <div class="menu-tree">
 	    <h3>My Menu</h3>
+		    <div class="menu_list">
+		        <!-- <div class="icon folder-icon" onclick="selectFolder(this, 0, 'root', 0, '나의 업무노트')"></div> -->
+		        <span onclick="selectFolder(this, 0, 'root', -1, '나의 업무노트')">나의 업무노트</span>
+		    </div>
+		    <hr>
 	        <ul>
 	            <c:forEach var="menu" items="${menus}">
 	                <li>
@@ -215,21 +141,73 @@
 		</div>
 		<div class="menu_minus">
 		    <div class="icon-setting minus-icon"></div>
-		    <a href="#" onclick="deleteSelectedItem(); return false;">삭제</a>
+		    <a href="#" onclick="deleteSelectedItem()">삭제</a>
 		</div>
 	</div>
 
 	<div class="content_right">
-		<div class="default">
-			<h1>초기화면</h1>
-		</div>
-		<div class="make_new_one" style="display: none;">
-		    <h1 id="addFormTitle">추가하기</h1>
-		    <ul>
-		        <li>ID: <span id="selectedId"></span></li>
-		        <li>Type: <span id="selectedType"></span></li>
-		        <li>Depth: <span id="selectedDepth"></span></li>
-		    </ul>
+		<div class="menu_admin">
+			<!-- 아무것도클릭하지않았을때 -->
+			<div class="default">
+				<h1>초기화면</h1>
+				<hr>
+				<div>
+					이곳은 메뉴를 관리하는 곳입니다~~~<br/>
+					<ul>
+						<li>폴더를 삭제하시면 하위 메뉴가 모두 삭제됩니다.</li>
+						<li>페이지를 추가하려면 속할 폴더를 골라주세요.</li>
+						<li>최상위 뎁스에 폴더나 페이지를 만드시려면 '나의 업무노트' 를 클릭 후 추가해주시면 됩니다.</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 추가하기 버튼 클릭시 -->
+			<div class="make_new_one" style="display: none;">
+			    <h1 id="addFormTitle">추가하기</h1>
+			    <div id="contextMessage"></div>
+			    
+			    <form action="${pageContext.request.contextPath}/addMenu" method="post">
+			        <input type="hidden" id="selectedId" name="id">
+			        <input type="hidden" id="selectedType" name="type">
+			        <input type="hidden" id="selectedDepth" name="depth">
+			        
+			        <div class="form-group">
+			            <label>메뉴 타입:</label>
+			            <label><input type="radio" name="menuType" value="folder" checked> 폴더</label>
+			            <label><input type="radio" name="menuType" value="item"> 아이템</label>
+			        </div>
+			        
+			        <div class="form-group">
+			            <label>공개 여부:</label>
+			            <label><input type="radio" name="public" value="yes" checked> 공개</label>
+			            <label><input type="radio" name="public" value="no"> 비공개</label>
+			        </div>
+			        
+			        <div class="form-group">
+			            <label for="title">타이틀:</label>
+			            <input type="text" id="title" name="title" required>
+			        </div>
+			
+			        <div class="form-group">
+			            <label for="sharedTitle">공유용 타이틀:</label>
+			            <input type="text" id="sharedTitle" name="sharedTitle">
+			        </div>
+			        <div class="form-group">
+			            <button type="submit">추가하기</button>
+			        </div>
+			    </form>  
+			</div>
+			
+			<!-- 삭제하기영역 -->
+			<div style="display:none">
+				<form id="delete_box" action="${pageContext.request.contextPath}/deleteMenu" method="post">
+			        <input type="hidden" id="selectedId" name="id">
+			        <input type="hidden" id="selectedType" name="type">
+			        <input type="hidden" id="selectedDepth" name="depth">
+			        <div class="form-group">
+			            <button type="submit">삭제하기</button>
+			        </div>
+			    </form>
+			</div>
 		</div>
 	</div>
 </div>
@@ -237,10 +215,24 @@
 
 <script>
 function toggleFolder(element) {
-    // 가장 가까운 상위 li 요소를 찾아서 그 내부에서 첫 번째 ul을 선택
-    var parentLi = element.closest('li'); // 가장 가까운 li 요소를 찾음
-    var nextUl = parentLi.querySelector('ul'); // 해당 li 내부의 첫 번째 ul을 찾음
+    var parentLi = element.closest('li');
+    var nextUl = parentLi.querySelector('ul');
 
+    // nextUl이 존재하지 않는 경우, 폴더 아이콘만 토글하고 함수 종료
+    if (!nextUl) {
+        if (element.classList.contains('folder-open')) {
+            element.classList.remove('folder-open');
+            element.classList.add('folder-closed');
+            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder.png")';
+        } else {
+            element.classList.remove('folder-closed');
+            element.classList.add('folder-open');
+            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder_open.png")';
+        }
+        return; // ul 요소가 없으므로 여기서 함수 종료
+    }
+
+    // ul 요소가 존재하는 경우의 기존 로직 실행
     if (nextUl.style.display === 'none' || !nextUl.style.display) {
         nextUl.style.display = 'block';
         element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder_open.png")';
@@ -249,6 +241,7 @@ function toggleFolder(element) {
         element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder.png")';
     }
 }
+
 
 function selectFolder(element, id, menuType, depth, title) {
     // 모든 타이틀에서 'selected' 클래스 제거
@@ -277,12 +270,23 @@ function updateAddForm(folder) {
     const idElement = document.getElementById('selectedId');
     const typeElement = document.getElementById('selectedType');
     const depthElement = document.getElementById('selectedDepth');
+    const contextMessage = document.getElementById('contextMessage'); // 메시지를 업데이트할 요소
 
     // 요소에 값 할당
     titleElement.textContent = `추가하기: ${folder.title}`;
-    idElement.textContent = folder.id;
-    typeElement.textContent = folder.menuType;
-    depthElement.textContent = folder.depth;
+
+    idElement.value = folder.id;
+    typeElement.value = folder.menuType;
+    depthElement.value = folder.depth;
+    
+    // 타입에 따라 적절한 메시지 설정
+    if (folder.menuType === 'root') {
+        contextMessage.innerHTML = "<h3>최상위에 메뉴얼(폴더)을 추가합니다.</h3>";
+    } else if (folder.menuType === 'folder') {
+        contextMessage.innerHTML = "<h3>선택된 폴더 하위에 메뉴얼(폴더)을 추가합니다.</h3>";
+    } else if (folder.menuType === 'item') {
+        contextMessage.innerHTML = "<h3>선택된 메뉴얼과 같은 위치에 메뉴얼(폴더)을 추가합니다.</h3>";
+    }
 
     // 디스플레이 설정
     displayArea.style.display = 'block';
@@ -290,27 +294,44 @@ function updateAddForm(folder) {
 
 
 function addNewItem() {
+    // '추가' 버튼 클릭 시에 선택된 폴더 정보를 사용해 폼 업데이트
     if (window.selectedFolder) {
         updateAddForm(window.selectedFolder);
         document.querySelector('.make_new_one').style.display = 'block';
         document.querySelector('.default').style.display = 'none';
     } else {
-        document.querySelector('.make_new_one').style.display = 'none';
-        document.querySelector('.default').style.display = 'block';
+        // 폴더가 선택되지 않은 경우, 사용자에게 알림
+        alert("폴더를 선택해 주세요.");
     }
 }
 
 function deleteSelectedItem() {
-    if (window.selectedFolder) {
-        console.log('Delete item with ID:', window.selectedFolder.id);
-        // 이후 삭제 로직 구현
-    } else {
-        alert('삭제할 메뉴를 선택해주세요.');
+    if (!window.selectedFolder) {
+        alert("삭제할 폴더나 아이템을 선택해 주세요.");
+        return;
+    }
+
+    var message;
+    if (window.selectedFolder.menuType === 'folder') {
+        message = '폴더를 삭제하는 경우 하위 모든 컨텐츠들이 삭제됩니다. 삭제하시겠습니까?';
+    } else if (window.selectedFolder.menuType === 'item') {
+        message = '해당 페이지를 정말로 삭제하시겠습니까?';
+    }
+
+    if (confirm(message)) {
+        // 폼에 선택된 폴더의 ID 및 기타 정보를 설정
+        var form = document.getElementById('delete_box');
+        form.elements['id'].value = window.selectedFolder.id;
+        form.elements['type'].value = window.selectedFolder.menuType;
+        form.elements['depth'].value = window.selectedFolder.depth;
+        form.submit();
     }
 }
 
+
 document.addEventListener('click', function(event) {
-    if (!event.target.closest('.menu_list') && !event.target.closest('.menu_plus') && !event.target.closest('.menu_minus')) {
+    // 클릭된 요소가 menu-tree 내부에 있지만, onclick 이벤트가 있는 요소가 아닐 때만 선택 해제
+    if (event.target.closest('.menu-tree') && !event.target.closest('[onclick]')) {
         document.querySelectorAll('.menu_list span').forEach(span => {
             span.classList.remove('selected');
         });
@@ -323,6 +344,8 @@ document.addEventListener('click', function(event) {
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.default').style.display = 'block'; // 초기 화면 설정
 });
+
+
 
 </script>
 </body>

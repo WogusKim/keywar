@@ -140,7 +140,7 @@ min-width: 100px;
 				<div class="outlineBox" style="height: 40%">
 				<div class="white_Box" style="width: 25%; text-align: center;"> 
 				<div class="box" style="background: #BDBDBD; ">
-    				<img class="profile" src="${pageContext.request.contextPath}/resources/images/background.jpg">
+    				 <img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture?userno=${dto.userno}" alt="Profile Picture">
 				</div>
 				<h3 class="stress_Text" style="margin-top: 15px;" >${dto.username } </h3>
 				
