@@ -10,11 +10,11 @@
 <title>김국민의 업무노트 : 환율 상세보기 </title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/display.css">
-<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/flag.css"> --%>
 <!-- 홈페이지 아이콘 -->
 <link rel="icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
 <link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
-
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	
 <style>
 .cruuencyCalbox{
 	height: 35%; 
@@ -62,6 +62,16 @@
 
 .show {
     display: block;
+}
+.transparent-input {
+    background-color: transparent; /* 배경을 투명하게 설정 */
+    border: none; /* 테두리 없애기 */
+    outline: none; /* 클릭 시 나타나는 기본 테두리 없애기 */
+    color: #000; /* 텍스트 색상 (필요에 따라 조정 가능) */
+    font-size: 16px; /* 텍스트 크기 (필요에 따라 조정 가능) */
+    text-align: right;
+    font-weight: bold;
+    font-size: large;
 }
 
 
@@ -267,7 +277,7 @@
 						            </td>
 						            <td>${rate.currencyCode}</td>
 						            <td>${rate.currencyName}</td>
-									<td>
+									<td id="baseRate-${rate.currencyCode}">
 									    <c:choose>
 									        <c:when test="${rate.standardRate == 0}">
 									            -
@@ -277,7 +287,7 @@
 									        </c:otherwise>
 									    </c:choose>
 									</td>
-									<td>
+									<td id="transferSend-${rate.currencyCode}">
 									    <c:choose>
 									        <c:when test="${rate.transferSend == 0}">
 									            -
@@ -287,7 +297,7 @@
 									        </c:otherwise>
 									    </c:choose>
 									</td>
-									<td>
+									<td id="transferReceive-${rate.currencyCode}">
 									    <c:choose>
 									        <c:when test="${rate.transferReceive == 0}">
 									            -
@@ -297,7 +307,7 @@
 									        </c:otherwise>
 									    </c:choose>
 									</td>
-									<td>
+									<td id="cashBuy-${rate.currencyCode}">
 									    <c:choose>
 									        <c:when test="${rate.cashBuy == 0}">
 									            -
@@ -307,7 +317,7 @@
 									        </c:otherwise>
 									    </c:choose>
 									</td>
-									<td>
+									<td id="cashSell-${rate.currencyCode}">
 									    <c:choose>
 									        <c:when test="${rate.cashSell == 0}">
 									            -
@@ -317,7 +327,7 @@
 									        </c:otherwise>
 									    </c:choose>
 									</td>
-									<td>
+									<td id="usdRate-${rate.currencyCode}">
 									    <c:choose>
 									        <c:when test="${rate.usdRate == 0}">
 									            -
@@ -348,30 +358,27 @@
 							
 							<div class="cruuencyCalinnerbox">
 								<div style="width: 25%;  height: 100%; display: flex;  justify-content: space-between; align-items: center; border-right: 1px solid;	border-color: black; ">
-								<!-- 국기 변경 입니다  -->
-							<%-- 	<div class="flag flag-${fn:toLowerCase(rate.currencyCode)}"></div> --%>
-								<div class="flag flag-usd" style="margin: auto;"></div><!-- 나오는 지 확인용, 미국 국기 나옴  -->
-								
+								<!-- 국기 표시되는 칸 -->
+								<div id="first-flag" class="flag flag-usd" style="margin: auto;"></div><!-- 나오는 지 확인용, 미국 국기 나옴  -->
 								
 								
 								<div class="dropdown" onclick="toggleDropdown()" style="margin: auto;"> 
-									<span id="">USD</span><br>
-									<span>미국(달러)</span>
+									<span id="select-result-1-1">USD</span><br>
+									<span id="select-result-1-2">미국(달러)</span>
 									<div id="myDropdown" class="dropdown-content" style="margin: auto; overflow-y: auto; height: 200px;">
         								<c:forEach var="rate" items="${rates}" begin="1">
         								<!-- 받아온 데이터로 포문 돌려서 넣기 !!  일단 대충 해놈 -->
-        								<div onclick="selectOption('${rate.currencyCode}')"> ${rate.currencyName}</div>
+        								<div onclick="selectOption('${rate.currencyCode}', '${rate.currencyName}')"> ${rate.currencyName}</div>
         								</c:forEach>
 									</div>
 								
 								</div>
-								
 								</div>
 
 								
-								<div style="width: 75%;  height: 100%; text-align: right; padding-right: 10px;"><!-- background-color: pink;  -->
-									<span id="">1</span><br>
-									<span>1</span><span id="">미국(달러)</span>
+								<div style="width: 75%;  height: 100%; text-align: right; padding-right: 10px;">
+									<input type="text" class="transparent-input" value="1" style="width: 100%" id="exchange-amount-1"><br>
+									<span id="follow-amount-1">1</span> <span id="select-result-1-3"> 미국(달러)</span> <!-- 왼쪽에서 선택시 같이 바뀌어 버리게 ~~ -->
 								</div>
 							</div>
 							</div>
@@ -387,31 +394,32 @@
 							<div class="cruuencyCalbox"> <!-- 얘가 위에 넣을 거 겉에 박스임.  -->
 							
 							<div class="cruuencyCalinnerbox">
-								<div style="width: 25%;  height: 100%; display: flex;  justify-content: space-between; align-items: center; border-right: 1px solid;	border-color: black; ">
-								<!-- 국기 변경 입니다  -->
-							<%-- 	<div class="flag flag-${fn:toLowerCase(rate.currencyCode)}"></div> --%>
-								<div class="flag flag-krw" style="margin: auto;"></div><!-- 나오는 지 확인용, 미국 국기 나옴  -->
+								<div style="width: 25%;  height: 100%; display: flex;  justify-content: space-between; align-items: center; border-right: 1px solid; border-color: black; ">
+								<!-- 국기 변경   -->
+								<div id="second-flag" class="flag flag-krw" style="margin: auto;"></div><!-- 나오는 지 확인용, 첨엔 한국 국기 나옴  -->
 								
 								
 								
-								<div class="dropdown" onclick="toggleDropdown()" style="margin: auto;"> 
-									<span id="">KRW</span><br>
-									<span>대한민국(원)</span>
-									<div id="myDropdown" class="dropdown-content" style="margin: auto; overflow-y: auto; height: 200px;">
+								<div class="dropdown" onclick="toggleDropdown()" style="margin: auto;" id="thisIsReference"> 
+									<span id="select-result-2-1">KRW</span><br>
+									<span id="select-result-2-2">대한민국(원)</span>
+									
+								</div>	
+									<div id="myDropdown" class="dropdown-content" style="margin: auto; overflow-y: auto; height: 200px;" id="thisIsTarget">
         								<c:forEach var="rate" items="${rates}" begin="1">
         								<!-- 받아온 데이터로 포문 돌려서 넣기 !!  일단 대충 해놈 -->
-        								<div onclick="selectOption('${rate.currencyCode}')"> ${rate.currencyName}</div>
+        								<div onclick="selectOption2('${rate.currencyCode}', '${rate.currencyName}')"> ${rate.currencyName}</div>
         								</c:forEach>
 									</div>
 								
-								</div>
+								
 								
 								</div>
 
 								
 								<div style="width: 75%;  height: 100%; text-align: right; padding-right: 10px;"><!-- background-color: pink;  -->
-									<span id="">1</span><br>
-									<span>1</span><span id="">대한민국(원)</span>
+									<input type="text" class="transparent-input" value="1" style="width: 100%" id="exchange-amount-2" readonly><br>
+									<span id="follow-amount-2">1</span><span id="select-result-2-3">대한민국(원)</span>
 								</div>
 							</div>
 							</div>
@@ -431,19 +439,123 @@
     </div>
 
     <script>
+    
+	    $(document).ready(function() {
+	        var sourceValue = $('#cashBuy-USD').text();
+	        sourceValue = keepNumbersAndDots(sourceValue);
+	        $('#follow-amount-2').text(sourceValue);
+	        $('#exchange-amount-2').val(sourceValue);
+	    });
+	    
+	    
+	    document.getElementById('exchange-amount-1').addEventListener('input', function(event) {
+	        var inputValue = event.target.value;
+	        // 숫자와 '.'만 남기기
+	        var filteredValue = keepNumbersAndDot(inputValue);
+	        // 천단위 구분기호 붙이기
+	        var formattedValue = formatNumberWithCommasAndDecimal(filteredValue);
+	        // 포맷된 값 업데이트
+	        event.target.value = formattedValue;
+	        
+	        $("span#follow-amount-1").html(formattedValue);
+	        calExchangeAmount();
+	        
+	    });
+	    
+
+    	// 환전 금액 계산하는 메소드 (일단은 금액 입력시 변경되도록 설정함.)
+    	function calExchangeAmount(){
+    		//여기에 환율 계산하는 거 넣기 ! 
+    		var num1  = $("#exchange-amount-1").val();
+    		var current1  = $("#select-result-1-1").text();
+    		var current2  = $("#select-result-2-1").text();
+    		
+    		if(current2 == 'KRW'){
+    			var baseRate = $("#baseRate-"+current1).text();
+    			baseRate = keepNumbersAndDots(baseRate);
+    			var exchangeRate = $("#cashBuy-"+current1).text();
+    			exchangeRate = keepNumbersAndDots(exchangeRate);
+    			//alert(exchangeRate +" baseRate : " + exchangeRate );
+    			//일단 현찰 매도율임.
+    			num1=keepNumbersAndDots(num1);
+    			var calAmount = num1*exchangeRate;
+    			calAmount = calAmount.toFixed(2);
+    			formatNumberWithCommasAndDecimal(calAmount);
+    			$("#exchange-amount-2").val(calAmount);
+    			$("span#follow-amount-2").html(calAmount+" ");
+    		}	
+    		
+    	} 
+    	
+    	//숫자랑 0 빼고 제거하는 함수
+    	function keepNumbersAndDots(input) {
+    	    return input.replace(/[^0-9.]/g, '');
+    	}
+	    
+	    // 소숫점 고려해서 천단위 구분기호 붙이는 메소드
+    	function formatNumberWithCommasAndDecimal(number) {
+            var parts = number.split(".");
+            var integerPart = parts[0];
+            var decimalPart = parts.length > 1 ? parts[1] : "";
+            var integerWithCommas = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            return decimalPart ? integerWithCommas + "." + decimalPart : integerWithCommas;
+        }
+	    
+	    
+        function keepNumbersAndDot(input) {
+        	// 입력값에서 숫자와 '.'만 남기기
+            var filteredInput = input.replace(/[^0-9.]/g, '');
+            // 첫 번째 '.' 이후에 나오는 모든 '.' 제거
+            var parts = filteredInput.split('.');
+            if (parts.length > 2) {
+                filteredInput = parts[0] + '.' + parts.slice(1).join('');
+            }
+            return filteredInput;
+        }
+        
+
+    	
+	    
         function toggleDropdown() {
             document.getElementById("myDropdown").classList.toggle("show");
         }
 
-        function selectOption(option) {
-            alert("You selected: " + option);
+        function selectOption(code, name) {
+            
+            $("span#select-result-1-1").html(code);
+            $("span#select-result-1-2").html(name);
+            $("span#select-result-1-3").html(name);
+            $("div#first-flag").removeClass();
+            $("div#first-flag").addClass('flag');
+            var lowerCode = code.toLowerCase();  
+            $("div#first-flag").addClass('flag-'+lowerCode);
+            $("#exchange-amount-1").val(1);
+            $("span#follow-amount-1").html(1);
+            
+            calExchangeAmount();
+            document.getElementById("myDropdown").classList.remove("show");
+        }
+        
+        
+        function selectOption2(code, name) {
+            
+            $("span#select-result-2-1").html(code);
+            $("span#select-result-2-2").html(name);
+            $("span#select-result-2-3").html(name);
+            $("div#second-flag").removeClass();
+            $("div#second-flag").addClass('flag');
+            var lowerCode = code.toLowerCase();  
+            $("div#second-flag").addClass('flag-'+lowerCode);
+            $("#exchange-amount-2").val(1);
+            $("span#follow-amount-2").html(1);
             document.getElementById("myDropdown").classList.remove("show");
         }
 
         // 드롭다운 외부 클릭 시 닫기
         window.onclick = function(event) {
-            // 드롭다운과 드롭다운 버튼을 클릭한 경우 제외
-            if (!event.target.matches('.dropdown') && !event.target.matches('.dropdown *')) {
+            // 드롭다운을 클릭한 경우 제외
+            if (!event.target.matches('.dropdown') ) {
                 var dropdowns = document.getElementsByClassName("dropdown-content");
                 for (var i = 0; i < dropdowns.length; i++) {
                     var openDropdown = dropdowns[i];
@@ -456,8 +568,18 @@
     </script>
 
 
+<!-- 	<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Reference div의 너비를 가져옴
+            var referenceDiv = document.querySelector('.thisIsReference');
+            var referenceWidth = referenceDiv.clientWidth;
 
-
+            // Target div에 reference div의 너비를 적용
+            var targetDiv = document.querySelector('.thisIsTarget');
+            targetDiv.style.width = referenceWidth + 'px';
+        });
+    </script>
+ -->
 
 
     
