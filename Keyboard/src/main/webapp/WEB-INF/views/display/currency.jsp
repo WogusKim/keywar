@@ -486,6 +486,7 @@
     		}	
     		
     	} 
+    	
     	//숫자랑 0 빼고 제거하는 함수
     	function keepNumbersAndDots(input) {
     	    return input.replace(/[^0-9.]/g, '');
