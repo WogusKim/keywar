@@ -1,132 +1,149 @@
 package kb.keyboard.warrior.dto;
 
-
-//UserDTO.java
+// UserDTO.java
 public class UserDTO {
-    private String userno;    // ì‚¬ìš©ìë²ˆí˜¸
-    private String username;  // ì´ë¦„
-    private String userpw;    // ë¹„ë°€ë²ˆí˜¸
-    private String deptno;    // ë¶€ì„œë²ˆí˜¸
-    private String teamno;    // íŒ€ë²ˆí˜¸
-    private String phoneno;   // ì „í™”ë²ˆí˜¸
-    private String mail;      // ì´ë©”ì¼
-    private String hiredate;  // ì…ì‚¬ì¼
-    private String gender;    // ì„±ë³„
-    private String birthdate; // ìƒë…„ì›”ì¼
-    private String regdate;   // ë“±ë¡ì¼
-    private String nickname;  // ë‹‰ë„¤ì„
+    private String userno;    // »ç¿ëÀÚ ¹øÈ£
+    private String username;  // ÀÌ¸§
+    private String userpw;    // ºñ¹Ğ¹øÈ£
+    private String deptno;    // ºÎ¼­ ¹øÈ£
+    private String teamno;    // ÆÀ ¹øÈ£
+    private String phoneno;   // ÀüÈ­ ¹øÈ£
+    private String mail;      // ÀÌ¸ŞÀÏ
+    private String hiredate;  // ÀÔ»çÀÏ
+    private String gender;    // ¼ºº°
+    private String birthdate; // »ı³â¿ùÀÏ
+    private String regdate;   // µî·ÏÀÏ
+    private String nickname;  // ´Ğ³×ÀÓ
+    private byte[] picture; //»çÁø
     
- public UserDTO() {
- }
+    public UserDTO() {
+    }
 
- public UserDTO(String userno, String username, String userpw, String deptno, String teamno, String phoneno, String mail, String hiredate, String gender, String birthdate, String regdate) {
-     this.userno = userno;
-     this.username = username;
-     this.userpw = userpw;
-     this.deptno = deptno;
-     this.teamno = teamno;
-     this.phoneno = phoneno;
-     this.mail = mail;
-     this.hiredate = hiredate;
-     this.gender = gender;
-     this.birthdate = birthdate;
-     this.regdate = regdate;
- }
+    public UserDTO(String userno, String username, String userpw, String deptno, String teamno, String phoneno,
+			String mail, String hiredate, String gender, String birthdate, String regdate, String nickname,
+			byte[] picture) {
+		super();
+		this.userno = userno;
+		this.username = username;
+		this.userpw = userpw;
+		this.deptno = deptno;
+		this.teamno = teamno;
+		this.phoneno = phoneno;
+		this.mail = mail;
+		this.hiredate = hiredate;
+		this.gender = gender;
+		this.birthdate = birthdate;
+		this.regdate = regdate;
+		this.nickname = nickname;
+		this.picture = picture;
+	}
 
 
-// Getters and Setters
- public String getNickname() {
-	 return nickname;
- }
- 
- public void setNickname(String nickname) {
-	 this.nickname = nickname;
- }
- public String getUserno() {
-     return userno;
- }
 
- public void setUserno(String userno) {
-     this.userno = userno;
- }
+	// Getters and Setters
+    public String getNickname() {
+        return nickname;
+    }
+    
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+    
+    public String getUserno() {
+        return userno;
+    }
 
- public String getUsername() {
-     return username;
- }
+    public void setUserno(String userno) {
+        this.userno = userno;
+    }
 
- public void setUsername(String username) {
-     this.username = username;
- }
+    public String getUsername() {
+        return username;
+    }
 
- public String getUserpw() {
-     return userpw;
- }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
- public void setUserpw(String userpw) {
-     this.userpw = userpw;
- }
+    public String getUserpw() {
+        return userpw;
+    }
 
- public String getDeptno() {
-     return deptno;
- }
+    public void setUserpw(String userpw) {
+        this.userpw = userpw;
+    }
 
- public void setDeptno(String deptno) {
-     this.deptno = deptno;
- }
- 
- public String getTeamno() {
-	return teamno;
- }
+    public String getDeptno() {
+        return deptno;
+    }
 
- public void setTeamno(String teamno) {
-	this.teamno = teamno;
- }
+    public void setDeptno(String deptno) {
+        this.deptno = deptno;
+    }
 
- public String getPhoneno() {
-     return phoneno;
- }
+    public String getTeamno() {
+        return teamno;
+    }
 
- public void setPhoneno(String phoneno) {
-     this.phoneno = phoneno;
- }
+    public void setTeamno(String teamno) {
+        this.teamno = teamno;
+    }
 
- public String getMail() {
-     return mail;
- }
+    public String getPhoneno() {
+        return phoneno;
+    }
 
- public void setMail(String mail) {
-     this.mail = mail;
- }
+    public void setPhoneno(String phoneno) {
+        this.phoneno = phoneno;
+    }
 
- public String getHiredate() {
-     return hiredate;
- }
+    public String getMail() {
+        return mail;
+    }
 
- public void setHiredate(String hiredate) {
-     this.hiredate = hiredate;
- }
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
 
- public String getGender() {
-     return gender;
- }
+    public String getHiredate() {
+        return hiredate;
+    }
 
- public void setGender(String gender) {
-     this.gender = gender;
- }
+    public void setHiredate(String hiredate) {
+        this.hiredate = hiredate;
+    }
 
- public String getBirthdate() {
-     return birthdate;
- }
+    public String getGender() {
+        return gender;
+    }
 
- public void setBirthdate(String birthdate) {
-     this.birthdate = birthdate;
- }
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
- public String getRegdate() {
-     return regdate;
- }
+    public String getBirthdate() {
+        return birthdate;
+    }
 
- public void setRegdate(String regdate) {
-     this.regdate = regdate;
- }
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public String getRegdate() {
+        return regdate;
+    }
+
+    public void setRegdate(String regdate) {
+        this.regdate = regdate;
+    }
+
+	public byte[] getPicture() {
+		return picture;
+	}
+
+	public void setPicture(byte[] picture) {
+		this.picture = picture;
+	}
+    
+    
 }

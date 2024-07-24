@@ -86,7 +86,7 @@ width: 100%;
                     
                 });
 
-	            console.log(data);
+	            //console.log(data);
 	            alarmOn(); // 알림 표시 기능 호출
 	        } else {
 	            console.log("No new notifications");
@@ -140,7 +140,7 @@ width: 100%;
 </div>
 </header>
     <div id="notificationBox" class="notification-box1">
-    <div><a href="#;" class="deleteButton1" id="notifyButton1">X</a></div>
+    <div><a href="#;" class="deleteButton11" id="notifyButton1">X</a></div>
     <div id="alertContentArea" class="alertContentArea"> 
     	<div class="alertContent">
         <p id="alertTitle">새로운 알림이 있습니다!</p>

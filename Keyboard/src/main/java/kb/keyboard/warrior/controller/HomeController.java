@@ -35,55 +35,58 @@ public class HomeController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(Model model, HttpSession session) {
 
-        // ·Î±×ÀÎ ¿©ºÎ Ã¼Å©
+        // ë¡œê·¸ì¸ ì—¬ë¶€ ì²´í¬
         String userno = (String) session.getAttribute("userno");
         String deptno = (String) session.getAttribute("deptno");
 
-        // ÀÌÈÄ ·Î±×ÀÎ ¿©ºÎ Ã¼Å© ÇÊ¿ä
+        // ì´í›„ ë¡œê·¸ì¸ ì—¬ë¶€ ì²´í¬ í•„ìš”
 
 
-        // ¸Ş´ºµ¥ÀÌÅÍ¸¦ ¼¼¼Ç°ú ¸ğµ¨¿¡ ÀüºÎ ´ã¾ÆÁÜ.
+        // ì„¸ì…˜ì—ì„œ ë©”ë‰´ ë°ì´í„°ë¥¼ í™•ì¸ (í™•ì¸í›„ ì—†ìœ¼ë©´ ì„¸ì…˜ ë„£ê¸°)!!!
+
         List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
+        
         LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
 
         menus = loginDao.getMenus(userno);
         setMenuDepth(menus);
         List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
-        session.setAttribute("menus", topLevelMenus);
+
+        session.setAttribute("menus", topLevelMenus);  // ì„¸ì…˜ì— ë©”ë‰´ ë°ì´í„° ì €ì¥
         model.addAttribute("menus", topLevelMenus);
 
-        // È¯À² Áñ°ÜÃ£±â È®ÀÎ
+        // í™˜ìœ¨ ì¦ê²¨ì°¾ê¸° í™•ì¸
         List<ExchangeFavoriteDTO> favorites = loginDao.getFavoriteCurrency(userno);
 
-        String favoriteCurrency1 = "0"; // µğÆúÆ® °ª: USD
-        String favoriteCurrency2 = "0"; // µğÆúÆ® °ª: JPY
-        String favoriteCurrency3 = "0"; // µğÆúÆ® °ª: EUR
+        String favoriteCurrency1 = "0"; // ë””í´íŠ¸ ê°’: USD
+        String favoriteCurrency2 = "0"; // ë””í´íŠ¸ ê°’: JPY
+        String favoriteCurrency3 = "0"; // ë””í´íŠ¸ ê°’: EUR
 
         switch (favorites.size()) {
             case 0:
-                // Áñ°ÜÃ£±â°¡ ÀüÇô ¾ø´Â °æ¿ì, µğÆúÆ® È¯À² ¼³Á¤
+                // ì¦ê²¨ì°¾ê¸°ê°€ ì „í˜€ ì—†ëŠ” ê²½ìš°, ë””í´íŠ¸ í™˜ìœ¨ ì„¤ì •
                 favoriteCurrency1 = "USD";
                 favoriteCurrency2 = "JPY";
                 favoriteCurrency3 = "EUR";
                 break;
             case 1:
-                // Áñ°ÜÃ£±â°¡ ÇÏ³ªÀÎ °æ¿ì
+                // ì¦ê²¨ì°¾ê¸°ê°€ í•˜ë‚˜ì¸ ê²½ìš°
                 favoriteCurrency1 = favorites.get(0).getCurrency();
                 break;
             case 2:
-                // Áñ°ÜÃ£±â°¡ µÎ °³ÀÎ °æ¿ì
+                // ì¦ê²¨ì°¾ê¸°ê°€ ë‘ ê°œì¸ ê²½ìš°
                 favoriteCurrency1 = favorites.get(0).getCurrency();
                 favoriteCurrency2 = favorites.get(1).getCurrency();
                 break;
             case 3:
-                // Áñ°ÜÃ£±â°¡ ¼¼ °³ÀÎ °æ¿ì
+                // ì¦ê²¨ì°¾ê¸°ê°€ ì„¸ ê°œì¸ ê²½ìš°
                 favoriteCurrency1 = favorites.get(0).getCurrency();
                 favoriteCurrency2 = favorites.get(1).getCurrency();
                 favoriteCurrency3 = favorites.get(2).getCurrency();
                 break;
         }
 
-        // È¯À² Áñ°ÜÃ£±â µ¥ÀÌÅÍ Ã³¸®		
+        // í™˜ìœ¨ ì¦ê²¨ì°¾ê¸° ë°ì´í„° ì²˜ë¦¬		
         CurrencyRateCrawler currencyCrawler = new CurrencyRateCrawler();
         List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeFavoriteRates(favoriteCurrency1, favoriteCurrency2, favoriteCurrency3);
         if (!currencyRates.isEmpty()) {
@@ -92,31 +95,31 @@ public class HomeController {
             System.out.println("No rates found.");
         }
 
-        // MOR µ¥ÀÌÅÍ Ã³¸®
+        // MOR ë°ì´í„° ì²˜ë¦¬
         MorRateCrawler morCrawler = new MorRateCrawler();
         List<MorCoffixDTO> morRates = morCrawler.fetchMorRates();
         if (!morRates.isEmpty()) {
             model.addAttribute("mor", morRates);
         }
 
-        // COFFIX µ¥ÀÌÅÍ Ã³¸®
+        // COFFIX ë°ì´í„° ì²˜ë¦¬
         CoffixRateCrawler coffixCrawler = new CoffixRateCrawler();
         List<MorCoffixDTO> coffixRates = coffixCrawler.fetchMorRates();
         if (!coffixRates.isEmpty()) {
             model.addAttribute("cofix", coffixRates);
         }
 
-        // To Do List Ã³¸®
+        // To Do List ì²˜ë¦¬
         ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
         List<TodoListDTO> todoList = todoDao.getToDoList(userno);
         model.addAttribute("todoList", todoList);
 
-        // Memo Data Ã³¸®
+        // Memo Data ì²˜ë¦¬
         MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
         List<MyMemoDTO> memoList = memoDao.memoView1(userno);
         model.addAttribute("memoList", memoList);
 
-        // Notice Data Ã³¸®
+        // Notice Data ì²˜ë¦¬
         List<NoticeDTO> noticeList = memoDao.noticeView(deptno);
         model.addAttribute("noticeList", noticeList);
 
@@ -129,13 +132,13 @@ public class HomeController {
     }
 
     public void setMenuDepth(List<MenuDTO> menus) {
-        // ¸Ş´º ID¿Í ¸Ş´º °´Ã¼¸¦ ¸ÅÇÎÇÏ´Â MapÀ» »ı¼º
+        // ë©”ë‰´ IDì™€ ë©”ë‰´ ê°ì²´ë¥¼ ë§¤í•‘í•˜ëŠ” Mapì„ ìƒì„±
         Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
         for (MenuDTO menu : menus) {
             menuMap.put(menu.getId(), menu);
         }
 
-        // °¢ ¸Ş´º Ç×¸ñÀÇ depth °è»ê
+        // ê° ë©”ë‰´ í•­ëª©ì˜ depth ê³„ì‚°
         for (MenuDTO menu : menus) {
             int depth = 0;
             Integer parentId = menu.getParentId();
@@ -172,10 +175,10 @@ public class HomeController {
             }
         }
 
-        // ·Î±ëÀ» Ãß°¡ÇÏ¿© °¢ ÃÖ»óÀ§ ¸Ş´º¿Í ÇØ´ç ÇÏÀ§ ¸Ş´ºµéÀ» Ãâ·Â
+        // ë¡œê¹…ì„ ì¶”ê°€í•˜ì—¬ ê° ìµœìƒìœ„ ë©”ë‰´ì™€ í•´ë‹¹ í•˜ìœ„ ë©”ë‰´ë“¤ì„ ì¶œë ¥
         for (MenuDTO menu : topLevelMenus) {
             System.out.println("Menu: " + menu.getTitle() + " (ID: " + menu.getId() + ")");
-            printChildren(menu, "  ");  // Àç±ÍÀûÀ¸·Î ÇÏÀ§ ¸Ş´ºµéÀ» Ãâ·Â
+            printChildren(menu, "  ");  // ì¬ê·€ì ìœ¼ë¡œ í•˜ìœ„ ë©”ë‰´ë“¤ì„ ì¶œë ¥
         }
 
         return topLevelMenus;

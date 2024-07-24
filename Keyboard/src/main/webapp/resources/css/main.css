@@ -82,7 +82,7 @@ body{
     background-color: white;
     padding: 20px 5px;
     width: 17%;
-    height: 90%;
+    height: 100%;
     margin-right: 15px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 
@@ -95,7 +95,7 @@ body{
     background-color: white;
     padding: 20px;
     width: 100%;
-    height: 90%;
+    height: 100%;
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -157,7 +157,7 @@ body{
 
 .content_outline{
     margin-top: 15px;    
-    height: 100%;
+    height: 95%;
     display: flex;
 }
 
@@ -291,6 +291,8 @@ body{
 
 .tab_table {
 	padding:5px;
+	overflow-y: auto; 
+    height: 75%;
 }
 /*댓글좋아요박스*/
 
@@ -614,6 +616,8 @@ hr {
 
 .todo_list {
     margin-top: 20px;
+     overflow-y: auto; 
+     height: 75%;
 }
 
 .todo_list ul {
@@ -643,6 +647,8 @@ hr {
 }
 .memo_list {
     margin-top: 20px;
+     overflow-y: auto; 
+     height: 75%;
 }
 
 .memo_list li {
@@ -683,7 +689,7 @@ hr {
     display: none; /* 초기에는 박스를 숨깁니다 */
     
 }
-.deleteButton1 {
+.deleteButton11 {
 	text-decoration: none;
 	width: 20px;
 	height: 20px;
@@ -701,6 +707,6 @@ hr {
 	line-height: 20px; /* 버튼 높이와 동일하게 설정하여 텍스트를 중앙에 배치 */
 }
 
-.deleteButton1:hover { /* yeji */
+.deleteButton11:hover { /* yeji */
 	background-color: #B53D3D;
 }
