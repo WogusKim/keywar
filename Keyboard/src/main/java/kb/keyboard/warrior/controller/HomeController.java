@@ -22,6 +22,7 @@ import kb.keyboard.warrior.dto.MenuDTO;
 import kb.keyboard.warrior.dto.MorCoffixDTO;
 import kb.keyboard.warrior.dto.MyMemoDTO;
 import kb.keyboard.warrior.dto.NoticeDTO;
+import kb.keyboard.warrior.dto.StockFavoriteDTO;
 import kb.keyboard.warrior.dto.TodoListDTO;
 
 /**
@@ -35,14 +36,14 @@ public class HomeController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(Model model, HttpSession session) {
 
-        // ·Î±×ÀÎ ¿©ºÎ Ã¼Å©
+        // ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¼Å©
         String userno = (String) session.getAttribute("userno");
         String deptno = (String) session.getAttribute("deptno");
 
-        // ÀÌÈÄ ·Î±×ÀÎ ¿©ºÎ Ã¼Å© ÇÊ¿ä
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¼Å© ï¿½Ê¿ï¿½
 
 
-        // ¼¼¼Ç¿¡¼­ ¸Ş´º µ¥ÀÌÅÍ¸¦ È®ÀÎ (È®ÀÎÈÄ ¾øÀ¸¸é ¼¼¼Ç ³Ö±â)!!!
+        // ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ ï¿½Ş´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ È®ï¿½ï¿½ (È®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö±ï¿½)!!!
         List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
         LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
 
@@ -50,44 +51,45 @@ public class HomeController {
             menus = loginDao.getMenus(userno);
             setMenuDepth(menus);
             List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
-            session.setAttribute("menus", topLevelMenus);  // ¼¼¼Ç¿¡ ¸Ş´º µ¥ÀÌÅÍ ÀúÀå
+            session.setAttribute("menus", topLevelMenus);  // ï¿½ï¿½ï¿½Ç¿ï¿½ ï¿½Ş´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             model.addAttribute("menus", topLevelMenus);
         } else {
-            model.addAttribute("menus", menus);  // ÀÌ¹Ì ¼¼¼Ç¿¡ ÀúÀåµÈ µ¥ÀÌÅÍ »ç¿ë
+            model.addAttribute("menus", menus);  // ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½Ç¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         }
 
-        // È¯À² Áñ°ÜÃ£±â È®ÀÎ
+        // È¯ï¿½ï¿½ ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ È®ï¿½ï¿½
         List<ExchangeFavoriteDTO> favorites = loginDao.getFavoriteCurrency(userno);
 
-        String favoriteCurrency1 = "0"; // µğÆúÆ® °ª: USD
-        String favoriteCurrency2 = "0"; // µğÆúÆ® °ª: JPY
-        String favoriteCurrency3 = "0"; // µğÆúÆ® °ª: EUR
+        String favoriteCurrency1 = "0"; // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½: USD
+        String favoriteCurrency2 = "0"; // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½: JPY
+        String favoriteCurrency3 = "0"; // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½: EUR
 
         switch (favorites.size()) {
             case 0:
-                // Áñ°ÜÃ£±â°¡ ÀüÇô ¾ø´Â °æ¿ì, µğÆúÆ® È¯À² ¼³Á¤
+                // ï¿½ï¿½ï¿½Ã£ï¿½â°¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½Æ® È¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 favoriteCurrency1 = "USD";
                 favoriteCurrency2 = "JPY";
                 favoriteCurrency3 = "EUR";
                 break;
             case 1:
-                // Áñ°ÜÃ£±â°¡ ÇÏ³ªÀÎ °æ¿ì
+                // ï¿½ï¿½ï¿½Ã£ï¿½â°¡ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
                 favoriteCurrency1 = favorites.get(0).getCurrency();
                 break;
             case 2:
-                // Áñ°ÜÃ£±â°¡ µÎ °³ÀÎ °æ¿ì
+                // ï¿½ï¿½ï¿½Ã£ï¿½â°¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
                 favoriteCurrency1 = favorites.get(0).getCurrency();
                 favoriteCurrency2 = favorites.get(1).getCurrency();
                 break;
             case 3:
-                // Áñ°ÜÃ£±â°¡ ¼¼ °³ÀÎ °æ¿ì
+                // ï¿½ï¿½ï¿½Ã£ï¿½â°¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
                 favoriteCurrency1 = favorites.get(0).getCurrency();
                 favoriteCurrency2 = favorites.get(1).getCurrency();
                 favoriteCurrency3 = favorites.get(2).getCurrency();
                 break;
         }
+        
 
-        // È¯À² Áñ°ÜÃ£±â µ¥ÀÌÅÍ Ã³¸®		
+        // 
         CurrencyRateCrawler currencyCrawler = new CurrencyRateCrawler();
         List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeFavoriteRates(favoriteCurrency1, favoriteCurrency2, favoriteCurrency3);
         if (!currencyRates.isEmpty()) {
@@ -95,32 +97,73 @@ public class HomeController {
         } else {
             System.out.println("No rates found.");
         }
+        
+        // È¯ï¿½ï¿½ ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ È®ï¿½ï¿½
+        List<StockFavoriteDTO> stock = loginDao.getFavoriteStock(userno);
 
-        // MOR µ¥ÀÌÅÍ Ã³¸®
+        String favoriteStock1 = "0"; // 
+        String favoriteStock2 = "0"; // 
+        String favoriteStock3 = "0"; //
+        String favoriteStock4 = "0"; // 
+
+        switch (favorites.size()) {
+            case 0:
+                // ì•„ë¬´ê²ƒë„ ì¦ê²¨ì°¾ê¸° ì•ˆí–ˆì„ ê²½ìš° ê¸°ë³¸
+                favoriteStock1 = "KOSPI";
+                favoriteStock2 = "KOSDAQ";
+                favoriteStock3 = "SPI@SPX";
+                favoriteStock4 = "NAS@IXIC";
+                break;
+            case 1:
+            	favoriteStock1 = stock.get(0).getIndexname();
+                break;
+            case 2:
+            	favoriteStock1 = stock.get(0).getIndexname();
+            	favoriteStock2 = stock.get(1).getIndexname();
+                break;
+            case 3:
+            	favoriteStock1 = stock.get(0).getIndexname();
+            	favoriteStock2 = stock.get(1).getIndexname();
+            	favoriteStock3 = stock.get(2).getIndexname();
+                break;
+            case 4:
+            	favoriteStock1 = stock.get(0).getIndexname();
+            	favoriteStock2 = stock.get(1).getIndexname();
+            	favoriteStock3 = stock.get(2).getIndexname();
+            	favoriteStock4 = stock.get(3).getIndexname();
+                break;
+
+        }
+        
+
+        
+        
+
+        // MOR ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
         MorRateCrawler morCrawler = new MorRateCrawler();
         List<MorCoffixDTO> morRates = morCrawler.fetchMorRates();
         if (!morRates.isEmpty()) {
             model.addAttribute("mor", morRates);
         }
 
-        // COFFIX µ¥ÀÌÅÍ Ã³¸®
+        // COFFIX ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
         CoffixRateCrawler coffixCrawler = new CoffixRateCrawler();
         List<MorCoffixDTO> coffixRates = coffixCrawler.fetchMorRates();
         if (!coffixRates.isEmpty()) {
             model.addAttribute("cofix", coffixRates);
         }
 
-        // To Do List Ã³¸®
+        // To Do List Ã³ï¿½ï¿½
         ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
         List<TodoListDTO> todoList = todoDao.getToDoList(userno);
         model.addAttribute("todoList", todoList);
 
-        // Memo Data Ã³¸®
+        // Memo Data Ã³ï¿½ï¿½
         MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
         List<MyMemoDTO> memoList = memoDao.memoView1(userno);
         model.addAttribute("memoList", memoList);
 
-        // Notice Data Ã³¸®
+        // Notice Data Ã³ï¿½ï¿½
         List<NoticeDTO> noticeList = memoDao.noticeView(deptno);
         model.addAttribute("noticeList", noticeList);
 
@@ -133,13 +176,13 @@ public class HomeController {
     }
 
     public void setMenuDepth(List<MenuDTO> menus) {
-        // ¸Ş´º ID¿Í ¸Ş´º °´Ã¼¸¦ ¸ÅÇÎÇÏ´Â MapÀ» »ı¼º
+        // ï¿½Ş´ï¿½ IDï¿½ï¿½ ï¿½Ş´ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ Mapï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
         for (MenuDTO menu : menus) {
             menuMap.put(menu.getId(), menu);
         }
 
-        // °¢ ¸Ş´º Ç×¸ñÀÇ depth °è»ê
+        // ï¿½ï¿½ ï¿½Ş´ï¿½ ï¿½×¸ï¿½ï¿½ï¿½ depth ï¿½ï¿½ï¿½
         for (MenuDTO menu : menus) {
             int depth = 0;
             Integer parentId = menu.getParentId();
@@ -176,10 +219,10 @@ public class HomeController {
             }
         }
 
-        // ·Î±ëÀ» Ãß°¡ÇÏ¿© °¢ ÃÖ»óÀ§ ¸Ş´º¿Í ÇØ´ç ÇÏÀ§ ¸Ş´ºµéÀ» Ãâ·Â
+        // ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ ï¿½Ö»ï¿½ï¿½ï¿½ ï¿½Ş´ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ş´ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         for (MenuDTO menu : topLevelMenus) {
             System.out.println("Menu: " + menu.getTitle() + " (ID: " + menu.getId() + ")");
-            printChildren(menu, "  ");  // Àç±ÍÀûÀ¸·Î ÇÏÀ§ ¸Ş´ºµéÀ» Ãâ·Â
+            printChildren(menu, "  ");  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ş´ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         }
 
         return topLevelMenus;
