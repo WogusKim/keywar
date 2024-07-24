@@ -172,6 +172,7 @@ ul li {
 							<!-- 흰 배경 -->
 							<h2 class="card_title">나의 메모</h2>
 							<hr>
+							<div style =" overflow-y: auto; height: 90%;"> 
 							<ul>
 								<c:forEach items="${memo1}" var="dto1">
 									<li>${dto1.content}&nbsp;${dto1.createdate}
@@ -182,6 +183,7 @@ ul li {
 								</c:forEach>
 							</ul>
 						</div>
+						</div>
 						<input type="button" value="추가하기" class="addButton"
 							onclick="openPopup('memoPopup');">
 					</div>
@@ -191,6 +193,7 @@ ul li {
 							<!-- 흰 배경 -->
 							<h2 class="card_title">부점 메모</h2>
 							<hr>
+							<div style =" overflow-y: auto; height: 90%;"> 
 							<ul>
 								<c:forEach items="${memo2}" var="dto2">
 									<li>${dto2.content}&nbsp;${dto2.createdate}<a
@@ -199,7 +202,7 @@ ul li {
 								</c:forEach>
 							</ul>
 						</div>
-
+						</div>
 						<input type="button" value="추가하기" class="addButton"
 							onclick="openPopup('deptMemoPopup');">
 					</div>
