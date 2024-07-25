@@ -44,7 +44,7 @@ public class WikiController {
         
         String userno = (String) session.getAttribute("userno");
         
-        // 메뉴 데이터를 세션과 모델에 전달해 저장.
+        // 메뉴 데이터를 세션과 모델에 전달해 저장!
         List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
         LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
 

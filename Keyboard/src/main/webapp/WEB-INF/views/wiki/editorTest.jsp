@@ -95,7 +95,11 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 	
-    const editorData = JSON.parse('${editorData}'); // 이스케이프 처리된 JSON 문자열 사용
+    const editorData = JSON.parse(
+
+    
+    
+    ); // 이스케이프 처리된 JSON 문자열 사용
     console.log('${editorData}');
     
     const editor = new EditorJS({
