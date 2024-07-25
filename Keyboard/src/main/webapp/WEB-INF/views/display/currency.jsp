@@ -519,8 +519,6 @@
 			}else if(exchangeRate == 'cashSell-'){
 				exchangeRate = 'cashBuy-';
 			}
-			console.log("원화를 다른 통화로 재환전 할 때의 환율 exchangeRate : " + exchangeRate);
-			
 			
 			var chooseRateNum2 = $("#"+ exchangeRate + current2).text();  //두 번째 통화의 선택한 환율
 			chooseRateNum2 = keepNumbersAndDots(chooseRateNum2);  // 데이터 전처리 
@@ -537,7 +535,6 @@
 				var tempnum2 = (Math.round(((chooseRateNum2 - baseRate) * discountRate )*100) / 100);
 				finalRate =  Number(tempnum2) + Number(baseRate);
 				finalRate =  (Math.round((finalRate)*100) /100);
-				console.log("재환전 환율 : " + finalRate);
 			}
 			
 			var finalAmount = KRWConvertedAmount.toFixed(2) / finalRate;
