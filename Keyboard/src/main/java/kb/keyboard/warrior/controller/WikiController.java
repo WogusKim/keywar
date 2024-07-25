@@ -156,7 +156,7 @@ public class WikiController {
     }
     
 
-    //삭제처리
+    //삭제처리 (아이템 & 폴더)
     @RequestMapping("/deleteMenu")
     public String deleteMenu(Model model, HttpServletRequest request, HttpSession session) {
         

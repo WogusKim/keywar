@@ -95,12 +95,16 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 	
+	console.log('${editorData}');
+	
+	
+	
     const editorData = JSON.parse(
 
     
     
     ); // 이스케이프 처리된 JSON 문자열 사용
-    console.log('${editorData}');
+    
     
     const editor = new EditorJS({
         holder: 'myEditor',
