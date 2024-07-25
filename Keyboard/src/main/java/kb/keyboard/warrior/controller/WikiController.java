@@ -44,7 +44,7 @@ public class WikiController {
         
         String userno = (String) session.getAttribute("userno");
         
-        // 메뉴 데이터를 세션과 모델에 전달해 저장.
+        // 메뉴 데이터를 세션과 모델에 전달해 저장!
         List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
         LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
 
@@ -156,7 +156,7 @@ public class WikiController {
     }
     
 
-    //삭제처리
+    //삭제처리 (아이템 & 폴더)
     @RequestMapping("/deleteMenu")
     public String deleteMenu(Model model, HttpServletRequest request, HttpSession session) {
         
@@ -365,17 +365,17 @@ public class WikiController {
     }
     
     
-    @RequestMapping(value = "/editor", method = RequestMethod.GET)
-    public String getEditorPage() {
-        return "./wiki/editor"; // src/main/webapp/WEB-INF/views/editor.jsp 파일을 반환
-    }
-
-    @RequestMapping(value = "/saveEditorData", method = RequestMethod.POST)
-    public ResponseEntity<String> saveEditorData(@RequestBody Map<String, Object> editorData) {
-        // editorData를 처리하고 저장합니다.
-        System.out.println("Received data: " + editorData);
-        // 데이터베이스에 저장하는 로직을 추가합니다.
-
-        return new ResponseEntity<String>("Data saved successfully", HttpStatus.OK);
-    }
+//    @RequestMapping(value = "/editor", method = RequestMethod.GET)
+//    public String getEditorPage() {
+//        return "./wiki/editor"; // src/main/webapp/WEB-INF/views/editor.jsp 파일을 반환
+//    }
+//
+//    @RequestMapping(value = "/saveEditorData", method = RequestMethod.POST)
+//    public ResponseEntity<String> saveEditorData(@RequestBody Map<String, Object> editorData) {
+//        // editorData를 처리하고 저장합니다.
+//        System.out.println("Received data: " + editorData);
+//        // 데이터베이스에 저장하는 로직을 추가합니다.
+//
+//        return new ResponseEntity<String>("Data saved successfully", HttpStatus.OK);
+//    }
 }

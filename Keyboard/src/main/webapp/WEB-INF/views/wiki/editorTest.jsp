@@ -93,14 +93,65 @@
         </div>
     </div>
 <script>
+
+let editor;
+
+async function saveData() {
+	
+    try {
+        const savedData = await editor.save();
+        console.log("저장된 데이터:", savedData);
+
+        // fetch API를 사용한 예제 POST 요청
+        fetch('${pageContext.request.contextPath}/saveEditorData', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(savedData)
+        })
+        .then(response => response.json())
+        .then(data => console.log('성공:', data))
+        .catch((error) => {
+            console.error('오류:', error);
+        });
+    } catch (error) {
+        console.error('저장 실패:', error);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 	
-    const editorData = JSON.parse('${editorData}'); // 이스케이프 처리된 JSON 문자열 사용
-    console.log('${editorData}');
+	const editorData = JSON.parse('${editorData}');
+	console.log('${editorData}'); //추후에 얘를 서버에서 받아서 뿌려주고싶음.
     
-    const editor = new EditorJS({
+    editor = new EditorJS({
         holder: 'myEditor',
         data: editorData,
+/*         {
+        	blocks: [
+                {
+                    "type": "header",
+                    "data": {
+                        "text": "이것은 첨부터 보이는 데이터",
+                        "level": 2
+                    }
+                },
+                {
+                    "type": "list",
+                    "data": {
+                        "style": "ordered",
+                        "items": [
+                            "이거슨 리스트 아이템이예용",
+                            "리스트라니까용",
+                            "간단하고 파워풀하지용",
+                            "비슷한 설정이 반복되는 게 못생겼어요"
+                        ]
+                    }
+                }
+        	]
+        } */
+    
         tools: {
             // Header 설정
             header: {
