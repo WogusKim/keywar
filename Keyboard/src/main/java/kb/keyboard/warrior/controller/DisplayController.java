@@ -1,5 +1,6 @@
 package kb.keyboard.warrior.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -80,6 +81,13 @@ public class DisplayController {
 //	    List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeRates(favoriteCurrency1, favoriteCurrency2, favoriteCurrency3);
 		ExchangeRateDao exchangedao = sqlSession.getMapper(ExchangeRateDao.class);
 		List<ExchangeRateDTO> currencyRates =  exchangedao.getAllExchangeRate();
+//        List<ExchangeRateDTO> favoritecurrencyRates = new ArrayList<ExchangeRateDTO>();
+        for(ExchangeRateDTO dto : currencyRates) {
+        	if(dto.getCurrencyCode().equals(favoriteCurrency1)|| dto.getCurrencyCode().equals(favoriteCurrency2) ||dto.getCurrencyCode().equals(favoriteCurrency3)) {
+        		dto.setIsFavorite("1");
+        	}
+        }
+		
 	    if (!currencyRates.isEmpty()) {
 	        model.addAttribute("rates", currencyRates);   
 	    } else {
