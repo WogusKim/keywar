@@ -14,6 +14,7 @@ public interface LoginDao {
 	public UserDTO isRightUserno(String userno);
 	public void UpdatePw(String id, String pw);
 	public List<ExchangeFavoriteDTO> getFavoriteCurrency(String userno);
+	public List<StockFavoriteDTO> getFavoriteStock(String userno);
 	public List<MenuDTO> getMenus(String userno);
 	
 	// 새로 추가된 메소드
