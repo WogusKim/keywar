@@ -2,18 +2,96 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kb.keyboard.warrior.dao.EditorDao">
-	<!-- Insert operation -->
-    <insert id="insertEditor" parameterType="com.yourcompany.yourproject.dto.EditorDTO">
-        INSERT INTO editor (title, content_json, created_at)
-        VALUES (#{title}, #{contentJson}, NOW())
-    </insert>
-
-    <!-- Select by ID -->
-    <select id="selectEditorById" parameterType="int" resultType="com.yourcompany.yourproject.dto.EditorDTO">
-        SELECT id, title, content_json, created_at
-        FROM editor
-        WHERE id = #{id}
-    </select>
+<mapper namespace="kb.keyboard.warrior.dao.WikiDao">
+	
+	<!-- 부모id 찾기 -->
+	<select id="getParentid" resultType="Integer">
+		SELECT parent_id from Menu where id = #{param}
+	</select>
+	<!-- 일반 max order 찾기 -->
+	<select id="getMaxOrderOfFather" resultType="Integer">
+	    SELECT COALESCE(MAX(menu_order), 0) FROM Menu WHERE parent_id = #{param}
+	</select>
+	<!-- 최상위인경우 max order 찾기 -->
+	<select id="getMaxOrderOfnoParents" resultType="Integer">
+	    SELECT COALESCE(MAX(menu_order), 0) FROM Menu WHERE parent_id IS NULL
+	</select>
+		
+	<insert id="insertMenuNoParentsItem">
+		INSERT INTO Menu (title, titleShare, link, menuType, menu_order, userno)
+		VALUES (
+		    #{param1}, 
+		    #{param2},
+		    #{param3},
+		    #{param4},
+		    #{param5},
+		    #{param6}
+		);
+	</insert>
+	
+	<insert id="insertMenuNoParentsFolder">
+		INSERT INTO Menu (title, titleShare, menuType, menu_order, userno)
+		VALUES (
+		    #{param1}, 
+		    #{param2},
+		    #{param3},
+		    #{param4},
+		    #{param5}
+		);
+	</insert>
+	
+	<insert id="insertMenuHaveParentsItem">
+		INSERT INTO Menu (parent_id, title, titleShare, link, menuType, menu_order, userno)
+		VALUES (
+		    #{param1}, 
+		    #{param2},
+		    #{param3},
+		    #{param4},
+		    #{param5},
+		    #{param6},
+		    #{param7}
+		);
+	</insert>
+	
+	<insert id="insertMenuHaveParentsFolder">
+		INSERT INTO Menu (parent_id, title, titleShare, menuType, menu_order, userno)
+		VALUES (
+		    #{param1}, 
+		    #{param2},
+		    #{param3},
+		    #{param4},
+		    #{param5},
+		    #{param6}
+		);
+	</insert>
+	
+	<!-- 삭제 -->
+	<delete id ="deleteItem">
+		DELETE FROM Menu where id = #{param1} and userno = #{param2}
+	</delete>
+	
+	<select id="getChildIds" parameterType="Integer" resultType="Integer">
+	    SELECT id FROM Menu WHERE parent_id = #{parentId}
+	</select>
+	
+	<delete id="deleteFolder" parameterType="map">
+	    DELETE FROM Menu WHERE id = #{param1} AND userno = #{param2}
+	</delete>
+	
+	<select id="getMenuDetail" resultType="kb.keyboard.warrior.dto.MenuDTO">
+		SELECT * FROM Menu WHERE id = #{param}
+	</select>
+	
+	<update id="changeMenuNoShare">
+		UPDATE Menu
+		SET title = #{param1}, titleShare = NULL
+		where id = #{param2}
+	</update>
+	
+	<update id="changeMenuYesShare">
+		UPDATE Menu
+		SET title = #{param1}, titleShare = #{param2}
+		where id = #{param3}
+	</update>
 	
 </mapper>
