@@ -19,7 +19,6 @@ public class StockKoreaCrawler {
 //        }        
 //    }
 
-
     public List<StockDTO> fetchIndexData() {
         List<StockDTO> stockList = new ArrayList<StockDTO>();
         String[] urls = {
@@ -39,8 +38,8 @@ public class StockKoreaCrawler {
 
                 Element kospiIndexChange = doc.selectFirst("#change_value_and_rate");
                 
-                Element weekHighElement = doc.select(".table_kos_index tr:contains(52Ï£ºÏµúÍ≥†) td.td").first();
-                Element weekLowElement = doc.select(".table_kos_index tr:contains(52Ï£ºÏµúÏ†Ä) td.td2").first();
+                Element weekHighElement = doc.select(".table_kos_index tr:contains(52¡÷√÷∞Ì) td.td").first();
+                Element weekLowElement = doc.select(".table_kos_index tr:contains(52¡÷√÷¿˙) td.td2").first();
                 
                 String weekHighValue = weekHighElement.text();
                 String weekLowValue = weekLowElement.text();
@@ -57,7 +56,7 @@ public class StockKoreaCrawler {
                 double weekLow52 = Double.parseDouble(weekLowValue.replace(",", ""));
 
                 StockDTO stockDTO = new StockDTO();
-                stockDTO.setCountry("ÌïúÍµ≠");
+                stockDTO.setCountry("«—±π");
                 stockDTO.setIndexName(indexName);
                 stockDTO.setCurrentPrice(currentPriceValue);
                 stockDTO.setPriceChange(priceChangeValue);
@@ -73,8 +72,5 @@ public class StockKoreaCrawler {
         }
 
         return stockList;
-        
     }
-    
-    
 }
