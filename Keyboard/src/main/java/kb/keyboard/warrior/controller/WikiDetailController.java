@@ -1,49 +1,31 @@
 package kb.keyboard.warrior.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.apache.commons.text.StringEscapeUtils;
+import kb.keyboard.warrior.dao.EditorDao;
+import kb.keyboard.warrior.dto.EditorDTO;
 
 @Controller
 public class WikiDetailController {
     @Autowired
-    public SqlSession sqlSession;
-    
-    @RequestMapping("/editorTest")
-    public String editorTest(Model model) {
+    private EditorDao editorDAO;
 
-    	
-    	//--------------------------- 테스트를 위한 임시테이더 ---------------------------//
-        Map<String, Object> contentData = new HashMap<String, Object>();
-        contentData.put("time", System.currentTimeMillis());
-//        contentData.put("blocks", new String[] {
-//            "{\"type\": \"header\", \"data\": {\"text\": \"에디터에 오신 것을 환영합니다\", \"level\": 2}}"
-//        });
-        contentData.put("blocks", new String[] {
-                "{'type': 'header', 'data': {'text' : '에디터에 오신 것을 환영합니다', 'level': 2}}"
-            });    
-        contentData.put("version", "2.26.5");
+    @RequestMapping(value = "/saveEditorData", method = RequestMethod.POST)
+    @ResponseBody
+    public String saveEditorData(@RequestBody EditorDTO editor) {
+        editorDAO.insertEditor(editor);
+        return "Data saved successfully";
+    }
 
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            String jsonData = mapper.writeValueAsString(contentData);
-            String safeJsonData = StringEscapeUtils.escapeEcmaScript(jsonData);
-            model.addAttribute("editorData", safeJsonData);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //--------------------------- 테스트를 위한 임시테이더 ---------------------------//
-  	
-    	
-    	return "wiki/editorTest";
+    @RequestMapping(value = "/loadEditorData", method = RequestMethod.GET)
+    @ResponseBody
+    public EditorDTO loadEditorData(int id) {
+        return editorDAO.selectEditorById(id);
     }
 }
