@@ -44,7 +44,6 @@ public class WikiController {
         
         String userno = (String) session.getAttribute("userno");
         
-        // 硫붾돱 �뜲�씠�꽣瑜� �꽭�뀡怨� 紐⑤뜽�뿉 �쟾�떖�빐 ���옣.
         List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
         LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
 
@@ -60,35 +59,35 @@ public class WikiController {
     @RequestMapping("/addMenu")
     public String menuAdd(Model model, HttpServletRequest request, HttpSession session) {
         
-        //�꽭�뀡泥댄겕
+        //占쎄쉭占쎈�∽㎗�똾寃�
         String userno = (String) session.getAttribute("userno");
         
-        //諛쏆��뜲�씠�꽣
+        //獄쏆룇占쏙옙�쑓占쎌뵠占쎄숲
         String selectedId = request.getParameter("id");
         String selectedType = request.getParameter("type");
         String selectedDepth = request.getParameter("depth");
         
-        //�쟾�넚諛쏆��뜲�씠�꽣
+        //占쎌읈占쎈꽊獄쏆룇占쏙옙�쑓占쎌뵠占쎄숲
         String menuType = request.getParameter("menuType");
         String title = request.getParameter("title");
         String sharedTitle = request.getParameter("sharedTitle");
         
-//      System.out.println("諛쏆� id: " + selectedId);
-//      System.out.println("諛쏆� type: " + selectedType);
-//      System.out.println("諛쏆� depth: " + selectedDepth);
+//      System.out.println("獄쏆룇占� id: " + selectedId);
+//      System.out.println("獄쏆룇占� type: " + selectedType);
+//      System.out.println("獄쏆룇占� depth: " + selectedDepth);
 //      
-//      System.out.println("異붽��븷 Type: " + menuType);
-//      System.out.println("異붽��븷 Title: " + title);
-//      System.out.println("異붽��븷 怨듭쑀title: " + sharedTitle);
+//      System.out.println("�빊遺쏙옙占쎈막 Type: " + menuType);
+//      System.out.println("�빊遺쏙옙占쎈막 Title: " + title);
+//      System.out.println("�빊遺쏙옙占쎈막 �⑤벊��title: " + sharedTitle);
         
-        // �쁽�옱 �궇吏쒖� �떆媛꾩쓣 'yyyyMMdd_HHmmss' �삎�깭濡� �룷留�
+        // 占쎌겱占쎌삺 占쎄텊筌욎뮇占� 占쎈뻻揶쏄쑴�뱽 'yyyyMMdd_HHmmss' 占쎌굨占쎄묶嚥∽옙 占쎈７筌랃옙
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         String formattedDateTime = now.format(formatter);
         
         String link = "";
         
-        // �궗�슜�옄 踰덊샇�� �쁽�옱 �궇吏� 諛� �떆媛꾩쓣 �빀爾� 留곹겕 �깮�꽦
+        // 占쎄텢占쎌뒠占쎌쁽 甕곕뜇�깈占쏙옙 占쎌겱占쎌삺 占쎄텊筌욑옙 獄쏉옙 占쎈뻻揶쏄쑴�뱽 占쎈��댚占� 筌띻낱寃� 占쎄문占쎄쉐
         if (menuType.equals("item")) {
             link = "/" + userno + "_" + formattedDateTime;
         } 
@@ -96,7 +95,7 @@ public class WikiController {
         
         WikiDao dao = sqlSession.getMapper(WikiDao.class);
         
-        //諛쏆��뜲�씠�꽣媛� �엳�뒗 硫붾돱�쓽 理쒕� menu_order �솗�씤
+        //獄쏆룇占쏙옙�쑓占쎌뵠占쎄숲揶쏉옙 占쎌뿳占쎈뮉 筌롫뗀�뤀占쎌벥 筌ㅼ뮆占� menu_order 占쎌넇占쎌뵥
         int max_order;
         
         if (selectedType.equals("root")) {
@@ -104,49 +103,49 @@ public class WikiController {
             max_order = dao.getMaxOrderOfnoParents();
             max_order++;
             
-            //遺�紐⑤끂�뱶媛� �뾾�뒗 理쒖긽�쐞 寃쎌슦//
+            //�겫占쏙쭗�뫀�걗占쎈굡揶쏉옙 占쎈씨占쎈뮉 筌ㅼ뮇湲쏙옙�맄 野껋럩�뒭//
             if (menuType.equals("item")) {
-                //理쒖긽�쐞�뿉 �븘�씠�뀥 異붽��떆
-                System.out.println("理쒖긽�쐞 �븘�씠�뀥�쓣 異붽��빀�땲�떎.");
+                //筌ㅼ뮇湲쏙옙�맄占쎈퓠 占쎈툡占쎌뵠占쎈�� �빊遺쏙옙占쎈뻻
+                System.out.println("筌ㅼ뮇湲쏙옙�맄 占쎈툡占쎌뵠占쎈�ο옙�뱽 �빊遺쏙옙占쎈�占쎈빍占쎈뼄.");
                 dao.insertMenuNoParentsItem(title, sharedTitle, link, menuType, max_order, userno);
             } else {
-                //理쒖긽�쐞�뿉 �뤃�뜑 異붽��떆 (留곹겕瑜� null 濡� �꽔�쓣 �삁�젙)
-                System.out.println("理쒖긽�쐞 �뤃�뜑瑜� 異붽��빀�땲�떎.");
+                //筌ㅼ뮇湲쏙옙�맄占쎈퓠 占쎈쨨占쎈쐭 �빊遺쏙옙占쎈뻻 (筌띻낱寃뺟몴占� null 嚥∽옙 占쎄퐫占쎌뱽 占쎌굙占쎌젟)
+                System.out.println("筌ㅼ뮇湲쏙옙�맄 占쎈쨨占쎈쐭�몴占� �빊遺쏙옙占쎈�占쎈빍占쎈뼄.");
                 dao.insertMenuNoParentsFolder(title, sharedTitle, menuType, max_order, userno);
             }
             
         } else {
 
-            //遺�紐⑤끂�뱶媛� 議댁옱�븯�뒗 寃쎌슦//
+            //�겫占쏙쭗�뫀�걗占쎈굡揶쏉옙 鈺곕똻�삺占쎈릭占쎈뮉 野껋럩�뒭//
             if (selectedType.equals("item")) {
                 
                 int selectedIdParent = dao.getParentid(selectedId);
-                //integer 瑜� �뒪�듃留곸쑝濡� 蹂��솚
+                //integer �몴占� 占쎈뮞占쎈뱜筌띻낯�몵嚥∽옙 癰귨옙占쎌넎
                 String parentId =  String.valueOf(selectedIdParent); 
                 max_order = dao.getMaxOrderOfFather(parentId);
                 max_order++;
                 
-                System.out.println("�븯�쐞 �븘�씠�뀥(�뤃�뜑)�쓣 異붽��빀�땲�떎. - 異붽��겢�옒�뒪 �깮�꽦");
-                //dao.insertMenuHaveParentsItem(#諛쏆�遺�紐⑥쓽id, #�젣紐�, #怨듭쑀�젣紐�, #留곹겕, #硫붾돱���엯, #�궗�슜�옄踰덊샇)
+                System.out.println("占쎈릭占쎌맄 占쎈툡占쎌뵠占쎈��(占쎈쨨占쎈쐭)占쎌뱽 �빊遺쏙옙占쎈�占쎈빍占쎈뼄. - �빊遺쏙옙占쎄깻占쎌삋占쎈뮞 占쎄문占쎄쉐");
+                //dao.insertMenuHaveParentsItem(#獄쏆룇占썽겫占쏙쭗�뫁�벥id, #占쎌젫筌륅옙, #�⑤벊��占쎌젫筌륅옙, #筌띻낱寃�, #筌롫뗀�뤀占쏙옙占쎌뿯, #占쎄텢占쎌뒠占쎌쁽甕곕뜇�깈)
                 dao.insertMenuHaveParentsItem(parentId, title, sharedTitle, link, menuType, max_order, userno);
             } else {
-                //�뤃�뜑異붽�
+                //占쎈쨨占쎈쐭�빊遺쏙옙
                 
-                //遺�紐⑤끂�뱶媛� 議댁옱�븯�뒗�뜲, depth媛� 4�씤寃쎌슦 理쒖쥌�씠�떎. (0�씠 泥ル쾲吏�, 理쒓퀬 5�겢�옒�뒪源뚯� 蹂댁뿬以� �닔 �엳�쓬)
+                //�겫占쏙쭗�뫀�걗占쎈굡揶쏉옙 鈺곕똻�삺占쎈릭占쎈뮉占쎈쑓, depth揶쏉옙 4占쎌뵥野껋럩�뒭 筌ㅼ뮇伊뚳옙�뵠占쎈뼄. (0占쎌뵠 筌ｃ꺂苡뀐쭪占�, 筌ㅼ뮄�� 5占쎄깻占쎌삋占쎈뮞繹먮슣占� 癰귣똻肉т빳占� 占쎈땾 占쎌뿳占쎌벉)
                 int selectedDepthInt = Integer.parseInt(selectedDepth); 
                 if (selectedDepthInt >= 4 ) {
                     
-                session.setAttribute("errorMessage", "�뤃�뜑 諛� �븘�씠�뀥�쓣 異붽��븷 �닔 �뾾�뒿�땲�떎. 理쒖긽�쐞 �뤃�뜑瑜� �깮�꽦�븯�꽭�슂.");
+                session.setAttribute("errorMessage", "占쎈쨨占쎈쐭 獄쏉옙 占쎈툡占쎌뵠占쎈�ο옙�뱽 �빊遺쏙옙占쎈막 占쎈땾 占쎈씨占쎈뮸占쎈빍占쎈뼄. 筌ㅼ뮇湲쏙옙�맄 占쎈쨨占쎈쐭�몴占� 占쎄문占쎄쉐占쎈릭占쎄쉭占쎌뒄.");
                 
                 return "redirect:menuSetting";
                     
                 }
                 
-                //�삎�젣�쓽 �닚�꽌瑜� 遊먯빞�븿.
+                //占쎌굨占쎌젫占쎌벥 占쎈떄占쎄퐣�몴占� �걡癒�鍮욑옙釉�.
                 max_order = dao.getMaxOrderOfFather(selectedId);
                 max_order++;
                 
-                System.out.println("�븯�쐞 �븘�씠�뀥(�뤃�뜑)�쓣 異붽��빀�땲�떎. - 異붽��겢�옒�뒪 �깮�꽦");
+                System.out.println("占쎈릭占쎌맄 占쎈툡占쎌뵠占쎈��(占쎈쨨占쎈쐭)占쎌뱽 �빊遺쏙옙占쎈�占쎈빍占쎈뼄. - �빊遺쏙옙占쎄깻占쎌삋占쎈뮞 占쎄문占쎄쉐");
                 dao.insertMenuHaveParentsFolder(selectedId, title, sharedTitle, menuType, max_order, userno);
             }
         }
@@ -156,37 +155,37 @@ public class WikiController {
     }
     
 
-    //�궘�젣泥섎━
+
     @RequestMapping("/deleteMenu")
     public String deleteMenu(Model model, HttpServletRequest request, HttpSession session) {
         
-        //�꽭�뀡泥댄겕
+        //占쎄쉭占쎈�∽㎗�똾寃�
         String userno = (String) session.getAttribute("userno");
         
         
-        //諛쏆��뜲�씠�꽣
+        //獄쏆룇占쏙옙�쑓占쎌뵠占쎄숲
         String selectedId = request.getParameter("id");
         String selectedType = request.getParameter("type");
         String selectedDepth = request.getParameter("depth");
         
-        System.out.println("�궘�젣���긽 id: " + selectedId);
-        System.out.println("�궘�젣���긽 type: " + selectedType);
-        System.out.println("�궘�젣���긽 depth: " + selectedDepth);
+        System.out.println("占쎄텣占쎌젫占쏙옙占쎄맒 id: " + selectedId);
+        System.out.println("占쎄텣占쎌젫占쏙옙占쎄맒 type: " + selectedType);
+        System.out.println("占쎄텣占쎌젫占쏙옙占쎄맒 depth: " + selectedDepth);
         
         WikiDao dao = sqlSession.getMapper(WikiDao.class);
         
-        //�궘�젣�븯�젮�뒗 ���긽�씠 �븘�씠�뀥�씤 寃쎌슦
+        //占쎄텣占쎌젫占쎈릭占쎌젻占쎈뮉 占쏙옙占쎄맒占쎌뵠 占쎈툡占쎌뵠占쎈�ο옙�뵥 野껋럩�뒭
         if (selectedType.equals("item")) {
             dao.deleteItem(selectedId, userno);
         } else {
             
-            //�궘�젣�븯�젮�뒗 ���긽�씠 �뤃�뜑�씤 寃쎌슦
+            //占쎄텣占쎌젫占쎈릭占쎌젻占쎈뮉 占쏙옙占쎄맒占쎌뵠 占쎈쨨占쎈쐭占쎌뵥 野껋럩�뒭
             
             Set<Integer> allIdsToDelete = new HashSet<Integer>();
             collectAllIdsToDelete(Integer.parseInt(selectedId), allIdsToDelete, dao);            
             
-            //�쁽�옱濡쒕뒗 �궘�젣�븷 紐⑤뱺 �뜲�씠�꽣瑜� �떎 媛��졇�삤吏�留�,
-            //FK 議곌굔�쓣 留욎텛硫� �궘�젣�븯�젮硫� depth 瑜� �젙�젹�븯�뿬 �궘�젣泥섎━吏꾪뻾�빐�빞�븿.
+            //占쎌겱占쎌삺嚥≪뮆�뮉 占쎄텣占쎌젫占쎈막 筌뤴뫀諭� 占쎈쑓占쎌뵠占쎄숲�몴占� 占쎈뼄 揶쏉옙占쎌죬占쎌궎筌욑옙筌랃옙,
+            //FK 鈺곌퀗援뷂옙�뱽 筌띿쉸�뀤筌롳옙 占쎄텣占쎌젫占쎈릭占쎌젻筌롳옙 depth �몴占� 占쎌젟占쎌졊占쎈릭占쎈연 占쎄텣占쎌젫筌ｌ꼶�봺筌욊쑵六억옙鍮먲옙鍮욑옙釉�.
             Map<Integer, Integer> depthMap = new HashMap<Integer, Integer>();
             for (Integer id : allIdsToDelete) {
                 
@@ -200,23 +199,23 @@ public class WikiController {
                     parentId = parentIdNext;
                 }
                 depthMap.put(id, depth);
-                System.out.println("�궘�젣���긽)) 硫붾돱id : " + id + " depth : " + depth);
+                System.out.println("占쎄텣占쎌젫占쏙옙占쎄맒)) 筌롫뗀�뤀id : " + id + " depth : " + depth);
             }
             
-            //depth 蹂꾨줈 �굹�닠吏� �뜲�씠�꽣瑜� depth 湲곗� �궡由쇱감�닚�쑝濡� �젙�젹�빐 �닚李⑥쟻�쑝濡� �궘�젣泥섎━�븿.
-            // depthMap�쓣 媛믪뿉 �뵲�씪 �궡由쇱감�닚 �젙�젹
+            //depth 癰귢쑬以� 占쎄돌占쎈떊筌욑옙 占쎈쑓占쎌뵠占쎄숲�몴占� depth 疫꿸퀣占� 占쎄땀�뵳�눘媛먲옙�떄占쎌몵嚥∽옙 占쎌젟占쎌졊占쎈퉸 占쎈떄筌△뫁�읅占쎌몵嚥∽옙 占쎄텣占쎌젫筌ｌ꼶�봺占쎈맙.
+            // depthMap占쎌뱽 揶쏅�る퓠 占쎈뎡占쎌뵬 占쎄땀�뵳�눘媛먲옙�떄 占쎌젟占쎌졊
             List<Map.Entry<Integer, Integer>> list = new ArrayList<Map.Entry<Integer, Integer>>(depthMap.entrySet());
 
-            // Comparator瑜� �궗�슜�븳 �젙�젹
+            // Comparator�몴占� 占쎄텢占쎌뒠占쎈립 占쎌젟占쎌졊
             Collections.sort(list, new Comparator<Map.Entry<Integer, Integer>>() {
                 public int compare(Map.Entry<Integer, Integer> o1, Map.Entry<Integer, Integer> o2) {
                     return o2.getValue().compareTo(o1.getValue());
                 }
             });
             
-            //�궘�젣泥섎━
+            //占쎄텣占쎌젫筌ｌ꼶�봺
             for (Map.Entry<Integer, Integer> entry : list) {
-                // �빐�떦 ID瑜� �뜲�씠�꽣踰좎씠�뒪�뿉�꽌 �궘�젣
+                // 占쎈퉸占쎈뼣 ID�몴占� 占쎈쑓占쎌뵠占쎄숲甕곗쥙�뵠占쎈뮞占쎈퓠占쎄퐣 占쎄텣占쎌젫
                 dao.deleteItem(entry.getKey().toString(), userno);
                 System.out.println("Deleted ID: " + entry.getKey() + " with depth: " + entry.getValue());
             }
@@ -253,7 +252,7 @@ public class WikiController {
             
             if (dto != null) {
                 ObjectMapper mapper = new ObjectMapper();
-                String jsonResult = mapper.writeValueAsString(dto); // 媛앹껜瑜� JSON 臾몄옄�뿴濡� 蹂��솚
+                String jsonResult = mapper.writeValueAsString(dto); // 揶쏆빘猿쒐몴占� JSON �눧紐꾩쁽占쎈였嚥∽옙 癰귨옙占쎌넎
                 
                 return new ResponseEntity<String>(jsonResult, HttpStatus.OK);
             } else {    
@@ -273,19 +272,19 @@ public class WikiController {
         String title = request.getParameter("title");
         String titleShare = request.getParameter("titleShare");
         
-        System.out.println("======== �닔�젙 �븸�뀡 而⑦듃濡ㅻ윭 吏꾩엯 ========");
+        System.out.println("======== 占쎈땾占쎌젟 占쎈만占쎈�� �뚢뫂�뱜嚥▲끇�쑎 筌욊쑴�뿯 ========");
         System.out.println(id);
         System.out.println(title);
         System.out.println(titleShare);
-        System.out.println("======== �닔�젙 �븸�뀡 而⑦듃濡ㅻ윭 吏꾩엯 ========");
+        System.out.println("======== 占쎈땾占쎌젟 占쎈만占쎈�� �뚢뫂�뱜嚥▲끇�쑎 筌욊쑴�뿯 ========");
         
         WikiDao dao = sqlSession.getMapper(WikiDao.class);
         
         if (titleShare.length() == 0) {
-            System.out.println("怨듭쑀�슜 �젣紐⑹씠 �뾾�쓬. null 濡� 泥섎━�빀�땲�떎.");
+            System.out.println("�⑤벊��占쎌뒠 占쎌젫筌뤴뫗�뵠 占쎈씨占쎌벉. null 嚥∽옙 筌ｌ꼶�봺占쎈�占쎈빍占쎈뼄.");
             dao.changeMenuNoShare(title, id);
         } else {
-            System.out.println("怨듭쑀�슜 �젣紐� 議댁옱�븿.");
+            System.out.println("�⑤벊��占쎌뒠 占쎌젫筌륅옙 鈺곕똻�삺占쎈맙.");
             dao.changeMenuYesShare(title,titleShare, id);
         }
         
@@ -303,13 +302,13 @@ public class WikiController {
     }    
     
     public void setMenuDepth(List<MenuDTO> menus) {
-        // 硫붾돱 ID�� 硫붾돱 媛앹껜瑜� 留ㅽ븨�븯�뒗 Map�쓣 �깮�꽦
+        // 筌롫뗀�뤀 ID占쏙옙 筌롫뗀�뤀 揶쏆빘猿쒐몴占� 筌띲끋釉⑨옙釉�占쎈뮉 Map占쎌뱽 占쎄문占쎄쉐
         Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
         for (MenuDTO menu : menus) {
             menuMap.put(menu.getId(), menu);
         }
 
-        // 媛� 硫붾돱 �빆紐⑹쓽 depth 怨꾩궛
+        // 揶쏉옙 筌롫뗀�뤀 占쎈퉮筌뤴뫗�벥 depth �④쑴沅�
         for (MenuDTO menu : menus) {
             int depth = 0;
             Integer parentId = menu.getParentId();
@@ -346,10 +345,10 @@ public class WikiController {
             }
         }
 
-        // 濡쒓퉭�쓣 異붽��빐 媛� 理쒖긽�쐞 硫붾돱�� �빐�떦 �븯�쐞 硫붾돱�뱾�쓣 異쒕젰
+        // 嚥≪뮄�돪占쎌뱽 �빊遺쏙옙占쎈퉸 揶쏉옙 筌ㅼ뮇湲쏙옙�맄 筌롫뗀�뤀占쏙옙 占쎈퉸占쎈뼣 占쎈릭占쎌맄 筌롫뗀�뤀占쎈굶占쎌뱽 �빊�뮆�젾
 //        for (MenuDTO menu : topLevelMenus) {
 //            System.out.println("Menu: " + menu.getTitle() + " (ID: " + menu.getId() + ")");
-//            printChildren(menu, "  ");  // �옱洹��쟻�쑝濡� �븯�쐞 硫붾돱�뱾�쓣 異쒕젰
+//            printChildren(menu, "  ");  // 占쎌삺域뱄옙占쎌읅占쎌몵嚥∽옙 占쎈릭占쎌맄 筌롫뗀�뤀占쎈굶占쎌뱽 �빊�뮆�젾
 //        }
 
         return topLevelMenus;
@@ -364,21 +363,4 @@ public class WikiController {
         }
     }
     
-    
-	/*
-	 * @RequestMapping(value = "/editor", method = RequestMethod.GET) public String
-	 * getEditorPage() { return "./wiki/editor"; //
-	 * src/main/webapp/WEB-INF/views/editor.jsp �뙆�씪�쓣 諛섑솚 }
-	 */
-
-	/*
-	 * @RequestMapping(value = "/saveEditorData", method = RequestMethod.POST)
-	 * public ResponseEntity<String> saveEditorData(@RequestBody Map<String, Object>
-	 * editorData) { // editorData瑜� 泥섎━�븯怨� ���옣�빀�땲�떎.
-	 * System.out.println("Received data: " + editorData); // �뜲�씠�꽣踰좎씠�뒪�뿉 ���옣�븯�뒗
-	 * 濡쒖쭅�쓣 異붽��빀�땲�떎.
-	 * 
-	 * return new ResponseEntity<String>("Data saved successfully", HttpStatus.OK);
-	 * }
-	 */
 }
