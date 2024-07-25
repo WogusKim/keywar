@@ -29,6 +29,7 @@
                 <div class="board_currency_inner">
                     <h2 class="card_title">국가별 지수 리스트</h2>
                     <hr>
+                    <div style=" overflow-y: auto; height: 90%;">
                     
 					<table class="all_currency" summary="환율조회표">
 						<colgroup>
@@ -86,6 +87,7 @@
 					        </c:forEach>
 					    </tbody>
 					</table>
+					</div>
                 </div>
             </div>
         </div>
@@ -136,7 +138,7 @@ function changeFavorite(indexName, checkboxElement, event) {
         alert('네트워크 오류가 발생했습니다: ' + error.message); // 오류 메시지를 포함하여 알림
         checkboxElement.checked = !isChecked; // 체크박스 원래 상태로 복원
     });
-}
+}  
 </script>
 
 </body>

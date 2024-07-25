@@ -76,6 +76,7 @@ public class MemoController {
             Map<String, Object> extendedProps = new HashMap<String, Object>();
             extendedProps.put("content", schedule.getContent());
             extendedProps.put("shareto", schedule.getShareto());
+            extendedProps.put("sharecolor", schedule.getSharecolor());
             event.put("extendedProps", extendedProps);
 
             events.add(event);
