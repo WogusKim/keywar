@@ -41,11 +41,11 @@ public class HomeController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(Model model, HttpSession session) {
 
-    	// �α��� ���� üũ
+    	// 로그인 여부 체크
     	String userno = (String) session.getAttribute("userno");
     	String deptno = (String) session.getAttribute("deptno");
-    	// ���� �α��� ���� üũ �ʿ�
-    	// ���ǿ��� �޴� �����͸� Ȯ�� (Ȯ���� ������ ���� ����)!!!
+    	// 이후 로그인 여부 체크 필요
+    	// 세션에서 메뉴 데이터를 확인 (확인후 없으면 세션 설정)!!!
 
         List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
         
@@ -56,36 +56,36 @@ public class HomeController {
         setMenuDepth(menus);
         List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
 
-        session.setAttribute("menus", topLevelMenus);  // ���ǿ� �޴� ������ ����
+        session.setAttribute("menus", topLevelMenus);  // 세션에 메뉴 데이터 저장
 
         model.addAttribute("menus", topLevelMenus);
 
         // ȯ�� ���ã�� Ȯ��
         List<ExchangeFavoriteDTO> favorites = loginDao.getFavoriteCurrency(userno);
 
-        String favoriteCurrency1 = "0"; // ����Ʈ ��: USD
-        String favoriteCurrency2 = "0"; // ����Ʈ ��: JPY
-        String favoriteCurrency3 = "0"; // ����Ʈ ��: EUR
+        String favoriteCurrency1 = "0"; // 디폴트 값: USD
+        String favoriteCurrency2 = "0"; // 디폴트 값: JPY
+        String favoriteCurrency3 = "0"; // 디폴트 값: EUR
 
         switch (favorites.size()) {
             case 0:
-                // ���ã�� ������ �⺻���� ������ 3��
+            	// 즐겨찾기 없으면 기본으로 나오는 3개
                 favoriteCurrency1 = "USD";
                 favoriteCurrency2 = "JPY";
                 favoriteCurrency3 = "EUR";
                 break;
             case 1:
 
-                // ���ã�� 1��
+            	// 즐겨찾기 1개
                 favoriteCurrency1 = favorites.get(0).getCurrency();
                 break;
             case 2:
-                // ���ã�� 2��
+            	// 즐겨찾기 2개
                 favoriteCurrency1 = favorites.get(0).getCurrency();
                 favoriteCurrency2 = favorites.get(1).getCurrency();
                 break;
             case 3:
-                // ���ã�� 3��
+            	// 즐겨찾기 3개
                 favoriteCurrency1 = favorites.get(0).getCurrency();
                 favoriteCurrency2 = favorites.get(1).getCurrency();
                 favoriteCurrency3 = favorites.get(2).getCurrency();
@@ -93,7 +93,7 @@ public class HomeController {
         }
         
 
-        // ȯ�� ���ã�� ������ ó��	
+        // 환율 즐겨찾기 데이터 처리
 //        CurrencyRateCrawler currencyCrawler = new CurrencyRateCrawler();
 //        List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeFavoriteRates(favoriteCurrency1, favoriteCurrency2, favoriteCurrency3);
         // 크롤링을 DB에서 가져오는 것으로 바꾸는 구문.
@@ -127,10 +127,10 @@ public class HomeController {
 
         switch (stock.size()) {
             case 0:
-            	favoriteStock1 = "�ڽ���";
-            	favoriteStock2 = "�ڽ���";
+            	favoriteStock1 = "코스피";
+            	favoriteStock2 = "코스닥";
             	favoriteStock3 = "S&P 500";
-            	favoriteStock4 = "������ ����";
+            	favoriteStock4 = "나스닥 종합";
 
                 break;
             case 1:
@@ -156,7 +156,7 @@ public class HomeController {
         
 
 
-        // ���� ���ã�� ������ ó��
+        // 증시 즐겨찾기 데이터 처리
         StockCrawler stockCrawler = new StockCrawler();
         List<StockDTO> stocks = stockCrawler.fetchFavoriteStocks(favoriteStock1, favoriteStock2, favoriteStock3, favoriteStock4);
         if (!stocks.isEmpty()) {
@@ -210,14 +210,14 @@ public class HomeController {
 
     public void setMenuDepth(List<MenuDTO> menus) {
 
-    	// �޴� ID�� �޴� ��ü�� �����ϴ� Map�� ���� 
+    	// 메뉴 ID와 메뉴 객체를 매핑하는 Map을 생성 
         Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
         for (MenuDTO menu : menus) {
             menuMap.put(menu.getId(), menu);
         }
 
 
-        // �� �޴� �׸��� depth ���
+        // 각 메뉴 항목의 depth 계산
         for (MenuDTO menu : menus) {
             int depth = 0;
             Integer parentId = menu.getParentId();
@@ -255,10 +255,10 @@ public class HomeController {
         }
 
 
-        // �α��� �߰��Ͽ� �� �ֻ��� �޴��� �ش� ���� �޴����� ���
+        // 로깅을 추가하여 각 최상위 메뉴와 해당 하위 메뉴들을 출력
         for (MenuDTO menu : topLevelMenus) {
             System.out.println("Menu: " + menu.getTitle() + " (ID: " + menu.getId() + ")");
-            printChildren(menu, "  ");  // ��������� ���� �޴����� ���
+            printChildren(menu, "  ");  // 재귀적으로 하위 메뉴들을 출력
         }
 
         return topLevelMenus;
