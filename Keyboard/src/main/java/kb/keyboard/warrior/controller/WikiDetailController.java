@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kb.keyboard.warrior.dto.WikiTestDTO;
+
 import org.apache.commons.text.StringEscapeUtils;
 
 @Controller
@@ -81,6 +83,16 @@ public class WikiDetailController {
 	public ResponseEntity<String> saveEditorData(@RequestBody String editorData) {
 	    // Process the data, save to database, etc.
 	    System.out.println("Received data: " + editorData);
+	
+	    // Return a response with HTTP 200 OK
+	    return new ResponseEntity<String>("Data received successfully", HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/saveEditorData2", method = RequestMethod.POST)
+	public ResponseEntity<String> saveEditorData2(@RequestBody WikiTestDTO wikiTestDTO) {
+		
+	    // Process the data, save to database, etc.
+	    //System.out.println("Received data: " + editorData);
 	
 	    // Return a response with HTTP 200 OK
 	    return new ResponseEntity<String>("Data received successfully", HttpStatus.OK);
