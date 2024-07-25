@@ -76,6 +76,7 @@
 .selected {
     font-weight: bold;
     color: #0000FF; /* 블루 컬러로 강조 */
+    background-color: #f0f0f0;
 }
 
 .menu_admin {
@@ -110,4 +111,81 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+/* 모달 배경 */
+.modal {
+    display: none; /* 기본적으로 숨겨져 있음 */
+    position: fixed; /* 고정 위치 */
+    z-index: 1; /* 콘텐츠 위에 표시 */
+    left: 0;
+    top: 0;
+    width: 100%; /* 전체 너비 */
+    height: 100%; /* 전체 높이 */
+    overflow: auto; /* 필요할 경우 스크롤 */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* 블랙 w/ opacity */
+}
+
+/* 모달 콘텐츠 */
+.modal-content {
+	border-radius: 10px;
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% 상단에서부터 자동 가운데 정렬 */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 500px; /* 대부분의 화면에서 적절한 폭 */
+}
+
+.input_outer {
+	padding:10px;
+}
+
+.edit_field {
+	margin: 5px;
+	padding:10px;
+}
+
+.label-fixed-width {
+    display: inline-block;
+    width: 120px; /* 레이블 너비 설정 */
+    margin-right: 10px; /* 인풋과의 간격 조절 */
+    margin_left: 20px;
+}
+
+.edit_input {
+	display: inline-block;
+	width: 250px;
+	height: 25px;
+}
+
+.submit_buttonArea {
+	margin: 20px;
+	text-align: center; /* 버튼을 중앙으로 정렬 */
+}
+
+.edit_submit {
+	width : 200px;
+}
+
+hr.modal_hr {
+    border: 0;
+    height: 1px;
+    background-color: #BDE2CE; /* 색상 변경 */
+    margin-top: 10px; /* 상단 여백 추가 */
+}
+
+/* 닫기 버튼 */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }

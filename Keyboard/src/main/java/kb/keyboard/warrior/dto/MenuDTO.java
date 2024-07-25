@@ -7,21 +7,24 @@ public class MenuDTO {
     private int id;
     private Integer parent_id;
     private String title;
-    private String link;
+    private String titleShare;
+	private String link;
     private String menuType; // 메뉴 유형
     private int menu_order;
     private String userno;
     private int depth;
     private List<MenuDTO> children = new ArrayList<MenuDTO>(); // 자식 메뉴 목록 추가
 
-    // 기본 생성자
+
+	// 기본 생성자
     public MenuDTO() {}
 
     // 매개변수 있는 생성자
-    public MenuDTO(int id, Integer parent_id, String title, String link, String menuType, int menu_order, String userno, int depth) {
+    public MenuDTO(int id, Integer parent_id, String title, String titleShare, String link, String menuType, int menu_order, String userno, int depth) {
         this.id = id;
         this.parent_id = parent_id;
         this.title = title;
+        this.titleShare = titleShare;
         this.link = link;
         this.menuType = menuType;
         this.menu_order = menu_order;
@@ -53,6 +56,14 @@ public class MenuDTO {
     public void setTitle(String title) {
         this.title = title;
     }
+    
+    public String getTitleShare() {
+		return titleShare;
+	}
+
+	public void setTitleShare(String titleShare) {
+		this.titleShare = titleShare;
+	}   
 
     public String getLink() {
         return link;

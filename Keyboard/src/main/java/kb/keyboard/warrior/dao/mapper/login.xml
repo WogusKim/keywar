@@ -37,7 +37,7 @@
 	    ORDER BY depth, menu_order;
 	</select>
 	
-<!-- 새로 추가된 쿼리 -->
+	<!-- 새로 추가된 쿼리 -->
     <update id="updateUserProfilePicture">
         UPDATE `user`
         SET picture = #{picture}

@@ -32,10 +32,20 @@
 .minus-icon {
 	background-image: url('${pageContext.request.contextPath}/resources/images/icons/minus.png');
 }
+
+.edit-icon {
+	background-image: url('${pageContext.request.contextPath}/resources/images/icons/edit.png');
+}
 </style>
 </head>
 
 <body>
+
+<c:if test="${not empty sessionScope.errorMessage}">
+    <script>alert('${sessionScope.errorMessage}');</script>
+    <c:remove var="errorMessage" scope="session"/> <!-- 메시지 표시 후 세션에서 제거 -->
+</c:if>
+
 <%@ include file="/WEB-INF/views/header.jsp" %>
 
 <div class="content_outline">
@@ -51,13 +61,14 @@
 	            <c:forEach var="menu" items="${menus}">
 	                <li>
 	                	<div class="menu_list">
-		                    <div class="icon ${menu.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="folder" onclick="toggleFolder(this)"></div>
+		                    <div class="icon ${menu.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${menu.menuType}" onclick="toggleFolder(this)"></div>
 		                    <!--span onclick="selectFolder(this, ${menu.id})">${menu.title}</span -->
 							<span onclick="selectFolder(this, ${menu.id}, '${menu.menuType}', ${menu.depth}, '${menu.title}')" 
 							      data-id="${menu.id}" 
 							      data-menu-type="${menu.menuType}" 
 							      data-depth="${menu.depth}">
 							    ${menu.title}
+							    <font color="red">(${menu.id})</font>
 							</span>
 	                    </div>
 	                    <c:if test="${not empty menu.children}">
@@ -65,12 +76,13 @@
 	                            <c:forEach var="child1" items="${menu.children}">
 	                                <li>
 	                                	<div class="menu_list">
-		                                    <div class="icon ${child1.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="folder" onclick="toggleFolder(this)"></div>
+		                                    <div class="icon ${child1.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child1.menuType}" onclick="toggleFolder(this)"></div>
 											<span onclick="selectFolder(this, ${child1.id}, '${child1.menuType}', ${child1.depth}, '${child1.title}')" 
 											      data-id="${child1.id}" 
 											      data-menu-type="${child1.menuType}" 
 											      data-depth="${child1.depth}">
 											    ${child1.title}
+											    <font color="red">(${child1.id})</font>
 											</span>
 	                                    </div>
 	                                    <c:if test="${not empty child1.children}">
@@ -78,24 +90,26 @@
 	                                            <c:forEach var="child2" items="${child1.children}">
 	                                                <li>
 	                                                	<div class="menu_list">
-		                                                    <div class="icon ${child2.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="folder" onclick="toggleFolder(this)"></div>
+		                                                    <div class="icon ${child2.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child2.menuType}" onclick="toggleFolder(this)"></div>
 															<span onclick="selectFolder(this, ${child2.id}, '${child2.menuType}', ${child2.depth}, '${child2.title}')" 
 															      data-id="${child2.id}" 
 															      data-menu-type="${child2.menuType}" 
 															      data-depth="${child2.depth}">
 															    ${child2.title}
+															    <font color="red">(${child2.id})</font>
 															</span>
 	                                                    </div>
 	                                                    <c:if test="${not empty child2.children}">
 	                                                        <ul>
 	                                                            <c:forEach var="child3" items="${child2.children}">
 	                                                                <li><div class="menu_list">
-		                                                                    <div class="icon ${child3.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="folder" onclick="toggleFolder(this)"></div>
+		                                                                    <div class="icon ${child3.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child3.menuType}" onclick="toggleFolder(this)"></div>
 																		<span onclick="selectFolder(this, ${child3.id}, '${child3.menuType}', ${child3.depth}, '${child3.title}')" 
 																		      data-id="${child3.id}" 
 																		      data-menu-type="${child3.menuType}" 
 																		      data-depth="${child3.depth}">
 																		    ${child3.title}
+																		    <font color="red">(${child3.id})</font>
 																		</span>
 	                                                                    </div>
 	                                                                    <c:if test="${not empty child3.children}">
@@ -103,12 +117,13 @@
 	                                                                            <c:forEach var="child4" items="${child3.children}">
 	                                                                                <li>
 	                                                                                	<div class="menu_list">
-		                                                                                    <div class="icon ${child4.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="folder" onclick="toggleFolder(this)"></div>
+		                                                                                    <div class="icon ${child4.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child4.menuType}" onclick="toggleFolder(this)"></div>
 																							<span onclick="selectFolder(this, ${child4.id}, '${child4.menuType}', ${child4.depth}, '${child4.title}')" 
 																							      data-id="${child4.id}" 
 																							      data-menu-type="${child4.menuType}" 
 																							      data-depth="${child4.depth}">
 																							    ${child4.title}
+																							    <font color="red">(${child4.id})</font>
 																							</span>
 	                                                                                    </div>
 	                                                                                </li>
@@ -212,45 +227,89 @@
 	</div>
 </div>
 
+<!-- 페이지 수정 모달 팝업 -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>노트(폴더) 수정</h3>
+        
+        <form id="editForm" action="${pageContext.request.contextPath}/editAction" method="post">
+        	<hr class="modal_hr">
+        	<div class="input_outer">
+	            <input type="hidden" id="editId" name="id">
+	            <div class="edit_field">
+	                <label for="editTitle" class="label-fixed-width">노트(폴더)제목:</label>
+	                <input type="text" id="editTitle" name="title" class="edit_input">
+	            </div>
+	            <div class="edit_field">
+	                <label for="editTitle" class="label-fixed-width">공유용 제목:</label>
+	                <input type="text" id="editShareTitle" name="titleShare" class="edit_input">
+	            </div>
+            </div>
+            <hr class="modal_hr">
+            <div class="submit_buttonArea">
+            	<button class="edit_submit" type="submit">확인</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script>
 function toggleFolder(element) {
     var parentLi = element.closest('li');
     var nextUl = parentLi.querySelector('ul');
+    var menuType = element.getAttribute('data-toggle');
 
-    // nextUl이 존재하지 않는 경우, 폴더 아이콘만 토글하고 함수 종료
-    if (!nextUl) {
-        if (element.classList.contains('folder-open')) {
-            element.classList.remove('folder-open');
-            element.classList.add('folder-closed');
-            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder.png")';
-        } else {
-            element.classList.remove('folder-closed');
-            element.classList.add('folder-open');
-            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder_open.png")';
+    // 폴더 타입일 경우에만 토글 동작 수행
+    if (menuType === 'folder') {
+        if (!nextUl) {
+            element.classList.toggle('folder-open');
+            element.classList.toggle('folder-closed');
+            element.style.backgroundImage = element.classList.contains('folder-open') ?
+                'url("${pageContext.request.contextPath}/resources/images/icons/folder_open.png")' :
+                'url("${pageContext.request.contextPath}/resources/images/icons/folder.png")';
+            return;
         }
-        return; // ul 요소가 없으므로 여기서 함수 종료
-    }
 
-    // ul 요소가 존재하는 경우의 기존 로직 실행
-    if (nextUl.style.display === 'none' || !nextUl.style.display) {
-        nextUl.style.display = 'block';
-        element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder_open.png")';
-    } else {
-        nextUl.style.display = 'none';
-        element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder.png")';
+        // ul 요소가 존재하는 경우의 기존 로직 실행
+        if (nextUl.style.display === 'none' || !nextUl.style.display) {
+            nextUl.style.display = 'block';
+            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder_open.png")';
+        } else {
+            nextUl.style.display = 'none';
+            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder.png")';
+        }
     }
 }
 
 
+
 function selectFolder(element, id, menuType, depth, title) {
-    // 모든 타이틀에서 'selected' 클래스 제거
-    document.querySelectorAll('.menu_list span').forEach(span => {
+    // 모든 메뉴에서 'selected' 클래스 및 수정 아이콘 제거
+    const previouslySelected = document.querySelectorAll('.selected');
+    previouslySelected.forEach(span => {
         span.classList.remove('selected');
+        const editIcon = span.parentNode.querySelector('.edit-icon'); // span의 부모 요소에서 수정 아이콘 찾기
+        if (editIcon) {
+            editIcon.remove(); // 수정 아이콘 제거
+        }
     });
 
-    // 클릭된 요소에 'selected' 클래스 추가
+    // 현재 선택된 메뉴에 'selected' 클래스 추가
     element.classList.add('selected');
+    
+    // 수정 아이콘 추가 (중복 생성 방지)
+    if (!element.parentNode.querySelector('.edit-icon')) {
+        const editIcon = document.createElement('img');
+        editIcon.className = 'edit-icon';
+        editIcon.src = "${pageContext.request.contextPath}/resources/images/icons/edit.png";
+        editIcon.style.cssText = "width: 16px; height: 16px; margin-left: 5px; vertical-align: middle; cursor: pointer;";
+        editIcon.onclick = function(event) {
+            showEditModal(id);
+            event.stopPropagation(); // 이벤트 버블링 방지
+        };
+        element.parentNode.appendChild(editIcon);
+    }
 
     // 선택된 폴더의 정보를 전역 변수로 저장
     window.selectedFolder = {
@@ -263,6 +322,7 @@ function selectFolder(element, id, menuType, depth, title) {
     // 선택된 폴더의 정보를 콘솔에 출력 (디버깅 목적)
     console.log("Selected Folder:", window.selectedFolder);
 }
+
 
 function updateAddForm(folder) {
     const displayArea = document.querySelector('.make_new_one');
@@ -328,6 +388,33 @@ function deleteSelectedItem() {
     }
 }
 
+function showEditModal(id) {
+    fetch(`${pageContext.request.contextPath}/editBoardDetails?id=` + id)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('editId').value = data.id;
+            document.getElementById('editTitle').value = data.title;
+            document.getElementById('editShareTitle').value = data.titleShare;
+            document.getElementById('editModal').style.display = 'block';
+        })
+        .catch(error => console.error('Error loading the board details:', error));
+}
+
+// 모달 닫기
+document.querySelector('.close').onclick = function() {
+    document.getElementById('editModal').style.display = 'none';
+};
+
+// 폼 제출
+document.getElementById('editForm').addEventListener('submit', function(event) {
+    var titleInput = document.getElementById('editTitle');
+    if (titleInput.value.trim() === '') {
+        alert('제목은 필수로 입력해야합니다.');
+        titleInput.focus();
+        event.preventDefault();
+    }
+});
+
 
 document.addEventListener('click', function(event) {
     // 클릭된 요소가 menu-tree 내부에 있지만, onclick 이벤트가 있는 요소가 아닐 때만 선택 해제
@@ -338,6 +425,11 @@ document.addEventListener('click', function(event) {
         document.querySelector('.make_new_one').style.display = 'none';
         document.querySelector('.default').style.display = 'block';
         window.selectedFolder = null; // 선택된 폴더 정보 초기화
+        
+        const editIcon = document.querySelector('.edit-icon');
+        if (editIcon) {
+            editIcon.remove();
+        }
     }
 });
 
