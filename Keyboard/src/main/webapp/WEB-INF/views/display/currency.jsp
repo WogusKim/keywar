@@ -236,9 +236,120 @@
         <div class="content_right">
             <div class="board_currency">
                 <div class="board_currency_inner">
+                	
+					<!--  환율 계산기 영역 설정 --><!-- 환율계산기 이름 다는 왼쪽 + 계산기 있는 오른쪽 -->
+					<div style="height: 30%; width: 100%; padding: 10px; display: flex;  justify-content: space-between; align-items: center; margin-top: 10px;"> 
+						<!-- 제목 영역 -->
+						<div style="width: 130px; height: 100%;"><h2 class="card_title">환율계산기</h2></div>
+						<!-- 여기 환율 계산 영역 -->
+						<div style="width: calc(100% - 130px);height: 100%; text-align: center;">
+						<!--  오른쪽 부분 시작 -->
+						<div style="width: 100%; height : 20%; padding: 5px;   display: flex;  justify-content: space-between; align-items: center;">
+							<!-- 환율 기준 선택하는 창 -->
+							<div style="width: 60%; height : 100%;">
+								<input type="radio" id="baseRate-" name="exchangeRate" value="baseRate-" checked>
+								<label for="baseRate-">매매기준율</label>
+								<input type="radio" id="transferSend-" name="exchangeRate" value="transferSend-">
+								<label for="transferSend-">전신환 매도율</label>
+								<input type="radio" id="transferReceive-" name="exchangeRate" value="transferReceive-">
+								<label for="transferReceive-">전신환 매수율</label>
+								<input type="radio" id="cashBuy-" name="exchangeRate" value="cashBuy-">
+								<label for="cashBuy-">현찰 매도율</label>
+								<input type="radio" id="cashSell-" name="exchangeRate" value="cashSell-">
+								<label for="cashSell-">현찰 매수율</label>
+							</div>
+							<!-- 환율우대여부 체크 -->
+							<div style="width: 40%; height : 100%; ">
+								환율 우대 여부<input type="checkbox" name="discount" id="discount" value="discount">
+								<input type="number" placeholder="환율 우대율을 입력하세요." id="discountRate" readonly> %
+							</div>
+							
+						</div>
+						
+							<!-- 얘가 위에 넣을 거 겉 박스  -->
+							<div class="cruuencyCalbox">
+							<!--  회색 테두리 영역  -->
+							<div class="cruuencyCalinnerbox">
+								<!--  통화 선택 영역 -->
+								<div style="width: 25%;  height: 100%; display: flex;  justify-content: space-between; align-items: center; border-right: 1px solid;	border-color: black; ">
+								<!-- 국기 표시되는 칸 -->
+								<div id="first-flag" class="flag flag-usd" style="margin: auto;"></div><!-- 나오는 지 확인용, 미국 국기 나옴  -->
+								<!-- select 창 div로 구현한 영역 -->								
+								<div class="dropdown" onclick="toggleDropdown()" style="margin: auto;"> 
+									<span id="select-result-1-1" onclick="toggleDropdown()">USD</span><br>
+									<span id="select-result-1-2" onclick="toggleDropdown()">미국(달러)</span>
+									<div id="myDropdown" class="dropdown-content" style="margin: auto; overflow-y: auto; height: 200px;">
+        								<c:forEach var="rate" items="${rates}" begin="1">
+        								<!-- 받아온 데이터로 포문 돌려서 넣기 !!  일단 대충 해놈 -->
+        								<div onclick="selectOption('${rate.currencyCode}', '${rate.currencyName}')"> ${rate.currencyName}</div>
+        								</c:forEach>
+									</div>
+								
+								</div>
+								</div>
+
+								
+								<div style="width: 75%;  height: 100%; text-align: right; padding-right: 10px;">
+									<input type="text" class="transparent-input" value="1" style="width: 100%" id="exchange-amount-1"><br>
+									<span id="follow-amount-1">1</span> <span id="select-result-1-3"> 미국(달러)</span> <!-- 왼쪽에서 선택시 같이 바뀌어 버리게 ~~ -->
+								</div>
+							</div>
+							</div>
+							
+							<!-- 여기가 = 넣는 부분 -->
+							<div style="height: 20%; width: 100%; text-align: center;">
+							<span style="font-size: 30px;">=</span>
+							</div>
+							
+							
+							
+							<!-- 결과 확인 창 -->
+							<div class="cruuencyCalbox"> <!-- 얘가 위에 넣을 거 겉에 박스임.  -->
+							
+							<div class="cruuencyCalinnerbox">
+								<div style="width: 25%;  height: 100%; display: flex;  justify-content: space-between; align-items: center; border-right: 1px solid; border-color: black; ">
+								<!-- 국기 변경   -->
+								<div id="second-flag" class="flag flag-krw" style="margin: auto;"></div><!-- 나오는 지 확인용, 첨엔 한국 국기 나옴  -->
+								
+								
+								
+								<div class="dropdown" onclick="toggleDropdown1()" style="margin: auto;" > 
+									<span id="select-result-2-1" onclick="toggleDropdown1()">KRW</span><br>
+									<span id="select-result-2-2" onclick="toggleDropdown1()">대한민국(원)</span>
+									
+								
+									<div id="myDropdown1" class="dropdown-content" style="margin: auto; overflow-y: auto; height: 200px;">
+										<div onclick="selectOption2('KRW', '대한민국(원)')"> 대한민국(원)</div>
+        								<c:forEach var="rate" items="${rates}" begin="1">
+        								<!-- 받아온 데이터로 포문 돌려서 넣기 !!  일단 대충 해놈 -->
+        								<div onclick="selectOption2('${rate.currencyCode}', '${rate.currencyName}')"> ${rate.currencyName}</div>
+        								</c:forEach>
+									</div>
+								
+								
+								</div>	
+								</div>  
+								
+								<div style="width: 75%;  height: 100%; text-align: right; padding-right: 10px;"><!-- background-color: pink;  -->
+									<input type="text" class="transparent-input" value="1" style="width: 100%" id="exchange-amount-2" readonly><br>
+									<span id="follow-amount-2">1</span><span id="select-result-2-3">대한민국(원)</span>
+								</div>
+							</div>
+							</div>
+							
+						
+						</div>
+						
+						
+						 
+					
+					</div> <!-- 환율 계산기 영역 -->
+					
+					<hr>
                     <h2 class="card_title">환율 리스트</h2>
                     <hr>
-                    <div style=" overflow-y: auto; height: 60%;">
+                    <!--  환율리스트 스크롤  -->
+                    <div style=" overflow-y: auto; height: 55%;">
 					<table class="all_currency" summary="환율조회표">
 						<colgroup>
 							<col style="width: 7%;">
@@ -342,116 +453,8 @@
 					    </tbody>
 					</table>
 					</div> 
-					<hr>
+					<!-- 환율리스트 끝  -->
 
-
-
-					
-					<!--  환율 계산기 영역 설정 -->
-					
-					<div style="height: 30%; width: 100%; padding: 10px; display: flex;  justify-content: space-between; align-items: center;"> 
-						<!-- 제목 영역 -->
-						<div style="width: 130px; height: 100%;"><h2 class="card_title">환율계산기</h2></div>
-						
-						<!-- 여기 환율 계산 영역 -->
-						<div style="width: calc(100% - 130px);height: 100%; text-align: center;">
-							<!--  오른쪽 부분 시작 -->
-						<div style="width: 100%; height : 15%; padding: 5px;">
-							<input type="radio" id="baseRate-" name="exchangeRate" value="baseRate-">
-							<label for="baseRate-">매매기준율</label>
-							<input type="radio" id="transferSend-" name="exchangeRate" value="transferSend-">
-							<label for="transferSend-">전신환 매도율</label>
-							<input type="radio" id="transferReceive-" name="exchangeRate" value="transferReceive-">
-							<label for="transferReceive-">전신환 매수율</label>
-							<input type="radio" id="cashBuy-" name="exchangeRate" value="cashBuy-">
-							<label for="cashBuy-">현찰 매도율</label>
-							<input type="radio" id="cashSell-" name="exchangeRate" value="cashSell-">
-							<label for="cashSell-">현찰 매수율</label>
-						</div>
-						
-							<!-- 얘가 위에 넣을 거 겉 박스  -->
-							<div class="cruuencyCalbox">
-							<!--  회색 테두리 영역  -->
-							<div class="cruuencyCalinnerbox">
-								<!--  통화 선택 영역 -->
-								<div style="width: 25%;  height: 100%; display: flex;  justify-content: space-between; align-items: center; border-right: 1px solid;	border-color: black; ">
-								<!-- 국기 표시되는 칸 -->
-								<div id="first-flag" class="flag flag-usd" style="margin: auto;"></div><!-- 나오는 지 확인용, 미국 국기 나옴  -->
-								<!-- select 창 div로 구현한 영역 -->								
-								<div class="dropdown" onclick="toggleDropdown()" style="margin: auto;"> 
-									<span id="select-result-1-1" onclick="toggleDropdown()">USD</span><br>
-									<span id="select-result-1-2" onclick="toggleDropdown()">미국(달러)</span>
-									<div id="myDropdown" class="dropdown-content" style="margin: auto; overflow-y: auto; height: 200px;">
-        								<c:forEach var="rate" items="${rates}" begin="1">
-        								<!-- 받아온 데이터로 포문 돌려서 넣기 !!  일단 대충 해놈 -->
-        								<div onclick="selectOption('${rate.currencyCode}', '${rate.currencyName}')"> ${rate.currencyName}</div>
-        								</c:forEach>
-									</div>
-								
-								</div>
-								</div>
-
-								
-								<div style="width: 75%;  height: 100%; text-align: right; padding-right: 10px;">
-									<input type="text" class="transparent-input" value="1" style="width: 100%" id="exchange-amount-1"><br>
-									<span id="follow-amount-1">1</span> <span id="select-result-1-3"> 미국(달러)</span> <!-- 왼쪽에서 선택시 같이 바뀌어 버리게 ~~ -->
-								</div>
-							</div>
-							</div>
-							
-							<!-- 여기가 = 넣는 부분 -->
-							<div style="height: 20%; width: 100%; text-align: center;">
-							<span style="font-size: 30px;">=</span>
-							</div>
-							
-							
-							
-							<!-- 결과 확인 창 -->
-							<div class="cruuencyCalbox"> <!-- 얘가 위에 넣을 거 겉에 박스임.  -->
-							
-							<div class="cruuencyCalinnerbox">
-								<div style="width: 25%;  height: 100%; display: flex;  justify-content: space-between; align-items: center; border-right: 1px solid; border-color: black; ">
-								<!-- 국기 변경   -->
-								<div id="second-flag" class="flag flag-krw" style="margin: auto;"></div><!-- 나오는 지 확인용, 첨엔 한국 국기 나옴  -->
-								
-								
-								
-								<div class="dropdown" onclick="toggleDropdown1()" style="margin: auto;" > 
-									<span id="select-result-2-1" onclick="toggleDropdown1()">KRW</span><br>
-									<span id="select-result-2-2" onclick="toggleDropdown1()">대한민국(원)</span>
-									
-								
-									<div id="myDropdown1" class="dropdown-content" style="margin: auto; overflow-y: auto; height: 200px;">
-        								<c:forEach var="rate" items="${rates}" begin="1">
-        								<!-- 받아온 데이터로 포문 돌려서 넣기 !!  일단 대충 해놈 -->
-        								<div onclick="selectOption2('${rate.currencyCode}', '${rate.currencyName}')"> ${rate.currencyName}</div>
-        								</c:forEach>
-									</div>
-								
-								
-								</div>	
-								</div>  
-								
-								<div style="width: 75%;  height: 100%; text-align: right; padding-right: 10px;"><!-- background-color: pink;  -->
-									<input type="text" class="transparent-input" value="1" style="width: 100%" id="exchange-amount-2" readonly><br>
-									<span id="follow-amount-2">1</span><span id="select-result-2-3">대한민국(원)</span>
-								</div>
-							</div>
-							</div>
-							
-						
-						</div>
-						
-						
-						 
-					
-					</div> <!-- 환율 계산기 영역 -->
-					
-					
-					
-					
-					
-					
 					
                 </div>
             </div>
@@ -459,13 +462,159 @@
     </div>
 
     <script>
+	// 환전 금액 계산하는 메소드 
+	function calExchangeAmount(){
+
+		var num1  = $("#exchange-amount-1").val(); //환전 금액 입력되어 있는 거(100 (달러)) 
+		var current1  = $("#select-result-1-1").text(); //환전 대상 통화 (ex : 미국 달러 USD)
+		var current2  = $("#select-result-2-1").text(); // 환전 원하는 통화  (ex : 대한민국 원 KRW)
+		var discountRate = 1;
+		var exchangeRate = $('input[name="exchangeRate"]:checked').val();  //체크된 환율 기준
+		
+		var baseRate = $("#baseRate-"+current1).text();  //첫번째 통화의 매매기준율
+		baseRate = keepNumbersAndDots(baseRate);  // 데이터 전처리 (숫자랑 . 빼고 제거)
+		var finalRate = baseRate;
+		//매매기준율을 선택했을 시 우대 적용 필요 X 또는 환산 할 필요 X 
+		if(exchangeRate != 'baseRate-'){
+			
+			// 원화가 아니라면  현찰일 때, 전신환일 때만 구분해서 ㅇㅇ매수율 적용해서 원화로 환산함. 
+			if(current2!='KRW'){
+				if(exchangeRate == 'transferSend-' || exchangeRate == 'transferReceive-'){
+					exchangeRate = 'transferReceive-';
+				}else{
+					exchangeRate = 'cashSell-';
+				}
+			}
+			console.log("원화로 환산할 때의 환율 exchangeRate : " + exchangeRate);
+			
+			//  모든 경우의 환율 변환(원화든 외국돈이든)
+			var chooseRateNum1 = $("#"+ exchangeRate + current1).text();  //첫번째 통화의 선택한 환율
+			chooseRateNum1 = keepNumbersAndDots(chooseRateNum1);  // 데이터 전처리 
+			finalRate = chooseRateNum1;
+			
+			//환율 우대 여부 체크 환율 우대시 적용할 환율 계산함. 
+			if($('#discount').is(':checked') && ($('#discountRate').val()!="")){
+				discountRate = $('#discountRate').val()/100;  //환율 우대율 곱할 거 / 없으면 그냥 그대로 나갑니다.
+				discountRate = 1 - discountRate;
+				var tempnum1 = (Math.round(((chooseRateNum1 - baseRate) * discountRate )*100) / 100);
+				finalRate =  Number(tempnum1) + Number(baseRate);
+				finalRate =  (Math.round((finalRate)*100) /100);
+			}
+		}
+ 
+		//선택된 환율 적용(+ 환율우대 적용)해서 환산금액 계산. 		
+		var KRWConvertedAmount = num1 * finalRate;
+		console.log("KRWConvertedAmount : " + KRWConvertedAmount);
+		// 원화로 환산 시 추가계산 필요 없이 데이터 넣어주고 끝
+		if(current2 == 'KRW'){
+			KRWConvertedAmount = KRWConvertedAmount.toFixed(2);
+			KRWConvertedAmount = formatNumberWithCommasAndDecimal(KRWConvertedAmount);
+			$("#exchange-amount-2").val(KRWConvertedAmount);
+			$("span#follow-amount-2").html(KRWConvertedAmount+" ");
+			return;
+		}else{
+			// 만약 원화로 환산하지 않고 다른 언어로 환산한다면 ?
+			if(exchangeRate == 'transferReceive-'){
+				exchangeRate = 'transferSend-';
+			}else if(exchangeRate == 'cashSell-'){
+				exchangeRate = 'cashBuy-';
+			}
+			console.log("원화를 다른 통화로 재환전 할 때의 환율 exchangeRate : " + exchangeRate);
+			
+			
+			var chooseRateNum2 = $("#"+ exchangeRate + current2).text();  //두 번째 통화의 선택한 환율
+			chooseRateNum2 = keepNumbersAndDots(chooseRateNum2);  // 데이터 전처리 
+			finalRate = chooseRateNum2;
+			
+			
+			//환율 우대 여부 체크 환율 우대시 적용할 환율 계산함. 
+			if(exchangeRate!=('baseRate-')||$('#discount').is(':checked') && ($('#discountRate').val()!="")){
+				discountRate = $('#discountRate').val()/100;  //환율 우대율 곱할 거 / 없으면 그냥 그대로 나갑니다.
+				discountRate = 1 - discountRate;
+				baseRate = $("#baseRate-"+current2).text();  //두 번째 통화의 매매기준율
+				baseRate = keepNumbersAndDots(baseRate); 
+				
+				var tempnum2 = (Math.round(((chooseRateNum2 - baseRate) * discountRate )*100) / 100);
+				finalRate =  Number(tempnum2) + Number(baseRate);
+				finalRate =  (Math.round((finalRate)*100) /100);
+				console.log("재환전 환율 : " + finalRate);
+			}
+			
+			var finalAmount = KRWConvertedAmount.toFixed(2) / finalRate;
+			finalAmount = finalAmount.toFixed(2);
+			
+			$("#exchange-amount-2").val(finalAmount);
+			$("span#follow-amount-2").html(finalAmount+" ");
+			return;
+			
+		}
+		
+	} 
+	//환율우대율 변경시 실행 환율 계산됨.
+	$("#discountRate").on('input', function() {
+	    calExchangeAmount();
+	});
     
+    // 환율 선택하거나, 값 변경시 자동 실행. 	
+    $(document).ready(function() {
+        // 라디오 버튼 변경 시 calExchangeAmount 실행
+        $("input[name='exchangeRate']").change(function() {
+            calExchangeAmount();
+        });
+
+        // span 태그의 값 변경 시 calExchangeAmount 실행
+        const targetNode = document.getElementById('select-result-2-3');
+        const observerConfig = { childList: true, characterData: true, subtree: true };
+
+        const observerCallback = function(mutationsList, observer) {
+            for (let mutation of mutationsList) {
+                if (mutation.type === 'characterData' || mutation.type === 'childList') {
+                    calExchangeAmount();
+                    break;
+                }
+            }
+        };
+
+        const observer = new MutationObserver(observerCallback);
+        observer.observe(targetNode, observerConfig);
+    });
+    
+    
+    
+    	// 첫 로딩시 미국 매매기준율 세팅해놓기.
 	    $(document).ready(function() {
-	        var sourceValue = $('#cashBuy-USD').text();
+	        var sourceValue = $('#baseRate-USD').text();
 	        sourceValue = keepNumbersAndDots(sourceValue);
 	        $('#follow-amount-2').text(sourceValue);
-	        $('#exchange-amount-2').val(sourceValue);
+	        $('#exchange-amount-2').val(sourceValue + " " );
 	    });
+	    
+	    //환율 우대율 0~100까지만 입력가능!
+	    document.getElementById('discountRate').addEventListener('input', function() {
+            var value = parseInt(this.value);
+            if (value < 0) {
+                this.value = 0;
+            } else if (value > 100) {
+                this.value = 100;
+            }
+        });
+	    
+	    
+	    
+	    // 환율 우대 적용여부에 따라 환율 우대율 입력창 활성화/비활성화
+	    $(document).ready(function() {
+	        $('#discount').change(function() {
+	            if (this.checked) {
+	                $('#discountRate').prop('readonly', false);
+	                calExchangeAmount();
+	            } else {
+	                $('#discountRate').prop('readonly', true).val('');
+	                calExchangeAmount();
+	            }
+	        });
+	    });   
+	    
+	    
 	    
 	    document.getElementById('exchange-amount-1').addEventListener('input', function(event) {
 	        var inputValue = event.target.value;
@@ -481,30 +630,7 @@
 	        
 	    });
 
-    	// 환전 금액 계산하는 메소드 (일단은 금액 입력시 변경되도록 설정함.)
-    	function calExchangeAmount(){
-    		//여기에 환율 계산하는 거 넣기 ! 
-    		var num1  = $("#exchange-amount-1").val();
-    		var current1  = $("#select-result-1-1").text();
-    		var current2  = $("#select-result-2-1").text();
-    		var selectedOption = 
-    		
-    		if(current2 == 'KRW'){
-    			var baseRate = $("#baseRate-"+current1).text();
-    			baseRate = keepNumbersAndDots(baseRate);
-    			var exchangeRate = $("#cashBuy-"+current1).text();
-    			exchangeRate = keepNumbersAndDots(exchangeRate);
-    			//alert(exchangeRate +" baseRate : " + exchangeRate );
-    			//일단 현찰 매도율임.
-    			num1=keepNumbersAndDots(num1);
-    			var calAmount = num1*exchangeRate;
-    			calAmount = calAmount.toFixed(2);
-    			formatNumberWithCommasAndDecimal(calAmount);
-    			$("#exchange-amount-2").val(calAmount);
-    			$("span#follow-amount-2").html(calAmount+" ");
-    		}	
-    		
-    	} 
+
     	
     	//숫자랑 0 빼고 제거하는 함수
     	function keepNumbersAndDots(input) {
@@ -542,9 +668,8 @@
         function toggleDropdown1() {
             document.getElementById("myDropdown1").classList.toggle("show");
         }
-
+		// 첫 번째 꺼 옵션 선택시 실행되는 메소드
         function selectOption(code, name) {
-            
             $("span#select-result-1-1").html(code);
             $("span#select-result-1-2").html(name);
             $("span#select-result-1-3").html(name);
@@ -559,9 +684,8 @@
             document.getElementById("myDropdown").classList.remove("show");
         }
         
-        
+    	 // 두 번째 꺼 옵션 선택시 실행되는 메소드
         function selectOption2(code, name) {
-            
             $("span#select-result-2-1").html(code);
             $("span#select-result-2-2").html(name);
             $("span#select-result-2-3").html(name);
@@ -589,19 +713,6 @@
         }
     </script>
 
-
-<!-- 	<script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Reference div의 너비를 가져옴
-            var referenceDiv = document.querySelector('.thisIsReference');
-            var referenceWidth = referenceDiv.clientWidth;
-
-            // Target div에 reference div의 너비를 적용
-            var targetDiv = document.querySelector('.thisIsTarget');
-            targetDiv.style.width = referenceWidth + 'px';
-        });
-    </script>
- -->
 
 
     
