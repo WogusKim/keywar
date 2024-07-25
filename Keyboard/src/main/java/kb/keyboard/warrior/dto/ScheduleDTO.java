@@ -10,12 +10,13 @@ public class ScheduleDTO {
  private String startDate;      // 
  private String endDate;        // 
  private String shareto;      // share to who(personal, team, branch/dept)
+ private String sharecolor;
  private String status;       // 
 
  public ScheduleDTO() {
  }
 
- public ScheduleDTO(String scheduleid, String userno, String title, String content, String startDate, String endDate, String shareto, String status) {
+ public ScheduleDTO(String scheduleid, String userno, String title, String content, String startDate, String endDate, String shareto, String sharecolor, String status) {
      this.scheduleid = scheduleid;
      this.userno = userno;
      this.title = title;
@@ -23,6 +24,7 @@ public class ScheduleDTO {
      this.startDate = startDate;
      this.endDate = endDate;
      this.shareto = shareto;
+     this.sharecolor = sharecolor;
      this.status = status;
  }
 
@@ -90,4 +92,13 @@ public class ScheduleDTO {
  public void setStatus(String status) {
      this.status = status;
  }
+ 
+ public String getSharecolor() {
+	return sharecolor;
+}
+
+public void setSharecolor(String sharecolor) {
+	this.sharecolor = sharecolor;
+}
+
 }

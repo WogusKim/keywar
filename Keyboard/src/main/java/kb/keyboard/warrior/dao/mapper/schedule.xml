@@ -10,7 +10,7 @@
     </insert>
     
 	<select id="scheduleLoad" parameterType="string" resultType="kb.keyboard.warrior.dto.ScheduleDTO">
-        SELECT * FROM schedule WHERE userno = #{userno}
+        select a.*, b.sharecolor from schedule a left join scheduleshare b on a.userno = b.userno and a.shareto = b.shareto where a.userno = #{userno}
     </select>
 
     <update id="scheduleEdit" parameterType="kb.keyboard.warrior.dto.ScheduleDTO">
