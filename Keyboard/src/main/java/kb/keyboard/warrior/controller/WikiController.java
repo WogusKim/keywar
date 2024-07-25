@@ -3,23 +3,35 @@ package kb.keyboard.warrior.controller;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kb.keyboard.warrior.dao.LoginDao;
 import kb.keyboard.warrior.dao.ScheduleDao;
 import kb.keyboard.warrior.dao.WikiDao;
 import kb.keyboard.warrior.dto.MenuDTO;
+import kb.keyboard.warrior.dto.ScheduleDTO;
 
 @Controller
 public class WikiController {
@@ -28,8 +40,20 @@ public class WikiController {
 	public SqlSession sqlSession;
 	
 	@RequestMapping("/menuSetting")
-	public String menuSetting(Model model) {
-		//메뉴설정페이지 이동
+	public String menuSetting(Model model, HttpSession session) {
+		
+		String userno = (String) session.getAttribute("userno");
+		
+        // 메뉴데이터를 세션과 모델에 전부 담아줌.
+        List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
+        LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
+
+        menus = loginDao.getMenus(userno);
+        setMenuDepth(menus);
+        List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
+        session.setAttribute("menus", topLevelMenus);
+        model.addAttribute("menus", topLevelMenus);
+		
 		return "wiki/menuSetting";
 	}
 	
@@ -49,13 +73,13 @@ public class WikiController {
 		String title = request.getParameter("title");
 		String sharedTitle = request.getParameter("sharedTitle");
 		
-		System.out.println("기준 id: " + selectedId);
-		System.out.println("기준 type: " + selectedType);
-		System.out.println("기준 depth: " + selectedDepth);
-		
-		System.out.println("추가할 Type: " + menuType);
-		System.out.println("추가할 Title: " + title);
-		System.out.println("추가할 공유title: " + sharedTitle);
+//		System.out.println("기준 id: " + selectedId);
+//		System.out.println("기준 type: " + selectedType);
+//		System.out.println("기준 depth: " + selectedDepth);
+//		
+//		System.out.println("추가할 Type: " + menuType);
+//		System.out.println("추가할 Title: " + title);
+//		System.out.println("추가할 공유title: " + sharedTitle);
 		
         // 현재 날짜와 시간을 'yyyyMMdd_HHmmss' 형식으로 포맷
         LocalDateTime now = LocalDateTime.now();
@@ -102,30 +126,31 @@ public class WikiController {
 				max_order = dao.getMaxOrderOfFather(parentId);
 				max_order++;
 				
-				//아이템추가
-				System.out.println("중간 아이템을 추가합니다.");
+				System.out.println("중간 아이템(폴더)을 추가합니다. - 추가뎁스 미생성");
 				//dao.insertMenuHaveParentsItem(#기존부모의id, #타이틀, #공유타이틀, #링크, #메뉴타입, #유저넘버)
 				dao.insertMenuHaveParentsItem(parentId, title, sharedTitle, link, menuType, max_order, userno);
 			} else {
 				//폴더추가
 				
+				//부모가 존재하는데, depth가 4인경우 리젝이 필요. (0이 첫번재임, 즉 5뎁스까지 보여줄 수 있음)
+				int selectedDepthInt = Integer.parseInt(selectedDepth); 
+				if (selectedDepthInt >= 4 ) {
+					
+		        session.setAttribute("errorMessage", "폴더 및 아이템을 추가할 수 없습니다. 최대 허용 뎁스를 초과하였습니다.");
+		        
+		        return "redirect:menuSetting";
+					
+				}
+				
+				//형제의 순서를 알아야함.
 				max_order = dao.getMaxOrderOfFather(selectedId);
 				max_order++;
 				
-				System.out.println("중간 폴더를 추가합니다.");
+				System.out.println("중간 아이템(폴더)를 추가합니다. - 추가뎁스 생성");
 				dao.insertMenuHaveParentsFolder(selectedId, title, sharedTitle, menuType, max_order, userno);
 			}
 		}
 		
-        // 메뉴데이터를 세션과 모델에 전부 담아줌.
-        List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
-        LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
-
-        menus = loginDao.getMenus(userno);
-        setMenuDepth(menus);
-        List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
-        session.setAttribute("menus", topLevelMenus);
-        model.addAttribute("menus", topLevelMenus);
 
 		return "redirect:menuSetting";
 	}
@@ -135,25 +160,147 @@ public class WikiController {
 	@RequestMapping("/deleteMenu")
 	public String deleteMenu(Model model, HttpServletRequest request, HttpSession session) {
 		
+		//세션체크
+        String userno = (String) session.getAttribute("userno");
+		
+		
 		//기준데이터
 		String selectedId = request.getParameter("id");
 		String selectedType = request.getParameter("type");
 		String selectedDepth = request.getParameter("depth");
 		
-		System.out.println("기준 id: " + selectedId);
-		System.out.println("기준 type: " + selectedType);
-		System.out.println("기준 depth: " + selectedDepth);
+		System.out.println("삭제대상 id: " + selectedId);
+		System.out.println("삭제대상 type: " + selectedType);
+		System.out.println("삭제대상 depth: " + selectedDepth);
+		
+		WikiDao dao = sqlSession.getMapper(WikiDao.class);
 		
 		//삭제하려는 대상이 아이템인 경우
-		
-		//삭제하려는 대상이 폴더인 경우
-		
-		
+		if (selectedType.equals("item")) {
+			dao.deleteItem(selectedId, userno);
+		} else {
+			
+			//삭제하려는 대상이 폴더인 경우
+			
+			Set<Integer> allIdsToDelete = new HashSet<Integer>();
+	        collectAllIdsToDelete(Integer.parseInt(selectedId), allIdsToDelete, dao);			
+			
+	        //현재까지는 삭제할 모든 데이터를 잘 가져오지만,
+	        //FK 조건을 만족하며 삭제하려면 depth 를 분기하여 삭제처리진행해야함.
+	        Map<Integer, Integer> depthMap = new HashMap<Integer, Integer>();
+	        for (Integer id : allIdsToDelete) {
+	        	
+	            int depth = 0;
+	            Integer parentId = dao.getParentid(String.valueOf(id));
+	            
+	            while (parentId != null) {
+	                Integer parentIdNext = dao.getParentid(String.valueOf(parentId));
+	                if (parentIdNext == null) break;
+	                depth++;
+	                parentId = parentIdNext;
+	            }
+	            depthMap.put(id, depth);
+	            System.out.println("삭제대상)) 메뉴id : " + id + " depth : " + depth);
+	        }
+	        
+	        //depth 별로 분류한 데이터를 depth 기준 역순으로 정렬하여 순차적으로 삭제처리함.
+	        // depthMap을 값에 따라 내림차순 정렬
+	        List<Map.Entry<Integer, Integer>> list = new ArrayList<Map.Entry<Integer, Integer>>(depthMap.entrySet());
+
+	        // Comparator를 사용한 정렬
+	        Collections.sort(list, new Comparator<Map.Entry<Integer, Integer>>() {
+	            public int compare(Map.Entry<Integer, Integer> o1, Map.Entry<Integer, Integer> o2) {
+	                return o2.getValue().compareTo(o1.getValue());
+	            }
+	        });
+	        
+	        //삭제처리
+	        for (Map.Entry<Integer, Integer> entry : list) {
+	            // 해당 ID를 데이터베이스에서 삭제
+	            dao.deleteItem(entry.getKey().toString(), userno);
+	            System.out.println("Deleted ID: " + entry.getKey() + " with depth: " + entry.getValue());
+	        }
+	        
+	        dao.deleteItem(selectedId, userno);
+			
+		}
 		
 		
 		return "redirect:menuSetting";
 	}
 	
+	
+	@RequestMapping(value = "/editBoardDetails", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public ResponseEntity<String> editModalMake(@RequestParam("id") int id) {
+
+	    try {
+	        WikiDao dao = sqlSession.getMapper(WikiDao.class);
+	        MenuDTO dto = dao.getMenuDetail(id);
+	        
+	        if (dto.getTitleShare() == null) {
+	        	dto.setTitleShare("");
+	        }
+	        
+	        System.out.println("id: " + dto.getId());
+	        System.out.println("title: " + dto.getTitle());
+	        System.out.println("titleShare: " + dto.getTitleShare());
+	        System.out.println("type: " + dto.getMenuType());
+
+	        if (dto.getTitleShare() == null) {
+	        	dto.setTitleShare("");
+	        }
+	        
+	        if (dto != null) {
+	            ObjectMapper mapper = new ObjectMapper();
+	            String jsonResult = mapper.writeValueAsString(dto); // 객체를 JSON 문자열로 변환
+	            
+	            return new ResponseEntity<String>(jsonResult, HttpStatus.OK);
+	        } else {	
+	        	
+	            return new ResponseEntity<String>("{}", HttpStatus.NOT_FOUND);
+	            
+	        }
+	    } catch (Exception e) {
+	        return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+	
+	@RequestMapping("/editAction")
+	public String editAction(HttpServletRequest request) {
+		
+		String id = request.getParameter("id");
+		String title = request.getParameter("title");
+		String titleShare = request.getParameter("titleShare");
+		
+		System.out.println("======== 수정 액션 컨트롤러 진입 ========");
+		System.out.println(id);
+		System.out.println(title);
+		System.out.println(titleShare);
+		System.out.println("======== 수정 액션 컨트롤러 진입 ========");
+		
+		WikiDao dao = sqlSession.getMapper(WikiDao.class);
+		
+		if (titleShare.length() == 0) {
+			System.out.println("공유용 제목은 없음. null 로 처리합니다.");
+			dao.changeMenuNoShare(title, id);
+		} else {
+			System.out.println("공유용 제목 존재함.");
+			dao.changeMenuYesShare(title,titleShare, id);
+		}
+		
+		return "redirect:menuSetting";
+	}
+
+
+	
+	private void collectAllIdsToDelete(Integer parentId, Set<Integer> allIdsToDelete, WikiDao dao) {
+	    List<Integer> childIds = dao.getChildIds(parentId);
+	    for (Integer childId : childIds) {
+	        allIdsToDelete.add(childId);
+	        collectAllIdsToDelete(childId, allIdsToDelete, dao);
+	    }
+	}	
 	
     public void setMenuDepth(List<MenuDTO> menus) {
         // 메뉴 ID와 메뉴 객체를 매핑하는 Map을 생성
@@ -200,10 +347,10 @@ public class WikiController {
         }
 
         // 로깅을 추가하여 각 최상위 메뉴와 해당 하위 메뉴들을 출력
-        for (MenuDTO menu : topLevelMenus) {
-            System.out.println("Menu: " + menu.getTitle() + " (ID: " + menu.getId() + ")");
-            printChildren(menu, "  ");  // 재귀적으로 하위 메뉴들을 출력
-        }
+//        for (MenuDTO menu : topLevelMenus) {
+//            System.out.println("Menu: " + menu.getTitle() + " (ID: " + menu.getId() + ")");
+//            printChildren(menu, "  ");  // 재귀적으로 하위 메뉴들을 출력
+//        }
 
         return topLevelMenus;
     }

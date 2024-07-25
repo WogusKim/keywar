@@ -81,7 +81,7 @@
             <c:forEach var="menu" items="${menus}">
                 <li>
                 	<div class="menu_list">
-	                    <div class="icon ${menu.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="folder" onclick="toggleFolder(this)"></div>
+	                    <div class="icon ${menu.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${menu.menuType}" onclick="toggleFolder(this)"></div>
 	                    <span>${menu.title}</span>
                     </div>
                     <c:if test="${not empty menu.children}">
@@ -89,7 +89,7 @@
                             <c:forEach var="child1" items="${menu.children}">
                                 <li>
                                 	<div class="menu_list">
-	                                    <div class="icon ${child1.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="folder" onclick="toggleFolder(this)"></div>
+	                                    <div class="icon ${child1.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child1.menuType}" onclick="toggleFolder(this)"></div>
 	                                    <div>${child1.title}</div>
                                     </div>
                                     <c:if test="${not empty child1.children}">
@@ -97,14 +97,14 @@
                                             <c:forEach var="child2" items="${child1.children}">
                                                 <li>
                                                 	<div class="menu_list">
-	                                                    <div class="icon ${child2.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="folder" onclick="toggleFolder(this)"></div>
+	                                                    <div class="icon ${child2.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child2.menuType}" onclick="toggleFolder(this)"></div>
 	                                                    <span>${child2.title}</span>
                                                     </div>
                                                     <c:if test="${not empty child2.children}">
                                                         <ul>
                                                             <c:forEach var="child3" items="${child2.children}">
                                                                 <li><div class="menu_list">
-	                                                                    <div class="icon ${child3.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="folder" onclick="toggleFolder(this)"></div>
+	                                                                    <div class="icon ${child3.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child3.menuType}" onclick="toggleFolder(this)"></div>
 	                                                                    <span>${child3.title}</span>
                                                                     </div>
                                                                     <c:if test="${not empty child3.children}">
@@ -112,7 +112,7 @@
                                                                             <c:forEach var="child4" items="${child3.children}">
                                                                                 <li>
                                                                                 	<div class="menu_list">
-	                                                                                    <div class="icon ${child4.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="folder" onclick="toggleFolder(this)"></div>
+	                                                                                    <div class="icon ${child4.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child4.menuType}" onclick="toggleFolder(this)"></div>
 	                                                                                    <span>${child4.title}</span>
                                                                                     </div>
                                                                                 </li>
@@ -142,18 +142,33 @@
 </div>
 <script>
 function toggleFolder(element) {
-    // 가장 가까운 상위 li 요소를 찾아서 그 내부에서 첫 번째 ul을 선택
     var parentLi = element.closest('li'); // 가장 가까운 li 요소를 찾음
     var nextUl = parentLi.querySelector('ul'); // 해당 li 내부의 첫 번째 ul을 찾음
+    var menuType = element.getAttribute('data-toggle'); // 메뉴 타입을 읽어옴
 
-    if (nextUl.style.display === 'none' || !nextUl.style.display) {
-        nextUl.style.display = 'block';
-        element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder_open.png")';
-    } else {
-        nextUl.style.display = 'none';
-        element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder.png")';
+    // 폴더 타입일 때만 토글 동작 수행
+    if (menuType === 'folder') {
+        // nextUl이 존재하지 않는 경우, 폴더 아이콘만 토글하고 함수 종료
+        if (!nextUl) {
+            element.classList.toggle('folder-open');
+            element.classList.toggle('folder-closed');
+            element.style.backgroundImage = element.classList.contains('folder-open') ?
+                'url("${pageContext.request.contextPath}/resources/images/icons/folder_open.png")' :
+                'url("${pageContext.request.contextPath}/resources/images/icons/folder.png")';
+            return; // ul 요소가 없으므로 여기서 함수 종료
+        }
+
+        // ul 요소가 존재하는 경우의 기존 로직 실행
+        if (nextUl.style.display === 'none' || !nextUl.style.display) {
+            nextUl.style.display = 'block';
+            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder_open.png")';
+        } else {
+            nextUl.style.display = 'none';
+            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder.png")';
+        }
     }
 }
+
 </script>
 </body>
 </html>  

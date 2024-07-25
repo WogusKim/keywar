@@ -46,8 +46,7 @@ public class HomeController {
 
         // 이후 로그인 여부 체크 필요
 
-
-        // 세션에서 메뉴 데이터를 확인 (확인후 없으면 세션 넣기)!!!
+        // 세션에서 메뉴 데이터를 확인 (확인후 없으면 세션 설정)!!!
 
 
         List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
@@ -79,15 +78,16 @@ public class HomeController {
                 break;
             case 1:
 
-                // 즐겨찾기가 하나인 경우
+                // 즐겨찾기 하나인 경우
                 favoriteCurrency1 = favorites.get(0).getCurrency();
                 break;
             case 2:
-                // 즐겨찾기가 두 개인 경우
+                // 즐겨찾기 두 개인 경우
                 favoriteCurrency1 = favorites.get(0).getCurrency();
                 favoriteCurrency2 = favorites.get(1).getCurrency();
                 break;
             case 3:
+
 
                 // 즐겨찾기가 세 개인 경우
                 favoriteCurrency1 = favorites.get(0).getCurrency();
