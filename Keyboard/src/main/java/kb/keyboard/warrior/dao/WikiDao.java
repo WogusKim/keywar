@@ -1,9 +1,13 @@
 package kb.keyboard.warrior.dao;
 
+import java.util.List;
+
+import kb.keyboard.warrior.dto.MenuDTO;
+
 public interface WikiDao {
 	
 	//부모 id 찾기
-	int getParentid(String selectedId);
+	Integer getParentid(String selectedId);
 	
 	//order 계산하기
 	int getMaxOrderOfFather(String selectedId);
@@ -18,7 +22,19 @@ public interface WikiDao {
 	//중간 폴더 추가
 	void insertMenuHaveParentsFolder(String selectedId, String title, String sharedTitle, String menuType, int max_order, String userno);
 	
+	//삭제 - item
+	void deleteItem(String selectedId, String userno);
 	
+	//삭제 - folder
+    List<Integer> getChildIds(Integer parentId);
+    void deleteFolder(String folderId, String userno);
+    
+    //메뉴데이터상세
+	MenuDTO getMenuDetail(int id);
+
+	//쉐어타이틀 유무에 따라 분기하여 update
+	void changeMenuNoShare(String title, String id);
+	void changeMenuYesShare(String title, String titleShare, String id);
 	
 	
 
