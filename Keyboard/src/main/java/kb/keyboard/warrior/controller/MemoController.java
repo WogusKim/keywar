@@ -162,14 +162,14 @@ public class MemoController {
 
         String todoId = todoListDto.getTodoid();
         String isDone = todoListDto.getIsdone();
-        // 체크박스 상태 출력
+        // 체크박스 상태출력
         System.out.println(todoId);
         System.out.println(isDone);
 
         ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
 
         if (isDone.equals("1")) {
-            // 할 일 완료 처리
+            // 할일 완료처리
             todoDao.checkTodo(todoId);
         } else {
             todoDao.unCheckTodo(todoId);
@@ -260,7 +260,7 @@ public class MemoController {
         System.out.println("mymemoWrite()");
 
         String userno = (String) session.getAttribute("userno");
-        System.out.println("마이메모 작성: 유저 번호: " + userno);
+        System.out.println("마이메모 작성: " + userno);
         model.addAttribute("request", request);
         model.addAttribute("userno", userno);
         if (userno != null) {
