@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kb.keyboard.warrior.dao.ExchangeRateDao">
+
+  	<!-- 환율 크롤링 + 업데이트 문장 -->
+	 	<update id="updateExchangeRate"  parameterType="kb.keyboard.warrior.dto.ExchangeRateDTO"> 
+		UPDATE ExchangeRate SET 
+	    standardRate = #{standardRate}, 
+	    transferSend = #{transferSend}, 
+	    transferReceive = #{transferReceive},
+	    cashBuy = #{cashBuy}, 
+	    cashSell = #{cashSell}, 
+	    usdRate = #{usdRate}, 
+	    rateChangeLink = #{rateChangeLink}, 
+	    isFavorite = #{isFavorite}
+	    where currencyCode = #{currencyCode};
+	</update>  
+	<select id="getAllExchangeRate"  resultType="kb.keyboard.warrior.dto.ExchangeRateDTO">
+		select * from ExchangeRate order by currencyNo;
+	</select>
+
+	<!-- 환율 최초 크롤링 문장 -->
+<!--  <insert id="updateExchangeRate"  parameterType="kb.keyboard.warrior.dto.ExchangeRateDTO"> 
+		INSERT INTO ExchangeRate (currencyCode, currencyName,  standardRate, transferSend, transferReceive, 
+		cashBuy, cashSell, usdRate, rateChangeLink, isFavorite) VALUES 
+    (#{currencyCode}, #{currencyName}, #{standardRate}, #{transferSend}, #{transferReceive},#{cashBuy}, #{cashSell},  #{usdRate}, 
+   #{rateChangeLink}, 
+   #{isFavorite});
+	</insert> -->
+
+</mapper>

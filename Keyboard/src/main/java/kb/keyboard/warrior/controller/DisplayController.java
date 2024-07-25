@@ -20,6 +20,7 @@ import kb.keyboard.warrior.SoosinRateCrawler;
 import kb.keyboard.warrior.SoosinRateCrawler2;
 import kb.keyboard.warrior.StockCrawler;
 import kb.keyboard.warrior.dao.DisplayDao;
+import kb.keyboard.warrior.dao.ExchangeRateDao;
 import kb.keyboard.warrior.dao.LoginDao;
 import kb.keyboard.warrior.display.command.DisplayCommand;
 import kb.keyboard.warrior.dto.ExchangeFavoriteDTO;
@@ -75,8 +76,10 @@ public class DisplayController {
 		        break;
 		}
 		
-	    CurrencyRateCrawler currencyCrawler = new CurrencyRateCrawler();
-	    List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeRates(favoriteCurrency1, favoriteCurrency2, favoriteCurrency3);
+//	    CurrencyRateCrawler currencyCrawler = new CurrencyRateCrawler();
+//	    List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeRates(favoriteCurrency1, favoriteCurrency2, favoriteCurrency3);
+		ExchangeRateDao exchangedao = sqlSession.getMapper(ExchangeRateDao.class);
+		List<ExchangeRateDTO> currencyRates =  exchangedao.getAllExchangeRate();
 	    if (!currencyRates.isEmpty()) {
 	        model.addAttribute("rates", currencyRates);   
 	    } else {
