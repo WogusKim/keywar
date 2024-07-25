@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+//테스트용이므로 추후 디벨롭 필요합니다.
 public class WikiTestDTO {
 
     @Id
