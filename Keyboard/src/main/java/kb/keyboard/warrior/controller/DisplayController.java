@@ -44,31 +44,31 @@ public class DisplayController {
 		
 		String userno = (String) session.getAttribute("userno");
 		
-		//í™˜ìœ¨ì¦ê²¨ì°¾ê¸° í™•ì¸
+		// È¯À²Áñ°ÜÃ£±â È®ÀÎ
 		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
 		List<ExchangeFavoriteDTO> favorites = loginDao.getFavoriteCurrency(userno);
-		String favoriteCurrency1 = "0"; // ê¸°ë³¸ê°’: ì¦ê²¨ì°¾ê¸°ê°€ ì—†ìŒ
-		String favoriteCurrency2 = "0"; // ê¸°ë³¸ê°’: ì¦ê²¨ì°¾ê¸°ê°€ ì—†ìŒ
-		String favoriteCurrency3 = "0"; // ê¸°ë³¸ê°’: ì¦ê²¨ì°¾ê¸°ê°€ ì—†ìŒ
+		String favoriteCurrency1 = "0"; // ±âº»°ª: Áñ°ÜÃ£±â°¡ ¾øÀ½
+		String favoriteCurrency2 = "0"; // ±âº»°ª: Áñ°ÜÃ£±â°¡ ¾øÀ½
+		String favoriteCurrency3 = "0"; // ±âº»°ª: Áñ°ÜÃ£±â°¡ ¾øÀ½
 
 		switch (favorites.size()) {
 		    case 0:
-		        // ì¦ê²¨ì°¾ê¸°ê°€ ì „í˜€ ì—†ëŠ” ê²½ìš°, ë””í´íŠ¸ í†µí™”ë¥¼ ì„¤ì •
+		        // Áñ°ÜÃ£±â°¡ ÀüÇô ¾ø´Â °æ¿ì, µğÆúÆ® ÅëÈ­¸¦ ¼³Á¤
 		        //favoriteCurrency1 = "KOR";
 		        //favoriteCurrency2 = "JPY";
 		        //favoriteCurrency3 = "EUR";
 		        break;
 		    case 1:
-		        // ì¦ê²¨ì°¾ê¸°ê°€ í•˜ë‚˜ì¸ ê²½ìš°
+		        // Áñ°ÜÃ£±â ÇÏ³ª
 		        favoriteCurrency1 = favorites.get(0).getCurrency();
 		        break;
 		    case 2:
-		        // ì¦ê²¨ì°¾ê¸°ê°€ ë‘ ê°œì¸ ê²½ìš°
+		        // Áñ°ÜÃ£±â µÎ°³
 		        favoriteCurrency1 = favorites.get(0).getCurrency();
 		        favoriteCurrency2 = favorites.get(1).getCurrency();
 		        break;
 		    case 3:
-		        // ì¦ê²¨ì°¾ê¸°ê°€ ì„¸ ê°œì¸ ê²½ìš°
+		        // Áñ°ÜÃ£±â ¼¼°³
 		        favoriteCurrency1 = favorites.get(0).getCurrency();
 		        favoriteCurrency2 = favorites.get(1).getCurrency();
 		        favoriteCurrency3 = favorites.get(2).getCurrency();
@@ -90,37 +90,37 @@ public class DisplayController {
 	@RequestMapping("/stock")
 	public String stock(Model model, HttpSession session) {	
 		
-		System.out.println("ì»¨íŠ¸ë¡¤ëŸ¬ ì§„ì…");
-	    DisplayCommand displayCommand = new DisplayCommand();
+		System.out.println("Áõ½Ã ÁøÀÔ");
+//	    DisplayCommand displayCommand = new DisplayCommand();
 
 		String userno = (String) session.getAttribute("userno");
 		
-		//ì¦ì‹œì¦ê²¨ì°¾ê¸° í™•ì¸
+		//Áõ½ÃÁñ°ÜÃ£±â È®ÀÎ
 		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
 		List<StockFavoriteDTO> favorites = loginDao.getFavoriteStock(userno);
-		String favoriteStock1 = "0"; // ê¸°ë³¸ê°’: ì¦ê²¨ì°¾ê¸°ê°€ ì—†ìŒ
-		String favoriteStock2 = "0"; // ê¸°ë³¸ê°’: ì¦ê²¨ì°¾ê¸°ê°€ ì—†ìŒ
-		String favoriteStock3 = "0"; // ê¸°ë³¸ê°’: ì¦ê²¨ì°¾ê¸°ê°€ ì—†ìŒ
-		String favoriteStock4 = "0"; // ê¸°ë³¸ê°’: ì¦ê²¨ì°¾ê¸°ê°€ ì—†ìŒ
+		String favoriteStock1 = "0"; // ±âº»°ª: Áñ°ÜÃ£±â°¡ ¾øÀ½
+		String favoriteStock2 = "0"; // ±âº»°ª: Áñ°ÜÃ£±â°¡ ¾øÀ½
+		String favoriteStock3 = "0"; // ±âº»°ª: Áñ°ÜÃ£±â°¡ ¾øÀ½
+		String favoriteStock4 = "0"; // ±âº»°ª: Áñ°ÜÃ£±â°¡ ¾øÀ½
 		
 		switch (favorites.size()) {
 		    case 1:
-		        // ì¦ê²¨ì°¾ê¸°ê°€ í•˜ë‚˜ì¸ ê²½ìš°
+		        // Áñ°ÜÃ£±â ÇÏ³ª
 		    	favoriteStock1 = favorites.get(0).getIndexname();
 		        break;
 		    case 2:
-		        // ì¦ê²¨ì°¾ê¸°ê°€ ë‘ ê°œì¸ ê²½ìš°
+		        // Áñ°ÜÃ£±â µÎ°³
 		    	favoriteStock1 = favorites.get(0).getIndexname();
 		    	favoriteStock2 = favorites.get(1).getIndexname();
 		        break;
 		    case 3:
-		        // ì¦ê²¨ì°¾ê¸°ê°€ ì„¸ ê°œì¸ ê²½ìš°
+		        // Áñ°ÜÃ£±â ¼¼°³
 		    	favoriteStock1 = favorites.get(0).getIndexname();
 		    	favoriteStock2 = favorites.get(1).getIndexname();
 		    	favoriteStock3 = favorites.get(2).getIndexname();
 		        break;
 		    case 4:
-		        // ì¦ê²¨ì°¾ê¸°ê°€ ì„¸ ê°œì¸ ê²½ìš°
+		        // Áñ°ÜÃ£±â ³×°³
 		    	favoriteStock1 = favorites.get(0).getIndexname();
 		    	favoriteStock2 = favorites.get(1).getIndexname();
 		    	favoriteStock3 = favorites.get(2).getIndexname();
@@ -134,7 +134,7 @@ public class DisplayController {
         model.addAttribute("allStocks", allStocks);
 //        model.addAttribute("favoriteStocks", favoriteStocks);
 
-        System.out.println("ëª¨ë¸ì— ê°’ ì¶”ê°€");
+        System.out.println("¸ğµ¨¿¡ °ª Ãß°¡");
 		
 		return "display/stock";
 	}
@@ -143,7 +143,7 @@ public class DisplayController {
 	@RequestMapping("/interestRate")
 	public String  interestRate(Model model) {
 		
-	    //ê¸ˆë¦¬ë°ì´í„° ì²˜ë¦¬
+	    //±İ¸®µ¥ÀÌÅÍ Ã³¸®
 	    //MOR
 	    MorRateCrawler morCrawler = new MorRateCrawler();
 	    List<MorCoffixDTO> morRates = morCrawler.fetchMorRates();
@@ -156,20 +156,20 @@ public class DisplayController {
 	    if (!coffixRates.isEmpty()) {
 	    	model.addAttribute("cofix", coffixRates);
 	    }
-	    //êµ­ë¯¼ìˆ˜í¼ì •ê¸°ì˜ˆê¸ˆ
+	    //±¹¹Î¼öÆÛÁ¤±â¿¹±İ
 	    SoosinRateCrawler superCrawler = new SoosinRateCrawler();
 	    List<SoosinRateDTO> superRates = superCrawler.fetchMorRates();
 	    if (!superRates.isEmpty()) {
 	    	model.addAttribute("superRates", superRates);
 	    }
-	    //KB Star ì •ê¸°ì˜ˆê¸ˆ
+	    //KB Star Á¤±â¿¹±İ
 	    SoosinRateCrawler2 kbStarCrawler = new SoosinRateCrawler2();
 	    List<SoosinRateDTO2> kbStarRates = kbStarCrawler.fetchMorRates();
 	    if (!kbStarRates.isEmpty()) {
-	    	System.out.println("ë°ì´í„°ì¶”ì¶œ");
+	    	System.out.println("µ¥ÀÌÅÍÃßÃâ");
 	    	model.addAttribute("kbStarRates", kbStarRates);
 	    } else {
-	    	System.out.println("ë¹ˆê°’ì…ë‹ˆë‹¤.");
+	    	System.out.println("ºó°ªÀÔ´Ï´Ù.");
 	    }
 	    
 	    
@@ -191,11 +191,11 @@ public class DisplayController {
 		
 		
 		if (isFavorite.equals("1")) {
-			//ì¦ê²¨ì°¾ê¸° ì¶”ê°€ë¡œì§
+			//Áñ°ÜÃ£±â Ãß°¡·ÎÁ÷
 			displayDao.favoriteCurrency(userno, currencyCode);
 			
 		} else {
-			//ì¦ê²¨ì°¾ê¸° í•´ì œë¡œì§
+			//Áñ°ÜÃ£±â ÇØÁ¦·ÎÁ÷
 			displayDao.unFavoriteCurrency(userno, currencyCode);
 		}
 
@@ -220,12 +220,11 @@ public class DisplayController {
 		
 		
 		if (isFavorite.equals("1")) {
-			//ì¦ê²¨ì°¾ê¸° ì¶”ê°€ë¡œì§
-
+			//Áñ°ÜÃ£±â Ãß°¡·ÎÁ÷
 			displayDao.favoriteStock(userno, indexname);
 			
 		} else {
-			//ì¦ê²¨ì°¾ê¸° í•´ì œë¡œì§
+			//Áñ°ÜÃ£±â ÇØÁ¦·ÎÁ÷
 			displayDao.unFavoriteStock(userno, indexname);
 
 		}
