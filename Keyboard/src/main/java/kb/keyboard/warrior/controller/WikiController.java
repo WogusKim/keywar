@@ -365,17 +365,17 @@ public class WikiController {
     }
     
     
-    @RequestMapping(value = "/editor", method = RequestMethod.GET)
-    public String getEditorPage() {
-        return "./wiki/editor"; // src/main/webapp/WEB-INF/views/editor.jsp 파일을 반환
-    }
-
-    @RequestMapping(value = "/saveEditorData", method = RequestMethod.POST)
-    public ResponseEntity<String> saveEditorData(@RequestBody Map<String, Object> editorData) {
-        // editorData를 처리하고 저장합니다.
-        System.out.println("Received data: " + editorData);
-        // 데이터베이스에 저장하는 로직을 추가합니다.
-
-        return new ResponseEntity<String>("Data saved successfully", HttpStatus.OK);
-    }
+//    @RequestMapping(value = "/editor", method = RequestMethod.GET)
+//    public String getEditorPage() {
+//        return "./wiki/editor"; // src/main/webapp/WEB-INF/views/editor.jsp 파일을 반환
+//    }
+//
+//    @RequestMapping(value = "/saveEditorData", method = RequestMethod.POST)
+//    public ResponseEntity<String> saveEditorData(@RequestBody Map<String, Object> editorData) {
+//        // editorData를 처리하고 저장합니다.
+//        System.out.println("Received data: " + editorData);
+//        // 데이터베이스에 저장하는 로직을 추가합니다.
+//
+//        return new ResponseEntity<String>("Data saved successfully", HttpStatus.OK);
+//    }
 }
