@@ -5,7 +5,7 @@
 <mapper namespace="kb.keyboard.warrior.dao.ExchangeRateDao">
 
   	<!-- 환율 크롤링 + 업데이트 문장 -->
-	 	<update id="updateExchangeRate"  parameterType="kb.keyboard.warrior.dto.ExchangeRateDTO"> 
+	<update id="updateExchangeRate"  parameterType="kb.keyboard.warrior.dto.ExchangeRateDTO"> 
 		UPDATE ExchangeRate SET 
 	    standardRate = #{standardRate}, 
 	    transferSend = #{transferSend}, 
@@ -15,12 +15,65 @@
 	    usdRate = #{usdRate}, 
 	    rateChangeLink = #{rateChangeLink}, 
 	    isFavorite = #{isFavorite}
-	    where currencyCode = #{currencyCode};
+	    where currencyCode = #{currencyCode}
 	</update>  
 	<select id="getAllExchangeRate"  resultType="kb.keyboard.warrior.dto.ExchangeRateDTO">
 		select * from ExchangeRate order by currencyNo;
 	</select>
+	
+	<update id ="updateMor"  parameterType="kb.keyboard.warrior.dto.MorCoffixDTO"> 
+		UPDATE Mor SET
+		previousWeekRate = #{previousWeekRate},
+		currentWeekRate = #{currentWeekRate},
+		`change` = #{change}
+		where rateType = #{rateType}
+	</update>
+	<select id="getAllMor"  resultType="kb.keyboard.warrior.dto.MorCoffixDTO">
+		select * from Mor order by rateNo;
+	</select>
+	<update id ="updateCofix"  parameterType="kb.keyboard.warrior.dto.MorCoffixDTO"> 
+		UPDATE Cofix SET
+		previousWeekRate = #{previousWeekRate},
+		currentWeekRate = #{currentWeekRate},
+		`change` = #{change}
+		where rateType = #{rateType}
+	</update>
+	<select id="getAllCofix"  resultType="kb.keyboard.warrior.dto.MorCoffixDTO">
+		select * from Cofix order by rateNo;
+	</select>
+	<update id ="updateStock"  parameterType="kb.keyboard.warrior.dto.StockDTO"> 
+		UPDATE Stock SET
+		currentPrice = #{currentPrice},
+		priceChange = #{priceChange},
+		changePercentage = #{changePercentage},
+		weekHigh52 = #{weekHigh52},
+		weekLow52 = #{weekLow52}
+		where indexName = #{indexName}
+	</update> 
+	<select id="getAllStock"  resultType="kb.keyboard.warrior.dto.StockDTO">
+		select * from Stock order by id
+	</select>
 
+	<update id ="updateInterestRate" parameterType="kb.keyboard.warrior.dto.SoosinRateDTO"> 
+		UPDATE SoosinRate1 SET
+		fixedRate= #{fixedRate}, 
+		monthlyInterestRate= #{monthlyInterestRate}, 
+		compoundMonthlyRate = #{compoundMonthlyRate}
+    	where period = #{period}
+	</update>
+	<select id="getAllInterestRate"  resultType="kb.keyboard.warrior.dto.SoosinRateDTO">
+		select * from SoosinRate1 order by rateid
+	</select>
+	<update id ="updateInterestRate2"  parameterType="kb.keyboard.warrior.dto.SoosinRateDTO2"> 
+		UPDATE SoosinRate2 SET
+		basicRate = #{basicRate}, 
+		customerRate = #{customerRate}
+		where period = #{period}
+	</update>
+	<select id="getAllInterestRate2"  resultType="kb.keyboard.warrior.dto.SoosinRateDTO2">
+		select * from SoosinRate2 order by rateid
+	</select>
+	
 	<!-- 환율 최초 크롤링 문장 -->
 <!--  <insert id="updateExchangeRate"  parameterType="kb.keyboard.warrior.dto.ExchangeRateDTO"> 
 		INSERT INTO ExchangeRate (currencyCode, currencyName,  standardRate, transferSend, transferReceive, 
@@ -29,5 +82,23 @@
    #{rateChangeLink}, 
    #{isFavorite});
 	</insert> -->
-
+	<!-- 금리 최초 insert 문-->
+<!-- 		<insert id ="updateMor"  parameterType="kb.keyboard.warrior.dto.MorCoffixDTO"> 
+		INSERT INTO MorCoffix (rateType, previousWeekRate, currentWeekRate, `change`) 
+    	VALUES (#{rateType}, #{previousWeekRate}, #{currentWeekRate}, #{change})
+	</insert> -->
+<!-- 		<insert id ="updateCofix"  parameterType="kb.keyboard.warrior.dto.MorCoffixDTO"> 
+		INSERT INTO Cofix (rateType, previousWeekRate, currentWeekRate, `change`) 
+    	VALUES (#{rateType}, #{previousWeekRate}, #{currentWeekRate}, #{change})
+	</insert>
+ -->
+<!-- 증시 최초 insert 문-->
+<!-- <insert id ="updateStock"  parameterType="kb.keyboard.warrior.dto.StockDTO"> 
+		INSERT INTO Stock (country, indexName, currentPrice, priceChange, changePercentage, weekHigh52, weekLow52)
+    	VALUES (#{country}, #{indexName}, #{currentPrice}, #{priceChange}, #{changePercentage}, #{weekHigh52}, #{weekLow52})
+	</insert> -->
+	<!-- <insert id ="updateInterestRate"  parameterType="kb.keyboard.warrior.dto.SoosinRateDTO"> 
+		INSERT INTO SoosinRate1 (period, fixedRate, monthlyInterestRate, compoundMonthlyRate)
+    	VALUES (#{period}, #{fixedRate}, #{monthlyInterestRate}, #{compoundMonthlyRate})
+	</insert> -->
 </mapper>
