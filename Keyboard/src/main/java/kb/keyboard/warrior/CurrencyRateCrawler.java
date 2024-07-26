@@ -68,7 +68,7 @@ public class CurrencyRateCrawler {
                 {
                 	rates.add(rate);
                 	System.out.println("¡Ò∞‹√£±‚" + rate.getCurrencyCode());
-                }          
+                }         
             }
         } catch (IOException e) {
             e.printStackTrace();

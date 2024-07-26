@@ -1,8 +1,7 @@
 package kb.keyboard.warrior.controller;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,104 +11,65 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import kb.keyboard.warrior.dao.EditorDao;
-import kb.keyboard.warrior.dao.LoginDao;
-import kb.keyboard.warrior.dto.EditorDTO;
-import kb.keyboard.warrior.dto.WikiTestDTO;
+import kb.keyboard.warrior.dao.WikiDao;
 
 
-import org.apache.commons.text.StringEscapeUtils;
+
+
 @Controller
 public class WikiDetailController {
+	
 	
     @Autowired
     public SqlSession sqlSession;
     
-    @RequestMapping("/editorTest")
-    public String editorTest(Model model) {
+    
+    @RequestMapping("/wikiDetail")
+    public String wikiDetail(Model model, @RequestParam("id") int id, HttpSession session) {
+    	WikiDao dao = sqlSession.getMapper(WikiDao.class);
+    	String wikiData = dao.getData(id);
+    	System.out.println("위키디테일진입 : " + id);
+    	session.setAttribute("WikiId", id);
     	
-    	//--------------------------- 테스트를 위한 임시테이더 ---------------------------//
-        Map<String, Object> contentData = new HashMap<String, Object>();
-        contentData.put("time", System.currentTimeMillis());
-        contentData.put("version", "2.26.5");
-        Map<String, Object> headerData = new HashMap<String, Object>();
-        headerData.put("text", "서버에서 보내는 데이터");
-        headerData.put("level", 2);
-        Map<String, Object> headerBlock = new HashMap<String, Object>();
-        headerBlock.put("type", "header");
-        headerBlock.put("data", headerData);
-        Map<String, Object> listData = new HashMap<String, Object>();
-        listData.put("style", "ordered");
-        List<String> items = new ArrayList<String>();
-        items.add("서버리스트1");
-        items.add("서버리스트2");
-        items.add("서버리스트3");
-        items.add("서버리스트4");
-        listData.put("items", items);
-        Map<String, Object> listBlock = new HashMap<String, Object>();
-        listBlock.put("type", "list");
-        listBlock.put("data", listData);
-        List<Map<String, Object>> blocks = new ArrayList<Map<String, Object>>();
-        blocks.add(headerBlock);
-        blocks.add(listBlock);
-        contentData.put("blocks", blocks);
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            String jsonData = mapper.writeValueAsString(contentData);
-            model.addAttribute("editorData", jsonData);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //--------------------------- 테스트를 위한 임시테이더 ---------------------------//
-  	
+    	if (wikiData == null) {
+    		System.out.println("초기값을 제공합니다.");
+    		wikiData = "{\"time\":1721959855696,\"blocks\":[{\"id\":\"h6xL_peWS8\",\"type\":\"header\",\"data\":{\"text\":\"업무노트 개설을 축하합니다.\",\"level\":2}},{\"id\":\"ufod1niYAb\",\"type\":\"paragraph\",\"data\":{\"text\":\"열심히 노트를 작성하여 업무 효율을 높혀보세요!\"}}],\"version\":\"2.30.2\"}";
+    	}
+    	model.addAttribute("editorData", wikiData);
     	
-    	return "wiki/editorTest2";
+    	return "wiki/editorDetail";
     }
+
+    
 	@RequestMapping(value = "/saveEditorData", method = RequestMethod.POST)
-	public ResponseEntity<String> saveEditorData(@RequestBody String editorData) {
-	    // Process the data, save to database, etc.
+	public ResponseEntity<String> saveEditorData(@RequestBody String editorData, HttpSession session) {
+
+		Integer wikiId = (Integer) session.getAttribute("WikiId");
+	    
+	    System.out.println("wikiId");
 	    System.out.println("Received data: " + editorData);
+	    
+	    WikiDao dao = sqlSession.getMapper(WikiDao.class);
+	    String wikiData = dao.getData(wikiId);
+	    
+	    if (wikiData == null) {
+	    	//insert 실행
+	    	dao.insertWiki(wikiId, editorData);
+	    } else {
+	    	//update 실행
+	    	dao.updateWiki(wikiId, editorData);
+	    }
+	    
 	
 	    // Return a response with HTTP 200 OK
 	    return new ResponseEntity<String>("Data received successfully", HttpStatus.OK);
 	}
-
-	
-	@RequestMapping(value = "/saveEditorData2", method = RequestMethod.POST)
-	public ResponseEntity<String> saveEditorData2(@RequestBody WikiTestDTO wikiTestDTO) {
-		
-	    // Process the data, save to database, etc.
-	    //System.out.println("Received data: " + editorData);
-	
-	    // Return a response with HTTP 200 OK
-	    return new ResponseEntity<String>("Data received successfully", HttpStatus.OK);
-	}
-	
-	
-	
-
-    @RequestMapping(value = "/saveEditorData3", method = RequestMethod.POST)
-    @ResponseBody
-    public String saveEditorData(@RequestBody EditorDTO editor) {
-    	System.out.println("저장테스트");
-    	EditorDao editorDao = sqlSession.getMapper(EditorDao.class);
-    	editorDao.insertEditor(editor);
-        return "Data saved successfully";
-    }
-
-    @RequestMapping(value = "/loadEditorData3", method = RequestMethod.GET)
-    @ResponseBody
-    public EditorDTO loadEditorData(int id) {
-    	
-    	EditorDao editorDao = sqlSession.getMapper(EditorDao.class);
-    	
-        return editorDao.selectEditorById(id);
-    }
-
 
 }
+
+
+
+
 

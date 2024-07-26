@@ -28,9 +28,7 @@ width: 100%;
 
 
     <script>
-   
-    
-    document.addEventListener('DOMContentLoaded', (event) => {
+      document.addEventListener('DOMContentLoaded', (event) => {
         const notifyButton = document.getElementById('notifyButton');
         const notifyButton1 = document.getElementById('notifyButton1');
         const notificationBox = document.getElementById('notificationBox');
@@ -116,6 +114,11 @@ width: 100%;
     function getDetail(alertno1){
     	window.location.href = '${pageContext.request.contextPath}/testUrl?alertid='+alertno1;
     }
+    function logout(){
+    	alert("정상적으로 로그아웃 되었습니다.");
+    	window.location.href = "${pageContext.request.contextPath}/logout";
+    }
+    
     
     
     
@@ -132,10 +135,21 @@ width: 100%;
  <div class="header_innerText"><a href="${pageContext.request.contextPath}" style="color: inherit; font-family: inherit; font-size: inherit; text-decoration: none; ">김국민의 업무노트</a></div>
 </div>
  <div class="header_iconArea">
+ 	<c:choose>
+        <c:when test="${not empty sessionScope.userno}">
+		 	<img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/logout.png" onclick="logout()">
+        </c:when>
+        <c:otherwise>
+        	<a href="${pageContext.request.contextPath}/login" > <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/login.png"></a>
+        </c:otherwise>
+    </c:choose>
+ 
+ 
     <a href="${pageContext.request.contextPath}/calendar"><img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/calendar.png"></a>
     <a href="${pageContext.request.contextPath}/mypage"> <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/mypage.png"></a>
     <a href="#;"  id="notifyButton"><img id="alarm" class="header_icon" src="${pageContext.request.contextPath}/resources/images/alarm.png"></a>
     <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/setting.png">
+    
  </div>
 </div>
 </header>

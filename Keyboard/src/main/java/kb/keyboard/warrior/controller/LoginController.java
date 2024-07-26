@@ -41,6 +41,13 @@ public class LoginController {
 		System.out.println("로그인 창 진입");
 		return "login/login";
 	}
+	@RequestMapping("/logout")
+	public String logout(HttpServletRequest request, Model model) {		
+		HttpSession session = request.getSession();
+		session.invalidate(); // 세션 값 완전 삭제! 
+		System.out.println("로그아웃 실행");
+		return "login/login";
+	}
 	@RequestMapping("/loginAction")
 	public String loginAction(HttpServletRequest request, Model model, UserDTO dto, RedirectAttributes attributes) {
 		
@@ -138,8 +145,8 @@ public class LoginController {
 		}
 
 		ObjectMapper mapper = new ObjectMapper();
-
 		String json = mapper.writeValueAsString(dto);
+		
 		return json;
 	}
 
@@ -186,8 +193,8 @@ public class LoginController {
 		}
 
 		ObjectMapper mapper = new ObjectMapper();
-
 		String json = mapper.writeValueAsString(dto);
+		
 		return json;
 	}
 	

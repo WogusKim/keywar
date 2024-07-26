@@ -13,7 +13,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>메인 페이지</title>
+<title>김국민의 업무노트 : 메인 페이지</title>
+<link rel="icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
+<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/flag.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

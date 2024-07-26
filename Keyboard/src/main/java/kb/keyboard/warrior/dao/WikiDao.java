@@ -6,6 +6,8 @@ import kb.keyboard.warrior.dto.MenuDTO;
 
 public interface WikiDao {
 	
+	//--------------------------------메뉴관련--------------------------------//
+	
 	//부모 id 찾기
 	Integer getParentid(String selectedId);
 	
@@ -35,6 +37,26 @@ public interface WikiDao {
 	//쉐어타이틀 유무에 따라 분기하여 update
 	void changeMenuNoShare(String title, String id);
 	void changeMenuYesShare(String title, String titleShare, String id);
+
+	//--------------------------------메뉴관련--------------------------------//
+	
+	
+	
+	
+	//--------------------------------위키상세관련--------------------------------//
+	
+	//조회하기
+	String getData(int id);
+
+	//저장하기 (신규 / 업데이트)
+	void insertWiki(int wikiId, String editorData);
+	void updateWiki(int wikiId, String editorData);
+	
+
+	
+	//--------------------------------위키상세관련--------------------------------//
+	
+	
 	
 	
 
