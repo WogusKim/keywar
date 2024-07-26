@@ -6,6 +6,8 @@ public class SoosinRateDTO {
     private String monthlyInterestRate; // 월이자지급식 금리
     private String compoundMonthlyRate; // 월이자복리식 금리
     
+    public SoosinRateDTO() {
+    }
     public SoosinRateDTO(String period, String fixedRate, String monthlyInterestRate, String compoundMonthlyRate) {
         this.period = period;
         this.fixedRate = fixedRate;
