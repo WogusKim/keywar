@@ -12,17 +12,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
+import kb.keyboard.warrior.dao.EditorDao;
+import kb.keyboard.warrior.dao.LoginDao;
+import kb.keyboard.warrior.dto.EditorDTO;
 import kb.keyboard.warrior.dto.WikiTestDTO;
 
 
 import org.apache.commons.text.StringEscapeUtils;
 @Controller
 public class WikiDetailController {
+	
     @Autowired
     public SqlSession sqlSession;
+    
     @RequestMapping("/editorTest")
     public String editorTest(Model model) {
     	
@@ -61,7 +67,7 @@ public class WikiDetailController {
         //--------------------------- 테스트를 위한 임시테이더 ---------------------------//
   	
     	
-    	return "wiki/editorTest";
+    	return "wiki/editorTest2";
     }
 	@RequestMapping(value = "/saveEditorData", method = RequestMethod.POST)
 	public ResponseEntity<String> saveEditorData(@RequestBody String editorData) {
@@ -82,6 +88,27 @@ public class WikiDetailController {
 	    // Return a response with HTTP 200 OK
 	    return new ResponseEntity<String>("Data received successfully", HttpStatus.OK);
 	}
+	
+	
+	
+
+    @RequestMapping(value = "/saveEditorData3", method = RequestMethod.POST)
+    @ResponseBody
+    public String saveEditorData(@RequestBody EditorDTO editor) {
+    	System.out.println("저장테스트");
+    	EditorDao editorDao = sqlSession.getMapper(EditorDao.class);
+    	editorDao.insertEditor(editor);
+        return "Data saved successfully";
+    }
+
+    @RequestMapping(value = "/loadEditorData3", method = RequestMethod.GET)
+    @ResponseBody
+    public EditorDTO loadEditorData(int id) {
+    	
+    	EditorDao editorDao = sqlSession.getMapper(EditorDao.class);
+    	
+        return editorDao.selectEditorById(id);
+    }
 
 
 }
