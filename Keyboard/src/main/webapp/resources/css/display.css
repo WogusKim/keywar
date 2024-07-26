@@ -17,14 +17,14 @@ body{
     margin: 0; 
 }
 
-/* ȯ�� */
+/* 환占쏙옙 */
 .board_currency {
     border-radius: 10px;
     background-color: #BDE2CE;
     display: flex;
-    flex-direction: column;         /* 세로로 나열하도록 설정 */
-    justify-content: flex-start;    /* 내부 요소들을 상단에 배치 */
-    align-items: center;            /* 내부 요소들을 수평 중앙에 배치 */
+    flex-direction: column;         /* �꽭濡쒕줈 �굹�뿴�븯�룄濡� �꽕�젙 */
+    justify-content: flex-start;    /* �궡遺� �슂�냼�뱾�쓣 �긽�떒�뿉 諛곗튂 */
+    align-items: center;            /* �궡遺� �슂�냼�뱾�쓣 �닔�룊 以묒븰�뿉 諛곗튂 */
     width: 100%;
     height:  100%;
     padding: 18px;
@@ -54,78 +54,78 @@ body{
     text-align: center; /* Center align text within each cell */
     border-bottom: 1px solid #f0f0f0; /* Light grey border for subtle lines */
 }
-/* 환율 */
+/* �솚�쑉 */
 
-/* 금리 */
+/* 湲덈━ */
 
 .interestRates {
 	display: flex;
-	justify-content: space-between; /* 수정된 속성 */
+	justify-content: space-between; /* �닔�젙�맂 �냽�꽦 */
 	height: 100%;
 }
 
 .half_box {
-	flex: 1; /* 박스가 컨테이너의 가능한 많은 공간을 차지하도록 설정 */
-	margin: 0 10px; /* 박스 사이에 간격 추가 */
+	flex: 1; /* 諛뺤뒪媛� 而⑦뀒�씠�꼫�쓽 媛��뒫�븳 留롮� 怨듦컙�쓣 李⑥��븯�룄濡� �꽕�젙 */
+	margin: 0 10px; /* 諛뺤뒪 �궗�씠�뿉 媛꾧꺽 異붽� */
 	padding: 15px;
-	height: 70%;
+	height: 80%;
 	border-radius: 10px;
 	background-color: #f0f0f0;
 }
 
 .half_box h3 {
-	font-size: 20px; /* 예시: 폰트 크기 */
-    color: gray; /* 예시: 폰트 색상 */
+	font-size: 20px; /* �삁�떆: �룿�듃 �겕湲� */
+    color: gray; /* �삁�떆: �룿�듃 �깋�긽 */
     margin-top: 5px;
-    margin-bottom: 10px; /* 예시: 아래쪽 여백 */
+    margin-bottom: 10px; /* �삁�떆: �븘�옒履� �뿬諛� */
 }
 
 
-/* �ݸ� */
+/* 占쌥몌옙 */
 
-/* 탭 영역 전체 설정 */
+/* �꺆 �쁺�뿭 �쟾泥� �꽕�젙 */
 .stock_tab_area {
     display: flex;
     justify-content: space-between;
-    background-color: #BDE2CE; /* 기본 배경색 */
+    background-color: #BDE2CE; /* 湲곕낯 諛곌꼍�깋 */
     padding: 10px 80px 10px 80px;
     border-radius: 10px;
 }
 
-/* 각 탭의 기본 스타일 */
+/* 媛� �꺆�쓽 湲곕낯 �뒪���씪 */
 .stock_tab {
     cursor: pointer;
     padding: 10px;
     font-weight: bold;
-    background-color: #BDE2CE; /* 탭의 배경색 */
-    border-radius: 5px; /* 탭의 모서리 둥글게 */
-    margin-right: 5px; /* 탭 사이의 간격 */
-    transition: background-color 0.3s ease; /* 배경색 변경 효과 부드럽게 */
+    background-color: #BDE2CE; /* �꺆�쓽 諛곌꼍�깋 */
+    border-radius: 5px; /* �꺆�쓽 紐⑥꽌由� �뫁湲�寃� */
+    margin-right: 5px; /* �꺆 �궗�씠�쓽 媛꾧꺽 */
+    transition: background-color 0.3s ease; /* 諛곌꼍�깋 蹂�寃� �슚怨� 遺��뱶�읇寃� */
 }
 
 
-/* 마지막 탭의 마진 제거 */
+/* 留덉�留� �꺆�쓽 留덉쭊 �젣嫄� */
 .stock_tab:last-child {
     margin-right: 0;
 }
 
-/* 활성화된 탭의 스타일 */
+/* �솢�꽦�솕�맂 �꺆�쓽 �뒪���씪 */
 .stock_tab.active {
-    background-color: white; /* 활성 탭의 배경색 변경 */
-    color: blue; /* 활성 탭의 글자색 변경 */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
+    background-color: white; /* �솢�꽦 �꺆�쓽 諛곌꼍�깋 蹂�寃� */
+    color: blue; /* �솢�꽦 �꺆�쓽 湲��옄�깋 蹂�寃� */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 洹몃┝�옄 �슚怨� 異붽� */
 }
 
-/* 탭 내용 영역 */
+/* �꺆 �궡�슜 �쁺�뿭 */
 .stock_tab_content {
-    display: none; /* 기본적으로 숨김 처리 */
+    display: none; /* 湲곕낯�쟻�쑝濡� �닲源� 泥섎━ */
     background-color: white;
     height: 84%;
     padding: 10px 0px 10px 0px;
     border-radius: 0 0 10px 10px;
 }
 
-/* 활성화된 탭 내용 영역 표시 */
+/* �솢�꽦�솕�맂 �꺆 �궡�슜 �쁺�뿭 �몴�떆 */
 .active {
     display: block;
 }
