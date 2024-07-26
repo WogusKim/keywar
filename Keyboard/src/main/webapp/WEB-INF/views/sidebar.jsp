@@ -82,7 +82,19 @@
                 <li>
                 	<div class="menu_list">
 	                    <div class="icon ${menu.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${menu.menuType}" onclick="toggleFolder(this)"></div>
-	                    <span>${menu.title}</span>
+			            <!-- menuType에 따라 다른 처리 -->
+			            <c:choose>
+			                <c:when test="${menu.menuType == 'item'}">
+			                    <!-- menuType이 item일 경우, 링크 포함 -->
+			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${menu.id}">
+			                        <span>${menu.title}</span>
+			                    </a>
+			                </c:when>
+			                <c:otherwise>
+			                    <!-- 기본적으로 title만 표시 -->
+			                    <span>${menu.title}</span>
+			                </c:otherwise>
+			            </c:choose>
                     </div>
                     <c:if test="${not empty menu.children}">
                         <ul>
@@ -90,7 +102,19 @@
                                 <li>
                                 	<div class="menu_list">
 	                                    <div class="icon ${child1.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child1.menuType}" onclick="toggleFolder(this)"></div>
-	                                    <div>${child1.title}</div>
+							            <!-- menuType에 따라 다른 처리 -->
+							            <c:choose>
+							                <c:when test="${child1.menuType == 'item'}">
+							                    <!-- menuType이 item일 경우, 링크 포함 -->
+							                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child1.id}">
+							                        <span>${child1.title}</span>
+							                    </a>
+							                </c:when>
+							                <c:otherwise>
+							                    <!-- 기본적으로 title만 표시 -->
+							                    <span>${child1.title}</span>
+							                </c:otherwise>
+							            </c:choose>
                                     </div>
                                     <c:if test="${not empty child1.children}">
                                         <ul>
@@ -98,14 +122,38 @@
                                                 <li>
                                                 	<div class="menu_list">
 	                                                    <div class="icon ${child2.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child2.menuType}" onclick="toggleFolder(this)"></div>
-	                                                    <span>${child2.title}</span>
+											            <!-- menuType에 따라 다른 처리 -->
+											            <c:choose>
+											                <c:when test="${child2.menuType == 'item'}">
+											                    <!-- menuType이 item일 경우, 링크 포함 -->
+											                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child2.id}">
+											                        <span>${child2.title}</span>
+											                    </a>
+											                </c:when>
+											                <c:otherwise>
+											                    <!-- 기본적으로 title만 표시 -->
+											                    <span>${child2.title}</span>
+											                </c:otherwise>
+											            </c:choose>
                                                     </div>
                                                     <c:if test="${not empty child2.children}">
                                                         <ul>
                                                             <c:forEach var="child3" items="${child2.children}">
                                                                 <li><div class="menu_list">
 	                                                                    <div class="icon ${child3.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child3.menuType}" onclick="toggleFolder(this)"></div>
-	                                                                    <span>${child3.title}</span>
+															            <!-- menuType에 따라 다른 처리 -->
+															            <c:choose>
+															                <c:when test="${child3.menuType == 'item'}">
+															                    <!-- menuType이 item일 경우, 링크 포함 -->
+															                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child3.id}">
+															                        <span>${child3.title}</span>
+															                    </a>
+															                </c:when>
+															                <c:otherwise>
+															                    <!-- 기본적으로 title만 표시 -->
+															                    <span>${child3.title}</span>
+															                </c:otherwise>
+															            </c:choose>
                                                                     </div>
                                                                     <c:if test="${not empty child3.children}">
                                                                         <ul>
@@ -113,7 +161,19 @@
                                                                                 <li>
                                                                                 	<div class="menu_list">
 	                                                                                    <div class="icon ${child4.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child4.menuType}" onclick="toggleFolder(this)"></div>
-	                                                                                    <span>${child4.title}</span>
+																			            <!-- menuType에 따라 다른 처리 -->
+																			            <c:choose>
+																			                <c:when test="${child4.menuType == 'item'}">
+																			                    <!-- menuType이 item일 경우, 링크 포함 -->
+																			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child4.id}">
+																			                        <span>${child4.title}</span>
+																			                    </a>
+																			                </c:when>
+																			                <c:otherwise>
+																			                    <!-- 기본적으로 title만 표시 -->
+																			                    <span>${child4.title}</span>
+																			                </c:otherwise>
+																			            </c:choose>
                                                                                     </div>
                                                                                 </li>
                                                                             </c:forEach>

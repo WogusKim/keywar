@@ -94,4 +94,21 @@
 		where id = #{param3}
 	</update>
 	
+	
+	<!-- 위키디테일출력 -->
+	<select id="getData" resultType="String">
+		SELECT data from EditorData where id = #{param}
+	</select>
+	
+	<!-- 위키디테일저장 -->
+	<insert id="insertWiki">
+		INSERT INTO EditorData VALUES (#{param1}, #{param2})
+	</insert>
+	<update id="updateWiki">
+		UPDATE EditorData SET data = #{param2} WHERE id = #{param1}
+	</update>
+
+
+	
+	
 </mapper>
