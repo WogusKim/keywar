@@ -27,7 +27,7 @@
 							<h3>대출금리</h3>
 							<hr>
 							<div style="margin-top: 10px;"><h3> MOR</h3></div>
-							<table class="mor_table" style="text-align: center; width: 90%;">
+							<table class="mor_table" style="text-align: center; width: 100%;">
 							<colgroup>
 								<col style="width: 40%;">
 							    <col style="width: 20%;">
@@ -51,7 +51,7 @@
 							    </tbody>
 							</table>
 							<h3> COFIX</h3>
-							<table class="cofix_table"style="text-align: center; width: 90%;">
+							<table class="cofix_table"style="text-align: center; width: 100%;">
 							<colgroup>
 								<col style="width: 40%;">
 							    <col style="width: 20%;">
@@ -79,7 +79,7 @@
 							<h3>수신금리</h3>
 							<hr>
 							<h3>국민수퍼 정기예금</h3>
-							<table class="kookminSuperTable" style="text-align: center; width: 90%;">
+							<table class="kookminSuperTable" style="text-align: center; width: 100%;">
 								<colgroup>
 									<col style="width: 40%;">
 								    <col style="width: 20%;">
@@ -106,7 +106,7 @@
 							    </tbody>
 							</table>
 							<h3>KB Star 정기예금</h3>
-							<table class="KbStarTable" style="text-align: center; width: 90%;">
+							<table class="KbStarTable" style="text-align: center; width: 100%;">
 								<colgroup>
 									<col style="width: 50%;">
 								    <col style="width: 25%;">
