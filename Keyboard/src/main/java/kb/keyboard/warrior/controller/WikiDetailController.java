@@ -83,8 +83,6 @@ public class WikiDetailController {
 	            File dest = new File(filePath);
 	            file.transferTo(dest);
 
-<<<<<<< HEAD
-=======
 	            HashMap response = new HashMap();
 	            response.put("success", 1);
 	            HashMap fileDetails = new HashMap();
@@ -105,8 +103,6 @@ public class WikiDetailController {
 	        return new ResponseEntity<HashMap>(error, HttpStatus.BAD_REQUEST);
 	    }
 	}
-
->>>>>>> branch 'master' of https://github.com/WogusKim/keywar.git
 }
 
 
