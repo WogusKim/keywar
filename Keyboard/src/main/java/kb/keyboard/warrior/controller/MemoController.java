@@ -74,8 +74,14 @@ public class MemoController {
 
             Map<String, Object> extendedProps = new HashMap<String, Object>();
             extendedProps.put("content", schedule.getContent());
-            extendedProps.put("shareto", schedule.getShareto());
+            extendedProps.put("sharedepth1", schedule.getSharedepth1());
+            extendedProps.put("sharedepth2", schedule.getSharedepth2());
+            extendedProps.put("sharedepth3", schedule.getSharedepth3());
+            extendedProps.put("deptname", schedule.getDeptname());
+            extendedProps.put("teamname", schedule.getTeamname());
+            extendedProps.put("customname", schedule.getCustomname());
             extendedProps.put("sharecolor", schedule.getSharecolor());
+            extendedProps.put("category", schedule.getCategory());
             event.put("extendedProps", extendedProps);
 
             events.add(event);
@@ -93,6 +99,15 @@ public class MemoController {
 
         return "memo/calendar";
     }
+    
+    @RequestMapping(value = "/customsharetoload", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public List<Map<String, String>> loadCustomShareto(HttpSession session) {
+        String userno = (String) session.getAttribute("userno");
+        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+        List<Map<String, String>> customSharetoList = dao.loadCustomShareto(userno);
+        return customSharetoList;
+    }
 
     @RequestMapping(value = "/calendarsave", method = RequestMethod.POST)
     @ResponseBody
@@ -103,19 +118,27 @@ public class MemoController {
             return new ResponseEntity<String>("User not logged in", HttpStatus.UNAUTHORIZED);
         }
         dto.setUserno(userno);
+        System.out.println("Received DTO: " + dto);  // 로그 추가
         ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
         try {
             dao.scheduleNew(dto);
             return new ResponseEntity<String>("Event saved successfully", HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace(); // 스택 트레이스 출력
             return new ResponseEntity<String>("Error saving event", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @RequestMapping(value = "/calendaredit", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> editEvent(@RequestBody ScheduleDTO dto) {
+    public ResponseEntity<String> editEvent(@RequestBody ScheduleDTO dto, HttpSession session) {
+
         ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+        String userno = (String) session.getAttribute("userno");
+        if (userno == null) {
+            return new ResponseEntity<String>("User not logged in_Calendar edit", HttpStatus.UNAUTHORIZED);
+        }
+        dto.setUserno(userno);
         try {
             int result = dao.scheduleEdit(dto);
             if (result > 0) {
