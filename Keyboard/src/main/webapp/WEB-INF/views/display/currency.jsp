@@ -279,6 +279,7 @@
 									<span id="select-result-1-1" onclick="toggleDropdown()">USD</span><br>
 									<span id="select-result-1-2" onclick="toggleDropdown()">미국(달러)</span>
 									<div id="myDropdown" class="dropdown-content" style="margin: auto; overflow-y: auto; height: 200px;">
+										<div onclick="selectOption('KRW', '대한민국(원)')"> 대한민국(원)</div>
         								<c:forEach var="rate" items="${rates}" begin="1">
         								<!-- 받아온 데이터로 포문 돌려서 넣기 !!  일단 대충 해놈 -->
         								<div onclick="selectOption('${rate.currencyCode}', '${rate.currencyName}')"> ${rate.currencyName}</div>
@@ -313,13 +314,13 @@
 								
 								
 								
-								<div class="dropdown" onclick="toggleDropdown1()" style="margin: auto;" > 
+								<div class="dropdown" onclick="toggleDropdown1()" styl e="margin: auto;" > 
 									<span id="select-result-2-1" onclick="toggleDropdown1()">KRW</span><br>
 									<span id="select-result-2-2" onclick="toggleDropdown1()">대한민국(원)</span>
 									
 								
 									<div id="myDropdown1" class="dropdown-content" style="margin: auto; overflow-y: auto; height: 200px;">
-										<div onclick="selectOption2('KRW', '대한민국(원)')"> 대한민국(원)</div>
+										<!-- <div onclick="selectOption2('KRW', '대한민국(원)')"> 대한민국(원)</div> -->
         								<c:forEach var="rate" items="${rates}" begin="1">
         								<!-- 받아온 데이터로 포문 돌려서 넣기 !!  일단 대충 해놈 -->
         								<div onclick="selectOption2('${rate.currencyCode}', '${rate.currencyName}')"> ${rate.currencyName}</div>

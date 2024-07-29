@@ -127,9 +127,9 @@ min-width: 100px;
 <body>
 <%@ include file="/WEB-INF/views/header.jsp" %>
 
-<div class="content_outline" style="height:  100%;">
+<div class="content_outline">
 	<%@ include file="/WEB-INF/views/sidebar.jsp" %>
-	<div class="content_right" style="height:  90%;">
+	<div class="content_right" >
 		<div class="board_currency">
 			<div class="board_currency_inner" style="background-color: #92D1BA; ">
 				<div class="outlineBox">

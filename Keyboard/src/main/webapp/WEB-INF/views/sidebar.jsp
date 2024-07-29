@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>사이드바</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 .menu_list {
 	display: flex;
@@ -37,11 +38,11 @@
 }
 
 .folder-icon {
-    background-image: url('${pageContext.request.contextPath}/resources/images/icons/folder_open.png');
+    background-image: url('${pageContext.request.contextPath}/resources/images/icons/folder_open2.png');
 }
 
 .file-icon {
-    background-image: url('${pageContext.request.contextPath}/resources/images/icons/page.png');
+    background-image: url('${pageContext.request.contextPath}/resources/images/icons/page2.png');
 }
 
 .menu-icon {
@@ -213,21 +214,26 @@ function toggleFolder(element) {
             element.classList.toggle('folder-open');
             element.classList.toggle('folder-closed');
             element.style.backgroundImage = element.classList.contains('folder-open') ?
-                'url("${pageContext.request.contextPath}/resources/images/icons/folder_open.png")' :
-                'url("${pageContext.request.contextPath}/resources/images/icons/folder.png")';
+                'url("${pageContext.request.contextPath}/resources/images/icons/folder_open2.png")' :
+                'url("${pageContext.request.contextPath}/resources/images/icons/folder2.png")';
             return; // ul 요소가 없으므로 여기서 함수 종료
         }
 
         // ul 요소가 존재하는 경우의 기존 로직 실행
-        if (nextUl.style.display === 'none' || !nextUl.style.display) {
-            nextUl.style.display = 'block';
-            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder_open.png")';
+        if ($(nextUl).is(':visible')) {
+            $(nextUl).slideUp(300); // jQuery slideUp 함수로 부드럽게 접음
+            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder2.png")';
         } else {
-            nextUl.style.display = 'none';
-            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder.png")';
+            $(nextUl).slideDown(300); // jQuery slideDown 함수로 부드럽게 펼침
+            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder_open2.png")';
         }
     }
 }
+
+// 모든 ul 요소의 기본 display를 block으로 설정
+$(document).ready(function() {
+    $('.menu-tree ul').css('display', 'block');
+});
 
 </script>
 </body>

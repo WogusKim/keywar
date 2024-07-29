@@ -3,12 +3,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>메인 페이지</title>
+<meta charset="UTF-8">
+<title>김국민의 업무노트 : 노트 훔쳐보기 </title>
+<link rel="icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
+<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+
     <link href="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest/dist/editorjs.min.css" rel="stylesheet">
-    
-    
     <!-- Core  include only Paragraph block -->
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
     <!-- Header Plug-in-->
@@ -96,9 +97,6 @@
 
 let editor;
 
-
-
-
 async function saveData() {
 	
 	
@@ -185,14 +183,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 class: SimpleImage
                 //No Config
             },
-/*             image: {
+            image: {
                 class: ImageTool,
                 config: {
                     // Your backend file uploader endpoint
-                    byFile: '${pageContext.request.contextPath}/uploadFile',
+                    byFile: 'http://localhost:9004/uploadFile',
 
                     // Your endpoint that provides uploading by Url
-                    byUrl: '${pageContext.request.contextPath}/fetchUrl',
+                    byUrl: 'http://localhost:9004/fetchUrl',
                     buttonContent: "파일을 올립니다.",
                     actions: [
                         {
@@ -206,29 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     ]
                 }
-            }, */
-            
-            /* 테스트 */
-            image: {
-                class: ImageTool,
-                config: {
-                    uploader: {
-                        uploadByFile(file) {
-                            return uploadImage(file).then((resultUrl) => {
-                                return {
-                                    success: 1,
-                                    file: {
-                                        url: resultUrl
-                                    }
-                                };
-                            });
-                        }
-                    },
-                }
             },
-            /* 테스트 */
-            
-            
             checklist: {
                 class: Checklist,
                 inlineToolbar: true
@@ -351,31 +327,6 @@ document.addEventListener('DOMContentLoaded', function () {
         
     });
 });
-
-//파일 업로드 함수 (테스트)
-function uploadImage(file) {
-    let form_data = new FormData();
-    form_data.append('file', file);
-
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            data: form_data,
-            type: "POST",
-            url: '${pageContext.request.contextPath}/uploadFile',
-            cache: false,
-            contentType: false,
-            enctype: 'multipart/form-data',
-            processData: false,
-            success: function (url) {
-                resolve(url);
-            },
-            error: function (response) {
-                reject(response);
-            }
-        });
-    });
-}
 </script>
-
 </body>
 </html>

@@ -1,5 +1,8 @@
 package kb.keyboard.warrior.controller;
 
+import java.io.File;
+import java.util.HashMap;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import kb.keyboard.warrior.dao.WikiDao;
 
@@ -66,7 +70,43 @@ public class WikiDetailController {
 	    // Return a response with HTTP 200 OK
 	    return new ResponseEntity<String>("Data received successfully", HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+	public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
+		
+		System.out.println("파일업로드 테스트");
+	    if (!file.isEmpty()) {
+	        try {
+	            String uploadDir = System.getProperty("user.dir") + "/path/to/upload/dir"; // 직접 디렉토리 경로 설정
+	            String fileName = file.getOriginalFilename();
+	            String filePath = uploadDir + File.separator + fileName;
+	            File dest = new File(filePath);
+	            file.transferTo(dest);
 
+<<<<<<< HEAD
+=======
+	            HashMap response = new HashMap();
+	            response.put("success", 1);
+	            HashMap fileDetails = new HashMap();
+	            fileDetails.put("url", "/path/to/image/" + fileName);
+	            response.put("file", fileDetails);
+
+	            return new ResponseEntity<HashMap>(response, HttpStatus.OK);
+	        } catch (Exception e) {
+	            HashMap error = new HashMap();
+	            error.put("success", 0);
+	            error.put("message", "File upload failed");
+	            return new ResponseEntity<HashMap>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    } else {
+	        HashMap error = new HashMap();
+	        error.put("success", 0);
+	        error.put("message", "No file uploaded");
+	        return new ResponseEntity<HashMap>(error, HttpStatus.BAD_REQUEST);
+	    }
+	}
+
+>>>>>>> branch 'master' of https://github.com/WogusKim/keywar.git
 }
 
 

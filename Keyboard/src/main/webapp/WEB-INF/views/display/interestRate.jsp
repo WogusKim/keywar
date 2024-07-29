@@ -22,11 +22,18 @@
                 <div class="board_currency_inner">
                     <h2 class="card_title">금리 조회</h2>
                     <hr>
-					<div class="interestRates">
-						<div class="half_box">
+					<div class="interestRates" style="margin-top: 10px;">
+						<div class="half_box" >
 							<h3>대출금리</h3>
 							<hr>
-							<table class="mor_table">
+							<div style="margin-top: 10px;"><h3> MOR</h3></div>
+							<table class="mor_table" style="text-align: center; width: 100%;">
+							<colgroup>
+								<col style="width: 40%;">
+							    <col style="width: 20%;">
+							    <col style="width: 20%;">
+							    <col style="width: 20%;">
+							</colgroup>
 							    <thead>
 							        <tr>
 							            <th>구분</th><th>종전기간(A)</th><th>적용기간(B)</th><th>증감(B-A)</th>
@@ -43,7 +50,14 @@
 							    	</c:forEach>
 							    </tbody>
 							</table>
-							<table class="cofix_table">
+							<h3> COFIX</h3>
+							<table class="cofix_table"style="text-align: center; width: 100%;">
+							<colgroup>
+								<col style="width: 40%;">
+							    <col style="width: 20%;">
+							    <col style="width: 20%;">
+							    <col style="width: 20%;">
+							</colgroup>
 							    <thead>
 							        <tr>
 							            <th>구분</th><th>종전기간(A)</th><th>적용기간(B)</th><th>증감(B-A)</th>
@@ -64,13 +78,20 @@
 						<div class="half_box">
 							<h3>수신금리</h3>
 							<hr>
-							<table class="kookminSuperTable">
+							<h3>국민수퍼 정기예금</h3>
+							<table class="kookminSuperTable" style="text-align: center; width: 100%;">
+								<colgroup>
+									<col style="width: 40%;">
+								    <col style="width: 20%;">
+								    <col style="width: 20%;">
+								    <col style="width: 20%;">
+								</colgroup>
 							    <thead>
 							        <tr>
 							            <th>기간</th>
-							            <th>만기지급식(확정금리)</th>
-							            <th>월이자지급식(확정금리)</th>
-							            <th>월이자복리식(확정금리)</th>
+							            <th>만기지급식<br>(확정금리)</th>
+							            <th>월이자지급식<br>(확정금리)</th>
+							            <th>월이자복리식<br>(확정금리)</th>
 							        </tr>
 							    </thead>
 							    <tbody>
@@ -84,7 +105,14 @@
 							    	</c:forEach>
 							    </tbody>
 							</table>
-							<table class="KbStarTable">
+							<h3>KB Star 정기예금</h3>
+							<table class="KbStarTable" style="text-align: center; width: 100%;">
+								<colgroup>
+									<col style="width: 50%;">
+								    <col style="width: 25%;">
+								    <col style="width: 25%;">
+								   
+								</colgroup>
 							    <thead>
 							        <tr>
 							            <th>기간</th>
