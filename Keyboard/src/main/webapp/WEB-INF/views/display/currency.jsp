@@ -344,7 +344,7 @@
 						
 						 
 					
-					</div> <!-- 환율 계산기 영역 -->
+					</div> <!-- 환율 계산기 영역 끝 -->
 					
 					<hr>
                     <h2 class="card_title">환율 리스트</h2>
@@ -489,9 +489,21 @@
 				console.log("한국돈을 다른나라 돈으로 환전")
 				var chooseRateKorea1 = $("#"+ exchangeRate + current2).text();
 				chooseRateKorea1 = keepNumbersAndDots(chooseRateKorea1);
+				var baseRate1 = $("#baseRate-"+current2).text();  //두 번째 통화의 매매기준율
+				baseRate1 = keepNumbersAndDots(baseRate1);
+				
+				if($('#discount').is(':checked') && ($('#discountRate').val()!="")){
+					discountRate = $('#discountRate').val()/100;  //환율 우대율 곱할 거 / 없으면 그냥 그대로 나갑니다.
+					discountRate = 1 - discountRate;
+					var tempnum1 = (Math.round(((chooseRateKorea1 - baseRate1) * discountRate )*100) / 100);
+					chooseRateKorea1 =  Number(tempnum1) + Number(baseRate1);
+					chooseRateKorea1 =  (Math.round((chooseRateKorea1)*100) /100);
+				}
+				
 				
 				console.log('환전계산한 금액' + chooseRateKorea1);  
 				
+
 				var tempValue = num1/chooseRateKorea1 ;
 				tempValue = tempValue.toFixed(2);
 				tempValue = formatNumberWithCommasAndDecimal(tempValue);
