@@ -112,7 +112,7 @@
 	
 	<!-- 위키디테일저장 -->
 	<insert id="insertWiki">
-		INSERT INTO EditorData VALUES (#{param1}, #{param2})
+		 INSERT INTO EditorData (id, data) VALUES (#{wikiId}, #{editorData})
 	</insert>
 	<update id="updateWiki">
 		UPDATE EditorData SET data = #{param2} WHERE id = #{param1}
