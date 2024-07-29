@@ -46,347 +46,363 @@ import kb.keyboard.warrior.util.Constant;
 @Controller
 public class MemoController {
 
-    MemoCommand command = null;
-    private SqlSession sqlSession;
+	MemoCommand command = null;
+	private SqlSession sqlSession;
 
-    @Autowired
-    public MemoController(SqlSession sqlSession) {
-        this.sqlSession = sqlSession;
-        Constant.sqlSession = this.sqlSession;
-    }
+	@Autowired
+	public MemoController(SqlSession sqlSession) {
+		this.sqlSession = sqlSession;
+		Constant.sqlSession = this.sqlSession;
+	}
 
-    private static final Logger logger = LoggerFactory.getLogger(MemoController.class);
+	private static final Logger logger = LoggerFactory.getLogger(MemoController.class);
 
-    @RequestMapping(value = "/calendarData", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<Map<String, Object>> calendarData(HttpSession session) {
-        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
-        String userno = (String) session.getAttribute("userno");
-        List<ScheduleDTO> scheduleList = dao.scheduleLoad(userno);
+	@RequestMapping(value = "/calendarData", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<Map<String, Object>> calendarData(HttpSession session) {
+		ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+		String userno = (String) session.getAttribute("userno");
+		List<ScheduleDTO> scheduleList = dao.scheduleLoad(userno);
 
-        List<Map<String, Object>> events = new ArrayList<Map<String, Object>>();
-        for (ScheduleDTO schedule : scheduleList) {
-            Map<String, Object> event = new HashMap<String, Object>();
-            event.put("id", schedule.getScheduleid());
-            event.put("title", schedule.getTitle());
-            event.put("start", schedule.getStartDate().toString());
-            event.put("end", schedule.getEndDate().toString());
+		List<Map<String, Object>> events = new ArrayList<Map<String, Object>>();
+		for (ScheduleDTO schedule : scheduleList) {
+			Map<String, Object> event = new HashMap<String, Object>();
+			event.put("id", schedule.getScheduleid());
+			event.put("title", schedule.getTitle());
+			event.put("start", schedule.getStartDate().toString());
+			event.put("end", schedule.getEndDate().toString());
 
-            Map<String, Object> extendedProps = new HashMap<String, Object>();
-            extendedProps.put("content", schedule.getContent());
-            extendedProps.put("shareto", schedule.getShareto());
-            extendedProps.put("sharecolor", schedule.getSharecolor());
-            event.put("extendedProps", extendedProps);
+			Map<String, Object> extendedProps = new HashMap<String, Object>();
+			extendedProps.put("content", schedule.getContent());
+			extendedProps.put("shareto", schedule.getShareto());
+			extendedProps.put("sharecolor", schedule.getSharecolor());
+			event.put("extendedProps", extendedProps);
 
-            events.add(event);
-        }
+			events.add(event);
+		}
 
-        return events;
-    }
+		return events;
+	}
 
-    @RequestMapping("/calendar")
-    public String showCalendar(HttpSession session, Model model) {
-        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
-        String userno = (String) session.getAttribute("userno");
-        List<ScheduleDTO> scheduleList = dao.scheduleLoad(userno);
-        model.addAttribute("scheduleList", scheduleList);
+	@RequestMapping("/calendar")
+	public String showCalendar(HttpSession session, Model model) {
+		ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+		String userno = (String) session.getAttribute("userno");
+		List<ScheduleDTO> scheduleList = dao.scheduleLoad(userno);
+		model.addAttribute("scheduleList", scheduleList);
 
-        return "memo/calendar";
-    }
+		return "memo/calendar";
+	}
 
-    @RequestMapping(value = "/calendarsave", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<String> saveEvent(HttpServletRequest request, @RequestBody ScheduleDTO dto) {
-        HttpSession session = request.getSession();
-        String userno = (String) session.getAttribute("userno");
-        if (userno == null) {
-            return new ResponseEntity<String>("User not logged in", HttpStatus.UNAUTHORIZED);
-        }
-        dto.setUserno(userno);
-        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
-        try {
-            dao.scheduleNew(dto);
-            return new ResponseEntity<String>("Event saved successfully", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<String>("Error saving event", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+	@RequestMapping(value = "/calendarsave", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> saveEvent(HttpServletRequest request, @RequestBody ScheduleDTO dto) {
+		HttpSession session = request.getSession();
+		String userno = (String) session.getAttribute("userno");
+		if (userno == null) {
+			return new ResponseEntity<String>("User not logged in", HttpStatus.UNAUTHORIZED);
+		}
+		dto.setUserno(userno);
+		ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+		try {
+			dao.scheduleNew(dto);
+			return new ResponseEntity<String>("Event saved successfully", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("Error saving event", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
-    @RequestMapping(value = "/calendaredit", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<String> editEvent(@RequestBody ScheduleDTO dto) {
-        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
-        try {
-            int result = dao.scheduleEdit(dto);
-            if (result > 0) {
-                return new ResponseEntity<String>("Event edited successfully", HttpStatus.OK);
-            } else {
-                return new ResponseEntity<String>("No events were updated", HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            logger.error("Error editing event", e);
-            return new ResponseEntity<String>("Error editing event", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+	@RequestMapping(value = "/calendaredit", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> editEvent(@RequestBody ScheduleDTO dto) {
+		ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+		try {
+			int result = dao.scheduleEdit(dto);
+			if (result > 0) {
+				return new ResponseEntity<String>("Event edited successfully", HttpStatus.OK);
+			} else {
+				return new ResponseEntity<String>("No events were updated", HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			logger.error("Error editing event", e);
+			return new ResponseEntity<String>("Error editing event", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
-    @RequestMapping(value = "/calendardelete", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<String> deleteEvent(@RequestParam String scheduleid) {
-        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
-        try {
-            dao.scheduleDelete(scheduleid);
-            return new ResponseEntity<String>("Event deleted successfully", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<String>("Error deleting event", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+	@RequestMapping(value = "/calendardelete", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> deleteEvent(@RequestParam String scheduleid) {
+		ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+		try {
+			dao.scheduleDelete(scheduleid);
+			return new ResponseEntity<String>("Event deleted successfully", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("Error deleting event", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
-    @RequestMapping("/todo")
-    public String todoView(HttpSession session, Model model) {
-        System.out.println("todoView()");
+	@RequestMapping("/todo")
+	public String todoView(HttpSession session, Model model) {
+		System.out.println("todoView()");
 
-        String userno = (String) session.getAttribute("userno");
-        if (userno != null) {
-            command = new TodoViewCommand(userno);
-            command.execute(model);
-        } else {
-            System.out.println("User number not found in session.");
-        }
+		String userno = (String) session.getAttribute("userno");
+		if (userno != null) {
+			command = new TodoViewCommand(userno);
+			command.execute(model);
+		} else {
+			System.out.println("User number not found in session.");
+		}
 
-        return "todo";
-    }
+		return "todo";
+	}
 
-    @RequestMapping(value = "/todolistCheck", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
-    public @ResponseBody String findPw(@RequestBody TodoListDTO todoListDto) throws Exception {
+	@RequestMapping(value = "/todolistCheck", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
+	public @ResponseBody String findPw(@RequestBody TodoListDTO todoListDto) throws Exception {
 
-        String todoId = todoListDto.getTodoid();
-        String isDone = todoListDto.getIsdone();
-        // 泥댄겕諛뺤뒪 �긽�깭異쒕젰
-        System.out.println(todoId);
-        System.out.println(isDone);
+		String todoId = todoListDto.getTodoid();
+		String isDone = todoListDto.getIsdone();
+		// 泥댄겕諛뺤뒪 �긽�깭異쒕젰
+		System.out.println(todoId);
+		System.out.println(isDone);
 
-        ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
+		ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
 
-        if (isDone.equals("1")) {
-            // �븷�씪 �셿猷뚯쿂由�
-            todoDao.checkTodo(todoId);
-        } else {
-            todoDao.unCheckTodo(todoId);
-        }
+		if (isDone.equals("1")) {
+			// �븷�씪 �셿猷뚯쿂由�
+			todoDao.checkTodo(todoId);
+		} else {
+			todoDao.unCheckTodo(todoId);
+		}
 
-        return "{\"status\":\"success\"}";
-    }
+		return "{\"status\":\"success\"}";
+	}
 
-    @RequestMapping("/memo")
-    public String memoView(HttpSession session, Model model) {
-        System.out.println("memoView()");
+	@RequestMapping("/memo")
+	public String memoView(HttpSession session, Model model) {
+		System.out.println("memoView()");
 
-        String userno = (String) session.getAttribute("userno");
-        String deptno = (String) session.getAttribute("deptno");
-        System.out.println("硫붾え酉�: �쑀�� 踰덊샇: " + userno);
-        System.out.println("硫붾え酉�: 遺��꽌 踰덊샇: " + deptno);
-        if (userno != null && deptno != null) {
-            MemoViewCommand command = new MemoViewCommand();
-            command.execute(model, userno, deptno);
-        } else {
-            System.out.println("User number or dept number not found in session.");
-        }
+		String userno = (String) session.getAttribute("userno");
+		String deptno = (String) session.getAttribute("deptno");
+		System.out.println("硫붾え酉�: �쑀�� 踰덊샇: " + userno);
+		System.out.println("硫붾え酉�: 遺��꽌 踰덊샇: " + deptno);
+		if (userno != null && deptno != null) {
+			MemoViewCommand command = new MemoViewCommand();
+			command.execute(model, userno, deptno);
+		} else {
+			System.out.println("User number or dept number not found in session.");
+		}
 
-        return "memo";
-    }
+		return "memo";
+	}
 
-    @RequestMapping("/notice")
-    public String noticeView(HttpSession session, Model model) {
-        System.out.println("noticeView()");
+	@RequestMapping("/notice")
+	public String noticeView(HttpSession session, Model model) {
+		System.out.println("noticeView()");
 
-        String userno = (String) session.getAttribute("userno");
-        String deptno = (String) session.getAttribute("deptno");
-        System.out.println("怨듭��궗�빆 酉�: �쑀�� 踰덊샇: " + userno);
-        System.out.println("怨듭��궗�빆 酉�: 遺��꽌 踰덊샇: " + deptno);
-        if (userno != null && deptno != null) {
-            command = new noticeViewCommand(userno, deptno);
-            command.execute(model);
-        } else {
-            System.out.println("User number or dept number not found in session.");
-        }
+		String userno = (String) session.getAttribute("userno");
+		String deptno = (String) session.getAttribute("deptno");
+		System.out.println("怨듭��궗�빆 酉�: �쑀�� 踰덊샇: " + userno);
+		System.out.println("怨듭��궗�빆 酉�: 遺��꽌 踰덊샇: " + deptno);
+		if (userno != null && deptno != null) {
+			command = new noticeViewCommand(userno, deptno);
+			command.execute(model);
+		} else {
+			System.out.println("User number or dept number not found in session.");
+		}
 
-        return "notice";
-    }
+		return "notice";
+	}
 
-    @RequestMapping("/noticeform")
-    public String noticeForm() {
-        return "noticeForm";
-    }
+	@RequestMapping("/noticeform")
+	public String noticeForm() {
+		return "noticeForm";
+	}
 
-    @RequestMapping("/noticeWrite")
-    public String noticeWrite(HttpSession session, HttpServletRequest request, Model model) {
-        System.out.println("noticeWrite()");
+	@RequestMapping("/noticeWrite")
+	public String noticeWrite(HttpSession session, HttpServletRequest request, Model model) {
+		System.out.println("noticeWrite()");
 
-        String userno = (String) session.getAttribute("userno");
-        String deptno = (String) session.getAttribute("deptno");
-        System.out.println("怨듭��궗�빆 �옉�꽦: �쑀�� 踰덊샇: " + userno);
-        System.out.println("怨듭��궗�빆 �옉�꽦: 遺��꽌 踰덊샇: " + deptno);
-        model.addAttribute("request", request);
-        model.addAttribute("userno", userno);
-        model.addAttribute("deptno", deptno);
-        if (userno != null && deptno != null) {
-            command = new noticeWriteCommand();
-            command.execute(model);
-        } else {
-            System.out.println("User number or dept number not found in session.");
-        }
-        return "redirect:notice";
-    }
+		String userno = (String) session.getAttribute("userno");
+		String deptno = (String) session.getAttribute("deptno");
+		System.out.println("怨듭��궗�빆 �옉�꽦: �쑀�� 踰덊샇: " + userno);
+		System.out.println("怨듭��궗�빆 �옉�꽦: 遺��꽌 踰덊샇: " + deptno);
+		model.addAttribute("request", request);
+		model.addAttribute("userno", userno);
+		model.addAttribute("deptno", deptno);
+		if (userno != null && deptno != null) {
+			command = new noticeWriteCommand();
+			command.execute(model);
+		} else {
+			System.out.println("User number or dept number not found in session.");
+		}
+		return "redirect:notice";
+	}
 
-    @RequestMapping("/noticeDelete")
-    public String noticeDelete(HttpSession session, HttpServletRequest request, Model model) {
-        System.out.println("noticeDelete()");
+	@RequestMapping("/noticeDelete")
+	public String noticeDelete(HttpSession session, HttpServletRequest request, Model model) {
+		System.out.println("noticeDelete()");
 
-        String userno = (String) session.getAttribute("userno");
-        System.out.println("怨듭��궗�빆 �궘�젣: �쑀�� 踰덊샇: " + userno);
-        model.addAttribute("request", request);
-        if (userno != null) {
-            noticeDeleteCommand command = new noticeDeleteCommand();
-            command.execute(model, userno);
-        } else {
-            System.out.println("User number not found in session.");
-        }
-        return "redirect:notice";
-    }
+		String userno = (String) session.getAttribute("userno");
+		System.out.println("怨듭��궗�빆 �궘�젣: �쑀�� 踰덊샇: " + userno);
+		model.addAttribute("request", request);
+		if (userno != null) {
+			noticeDeleteCommand command = new noticeDeleteCommand();
+			command.execute(model, userno);
+		} else {
+			System.out.println("User number not found in session.");
+		}
+		return "redirect:notice";
+	}
 
-    @RequestMapping("/mymemoWrite")
-    public String mymemoWrite(HttpSession session, HttpServletRequest request, Model model) {
-        System.out.println("mymemoWrite()");
+	@RequestMapping("/mymemoWrite")
+	public String mymemoWrite(HttpSession session, HttpServletRequest request, Model model) {
+		System.out.println("mymemoWrite()");
 
-        String userno = (String) session.getAttribute("userno");
-        System.out.println("留덉씠硫붾え �옉�꽦: " + userno);
-        model.addAttribute("request", request);
-        model.addAttribute("userno", userno);
-        if (userno != null) {
-            command = new mymemoWriteCommand();
-            command.execute(model);
-        } else {
-            System.out.println("User number not found in session.");
-        }
-        return "redirect:memo";
-    }
+		String userno = (String) session.getAttribute("userno");
+		System.out.println("留덉씠硫붾え �옉�꽦: " + userno);
+		model.addAttribute("request", request);
+		model.addAttribute("userno", userno);
+		if (userno != null) {
+			command = new mymemoWriteCommand();
+			command.execute(model);
+		} else {
+			System.out.println("User number not found in session.");
+		}
+		return "redirect:memo";
+	}
 
-    @RequestMapping("/deptmemoWrite")
-    public String deptmemoWrite(HttpSession session, HttpServletRequest request, Model model) {
-        System.out.println("deptmemoWrite()");
+	@RequestMapping("/deptmemoWrite")
+	public String deptmemoWrite(HttpSession session, HttpServletRequest request, Model model) {
+		System.out.println("deptmemoWrite()");
 
-        String userno = (String) session.getAttribute("userno");
-        String deptno = (String) session.getAttribute("deptno");
-        System.out.println("遺��꽌硫붾え �옉�꽦: �쑀�� 踰덊샇: " + userno);
-        System.out.println("遺��꽌硫붾え �옉�꽦: 遺��꽌 踰덊샇: " + deptno);
-        model.addAttribute("request", request);
-        model.addAttribute("userno", userno);
-        model.addAttribute("deptno", deptno);
-        if (userno != null && deptno != null) {
-            command = new deptmemoWriteCommand();
-            command.execute(model);
-        } else {
-            System.out.println("User number or dept number not found in session.");
-        }
-        return "redirect:memo";
-    }
+		String userno = (String) session.getAttribute("userno");
+		String deptno = (String) session.getAttribute("deptno");
+		System.out.println("遺��꽌硫붾え �옉�꽦: �쑀�� 踰덊샇: " + userno);
+		System.out.println("遺��꽌硫붾え �옉�꽦: 遺��꽌 踰덊샇: " + deptno);
+		model.addAttribute("request", request);
+		model.addAttribute("userno", userno);
+		model.addAttribute("deptno", deptno);
+		if (userno != null && deptno != null) {
+			command = new deptmemoWriteCommand();
+			command.execute(model);
+		} else {
+			System.out.println("User number or dept number not found in session.");
+		}
+		return "redirect:memo";
+	}
 
-    @RequestMapping("/mymemoDelete")
-    public String mymemoDelete(HttpSession session, HttpServletRequest request, Model model) {
-        System.out.println("mymemoDelete()");
+	@RequestMapping("/mymemoDelete")
+	public String mymemoDelete(HttpSession session, HttpServletRequest request, Model model) {
+		System.out.println("mymemoDelete()");
 
-        String userno = (String) session.getAttribute("userno");
-        System.out.println("留덉씠硫붾え �궘�젣: �쑀�� 踰덊샇: " + userno);
-        model.addAttribute("request", request);
+		String userno = (String) session.getAttribute("userno");
+		System.out.println("留덉씠硫붾え �궘�젣: �쑀�� 踰덊샇: " + userno);
+		model.addAttribute("request", request);
 
-        if (userno != null) {
-            mymemoDeleteCommand command = new mymemoDeleteCommand();
-            command.execute(model, userno);
-        } else {
-            System.out.println("User number not found in session.");
-        }
-        return "redirect:memo";
-    }
+		if (userno != null) {
+			mymemoDeleteCommand command = new mymemoDeleteCommand();
+			command.execute(model, userno);
+		} else {
+			System.out.println("User number not found in session.");
+		}
+		return "redirect:memo";
+	}
 
-    @RequestMapping("/deptmemoDelete")
-    public String deptmemoDelete(HttpSession session, HttpServletRequest request, Model model) {
-        System.out.println("deptmemoDelete()");
+	@RequestMapping("/deptmemoDelete")
+	public String deptmemoDelete(HttpSession session, HttpServletRequest request, Model model) {
+		System.out.println("deptmemoDelete()");
 
-        String deptno = (String) session.getAttribute("deptno");
-        System.out.println("遺��꽌硫붾え �궘�젣: 遺��꽌 踰덊샇: " + deptno);
-        model.addAttribute("request", request);
+		String deptno = (String) session.getAttribute("deptno");
+		System.out.println("遺��꽌硫붾え �궘�젣: 遺��꽌 踰덊샇: " + deptno);
+		model.addAttribute("request", request);
 
-        if (deptno != null) {
-            deptmemoDeleteCommand command = new deptmemoDeleteCommand();
-            command.execute(model, deptno);
-        } else {
-            System.out.println("Dept number not found in session.");
-        }
-        return "redirect:memo";
-    }
+		if (deptno != null) {
+			deptmemoDeleteCommand command = new deptmemoDeleteCommand();
+			command.execute(model, deptno);
+		} else {
+			System.out.println("Dept number not found in session.");
+		}
+		return "redirect:memo";
+	}
 
-    @RequestMapping("/todoWrite")
-    public String todoWrite(HttpSession session, HttpServletRequest request, Model model) {
-        System.out.println("todoWrite()");
+	@RequestMapping("/todoWrite")
+	public String todoWrite(HttpSession session, HttpServletRequest request, Model model) {
+		System.out.println("todoWrite()");
 
-        String userno = (String) session.getAttribute("userno");
-        System.out.println("todo �옉�꽦: �쑀�� 踰덊샇: " + userno);
-        model.addAttribute("request", request);
-        if (userno != null) {
-        	todoWriteCommand command = new todoWriteCommand();
-            command.execute(model,userno);
-        } else {
-            System.out.println("User number not found in session.");
-        }
-        return "redirect:/todo";
-    }
+		String userno = (String) session.getAttribute("userno");
+		System.out.println("todo �옉�꽦: �쑀�� 踰덊샇: " + userno);
+		model.addAttribute("request", request);
+		if (userno != null) {
+			todoWriteCommand command = new todoWriteCommand();
+			command.execute(model, userno);
+		} else {
+			System.out.println("User number not found in session.");
+		}
+		return "redirect:/todo";
+	}
 
-    @RequestMapping("/todoStatus")
-    public String todoStatus(HttpSession session, HttpServletRequest request, Model model) {
-        System.out.println("todoStatus()");
+	@RequestMapping("/todoStatus")
+	public String todoStatus(HttpSession session, HttpServletRequest request, Model model) {
+		System.out.println("todoStatus()");
 
-        String userno = (String) session.getAttribute("userno");
-        System.out.println("todo �긽�깭: �쑀�� 踰덊샇: " + userno);
-        model.addAttribute("request", request);
+		String userno = (String) session.getAttribute("userno");
+		System.out.println("todo �긽�깭: �쑀�� 踰덊샇: " + userno);
+		model.addAttribute("request", request);
 
-        if (userno != null) {
-            todoStatusCommand command = new todoStatusCommand();
-            command.execute(model, userno);
-        } else {
-            System.out.println("User number not found in session.");
-        }
-        return "redirect:todo";
-    }
+		if (userno != null) {
+			todoStatusCommand command = new todoStatusCommand();
+			command.execute(model, userno);
+		} else {
+			System.out.println("User number not found in session.");
+		}
+		return "redirect:todo";
+	}
 
-    @RequestMapping(value = "/updateNoticePosition", method = RequestMethod.POST)
-    @ResponseBody
-    public String updateNoticePosition(@RequestBody NoticeDTO noticeDTO) {
-        System.out.println("怨듭� �쐞移� �뾽�뜲�씠�듃");
-        System.out.println(noticeDTO.getPositionX());
-        System.out.println(noticeDTO.getPositionY());
-        System.out.println(noticeDTO.getNoticeid());
-        System.out.println(noticeDTO.getZindex());
-        // MemoDao瑜� �넻�빐 SQL �떎�뻾
-        MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
+	@RequestMapping(value = "/updateNoticePosition", method = RequestMethod.POST)
+	@ResponseBody
+	public String updateNoticePosition(@RequestBody NoticeDTO noticeDTO) {
+		System.out.println("공지 위치 및 크기 업데이트");
+		System.out.println(noticeDTO.getPositionX());
+		System.out.println(noticeDTO.getPositionY());
+		System.out.println(noticeDTO.getNoticeid());
+		System.out.println(noticeDTO.getZindex());
+		// MemoDao를 통해 SQL 실행
+		MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
 
-        // 怨듭� �쐞移� �뾽�뜲�씠�듃
-        memoDao.updateNoticePosition(noticeDTO);
+		// 공지 위치 및 크기 업데이트
+		memoDao.updateNoticePosition(noticeDTO);
 
-        // JSON �삎�깭濡� �쓳�떟 諛섑솚
-        return "{\"status\":\"success\"}";
-    }
-    
-    
-    @RequestMapping(value = "/getMaxZindex", method = RequestMethod.GET)
-    public void getMaxZindex(HttpServletResponse response) {
-        try {
-            int maxZindex = sqlSession.getMapper(MemoDao.class).getMaxZindex();
-            response.setContentType("application/json");
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write(String.valueOf(maxZindex));
-        } catch (Exception e) {
-            logger.error("Error retrieving max z-index", e);
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
-    }
+		// JSON 형태로 응답 반환
+		return "{\"status\":\"success\"}";
+	}
+	
+	@RequestMapping(value = "/updateNoticeSize", method = RequestMethod.POST)
+	@ResponseBody
+	public String updateNoticeSize(@RequestBody NoticeDTO noticeDTO) {
+		System.out.println("공지 위치 및 크기 업데이트");
+		System.out.println(noticeDTO.getWidth());
+		System.out.println(noticeDTO.getHeight());
+
+		// MemoDao를 통해 SQL 실행
+		MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
+
+		// 공지 위치 및 크기 업데이트
+		memoDao.updateNoticeSize(noticeDTO);
+
+		// JSON 형태로 응답 반환
+		return "{\"status\":\"success\"}";
+	}
+
+	@RequestMapping(value = "/getMaxZindex", method = RequestMethod.GET)
+	public void getMaxZindex(HttpServletResponse response) {
+		try {
+			int maxZindex = sqlSession.getMapper(MemoDao.class).getMaxZindex();
+			response.setContentType("application/json");
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.getWriter().write(String.valueOf(maxZindex));
+		} catch (Exception e) {
+			logger.error("Error retrieving max z-index", e);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+	}
 }
