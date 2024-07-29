@@ -4,19 +4,132 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kb.keyboard.warrior.dao.ScheduleDao">
 
+	<select id="loadCustomShareto" parameterType="String" resultType="map">
+	    SELECT sharedepth3, customname FROM scheduleshare WHERE userno = #{userno} and sharedepth1 = '0000' and sharedepth2 = '0000' and sharedepth3 != '0000'
+	</select>
+
     <insert id="scheduleNew" parameterType="kb.keyboard.warrior.dto.ScheduleDTO">
-        INSERT INTO schedule (userno, title, content, startDate, endDate, shareto)
-        VALUES (#{userno}, #{title}, #{content}, #{startDate}, #{endDate}, #{shareto})
-    </insert>
+	    INSERT INTO schedule (userno, title, content, startDate, endDate, sharedepth1, sharedepth2, sharedepth3)
+	    VALUES (
+	        #{userno}, 
+	        #{title}, 
+	        #{content}, 
+	        #{startDate}, 
+	        #{endDate}, 
+	        CASE  
+	            WHEN #{shareto} = '개인' THEN '0000'
+	            WHEN #{shareto} = '팀' THEN (SELECT deptno FROM user WHERE userno = #{userno})
+	            WHEN #{shareto} = '부서' THEN (SELECT deptno FROM user WHERE userno = #{userno})
+	            WHEN #{shareto} = '사용자 설정' THEN '0000' 
+	            ELSE '0000' 
+	        END,
+	        CASE  
+	            WHEN #{shareto} = '개인' THEN '0000'
+	            WHEN #{shareto} = '팀' THEN (SELECT teamno FROM user WHERE userno = #{userno})
+	            WHEN #{shareto} = '부서' THEN '0000'
+	            WHEN #{shareto} = '사용자 설정' THEN '0000' 
+	            ELSE '0000' 
+	        END,
+	        CASE  
+	            WHEN #{shareto} = '개인' THEN '0000'
+	            WHEN #{shareto} = '팀' THEN '0000'
+	            WHEN #{shareto} = '부서' THEN '0000'
+	            WHEN #{shareto} = '사용자 설정' THEN (
+	                SELECT sharedepth3 
+	                FROM scheduleshare 
+	                WHERE userno = #{userno} 
+	                AND sharedepth1 = '0000' 
+	                AND sharedepth2 = '0000'
+	                AND sharedepth3 != '0000'  
+	                AND sharedepth3 = #{customShare}
+	            ) 
+	            ELSE '0000' 
+	        END
+	    )
+	</insert>
     
 	<select id="scheduleLoad" parameterType="string" resultType="kb.keyboard.warrior.dto.ScheduleDTO">
-        select a.*, b.sharecolor from schedule a left join scheduleshare b on a.userno = b.userno and a.shareto = b.shareto where a.userno = #{userno}
+		<!-- select distinct a.scheduleid, a.userno, a.title, a.content, a.startdate, a.enddate, 
+		    a.sharedepth1, d.deptname, 
+		    a.sharedepth2, d.teamname, 
+		    a.sharedepth3, b.customname, 
+		    b.sharecolor
+	    from schedule a 
+		    left join scheduleshare b 
+			    on a.sharedepth1 = b.sharedepth1
+			    and a.sharedepth2 = b.sharedepth2
+			    and a.sharedepth3 = b.sharedepth3
+		    left join 
+		    	(select * from user where userno = #{userno}) c
+			    on c.deptno = a.sharedepth1
+			    and c.teamno = a.sharedepth2
+		    left join department d
+			    on c.deptno = d.deptno
+			    and c.teamno = d.teamno
+	    where (a.sharedepth1 = c.deptno and a.sharedepth2 = '0000')
+		    or (a.sharedepth1 = c.deptno and a.sharedepth2 = c.teamno)
+		    or (a.sharedepth1 = '0000' and a.sharedepth2 = '0000' and b.userno = #{userno}) -->
+		SELECT distinct s.scheduleid, s.userno, s.title, s.content, s.startdate, s.enddate, 
+			s.sharedepth1, d.deptname, 
+			s.sharedepth2, d.teamname, 
+			s.sharedepth3, ss.customname, 
+			ss.sharecolor, 
+            case 
+				when s.sharedepth1 != '0000' and s.sharedepth2 = '0000' then '부서'
+				when s.sharedepth1 != '0000' and s.sharedepth2 != '0000' then '팀'
+                when s.sharedepth1 = '0000' and s.sharedepth2 = '0000' and s.sharedepth3 = '0000' then '개인'
+                when s.sharedepth1 = '0000' and s.sharedepth2 = '0000' and s.sharedepth3 != '0000' then '사용자 설정'
+                else '오류' end as category
+		FROM schedule s
+		LEFT JOIN department d ON s.sharedepth1 = d.deptno AND s.sharedepth2 = d.teamno 
+		LEFT JOIN user u ON s.userno = u.userno
+		JOIN scheduleshare ss ON (
+		    (s.sharedepth1 != '0000' AND
+		     s.sharedepth1 = ss.sharedepth1 AND
+		     s.sharedepth2 = ss.sharedepth2 AND
+		     s.sharedepth3 = ss.sharedepth3)
+		    OR
+		    (s.sharedepth1 = '0000' AND s.sharedepth3 = '0000' AND
+		     s.userno = ss.userno AND
+		     u.username = ss.customname)
+		    OR
+		    (s.sharedepth1 = '0000' AND s.sharedepth3 != '0000' AND
+		     s.sharedepth3 = ss.sharedepth3)
+		)
+		where ss.userno = #{userno}
     </select>
 
-    <update id="scheduleEdit" parameterType="kb.keyboard.warrior.dto.ScheduleDTO">
-        UPDATE schedule
-        SET title=#{title}, content=#{content}, startDate=#{startDate}, endDate=#{endDate}, shareto=#{shareto}
-        WHERE scheduleid = #{scheduleid}
+    <update id="scheduleEdit" parameterType="map">
+		UPDATE schedule
+		    SET title = #{title}, 
+		        content = #{content}, 
+		        startDate = #{startDate}, 
+		        endDate = #{endDate}, 
+		        sharedepth1 = 
+		            CASE 
+		                WHEN #{shareto} = '개인' THEN '0000'
+		                WHEN #{shareto} IN ('부서', '팀') THEN (SELECT deptno FROM user WHERE userno = #{userno})
+		                ELSE '0000'
+		            END,
+		        sharedepth2 = 
+		            CASE 
+		                WHEN #{shareto} IN ('개인', '부서') THEN '0000'
+		                WHEN #{shareto} = '팀' THEN (SELECT teamno FROM user WHERE userno = #{userno})
+		                ELSE '0000'
+		            END,
+		        sharedepth3 = 
+		            CASE 
+		                WHEN #{shareto} IN ('개인', '부서', '팀') THEN '0000'
+		                WHEN #{shareto} = '사용자 설정' THEN 
+		                    (SELECT sharedepth3 FROM scheduleshare 
+		                     WHERE userno = #{userno} 
+		                     AND sharedepth1 = '0000' 
+		                     AND sharedepth2 = '0000' 
+		                     AND sharedepth3 != '0000' 
+		                     AND sharedepth3 = #{customShare})
+		                ELSE '0000'
+		            END
+		    WHERE scheduleid = #{scheduleid}
     </update>
 
     <delete id="scheduleDelete" parameterType="string">

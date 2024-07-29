@@ -102,7 +102,7 @@ public class HomeController {
         }
         
 
-        // μ¦μ‹μ¦μ°Ύ
+        // Αυ½ΓΑρ°άΓ£±β
 
         List<StockFavoriteDTO> stock = loginDao.getFavoriteStock(userno);
 
