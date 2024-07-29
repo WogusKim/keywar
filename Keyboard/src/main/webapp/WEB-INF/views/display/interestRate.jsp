@@ -9,6 +9,53 @@
 <title>메인 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/display.css">
+<style>
+.mor_table, .cofix_table{
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse; /* 테이블의 테두리 겹침 */
+    margin-bottom: 10px;
+}
+
+.mor_table, .mor_table th, .mor_table td, .cofix_table, .cofix_table th, .cofix_table td{
+    border: 1px solid black; /* 테두리 설정 */
+}
+
+.mor_table th, .mor_table td, .cofix_table th, .cofix_table td {
+    padding: 8px;
+}
+
+
+.kookminSuperTable {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse; /* 테이블의 테두리 겹침 */
+}
+
+.kookminSuperTable, .kookminSuperTable th, .kookminSuperTable td {
+    border: 1px solid black; /* 테두리 설정 */
+}
+
+.kookminSuperTable th, .kookminSuperTable td {
+    padding: 8px;
+}
+
+.KbStarTable {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse; /* 테이블의 테두리 겹침 */
+}
+
+.KbStarTable, .KbStarTable th, .KbStarTable td {
+    border: 1px solid black; /* 테두리 설정 */
+}
+
+.KbStarTable th, .KbStarTable td {
+    padding: 8px;
+}
+
+
+    </style>
 </head>
 
 <body>
@@ -51,7 +98,7 @@
 							    </tbody>
 							</table>
 							<h3> COFIX</h3>
-							<table class="cofix_table"style="text-align: center; width: 100%;">
+							<table class="cofix_table" style="text-align: center; width: 100%;">
 							<colgroup>
 								<col style="width: 40%;">
 							    <col style="width: 20%;">
@@ -77,8 +124,14 @@
 						</div>
 						<div class="half_box">
 							<h3>수신금리</h3>
+							
 							<hr>
-							<h3>국민수퍼 정기예금</h3>
+							<div style="margin-bottom: 10px;">
+								<button id="kookmin-btn" class="toggle-button">국민수퍼 정기예금</button>
+								<button id="kbstar-btn" class="toggle-button">KB STAR 정기예금</button>
+							</div>
+							<div id="kookminSuperTable-div">
+							<h3> &nbsp; 국민수퍼 정기예금</h3>
 							<table class="kookminSuperTable" style="text-align: center; width: 100%;">
 								<colgroup>
 									<col style="width: 40%;">
@@ -105,7 +158,9 @@
 							    	</c:forEach>
 							    </tbody>
 							</table>
-							<h3>KB Star 정기예금</h3>
+							</div>
+							<div id="KbStarTable-div" style="display: none;">
+							<h3>&nbsp;  KB Star 정기예금</h3>
 							<table class="KbStarTable" style="text-align: center; width: 100%;">
 								<colgroup>
 									<col style="width: 50%;">
@@ -130,6 +185,7 @@
 							    	</c:forEach>
 							    </tbody>
 							</table>
+							</div>
 						</div>
 					</div>
                 </div>
@@ -137,6 +193,17 @@
         </div>
     </div>
 
-
+   <script>
+        $(document).ready(function(){
+            $("#kookmin-btn").click(function(){
+                $("#kookminSuperTable-div").show();
+                $("#KbStarTable-div").hide();
+            });
+            $("#kbstar-btn").click(function(){
+                $("#kookminSuperTable-div").hide();
+                $("#KbStarTable-div").show();
+            });
+        });
+    </script>
 </body>
 </html>
