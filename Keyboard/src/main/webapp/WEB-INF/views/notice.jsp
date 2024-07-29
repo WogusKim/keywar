@@ -11,14 +11,14 @@
 <style>
 .notice {
     background-color: #FFFB88;
-    width: 300px;
-    height: 150px;
     padding: 10px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
     font-size: 15px;
     color: #333;
     margin: 10px;
     position: relative;
+    resize: both; /* 사용자가 크기 조절 가능하도록 설정 */
+    
 }
 .notice .title {
     font-weight: bold;
@@ -83,7 +83,7 @@
                 <div class="aa">
                     <c:forEach items="${notice}" var="dto">
                         <div class="notice" data-id="${dto.noticeid}"
-                             style="position: absolute; left: ${dto.positionX}px; top: ${dto.positionY}px; background-color: ${dto.color}; z-index: ${dto.zindex};">
+                             style="position: absolute; left: ${dto.positionX}px; top: ${dto.positionY}px; background-color: ${dto.color}; z-index: ${dto.zindex}; width: ${dto.width}px; height: ${dto.height}px;">
                             <div class="title">${dto.title}</div>
                             ${dto.content}
                             <div class="createdate">${dto.createdate}</div>
@@ -102,6 +102,7 @@
 <script>
 $(function() {
     var maxZ = 100; // 초기 z-index 최대값 설정
+
     // 서버에서 최대 z-index 값 로드
     fetch('${pageContext.request.contextPath}/getMaxZindex')
         .then(response => response.text())
@@ -144,8 +145,37 @@ $(function() {
             })
             .catch(error => console.error('Error:', error));
         }
+    }).resizable({
+        handles: 'se',
+        stop: function(event, ui) {
+            var noticeId = $(this).data("id");
+            var width = ui.size.width;
+            var height = ui.size.height;
+            // 크기 업데이트를 서버에 전송
+            fetch('${pageContext.request.contextPath}/updateNoticeSize', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    noticeid: noticeId,
+                    width: width,
+                    height: height
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('크기가 성공적으로 저장되었습니다.');
+                } else {
+                    console.error('크기 저장 중 오류가 발생하였습니다.', data);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
     });
 });
 </script>
+
 </body>
 </html>

@@ -28,6 +28,7 @@ public interface MemoDao {
 	public void todoStatus(String todoid);
 	
 	public void updateNoticePosition(NoticeDTO noticeDTO);
+	public void updateNoticeSize(NoticeDTO noticeDTO);
 	
 	// 최대 z-index 값을 조회
 	public int getMaxZindex();

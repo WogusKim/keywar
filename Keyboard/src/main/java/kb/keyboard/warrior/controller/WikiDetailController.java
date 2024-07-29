@@ -43,10 +43,10 @@ public class WikiDetailController {
     	
     	WikiDao dao = sqlSession.getMapper(WikiDao.class);
 
-    	//°æ·Î Á¦°øÀ» À§ÇÑ ºÎ¸ğ id Å½»ö
+    	//ê²½ë¡œ ì œê³µì„ ìœ„í•œ ë¶€ëª¨ id íƒìƒ‰
     	
     	List<String> menuDirection = new ArrayList<String>();
-    	menuDirection.add(dao.getMenuDetail(id).getTitle()); //ÀÚ±âÀÚ½Å Å¸ÀÌÆ² ³Ö°í ½ÃÀÛ
+    	menuDirection.add(dao.getMenuDetail(id).getTitle()); //ìê¸°ìì‹  íƒ€ì´í‹€ ë„£ê³  ì‹œì‘
     	Integer parentId = dao.getParentid(String.valueOf(id));
     	
         while (parentId != null) {
@@ -54,7 +54,7 @@ public class WikiDetailController {
             parentId = dao.getParentid(String.valueOf(parentId));
         }
         
-    	Collections.reverse(menuDirection); // ¿ª¼øÀ¸·Î Á¤·Ä
+    	Collections.reverse(menuDirection); // ì—­ìˆœìœ¼ë¡œ ì •ë ¬
     	for (String item : menuDirection) {
     		System.out.println(item);
     	}
@@ -64,8 +64,8 @@ public class WikiDetailController {
     	session.setAttribute("WikiId", id);
     	
     	if (wikiData == null) {
-    		System.out.println("ÃÊ±â°ªÀ» Á¦°øÇÕ´Ï´Ù.");
-    		wikiData = "{\"time\":1721959855696,\"blocks\":[{\"id\":\"h6xL_peWS8\",\"type\":\"header\",\"data\":{\"text\":\"¾÷¹«³ëÆ® °³¼³À» ÃàÇÏÇÕ´Ï´Ù.\",\"level\":2}},{\"id\":\"ufod1niYAb\",\"type\":\"paragraph\",\"data\":{\"text\":\"¿­½ÉÈ÷ ³ëÆ®¸¦ ÀÛ¼ºÇÏ¿© ¾÷¹« È¿À²À» ³ôÇôº¸¼¼¿ä!\"}}],\"version\":\"2.30.2\"}";
+    		System.out.println("ì´ˆê¸°ê°’ì„ ì œê³µí•©ë‹ˆë‹¤.");
+    		wikiData = "{\"time\":1721959855696,\"blocks\":[{\"id\":\"h6xL_peWS8\",\"type\":\"header\",\"data\":{\"text\":\"ì—…ë¬´ë…¸íŠ¸ ê°œì„¤ì„ ì¶•í•˜í•©ë‹ˆë‹¤.\",\"level\":2}},{\"id\":\"ufod1niYAb\",\"type\":\"paragraph\",\"data\":{\"text\":\"ì—´ì‹¬íˆ ë…¸íŠ¸ë¥¼ ì‘ì„±í•˜ì—¬ ì—…ë¬´ íš¨ìœ¨ì„ ë†’í˜€ë³´ì„¸ìš”!\"}}],\"version\":\"2.30.2\"}";
     	}
     	model.addAttribute("editorData", wikiData);
     	
@@ -91,10 +91,10 @@ public class WikiDetailController {
 	    String wikiData = dao.getData(wikiId);
 	    
 	    if (wikiData == null) {
-	    	//insert ½ÇÇà
+	    	//insert ì‹¤í–‰
 	    	dao.insertWiki(wikiId, editorData);
 	    } else {
-	    	//update ½ÇÇà
+	    	//update ì‹¤í–‰
 	    	dao.updateWiki(wikiId, editorData);
 	    }
 	    
@@ -107,29 +107,32 @@ public class WikiDetailController {
 	public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpSession session) {
 		
 		Integer wikiId = (Integer) session.getAttribute("WikiId");
-		System.out.println("ÆÄÀÏ¾÷·Îµå Å×½ºÆ®");
+		System.out.println("íŒŒì¼ì—…ë¡œë“œ í…ŒìŠ¤íŠ¸");
 		
 	    if (!file.isEmpty()) {
 	        try {
 
 	        	String basePath = request.getSession().getServletContext().getRealPath("/resources/upload") + "/" + wikiId;
-	        	System.out.println("¾÷·Îµå °æ·Î: " + basePath);
+	        	System.out.println("ì—…ë¡œë“œ ê²½ë¡œ: " + basePath);
 	        	
 	        	File dir = new File(basePath);
 	        	if (!dir.exists()) {
-	        	    dir.mkdirs(); // Æú´õ°¡ ¾ø´Ù¸é »ı¼º
+	        	    dir.mkdirs(); // í´ë”ê°€ ì—†ë‹¤ë©´ ìƒì„±
 	        	}
 
 	        	String originalFilename = file.getOriginalFilename();
 	        	String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
 	        	String newFilename = UUID.randomUUID().toString() + fileExtension;
 
-	        	File dest = new File(basePath, newFilename); // ÆÄÀÏ ÀúÀå °æ·Î¿¡ ÆÄÀÏ¸íÀ» Æ÷ÇÔÇÏ¿© »ı¼º
-	        	//file.transferTo(dest); // ÆÄÀÏÀ» À§¿¡¼­ ÁöÁ¤ÇÑ °æ·Î¿Í ÆÄÀÏ¸íÀ¸·Î ÀúÀå
+
+	        	File dest = new File(basePath, newFilename); // íŒŒì¼ ì €ì¥ ê²½ë¡œì— íŒŒì¼ëª…ì„ í¬í•¨í•˜ì—¬ ìƒì„±
+	        	//file.transferTo(dest); // íŒŒì¼ì„ ìœ„ì—ì„œ ì§€ì •í•œ ê²½ë¡œì™€ íŒŒì¼ëª…ìœ¼ë¡œ ì €ì¥
 	            Thumbnails.of(file.getInputStream())
-	            .width(500)  // °¡·Î Å©±â¸¸ ÁöÁ¤
-	            .keepAspectRatio(true)  // ºñÀ² À¯Áö
+	            .width(500)  // ê°€ë¡œ í¬ê¸°ë§Œ ì§€ì •
+	            .keepAspectRatio(true)  // ë¹„ìœ¨ ìœ ì§€
 	            .toFile(dest);
+
+
 
 	        	HashMap response = new HashMap();
 	        	response.put("success", 1);
@@ -154,8 +157,8 @@ public class WikiDetailController {
 	
 	
 	
-}
 
+}
 
 
 
