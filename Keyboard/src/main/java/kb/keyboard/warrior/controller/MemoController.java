@@ -6,16 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -162,14 +161,14 @@ public class MemoController {
 
         String todoId = todoListDto.getTodoid();
         String isDone = todoListDto.getIsdone();
-        // 체크박스 상태출력
+        // 泥댄겕諛뺤뒪 �긽�깭異쒕젰
         System.out.println(todoId);
         System.out.println(isDone);
 
         ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
 
         if (isDone.equals("1")) {
-            // 할일 완료처리
+            // �븷�씪 �셿猷뚯쿂由�
             todoDao.checkTodo(todoId);
         } else {
             todoDao.unCheckTodo(todoId);
@@ -184,8 +183,8 @@ public class MemoController {
 
         String userno = (String) session.getAttribute("userno");
         String deptno = (String) session.getAttribute("deptno");
-        System.out.println("메모뷰: 유저 번호: " + userno);
-        System.out.println("메모뷰: 부서 번호: " + deptno);
+        System.out.println("硫붾え酉�: �쑀�� 踰덊샇: " + userno);
+        System.out.println("硫붾え酉�: 遺��꽌 踰덊샇: " + deptno);
         if (userno != null && deptno != null) {
             MemoViewCommand command = new MemoViewCommand();
             command.execute(model, userno, deptno);
@@ -202,8 +201,8 @@ public class MemoController {
 
         String userno = (String) session.getAttribute("userno");
         String deptno = (String) session.getAttribute("deptno");
-        System.out.println("공지사항 뷰: 유저 번호: " + userno);
-        System.out.println("공지사항 뷰: 부서 번호: " + deptno);
+        System.out.println("怨듭��궗�빆 酉�: �쑀�� 踰덊샇: " + userno);
+        System.out.println("怨듭��궗�빆 酉�: 遺��꽌 踰덊샇: " + deptno);
         if (userno != null && deptno != null) {
             command = new noticeViewCommand(userno, deptno);
             command.execute(model);
@@ -225,8 +224,8 @@ public class MemoController {
 
         String userno = (String) session.getAttribute("userno");
         String deptno = (String) session.getAttribute("deptno");
-        System.out.println("공지사항 작성: 유저 번호: " + userno);
-        System.out.println("공지사항 작성: 부서 번호: " + deptno);
+        System.out.println("怨듭��궗�빆 �옉�꽦: �쑀�� 踰덊샇: " + userno);
+        System.out.println("怨듭��궗�빆 �옉�꽦: 遺��꽌 踰덊샇: " + deptno);
         model.addAttribute("request", request);
         model.addAttribute("userno", userno);
         model.addAttribute("deptno", deptno);
@@ -244,7 +243,7 @@ public class MemoController {
         System.out.println("noticeDelete()");
 
         String userno = (String) session.getAttribute("userno");
-        System.out.println("공지사항 삭제: 유저 번호: " + userno);
+        System.out.println("怨듭��궗�빆 �궘�젣: �쑀�� 踰덊샇: " + userno);
         model.addAttribute("request", request);
         if (userno != null) {
             noticeDeleteCommand command = new noticeDeleteCommand();
@@ -260,7 +259,7 @@ public class MemoController {
         System.out.println("mymemoWrite()");
 
         String userno = (String) session.getAttribute("userno");
-        System.out.println("마이메모 작성: " + userno);
+        System.out.println("留덉씠硫붾え �옉�꽦: " + userno);
         model.addAttribute("request", request);
         model.addAttribute("userno", userno);
         if (userno != null) {
@@ -278,8 +277,8 @@ public class MemoController {
 
         String userno = (String) session.getAttribute("userno");
         String deptno = (String) session.getAttribute("deptno");
-        System.out.println("부서메모 작성: 유저 번호: " + userno);
-        System.out.println("부서메모 작성: 부서 번호: " + deptno);
+        System.out.println("遺��꽌硫붾え �옉�꽦: �쑀�� 踰덊샇: " + userno);
+        System.out.println("遺��꽌硫붾え �옉�꽦: 遺��꽌 踰덊샇: " + deptno);
         model.addAttribute("request", request);
         model.addAttribute("userno", userno);
         model.addAttribute("deptno", deptno);
@@ -297,7 +296,7 @@ public class MemoController {
         System.out.println("mymemoDelete()");
 
         String userno = (String) session.getAttribute("userno");
-        System.out.println("마이메모 삭제: 유저 번호: " + userno);
+        System.out.println("留덉씠硫붾え �궘�젣: �쑀�� 踰덊샇: " + userno);
         model.addAttribute("request", request);
 
         if (userno != null) {
@@ -314,7 +313,7 @@ public class MemoController {
         System.out.println("deptmemoDelete()");
 
         String deptno = (String) session.getAttribute("deptno");
-        System.out.println("부서메모 삭제: 부서 번호: " + deptno);
+        System.out.println("遺��꽌硫붾え �궘�젣: 遺��꽌 踰덊샇: " + deptno);
         model.addAttribute("request", request);
 
         if (deptno != null) {
@@ -331,7 +330,7 @@ public class MemoController {
         System.out.println("todoWrite()");
 
         String userno = (String) session.getAttribute("userno");
-        System.out.println("todo 작성: 유저 번호: " + userno);
+        System.out.println("todo �옉�꽦: �쑀�� 踰덊샇: " + userno);
         model.addAttribute("request", request);
         if (userno != null) {
         	todoWriteCommand command = new todoWriteCommand();
@@ -347,7 +346,7 @@ public class MemoController {
         System.out.println("todoStatus()");
 
         String userno = (String) session.getAttribute("userno");
-        System.out.println("todo 상태: 유저 번호: " + userno);
+        System.out.println("todo �긽�깭: �쑀�� 踰덊샇: " + userno);
         model.addAttribute("request", request);
 
         if (userno != null) {
@@ -362,18 +361,32 @@ public class MemoController {
     @RequestMapping(value = "/updateNoticePosition", method = RequestMethod.POST)
     @ResponseBody
     public String updateNoticePosition(@RequestBody NoticeDTO noticeDTO) {
-        System.out.println("공지 위치 업데이트");
+        System.out.println("怨듭� �쐞移� �뾽�뜲�씠�듃");
         System.out.println(noticeDTO.getPositionX());
         System.out.println(noticeDTO.getPositionY());
         System.out.println(noticeDTO.getNoticeid());
         System.out.println(noticeDTO.getZindex());
-        // MemoDao를 통해 SQL 실행
+        // MemoDao瑜� �넻�빐 SQL �떎�뻾
         MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
 
-        // 공지 위치 업데이트
+        // 怨듭� �쐞移� �뾽�뜲�씠�듃
         memoDao.updateNoticePosition(noticeDTO);
 
-        // JSON 형태로 응답 반환
+        // JSON �삎�깭濡� �쓳�떟 諛섑솚
         return "{\"status\":\"success\"}";
+    }
+    
+    
+    @RequestMapping(value = "/getMaxZindex", method = RequestMethod.GET)
+    public void getMaxZindex(HttpServletResponse response) {
+        try {
+            int maxZindex = sqlSession.getMapper(MemoDao.class).getMaxZindex();
+            response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write(String.valueOf(maxZindex));
+        } catch (Exception e) {
+            logger.error("Error retrieving max z-index", e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
     }
 }

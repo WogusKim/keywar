@@ -1,14 +1,11 @@
 package kb.keyboard.warrior.controller;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
-import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kb.keyboard.warrior.dao.WikiDao;
 
@@ -87,6 +83,8 @@ public class WikiDetailController {
 	            File dest = new File(filePath);
 	            file.transferTo(dest);
 
+<<<<<<< HEAD
+=======
 	            HashMap response = new HashMap();
 	            response.put("success", 1);
 	            HashMap fileDetails = new HashMap();
@@ -108,5 +106,10 @@ public class WikiDetailController {
 	    }
 	}
 
+>>>>>>> branch 'master' of https://github.com/WogusKim/keywar.git
 }
+
+
+
+
 
