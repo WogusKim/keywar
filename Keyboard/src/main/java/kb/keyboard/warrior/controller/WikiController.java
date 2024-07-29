@@ -71,14 +71,17 @@ public class WikiController {
         String menuType = request.getParameter("menuType");
         String title = request.getParameter("title");
         String sharedTitle = request.getParameter("sharedTitle");
+        String isOpen = request.getParameter("public");
         
-//      System.out.println("獄쏆룇占� id: " + selectedId);
-//      System.out.println("獄쏆룇占� type: " + selectedType);
-//      System.out.println("獄쏆룇占� depth: " + selectedDepth);
-//      
-//      System.out.println("�빊遺쏙옙占쎈막 Type: " + menuType);
-//      System.out.println("�빊遺쏙옙占쎈막 Title: " + title);
-//      System.out.println("�빊遺쏙옙占쎈막 �⑤벊��title: " + sharedTitle);
+        System.out.println("받은 id: " + selectedId);
+        System.out.println("받은 type: " + selectedType);
+        System.out.println("받은 depth: " + selectedDepth);
+      
+        System.out.println("추가할 Type: " + menuType);
+        System.out.println("추가할 Title: " + title);
+        System.out.println("추가할 공유title: " + sharedTitle);
+        System.out.println("공유여부: " + isOpen);
+
         
         // 占쎌겱占쎌삺 占쎄텊筌욎뮇占� 占쎈뻻揶쏄쑴�뱽 'yyyyMMdd_HHmmss' 占쎌굨占쎄묶嚥∽옙 占쎈７筌랃옙
         LocalDateTime now = LocalDateTime.now();
@@ -97,6 +100,13 @@ public class WikiController {
         
         //獄쏆룇占쏙옙�쑓占쎌뵠占쎄숲揶쏉옙 占쎌뿳占쎈뮉 筌롫뗀�뤀占쎌벥 筌ㅼ뮆占� menu_order 占쎌넇占쎌뵥
         int max_order;
+        int isOpenInt;
+        
+        if (isOpen.equals("no")) {
+        	isOpenInt = 0;
+        } else {
+        	isOpenInt = 1;
+        }
         
         if (selectedType.equals("root")) {
             
@@ -107,11 +117,11 @@ public class WikiController {
             if (menuType.equals("item")) {
                 //筌ㅼ뮇湲쏙옙�맄占쎈퓠 占쎈툡占쎌뵠占쎈�� �빊遺쏙옙占쎈뻻
                 System.out.println("筌ㅼ뮇湲쏙옙�맄 占쎈툡占쎌뵠占쎈�ο옙�뱽 �빊遺쏙옙占쎈�占쎈빍占쎈뼄.");
-                dao.insertMenuNoParentsItem(title, sharedTitle, link, menuType, max_order, userno);
+                dao.insertMenuNoParentsItem(title, sharedTitle, link, menuType, max_order, userno, isOpenInt);
             } else {
                 //筌ㅼ뮇湲쏙옙�맄占쎈퓠 占쎈쨨占쎈쐭 �빊遺쏙옙占쎈뻻 (筌띻낱寃뺟몴占� null 嚥∽옙 占쎄퐫占쎌뱽 占쎌굙占쎌젟)
                 System.out.println("筌ㅼ뮇湲쏙옙�맄 占쎈쨨占쎈쐭�몴占� �빊遺쏙옙占쎈�占쎈빍占쎈뼄.");
-                dao.insertMenuNoParentsFolder(title, sharedTitle, menuType, max_order, userno);
+                dao.insertMenuNoParentsFolder(title, sharedTitle, menuType, max_order, userno, isOpenInt);
             }
             
         } else {
@@ -127,7 +137,7 @@ public class WikiController {
                 
                 System.out.println("占쎈릭占쎌맄 占쎈툡占쎌뵠占쎈��(占쎈쨨占쎈쐭)占쎌뱽 �빊遺쏙옙占쎈�占쎈빍占쎈뼄. - �빊遺쏙옙占쎄깻占쎌삋占쎈뮞 占쎄문占쎄쉐");
                 //dao.insertMenuHaveParentsItem(#獄쏆룇占썽겫占쏙쭗�뫁�벥id, #占쎌젫筌륅옙, #�⑤벊��占쎌젫筌륅옙, #筌띻낱寃�, #筌롫뗀�뤀占쏙옙占쎌뿯, #占쎄텢占쎌뒠占쎌쁽甕곕뜇�깈)
-                dao.insertMenuHaveParentsItem(parentId, title, sharedTitle, link, menuType, max_order, userno);
+                dao.insertMenuHaveParentsItem(parentId, title, sharedTitle, link, menuType, max_order, userno, isOpenInt);
             } else {
                 //占쎈쨨占쎈쐭�빊遺쏙옙
                 
@@ -146,10 +156,10 @@ public class WikiController {
                 max_order++;
                 
                 System.out.println("占쎈릭占쎌맄 占쎈툡占쎌뵠占쎈��(占쎈쨨占쎈쐭)占쎌뱽 �빊遺쏙옙占쎈�占쎈빍占쎈뼄. - �빊遺쏙옙占쎄깻占쎌삋占쎈뮞 占쎄문占쎄쉐");
-                dao.insertMenuHaveParentsFolder(selectedId, title, sharedTitle, menuType, max_order, userno);
+                dao.insertMenuHaveParentsFolder(selectedId, title, sharedTitle, menuType, max_order, userno, isOpenInt);
             }
         }
-        
+
 
         return "redirect:menuSetting";
     }

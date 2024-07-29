@@ -17,31 +17,10 @@
 	    SELECT COALESCE(MAX(menu_order), 0) FROM Menu WHERE parent_id IS NULL
 	</select>
 		
+		
+	<!-- 메뉴추가 메서드 4종류 -->
 	<insert id="insertMenuNoParentsItem">
-		INSERT INTO Menu (title, titleShare, link, menuType, menu_order, userno)
-		VALUES (
-		    #{param1}, 
-		    #{param2},
-		    #{param3},
-		    #{param4},
-		    #{param5},
-		    #{param6}
-		);
-	</insert>
-	
-	<insert id="insertMenuNoParentsFolder">
-		INSERT INTO Menu (title, titleShare, menuType, menu_order, userno)
-		VALUES (
-		    #{param1}, 
-		    #{param2},
-		    #{param3},
-		    #{param4},
-		    #{param5}
-		);
-	</insert>
-	
-	<insert id="insertMenuHaveParentsItem">
-		INSERT INTO Menu (parent_id, title, titleShare, link, menuType, menu_order, userno)
+		INSERT INTO Menu (title, titleShare, link, menuType, menu_order, userno, isOpen)
 		VALUES (
 		    #{param1}, 
 		    #{param2},
@@ -53,8 +32,8 @@
 		);
 	</insert>
 	
-	<insert id="insertMenuHaveParentsFolder">
-		INSERT INTO Menu (parent_id, title, titleShare, menuType, menu_order, userno)
+	<insert id="insertMenuNoParentsFolder">
+		INSERT INTO Menu (title, titleShare, menuType, menu_order, userno, isOpen)
 		VALUES (
 		    #{param1}, 
 		    #{param2},
@@ -62,6 +41,33 @@
 		    #{param4},
 		    #{param5},
 		    #{param6}
+		);
+	</insert>
+	
+	<insert id="insertMenuHaveParentsItem">
+		INSERT INTO Menu (parent_id, title, titleShare, link, menuType, menu_order, userno, isOpen)
+		VALUES (
+		    #{param1}, 
+		    #{param2},
+		    #{param3},
+		    #{param4},
+		    #{param5},
+		    #{param6},
+		    #{param7},
+		    #{param8}
+		);
+	</insert>
+	
+	<insert id="insertMenuHaveParentsFolder">
+		INSERT INTO Menu (parent_id, title, titleShare, menuType, menu_order, userno, isOpen)
+		VALUES (
+		    #{param1}, 
+		    #{param2},
+		    #{param3},
+		    #{param4},
+		    #{param5},
+		    #{param6},
+		    #{param7}
 		);
 	</insert>
 	
