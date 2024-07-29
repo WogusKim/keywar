@@ -131,7 +131,6 @@ public class WikiDetailController {
 	            .keepAspectRatio(true)  // 비율 유지
 	            .toFile(dest);
 
-
 	        	HashMap response = new HashMap();
 	        	response.put("success", 1);
 	        	HashMap fileDetails = new HashMap();
@@ -155,9 +154,4 @@ public class WikiDetailController {
 	
 	
 	
-
 }
-
-
-
-
