@@ -497,7 +497,7 @@ document.getElementById('editForm').addEventListener('submit', function(event) {
 
 document.addEventListener('click', function(event) {
     // 클릭된 요소가 menu-tree 내부에 있지만, onclick 이벤트가 있는 요소가 아닐 때만 선택 해제
-    if (event.target.closest('.menu-tree') && !event.target.closest('[onclick]')) {
+    if (event.target.closest('.menu-tree2') && !event.target.closest('[onclick]')) {
         document.querySelectorAll('.menu_list span').forEach(span => {
             span.classList.remove('selected');
         });
