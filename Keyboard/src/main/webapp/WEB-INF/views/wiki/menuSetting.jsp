@@ -245,6 +245,13 @@
 	                <label for="editTitle" class="label-fixed-width">공유용 제목:</label>
 	                <input type="text" id="editShareTitle" name="titleShare" class="edit_input">
 	            </div>
+                <div class="edit_field">
+                    <label class="label-fixed-width">공개 여부:</label>
+                    <input type="radio" id="isOpenYes" name="isOpen" value="1">
+                    <label for="isOpenYes">공개</label>
+                    <input type="radio" id="isOpenNo" name="isOpen" value="0">
+                    <label for="isOpenNo">비공개</label>
+                </div>
             </div>
             <hr class="modal_hr">
             <div class="submit_buttonArea">
@@ -395,6 +402,13 @@ function showEditModal(id) {
             document.getElementById('editId').value = data.id;
             document.getElementById('editTitle').value = data.title;
             document.getElementById('editShareTitle').value = data.titleShare;
+            // 공개 여부 설정
+            if (data.isOpen === 1) {
+                document.getElementById('isOpenYes').checked = true;
+            } else {
+                document.getElementById('isOpenNo').checked = true;
+            }            
+
             document.getElementById('editModal').style.display = 'block';
         })
         .catch(error => console.error('Error loading the board details:', error));
