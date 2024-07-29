@@ -16,6 +16,9 @@
 <div class="content_outline">
 	<jsp:include page="/WEB-INF/views/sidebar.jsp" />
 	<div class="content_right">
+		<div style="background-color: yellow; width: 100%; height: 20%;">제목 및 헤더 영역?</div>
+		<div style="background-color: red; width: 100%; height: 70%;">게시물 불러와지는 영역</div>
+		<div style="background-color: pink; width: 100%; height: 10%;">페이지네이션 영역</div>
 	</div>
 </div>
 </body>
