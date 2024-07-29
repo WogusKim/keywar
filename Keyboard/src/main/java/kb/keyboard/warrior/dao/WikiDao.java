@@ -6,7 +6,7 @@ import kb.keyboard.warrior.dto.MenuDTO;
 
 public interface WikiDao {
 	
-	//--------------------------------메뉴관련--------------------------------//
+	//-------------------------------메뉴관련--------------------------------//
 	
 	//부모 id 찾기
 	Integer getParentid(String selectedId);
