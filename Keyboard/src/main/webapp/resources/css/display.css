@@ -68,12 +68,12 @@ body{
 	flex: 1; /* 諛뺤뒪媛� 而⑦뀒�씠�꼫�쓽 媛��뒫�븳 留롮� 怨듦컙�쓣 李⑥��븯�룄濡� �꽕�젙 */
 	margin: 0 10px; /* 諛뺤뒪 �궗�씠�뿉 媛꾧꺽 異붽� */
 	padding: 15px;
-	height: 80%;
+	height: 90%;
 	border-radius: 10px;
 	background-color: #f0f0f0;
 }
 
-.half_box h3 {
+.half_box h3 { 
 	font-size: 20px; /* �삁�떆: �룿�듃 �겕湲� */
     color: gray; /* �삁�떆: �룿�듃 �깋�긽 */
     margin-top: 5px;
