@@ -320,7 +320,7 @@
 									
 								
 									<div id="myDropdown1" class="dropdown-content" style="margin: auto; overflow-y: auto; height: 200px;">
-										<!-- <div onclick="selectOption2('KRW', '대한민국(원)')"> 대한민국(원)</div> -->
+										<div onclick="selectOption2('KRW', '대한민국(원)')"> 대한민국(원)</div>
         								<c:forEach var="rate" items="${rates}" begin="1">
         								<!-- 받아온 데이터로 포문 돌려서 넣기 !!  일단 대충 해놈 -->
         								<div onclick="selectOption2('${rate.currencyCode}', '${rate.currencyName}')"> ${rate.currencyName}</div>
@@ -465,12 +465,41 @@
     <script>
 	// 환전 금액 계산하는 메소드 
 	function calExchangeAmount(){
-
+		console.log('환율계산 실행');
 		var num1  = $("#exchange-amount-1").val(); //환전 금액 입력되어 있는 거(100 (달러)) 
+		console.log("num1 : "+num1); 
 		var current1  = $("#select-result-1-1").text(); //환전 대상 통화 (ex : 미국 달러 USD)
 		var current2  = $("#select-result-2-1").text(); // 환전 원하는 통화  (ex : 대한민국 원 KRW)
 		var discountRate = 1;
 		var exchangeRate = $('input[name="exchangeRate"]:checked').val();  //체크된 환율 기준
+		
+		num1 = keepNumbersOnly(num1);
+	    if (typeof num1 === 'string') {
+	        num1 = parseFloat(num1);
+	    } 
+	    
+		if(current1=='KRW'){
+			if(current2=='KRW'){
+				num1 = num1.toFixed(2);
+				num1 = formatNumberWithCommasAndDecimal(num1);
+				$("#exchange-amount-2").val(num1);	
+				$("span#follow-amount-2").html(num1+" ");
+				return;
+			}else{
+				console.log("한국돈을 다른나라 돈으로 환전")
+				var chooseRateKorea1 = $("#"+ exchangeRate + current2).text();
+				chooseRateKorea1 = keepNumbersAndDots(chooseRateKorea1);
+				
+				console.log('환전계산한 금액' + chooseRateKorea1);  
+				
+				var tempValue = num1/chooseRateKorea1 ;
+				tempValue = tempValue.toFixed(2);
+				tempValue = formatNumberWithCommasAndDecimal(tempValue);
+				$("#exchange-amount-2").val(tempValue);	
+				$("span#follow-amount-2").html(tempValue+" ");
+				return;
+			}
+		}
 		
 		var baseRate = $("#baseRate-"+current1).text();  //첫번째 통화의 매매기준율
 		baseRate = keepNumbersAndDots(baseRate);  // 데이터 전처리 (숫자랑 . 빼고 제거)
@@ -503,7 +532,8 @@
 			}
 		}
  
-		//선택된 환율 적용(+ 환율우대 적용)해서 환산금액 계산. 		
+		//선택된 환율 적용(+ 환율우대 적용)해서 환산금액 계산. 
+		
 		var KRWConvertedAmount = num1 * finalRate;
 		console.log("KRWConvertedAmount : " + KRWConvertedAmount);
 		// 원화로 환산 시 추가계산 필요 없이 데이터 넣어주고 끝
@@ -616,11 +646,13 @@
 	    
 	    document.getElementById('exchange-amount-1').addEventListener('input', function(event) {
 	        var inputValue = event.target.value;
+	        console.log('inputValue : '+inputValue);
 	        // 숫자와 '.'만 남기기
 	        var filteredValue = keepNumbersAndDot(inputValue);
 	        // 천단위 구분기호 붙이기
 	        var formattedValue = formatNumberWithCommasAndDecimal(filteredValue);
 	        // 포맷된 값 업데이트
+	        console.log('천단위 구분기호 붙인 값 : '+formattedValue);
 	        event.target.value = formattedValue;
 	        
 	        $("span#follow-amount-1").html(formattedValue);
@@ -632,6 +664,8 @@
     	
     	//숫자랑 0 빼고 제거하는 함수
     	function keepNumbersAndDots(input) {
+    		input = input.replace(/[^0-9.]/g, '');
+    		console.log("숫자랑 0 뺴고 제거하는 중" + input);
     	    return input.replace(/[^0-9.]/g, '');
     	}
 	    
@@ -644,7 +678,10 @@
 
             return decimalPart ? integerWithCommas + "." + decimalPart : integerWithCommas;
         }
-	    
+    	function keepNumbersOnly(value) {
+    	    // 입력된 값에서 숫자와 소수점 기호만 남기고 나머지는 제거
+    	    return value.replace(/[^\d.]/g, '');
+    	}
 	    
         function keepNumbersAndDot(input) {
         	// 입력값에서 숫자와 '.'만 남기기
