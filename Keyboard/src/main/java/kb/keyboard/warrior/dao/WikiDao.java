@@ -37,6 +37,9 @@ public interface WikiDao {
 	//쉐어타이틀 유무에 따라 분기하여 update
 	void changeMenuNoShare(String title, String id);
 	void changeMenuYesShare(String title, String titleShare, String id);
+	
+	//공개여부 변경 메서드
+	void changeIsOpen(String isOpen, String id);
 
 	//--------------------------------메뉴관련--------------------------------//
 	
@@ -51,6 +54,9 @@ public interface WikiDao {
 	//저장하기 (신규 / 업데이트)
 	void insertWiki(int wikiId, String editorData);
 	void updateWiki(int wikiId, String editorData);
+	
+	
+	
 	
 
 	
