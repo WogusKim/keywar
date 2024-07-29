@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
+
 import kb.keyboard.warrior.dao.WikiDao;
 
 
@@ -122,7 +125,11 @@ public class WikiDetailController {
 	        	String newFilename = UUID.randomUUID().toString() + fileExtension;
 
 	        	File dest = new File(basePath, newFilename); // 파일 저장 경로에 파일명을 포함하여 생성
-	        	file.transferTo(dest); // 파일을 위에서 지정한 경로와 파일명으로 저장
+	        	//file.transferTo(dest); // 파일을 위에서 지정한 경로와 파일명으로 저장
+	            Thumbnails.of(file.getInputStream())
+	            .width(500)  // 가로 크기만 지정
+	            .keepAspectRatio(true)  // 비율 유지
+	            .toFile(dest);
 
 	        	HashMap response = new HashMap();
 	        	response.put("success", 1);
