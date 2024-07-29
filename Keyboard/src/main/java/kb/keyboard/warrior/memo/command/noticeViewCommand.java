@@ -25,6 +25,7 @@ public class noticeViewCommand implements MemoCommand {
 		MemoDao dao = sqlSession.getMapper(MemoDao.class);
 		ArrayList<NoticeDTO> notice = dao.noticeView(deptno);
 		
+
 		model.addAttribute("notice", notice);
 	}
 }
