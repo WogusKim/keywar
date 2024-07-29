@@ -1,8 +1,13 @@
 package kb.keyboard.warrior.controller;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
@@ -32,9 +37,27 @@ public class WikiDetailController {
     
     @RequestMapping("/wikiDetail")
     public String wikiDetail(Model model, @RequestParam("id") int id, HttpSession session) {
+    	
     	WikiDao dao = sqlSession.getMapper(WikiDao.class);
+
+    	//경로 제공을 위한 부모 id 탐색
+    	
+    	List<String> menuDirection = new ArrayList<String>();
+    	menuDirection.add(dao.getMenuDetail(id).getTitle()); //자기자신 타이틀 넣고 시작
+    	Integer parentId = dao.getParentid(String.valueOf(id));
+    	
+        while (parentId != null) {
+            menuDirection.add(dao.getMenuDetail(parentId).getTitle());
+            parentId = dao.getParentid(String.valueOf(parentId));
+        }
+        
+    	Collections.reverse(menuDirection); // 역순으로 정렬
+    	for (String item : menuDirection) {
+    		System.out.println(item);
+    	}
+    	model.addAttribute("direction", menuDirection);
+    	
     	String wikiData = dao.getData(id);
-    	System.out.println("위키디테일진입 : " + id);
     	session.setAttribute("WikiId", id);
     	
     	if (wikiData == null) {
@@ -47,6 +70,12 @@ public class WikiDetailController {
     }
 
     
+	private String toString(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 	@RequestMapping(value = "/saveEditorData", method = RequestMethod.POST)
 	public ResponseEntity<String> saveEditorData(@RequestBody String editorData, HttpSession session) {
 
@@ -72,22 +101,34 @@ public class WikiDetailController {
 	}
 	
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
+	public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpSession session) {
 		
+		Integer wikiId = (Integer) session.getAttribute("WikiId");
 		System.out.println("파일업로드 테스트");
+		
 	    if (!file.isEmpty()) {
 	        try {
-	            String uploadDir = System.getProperty("user.dir") + "/path/to/upload/dir"; // 직접 디렉토리 경로 설정
-	            String fileName = file.getOriginalFilename();
-	            String filePath = uploadDir + File.separator + fileName;
-	            File dest = new File(filePath);
-	            file.transferTo(dest);
 
-	            HashMap response = new HashMap();
-	            response.put("success", 1);
-	            HashMap fileDetails = new HashMap();
-	            fileDetails.put("url", "/path/to/image/" + fileName);
-	            response.put("file", fileDetails);
+	        	String basePath = request.getSession().getServletContext().getRealPath("/resources/upload") + "/" + wikiId;
+	        	System.out.println("업로드 경로: " + basePath);
+	        	
+	        	File dir = new File(basePath);
+	        	if (!dir.exists()) {
+	        	    dir.mkdirs(); // 폴더가 없다면 생성
+	        	}
+
+	        	String originalFilename = file.getOriginalFilename();
+	        	String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+	        	String newFilename = UUID.randomUUID().toString() + fileExtension;
+
+	        	File dest = new File(basePath, newFilename); // 파일 저장 경로에 파일명을 포함하여 생성
+	        	file.transferTo(dest); // 파일을 위에서 지정한 경로와 파일명으로 저장
+
+	        	HashMap response = new HashMap();
+	        	response.put("success", 1);
+	        	HashMap fileDetails = new HashMap();
+	        	fileDetails.put("url", request.getContextPath() + "/resources/upload/" + wikiId + "/" + newFilename);
+	        	response.put("file", fileDetails);
 
 	            return new ResponseEntity<HashMap>(response, HttpStatus.OK);
 	        } catch (Exception e) {
@@ -103,6 +144,9 @@ public class WikiDetailController {
 	        return new ResponseEntity<HashMap>(error, HttpStatus.BAD_REQUEST);
 	    }
 	}
+	
+	
+	
 }
 
 

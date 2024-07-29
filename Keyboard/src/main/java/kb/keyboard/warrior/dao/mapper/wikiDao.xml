@@ -100,6 +100,10 @@
 		where id = #{param3}
 	</update>
 	
+	<update id="changeIsOpen">
+		UPDATE Menu SET isOpen = #{param1} where id = #{param2}
+	</update>
+	
 	
 	<!-- 위키디테일출력 -->
 	<select id="getData" resultType="String">

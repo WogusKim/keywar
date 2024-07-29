@@ -6,8 +6,8 @@
     <meta charset="UTF-8">
     <title>메인 페이지</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/wiki.css">
     <link href="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest/dist/editorjs.min.css" rel="stylesheet">
-    
     
     <!-- Core  include only Paragraph block -->
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
@@ -56,18 +56,7 @@
     
     	
 </head>
-<style>
-.editor_outline {
-	border: 1px solid #ccc;
-	padding: 10px;
-	border-radius: 5px;
-	height: 90%;
-}
-.editor-button-area {
-	margin: 20px 0;
-	text-align: center;
-}
-</style>
+
 <body>
 
 	<!-- 헤더 -->
@@ -79,7 +68,16 @@
         <%@ include file="/WEB-INF/views/sidebar.jsp"%>
         
         <!-- 우측 컨텐츠 영역 -->
-        <div class="content_right">
+        <div class="content_right_wiki">
+        	<!-- 제목, 메뉴경로 -->
+        	<h2 class="menu_direction">
+			    <div>
+			        <c:forEach var="item" items="${direction}" varStatus="status">
+			            <c:out value="${item}"/>
+			            <c:if test="${!status.last}"> > </c:if>
+			        </c:forEach>
+			    </div>
+		    </h2>
         	
         	<!-- Editor 영역 -->
             <div id="myEditor" class="editor_outline"></div>
@@ -132,30 +130,6 @@ document.addEventListener('DOMContentLoaded', function () {
     editor = new EditorJS({
         holder: 'myEditor',
         data: editorData,
-/*         {
-        	blocks: [
-                {
-                    "type": "header",
-                    "data": {
-                        "text": "이것은 첨부터 보이는 데이터",
-                        "level": 2
-                    }
-                },
-                {
-                    "type": "list",
-                    "data": {
-                        "style": "ordered",
-                        "items": [
-                            "이거슨 리스트 아이템이예용",
-                            "리스트라니까용",
-                            "간단하고 파워풀하지용",
-                            "비슷한 설정이 반복되는 게 못생겼어요"
-                        ]
-                    }
-                }
-        	]
-        } */
-    
         tools: {
             // Header 설정
             header: {
@@ -209,23 +183,35 @@ document.addEventListener('DOMContentLoaded', function () {
             }, */
             
             /* 테스트 */
-            image: {
-                class: ImageTool,
-                config: {
-                    uploader: {
-                        uploadByFile(file) {
-                            return uploadImage(file).then((resultUrl) => {
-                                return {
-                                    success: 1,
-                                    file: {
-                                        url: resultUrl
-                                    }
-                                };
-                            });
-                        }
-                    },
-                }
-            },
+			image: {
+			    class: ImageTool,
+			    config: {
+			        uploader: {
+			            uploadByFile(file) {
+			                let formData = new FormData();
+			                formData.append('file', file);
+			
+			                return fetch('${pageContext.request.contextPath}/uploadFile', {
+			                    method: 'POST',
+			                    body: formData
+			                })
+			                .then(response => response.json())
+			                .then(data => {
+			                    if (data && data.file && data.file.url) {
+			                        return {
+			                            success: 1,
+			                            file: {
+			                                url: data.file.url
+			                            }
+			                        };
+			                    } else {
+			                        throw new Error('Failed to upload image');
+			                    }
+			                });
+			            }
+			        }
+			    }
+			},
             /* 테스트 */
             
             
