@@ -27,7 +27,8 @@ import kb.keyboard.warrior.dto.MenuDTO;
 import kb.keyboard.warrior.dto.MorCoffixDTO;
 import kb.keyboard.warrior.dto.MyMemoDTO;
 import kb.keyboard.warrior.dto.NoticeDTO;
-
+import kb.keyboard.warrior.dto.SoosinRateDTO;
+import kb.keyboard.warrior.dto.SoosinRateDTO2;
 import kb.keyboard.warrior.dto.StockDTO;
 
 import kb.keyboard.warrior.dto.StockFavoriteDTO;
@@ -38,6 +39,7 @@ import kb.keyboard.warrior.dto.TodoListDTO;
  */
 @Controller
 public class HomeController {
+
 	@Autowired
 	public SqlSession sqlSession;
 
@@ -192,9 +194,19 @@ public class HomeController {
 		if (!coffixRates.isEmpty()) {
 			model.addAttribute("cofix", coffixRates);
 		}
+		//국민수퍼정기예금
+		List<SoosinRateDTO> superRates = dao.getAllInterestRate();
+	    if (!superRates.isEmpty()) {
+	    	model.addAttribute("superRates", superRates);
+	    }
+	    //KBSTAR정기예금
+	    List<SoosinRateDTO2> kbStarRates = dao.getAllInterestRate2();
+	    if (!kbStarRates.isEmpty()) {
+	    	model.addAttribute("kbStarRates", kbStarRates);
+	    } 
 
+	    
 		// To Do List
-
 		ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
 		List<TodoListDTO> todoList = todoDao.getToDoList(userno);
 		model.addAttribute("todoList", todoList);

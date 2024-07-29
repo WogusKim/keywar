@@ -59,15 +59,15 @@ public class WikiController {
     @RequestMapping("/addMenu")
     public String menuAdd(Model model, HttpServletRequest request, HttpSession session) {
         
-        //占쎄쉭占쎈�∽㎗�똾寃�
+        // 세션체크
         String userno = (String) session.getAttribute("userno");
         
-        //獄쏆룇占쏙옙�쑓占쎌뵠占쎄숲
+        // 받은 데이터
         String selectedId = request.getParameter("id");
         String selectedType = request.getParameter("type");
         String selectedDepth = request.getParameter("depth");
         
-        //占쎌읈占쎈꽊獄쏆룇占쏙옙�쑓占쎌뵠占쎄숲
+        // 추가할 데이터
         String menuType = request.getParameter("menuType");
         String title = request.getParameter("title");
         String sharedTitle = request.getParameter("sharedTitle");
@@ -83,14 +83,14 @@ public class WikiController {
         System.out.println("공유여부: " + isOpen);
 
         
-        // 占쎌겱占쎌삺 占쎄텊筌욎뮇占� 占쎈뻻揶쏄쑴�뱽 'yyyyMMdd_HHmmss' 占쎌굨占쎄묶嚥∽옙 占쎈７筌랃옙
+        // 현재 날짜와 시간을 'yyyyMMdd_HHmmss' 형식으로 포맷
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         String formattedDateTime = now.format(formatter);
         
         String link = "";
         
-        // 占쎄텢占쎌뒠占쎌쁽 甕곕뜇�깈占쏙옙 占쎌겱占쎌삺 占쎄텊筌욑옙 獄쏉옙 占쎈뻻揶쏄쑴�뱽 占쎈��댚占� 筌띻낱寃� 占쎄문占쎄쉐
+        // 사용자 번호와 현재 날짜 및 시간을 기반으로 링크 생성
         if (menuType.equals("item")) {
             link = "/" + userno + "_" + formattedDateTime;
         } 
@@ -98,14 +98,14 @@ public class WikiController {
         
         WikiDao dao = sqlSession.getMapper(WikiDao.class);
         
-        //獄쏆룇占쏙옙�쑓占쎌뵠占쎄숲揶쏉옙 占쎌뿳占쎈뮉 筌롫뗀�뤀占쎌벥 筌ㅼ뮆占� menu_order 占쎌넇占쎌뵥
+        //받은 데이터 중 최대 menu_order 찾기
         int max_order;
         int isOpenInt;
         
         if (isOpen.equals("no")) {
-        	isOpenInt = 0;
+            isOpenInt = 0;
         } else {
-        	isOpenInt = 1;
+            isOpenInt = 1;
         }
         
         if (selectedType.equals("root")) {
@@ -113,49 +113,49 @@ public class WikiController {
             max_order = dao.getMaxOrderOfnoParents();
             max_order++;
             
-            //�겫占쏙쭗�뫀�걗占쎈굡揶쏉옙 占쎈씨占쎈뮉 筌ㅼ뮇湲쏙옙�맄 野껋럩�뒭//
+            // 부모노드가 없는 최상위 경우//
             if (menuType.equals("item")) {
-                //筌ㅼ뮇湲쏙옙�맄占쎈퓠 占쎈툡占쎌뵠占쎈�� �빊遺쏙옙占쎈뻻
-                System.out.println("筌ㅼ뮇湲쏙옙�맄 占쎈툡占쎌뵠占쎈�ο옙�뱽 �빊遺쏙옙占쎈�占쎈빍占쎈뼄.");
+                //최상위에 아이템 추가
+                System.out.println("최상위 아이템을 추가합니다.");
                 dao.insertMenuNoParentsItem(title, sharedTitle, link, menuType, max_order, userno, isOpenInt);
             } else {
-                //筌ㅼ뮇湲쏙옙�맄占쎈퓠 占쎈쨨占쎈쐭 �빊遺쏙옙占쎈뻻 (筌띻낱寃뺟몴占� null 嚥∽옙 占쎄퐫占쎌뱽 占쎌굙占쎌젟)
-                System.out.println("筌ㅼ뮇湲쏙옙�맄 占쎈쨨占쎈쐭�몴占� �빊遺쏙옙占쎈�占쎈빍占쎈뼄.");
+                //최상위에 폴더 추가 (링크를 null 로 설정할 예정)
+                System.out.println("최상위 폴더를 추가합니다.");
                 dao.insertMenuNoParentsFolder(title, sharedTitle, menuType, max_order, userno, isOpenInt);
             }
             
         } else {
 
-            //�겫占쏙쭗�뫀�걗占쎈굡揶쏉옙 鈺곕똻�삺占쎈릭占쎈뮉 野껋럩�뒭//
+            //부모가 존재하는 경우//
             if (selectedType.equals("item")) {
                 
                 int selectedIdParent = dao.getParentid(selectedId);
-                //integer �몴占� 占쎈뮞占쎈뱜筌띻낯�몵嚥∽옙 癰귨옙占쎌넎
+                //integer 를 문자열로 변환
                 String parentId =  String.valueOf(selectedIdParent); 
                 max_order = dao.getMaxOrderOfFather(parentId);
                 max_order++;
                 
-                System.out.println("占쎈릭占쎌맄 占쎈툡占쎌뵠占쎈��(占쎈쨨占쎈쐭)占쎌뱽 �빊遺쏙옙占쎈�占쎈빍占쎈뼄. - �빊遺쏙옙占쎄깻占쎌삋占쎈뮞 占쎄문占쎄쉐");
-                //dao.insertMenuHaveParentsItem(#獄쏆룇占썽겫占쏙쭗�뫁�벥id, #占쎌젫筌륅옙, #�⑤벊��占쎌젫筌륅옙, #筌띻낱寃�, #筌롫뗀�뤀占쏙옙占쎌뿯, #占쎄텢占쎌뒠占쎌쁽甕곕뜇�깈)
+                System.out.println("하위 아이템(폴더)을 추가합니다. - 추가정보 생성");
+                //dao.insertMenuHaveParentsItem(#부모노드의id, #타이틀, #공유타이틀, #링크, #메뉴타입, #유저번호)
                 dao.insertMenuHaveParentsItem(parentId, title, sharedTitle, link, menuType, max_order, userno, isOpenInt);
             } else {
-                //占쎈쨨占쎈쐭�빊遺쏙옙
+                //폴더추가
                 
-                //�겫占쏙쭗�뫀�걗占쎈굡揶쏉옙 鈺곕똻�삺占쎈릭占쎈뮉占쎈쑓, depth揶쏉옙 4占쎌뵥野껋럩�뒭 筌ㅼ뮇伊뚳옙�뵠占쎈뼄. (0占쎌뵠 筌ｃ꺂苡뀐쭪占�, 筌ㅼ뮄�� 5占쎄깻占쎌삋占쎈뮞繹먮슣占� 癰귣똻肉т빳占� 占쎈땾 占쎌뿳占쎌벉)
+                //부모가 존재하는데, depth가 4인경우 제한이 필요. (0이 최상위, 이후 5개까지 허용 가능)
                 int selectedDepthInt = Integer.parseInt(selectedDepth); 
                 if (selectedDepthInt >= 4 ) {
                     
-                session.setAttribute("errorMessage", "占쎈쨨占쎈쐭 獄쏉옙 占쎈툡占쎌뵠占쎈�ο옙�뱽 �빊遺쏙옙占쎈막 占쎈땾 占쎈씨占쎈뮸占쎈빍占쎈뼄. 筌ㅼ뮇湲쏙옙�맄 占쎈쨨占쎈쐭�몴占� 占쎄문占쎄쉐占쎈릭占쎄쉭占쎌뒄.");
+                session.setAttribute("errorMessage", "폴더 및 아이템을 추가할 수 없습니다. 최대 사용 제한입니다.");
                 
                 return "redirect:menuSetting";
                     
                 }
                 
-                //占쎌굨占쎌젫占쎌벥 占쎈떄占쎄퐣�몴占� �걡癒�鍮욑옙釉�.
+                //순서의 시작을 찾아야함.
                 max_order = dao.getMaxOrderOfFather(selectedId);
                 max_order++;
                 
-                System.out.println("占쎈릭占쎌맄 占쎈툡占쎌뵠占쎈��(占쎈쨨占쎈쐭)占쎌뱽 �빊遺쏙옙占쎈�占쎈빍占쎈뼄. - �빊遺쏙옙占쎄깻占쎌삋占쎈뮞 占쎄문占쎄쉐");
+                System.out.println("하위 아이템(폴더)을 추가합니다. - 추가정보 생성");
                 dao.insertMenuHaveParentsFolder(selectedId, title, sharedTitle, menuType, max_order, userno, isOpenInt);
             }
         }
@@ -169,33 +169,33 @@ public class WikiController {
     @RequestMapping("/deleteMenu")
     public String deleteMenu(Model model, HttpServletRequest request, HttpSession session) {
         
-        //占쎄쉭占쎈�∽㎗�똾寃�
+        // 세션체크
         String userno = (String) session.getAttribute("userno");
         
         
-        //獄쏆룇占쏙옙�쑓占쎌뵠占쎄숲
+        // 받은 데이터
         String selectedId = request.getParameter("id");
         String selectedType = request.getParameter("type");
         String selectedDepth = request.getParameter("depth");
         
-        System.out.println("占쎄텣占쎌젫占쏙옙占쎄맒 id: " + selectedId);
-        System.out.println("占쎄텣占쎌젫占쏙옙占쎄맒 type: " + selectedType);
-        System.out.println("占쎄텣占쎌젫占쏙옙占쎄맒 depth: " + selectedDepth);
+        System.out.println("삭제대상 id: " + selectedId);
+        System.out.println("삭제대상 type: " + selectedType);
+        System.out.println("삭제대상 depth: " + selectedDepth);
         
         WikiDao dao = sqlSession.getMapper(WikiDao.class);
         
-        //占쎄텣占쎌젫占쎈릭占쎌젻占쎈뮉 占쏙옙占쎄맒占쎌뵠 占쎈툡占쎌뵠占쎈�ο옙�뵥 野껋럩�뒭
+        //삭제하려는 대상이 아이템인 경우
         if (selectedType.equals("item")) {
             dao.deleteItem(selectedId, userno);
         } else {
             
-            //占쎄텣占쎌젫占쎈릭占쎌젻占쎈뮉 占쏙옙占쎄맒占쎌뵠 占쎈쨨占쎈쐭占쎌뵥 野껋럩�뒭
+            //삭제하려는 대상이 폴더인 경우
             
             Set<Integer> allIdsToDelete = new HashSet<Integer>();
             collectAllIdsToDelete(Integer.parseInt(selectedId), allIdsToDelete, dao);            
             
-            //占쎌겱占쎌삺嚥≪뮆�뮉 占쎄텣占쎌젫占쎈막 筌뤴뫀諭� 占쎈쑓占쎌뵠占쎄숲�몴占� 占쎈뼄 揶쏉옙占쎌죬占쎌궎筌욑옙筌랃옙,
-            //FK 鈺곌퀗援뷂옙�뱽 筌띿쉸�뀤筌롳옙 占쎄텣占쎌젫占쎈릭占쎌젻筌롳옙 depth �몴占� 占쎌젟占쎌졊占쎈릭占쎈연 占쎄텣占쎌젫筌ｌ꼶�봺筌욊쑵六억옙鍮먲옙鍮욑옙釉�.
+            //현재까지는 삭제할 모든 데이터를 잘 가져오지만,
+            //FK 조건을 무시하면 삭제하려면 depth 를 파악하여 삭제진행해야함.
             Map<Integer, Integer> depthMap = new HashMap<Integer, Integer>();
             for (Integer id : allIdsToDelete) {
                 
@@ -209,23 +209,23 @@ public class WikiController {
                     parentId = parentIdNext;
                 }
                 depthMap.put(id, depth);
-                System.out.println("占쎄텣占쎌젫占쏙옙占쎄맒)) 筌롫뗀�뤀id : " + id + " depth : " + depth);
+                System.out.println("삭제대상)) 메뉴id : " + id + " depth : " + depth);
             }
             
-            //depth 癰귢쑬以� 占쎄돌占쎈떊筌욑옙 占쎈쑓占쎌뵠占쎄숲�몴占� depth 疫꿸퀣占� 占쎄땀�뵳�눘媛먲옙�떄占쎌몵嚥∽옙 占쎌젟占쎌졊占쎈퉸 占쎈떄筌△뫁�읅占쎌몵嚥∽옙 占쎄텣占쎌젫筌ｌ꼶�봺占쎈맙.
-            // depthMap占쎌뱽 揶쏅�る퓠 占쎈뎡占쎌뵬 占쎄땀�뵳�눘媛먲옙�떄 占쎌젟占쎌졊
+            //depth 별로 정렬된 데이터를 depth 순서 내림차순으로 정렬해준다.
+            // depthMap을 값에 따라 내림차순 정렬
             List<Map.Entry<Integer, Integer>> list = new ArrayList<Map.Entry<Integer, Integer>>(depthMap.entrySet());
 
-            // Comparator�몴占� 占쎄텢占쎌뒠占쎈립 占쎌젟占쎌졊
+            // Comparator를 사용한 정렬
             Collections.sort(list, new Comparator<Map.Entry<Integer, Integer>>() {
                 public int compare(Map.Entry<Integer, Integer> o1, Map.Entry<Integer, Integer> o2) {
                     return o2.getValue().compareTo(o1.getValue());
                 }
             });
             
-            //占쎄텣占쎌젫筌ｌ꼶�봺
+            //삭제진행
             for (Map.Entry<Integer, Integer> entry : list) {
-                // 占쎈퉸占쎈뼣 ID�몴占� 占쎈쑓占쎌뵠占쎄숲甕곗쥙�뵠占쎈뮞占쎈퓠占쎄퐣 占쎄텣占쎌젫
+                // 해당 ID를 데이터베이스에서 삭제
                 dao.deleteItem(entry.getKey().toString(), userno);
                 System.out.println("Deleted ID: " + entry.getKey() + " with depth: " + entry.getValue());
             }
@@ -262,7 +262,7 @@ public class WikiController {
             
             if (dto != null) {
                 ObjectMapper mapper = new ObjectMapper();
-                String jsonResult = mapper.writeValueAsString(dto); // 揶쏆빘猿쒐몴占� JSON �눧紐꾩쁽占쎈였嚥∽옙 癰귨옙占쎌넎
+                String jsonResult = mapper.writeValueAsString(dto); // 객체를 JSON 문자열로 변환
                 
                 return new ResponseEntity<String>(jsonResult, HttpStatus.OK);
             } else {    
@@ -281,22 +281,29 @@ public class WikiController {
         String id = request.getParameter("id");
         String title = request.getParameter("title");
         String titleShare = request.getParameter("titleShare");
+        String isOpen = request.getParameter("isOpen");
         
-        System.out.println("======== 占쎈땾占쎌젟 占쎈만占쎈�� �뚢뫂�뱜嚥▲끇�쑎 筌욊쑴�뿯 ========");
+        System.out.println("======== 수정 액션 입력 ========");
         System.out.println(id);
         System.out.println(title);
         System.out.println(titleShare);
-        System.out.println("======== 占쎈땾占쎌젟 占쎈만占쎈�� �뚢뫂�뱜嚥▲끇�쑎 筌욊쑴�뿯 ========");
+        System.out.println("공개여부 : " + isOpen);
+        System.out.println("======== 수정 액션 입력 ========");
         
         WikiDao dao = sqlSession.getMapper(WikiDao.class);
         
+        //제목처리
         if (titleShare.length() == 0) {
-            System.out.println("�⑤벊��占쎌뒠 占쎌젫筌뤴뫗�뵠 占쎈씨占쎌벉. null 嚥∽옙 筌ｌ꼶�봺占쎈�占쎈빍占쎈뼄.");
+            System.out.println("공유용 제목이 없음. null 로 처리합니다.");
             dao.changeMenuNoShare(title, id);
         } else {
-            System.out.println("�⑤벊��占쎌뒠 占쎌젫筌륅옙 鈺곕똻�삺占쎈맙.");
+            System.out.println("공유용 제목 존재함.");
             dao.changeMenuYesShare(title,titleShare, id);
         }
+        
+        //공개여부 변경처리
+        dao.changeIsOpen(isOpen, id);
+
         
         return "redirect:menuSetting";
     }
@@ -312,13 +319,13 @@ public class WikiController {
     }    
     
     public void setMenuDepth(List<MenuDTO> menus) {
-        // 筌롫뗀�뤀 ID占쏙옙 筌롫뗀�뤀 揶쏆빘猿쒐몴占� 筌띲끋釉⑨옙釉�占쎈뮉 Map占쎌뱽 占쎄문占쎄쉐
+        // 메뉴 ID와 메뉴 객체를 매핑하는 Map을 생성
         Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
         for (MenuDTO menu : menus) {
             menuMap.put(menu.getId(), menu);
         }
 
-        // 揶쏉옙 筌롫뗀�뤀 占쎈퉮筌뤴뫗�벥 depth �④쑴沅�
+        // 각 메뉴 항목의 depth 계산
         for (MenuDTO menu : menus) {
             int depth = 0;
             Integer parentId = menu.getParentId();
@@ -355,10 +362,10 @@ public class WikiController {
             }
         }
 
-        // 嚥≪뮄�돪占쎌뱽 �빊遺쏙옙占쎈퉸 揶쏉옙 筌ㅼ뮇湲쏙옙�맄 筌롫뗀�뤀占쏙옙 占쎈퉸占쎈뼣 占쎈릭占쎌맄 筌롫뗀�뤀占쎈굶占쎌뱽 �빊�뮆�젾
+        // 디버깅을 위해 각 최상위 메뉴와 해당 하위 메뉴들을 출력
 //        for (MenuDTO menu : topLevelMenus) {
 //            System.out.println("Menu: " + menu.getTitle() + " (ID: " + menu.getId() + ")");
-//            printChildren(menu, "  ");  // 占쎌삺域뱄옙占쎌읅占쎌몵嚥∽옙 占쎈릭占쎌맄 筌롫뗀�뤀占쎈굶占쎌뱽 �빊�뮆�젾
+//            printChildren(menu, "  ");  // 재귀적으로 하위 메뉴들을 출력
 //        }
 
         return topLevelMenus;

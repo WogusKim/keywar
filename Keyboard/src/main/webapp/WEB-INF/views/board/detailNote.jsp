@@ -58,11 +58,20 @@
     	
 </head>
 <style>
+.final-outline{
+	overflow-y: auto;
+	width: 100%;
+	height: 90%;
+}
 .editor_outline {
+	width : 75%;
 	border: 1px solid #ccc;
 	padding: 10px;
 	border-radius: 5px;
-	height: 90%;
+	margin: auto;
+/* 	height: 100%; */
+
+	
 }
 .editor-button-area {
 	margin: 20px 0;
@@ -81,7 +90,7 @@
         
         <!-- 우측 컨텐츠 영역 -->
         <div class="content_right">
-        	
+        	<div id="finalOuter" class="final-outline" >
         	<!-- Editor 영역 -->
             <div id="myEditor" class="editor_outline"></div>
             
@@ -90,7 +99,8 @@
 				<button onclick="saveData()">저장하기</button>
 				<button onclick="loadData()">내용 불러오기</button>
             </div>
-
+			</div>
+			
         </div>
     </div>
 <script>

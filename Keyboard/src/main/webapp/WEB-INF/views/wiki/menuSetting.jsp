@@ -50,7 +50,7 @@
 
 <div class="content_outline">
 	<div class="menuSetting_l">
-	    <div class="menu-tree">
+	    <div class="menu-tree2">
 	    <h3>My Menu</h3>
 		    <div class="menu_list">
 		        <!-- <div class="icon folder-icon" onclick="selectFolder(this, 0, 'root', 0, '나의 업무노트')"></div> -->
@@ -148,7 +148,7 @@
 	    </div>
 		<div class="menu_back">
 		    <div class="icon-setting back-icon"></div>
-		    <a href="#" onclick="history.back(); return false;">뒤로가기</a>
+		    <a href="${pageContext.request.contextPath}/">뒤로가기</a>
 		</div>
 		<div class="menu_plus">
 		    <div class="icon-setting plus-icon"></div>
@@ -163,19 +163,26 @@
 	<div class="content_right">
 		<div class="menu_admin">
 			<!-- 아무것도클릭하지않았을때 -->
-			<div class="default">
-				<h1>초기화면</h1>
-				<hr>
-				<div>
-					이곳은 메뉴를 관리하는 곳입니다~~~<br/>
-					<ul>
-						<li>폴더를 삭제하시면 하위 메뉴가 모두 삭제됩니다.</li>
-						<li>페이지를 추가하려면 속할 폴더를 골라주세요.</li>
-						<li>최상위 뎁스에 폴더나 페이지를 만드시려면 '나의 업무노트' 를 클릭 후 추가해주시면 됩니다.</li>
-					</ul>
+				<h1>⚙️메뉴 세팅⚙️</h1>
+				<div class="menuSetting_content">
+					<h2>메뉴(폴더) 추가하기</h2>
+					<h4>가장 상위에 폴더나 아이템을 추가하려면 '나의 업무노트' 를 선택한 후 추가 버튼을 눌러주세요.</h4>
+					<h4>폴더를 선택하는 경우 해당 폴더 하위에 아이템 혹은 폴더가 등록됩니다.</h4>
+					<h4>아이템을 선택한 경우 해당 아이템과 같은 위치에 등록됩니다.</h4>
 				</div>
-			</div>
+				<div class="menuSetting_content">
+					<h2>삭제하기</h2>
+					<h4>아이템을 삭제하면 해당 컨텐츠만 삭제됩니다.</h4>
+					<h4>폴더를 선택하면 하위 모든 컨텐츠들이 삭제됩니다.</h4>
+				</div>
+				<div class="menuSetting_content">
+					<h2>수정하기</h2>
+					<h4>아이템 ↔ 폴더 종류 전환은 불가합니다.</h4>
+					<h4>제목, 공유용 제목, 공유 여부를 수정할 수  있습니다.</h4>	
+				</div>
+
 			<!-- 추가하기 버튼 클릭시 -->
+			<!-- 
 			<div class="make_new_one" style="display: none;">
 			    <h1 id="addFormTitle">추가하기</h1>
 			    <div id="contextMessage"></div>
@@ -211,6 +218,8 @@
 			        </div>
 			    </form>  
 			</div>
+			 -->	
+		
 			
 			<!-- 삭제하기영역 -->
 			<div style="display:none">
@@ -225,6 +234,58 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+<!-- 페이지 추가 모달 팝업 -->
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>노트(폴더) 추가</h3>
+        
+        <form id="addForm" action="${pageContext.request.contextPath}/addMenu" method="post">
+        	<hr class="modal_hr">
+        	<div class="input_outer">
+        	
+	            <input type="hidden" id="selectedId" name="id">
+		        <input type="hidden" id="selectedType" name="type">
+		        <input type="hidden" id="selectedDepth" name="depth">
+		        
+		        <div class="edit_field">
+		        	<label class="label-fixed-width">메뉴 타입:</label>
+		        	<input type="radio" name="menuType" value="folder">
+                    <label for="isOpenYes">폴더</label>
+                    <input type="radio" name="menuType" value="item">
+                    <label for="isOpenNo">업무노트</label>
+		        </div>
+		        
+		        <div class="edit_field">
+		        	<label class="label-fixed-width">공개 여부:</label>
+		        	<input type="radio" name="public" value="yes">
+                    <label for="isOpenYes">공개</label>
+                    <input type="radio" name="public" value="no">
+                    <label for="isOpenNo">비공개</label>
+		        </div>
+		        
+	            <div class="edit_field">
+	                <label class="label-fixed-width">노트(폴더)제목:</label>
+	                <input type="text" id="addTitle" name="title" class="edit_input">
+	            </div>
+
+	            <div class="edit_field">
+	                <label class="label-fixed-width">공유용 제목:</label>
+	                <input type="text" name="sharedTitle" class="edit_input">
+	            </div>	            
+	            
+            </div>
+            
+            <hr class="modal_hr">
+            
+            <div class="submit_buttonArea">
+            	<button class="edit_submit" type="submit">확인</button>
+            </div>
+            
+        </form>
+    </div>
 </div>
 
 <!-- 페이지 수정 모달 팝업 -->
@@ -330,42 +391,33 @@ function selectFolder(element, id, menuType, depth, title) {
     console.log("Selected Folder:", window.selectedFolder);
 }
 
-
+//미사용 
 function updateAddForm(folder) {
-    const displayArea = document.querySelector('.make_new_one');
-    const titleElement = document.getElementById('addFormTitle');
+    
+	
     const idElement = document.getElementById('selectedId');
-    const typeElement = document.getElementById('selectedType');
+    const typeElement = document.getElementById('selectedType');  
     const depthElement = document.getElementById('selectedDepth');
-    const contextMessage = document.getElementById('contextMessage'); // 메시지를 업데이트할 요소
-
-    // 요소에 값 할당
-    titleElement.textContent = `추가하기: ${folder.title}`;
 
     idElement.value = folder.id;
     typeElement.value = folder.menuType;
     depthElement.value = folder.depth;
-    
-    // 타입에 따라 적절한 메시지 설정
-    if (folder.menuType === 'root') {
-        contextMessage.innerHTML = "<h3>최상위에 메뉴얼(폴더)을 추가합니다.</h3>";
-    } else if (folder.menuType === 'folder') {
-        contextMessage.innerHTML = "<h3>선택된 폴더 하위에 메뉴얼(폴더)을 추가합니다.</h3>";
-    } else if (folder.menuType === 'item') {
-        contextMessage.innerHTML = "<h3>선택된 메뉴얼과 같은 위치에 메뉴얼(폴더)을 추가합니다.</h3>";
-    }
 
-    // 디스플레이 설정
-    displayArea.style.display = 'block';
 }
 
 
 function addNewItem() {
     // '추가' 버튼 클릭 시에 선택된 폴더 정보를 사용해 폼 업데이트
     if (window.selectedFolder) {
-        updateAddForm(window.selectedFolder);
-        document.querySelector('.make_new_one').style.display = 'block';
-        document.querySelector('.default').style.display = 'none';
+        //updateAddForm(window.selectedFolder);
+        
+        const form = document.getElementById('addForm');
+        form.elements['id'].value = window.selectedFolder.id;
+        form.elements['type'].value = window.selectedFolder.menuType;
+        form.elements['depth'].value = window.selectedFolder.depth;
+        
+        document.getElementById('addModal').style.display = 'block';
+        //document.querySelector('.default').style.display = 'none';
     } else {
         // 폴더가 선택되지 않은 경우, 사용자에게 알림
         alert("폴더를 선택해 주세요.");
@@ -414,12 +466,25 @@ function showEditModal(id) {
         .catch(error => console.error('Error loading the board details:', error));
 }
 
-// 모달 닫기
-document.querySelector('.close').onclick = function() {
-    document.getElementById('editModal').style.display = 'none';
-};
+//모달 닫기
+document.querySelectorAll('.close').forEach(closeBtn => {
+    closeBtn.onclick = function() {
+        document.getElementById('editModal').style.display = 'none';
+        document.getElementById('addModal').style.display = 'none';
+    };
+});
 
-// 폼 제출
+//폼 제출 (추가)
+document.getElementById('addForm').addEventListener('submit', function(event) {
+    var titleInput = document.getElementById('addTitle');
+    if (titleInput.value.trim() === '') {
+        alert('제목은 필수로 입력해야합니다.');
+        titleInput.focus();
+        event.preventDefault();
+    }
+});
+
+// 폼 제출 (수정)
 document.getElementById('editForm').addEventListener('submit', function(event) {
     var titleInput = document.getElementById('editTitle');
     if (titleInput.value.trim() === '') {
@@ -432,12 +497,12 @@ document.getElementById('editForm').addEventListener('submit', function(event) {
 
 document.addEventListener('click', function(event) {
     // 클릭된 요소가 menu-tree 내부에 있지만, onclick 이벤트가 있는 요소가 아닐 때만 선택 해제
-    if (event.target.closest('.menu-tree') && !event.target.closest('[onclick]')) {
+    if (event.target.closest('.menu-tree2') && !event.target.closest('[onclick]')) {
         document.querySelectorAll('.menu_list span').forEach(span => {
             span.classList.remove('selected');
         });
-        document.querySelector('.make_new_one').style.display = 'none';
-        document.querySelector('.default').style.display = 'block';
+        //document.querySelector('.make_new_one').style.display = 'none';
+        //document.querySelector('.default').style.display = 'block';
         window.selectedFolder = null; // 선택된 폴더 정보 초기화
         
         const editIcon = document.querySelector('.edit-icon');

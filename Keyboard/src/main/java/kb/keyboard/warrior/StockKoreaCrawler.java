@@ -55,6 +55,12 @@ public class StockKoreaCrawler {
                 double weekHigh52 = Double.parseDouble(weekHighValue.replace(",", ""));
                 double weekLow52 = Double.parseDouble(weekLowValue.replace(",", ""));
 
+                
+                // changePercentage가 음수인 경우 priceChange도 음수로 설정
+                if (changePercentageValue < 0) {
+                    priceChangeValue = -Math.abs(priceChangeValue);
+                }
+                
                 StockDTO stockDTO = new StockDTO();
                 stockDTO.setCountry("한국");
                 stockDTO.setIndexName(indexName);

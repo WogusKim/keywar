@@ -61,6 +61,18 @@
                             <option value="개인">개인</option>
                             <option value="팀">팀</option>
                             <option value="부서">부서</option>
+                            <option value="사용자 설정">사용자 설정</option>
+                        </select>
+                    </div>
+                    <!-- 추가적인 드롭다운은 기본적으로 숨김 -->
+                    <div class="form-group" id="customSharetoGroup" style="display: none;">
+                        <label for="customShareto">사용자 설정 공유 대상</label>
+                        <select class="form-control" id="customShareto" name="customShareto">
+                            <!-- 여기에 사용자 설정 항목을 추가하세요 
+                            <option value="user1">User 1</option>
+                            <option value="user2">User 2</option>
+                            <option value="user3">User 3</option>
+                            -->
                         </select>
                     </div>
                 </form>
@@ -135,11 +147,17 @@
                             <option value="개인">개인</option>
                             <option value="팀">팀</option>
                             <option value="부서">부서</option>
+                            <option value="사용자 설정">사용자 설정</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">저장</button>
+                    <!-- 추가적인 드롭다운은 기본적으로 숨김 -->
+					<div class="form-group" id="customSharetoGroupEdit" style="display: none;">
+					    <label for="customSharetoEdit">사용자 설정 공유 대상</label>
+					    <select class="form-control" id="customSharetoEdit" name="customSharetoEdit">
+					    </select>
+					</div>
+					<button type="submit" class="btn btn-primary">저장</button>
                     <!-- <button type="button" class="btn btn-primary" onclick="updateSchedule()">저장</button> -->
-                    
                 </form>
             </div>
         </div>
@@ -188,6 +206,74 @@
 <script>
     var calendar;
 
+    
+    $(document).ready(function() {
+        $('#scheduleShareto').change(function() {
+            if ($(this).val() === '사용자 설정') {
+                // 사용자 설정을 선택했을 때 Ajax 호출
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/customsharetoload',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    success: function(response) {
+                        $('#customShareto').empty();
+
+                        if (response.length > 0) {
+                            $.each(response, function(index, item) {
+                                $('#customShareto').append($('<option>', {
+                                    value: item.sharedepth3,
+                                    text: item.customname
+                                }));
+                            });
+                            $('#customSharetoGroup').show();
+                        } else {
+                            alert('사용자 설정 그룹이 없습니다.');
+                            $('#customSharetoGroup').hide();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('사용자 설정 불러오기 중 오류가 발생했습니다:', error);
+                        alert('사용자 설정 불러오기 중 오류가 발생했습니다. 다시 시도해주세요.');
+                    }
+                });
+            } else {
+                $('#customSharetoGroup').hide();
+            }
+        });
+        
+        $('#editEventShareto').change(function() {
+            if ($(this).val() === '사용자 설정') {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/customsharetoload',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    success: function(response) {
+                        $('#customSharetoEdit').empty();
+                        if (response.length > 0) {
+                            $.each(response, function(index, item) {
+                                $('#customSharetoEdit').append($('<option>', {
+                                    value: item.sharedepth3,
+                                    text: item.customname
+                                }));
+                            });
+                            $('#customSharetoGroupEdit').show();
+                        } else {
+                            alert('사용자 설정 그룹이 없습니다.');
+                            $('#customSharetoGroupEdit').hide();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('사용자 설정 불러오기 중 오류가 발생했습니다:', error);
+                        alert('사용자 설정 불러오기 중 오류가 발생했습니다. 다시 시도해주세요.');
+                    }
+                });
+            } else {
+                $('#customSharetoGroupEdit').hide();
+            }
+        });
+    });
+
+    
     function handleDateClick(info) {
         $('#addScheduleModal').modal('show');
         $('#addScheduleForm #scheduleStartDate').val(info.dateStr);
@@ -196,14 +282,18 @@
 
     function handleEditModal(event) {
 //    	$('#eventTitle').text(event.scheduleid);
+//    console.log('Event Data:', event); // 로그 추가
+//    console.log('Extended Props:', event.extendedProps); // 로그 추가
     	$('#eventTitle').text(event.title);
         $('#eventStartDate').text(moment(event.start).format('YYYY-MM-DD'));
         $('#eventEndDate').text(event.extendedProps.realEndDate || moment(event.end).subtract(1, 'days').format('YYYY-MM-DD'));
 //        $('#eventEndDate').text(event.end ? moment(event.end).format('YYYY-MM-DD') : '미설정');
         $('#eventContent').text(event.extendedProps.content);
-        $('#eventShareto').text(event.extendedProps.shareto);
+        $('#eventShareto').text(event.extendedProps.customname);
+        $('#eventCategory').text(event.extendedProps.category);
         $('#editEventButton').data('event', event);
         $('#eventDetailModal').modal('show');
+               
     }
     
     
@@ -214,6 +304,7 @@
         let endDate = $('#addScheduleForm #scheduleEndDate').val();
         const content = $('#addScheduleForm #scheduleContent').val();
         const shareto = $('#addScheduleForm #scheduleShareto').val();
+        let customShare = $('#customShareto').val() || null;
 
         if (!title) {
             alert("제목을 입력해주세요.");
@@ -222,12 +313,12 @@
         
         // 날짜 문자열을 Date 객체로 변환
         const startDateObj = new Date(startDate);
-        const endDateObj = new Date(endDate);
+        const endDateObj = new Date(endDate || startDate);
         
-        if (!endDate) {
+        /* if (!endDate) {
             endDate = startDate; // 종료 날짜가 비어있다면 시작 날짜로 설정
             endDateObj = new Date(startDate);
-        }
+        } */
         
         if (startDateObj > endDateObj) {
             alert("종료일자는 시작일자보다 이전 일자로 등록할 수 없습니다.");
@@ -238,11 +329,23 @@
         const displayEndDate = new Date(endDateObj);
         displayEndDate.setDate(displayEndDate.getDate() + 1);
         
+        
+        const eventData = {
+                title: title,
+                startDate: startDate,
+                endDate: endDate || startDate,
+                content: content,
+                shareto: shareto,
+                customShare: customShare
+            };
+        
+        console.log('Event Data:', eventData);
+
         $.ajax({
             url: '${pageContext.request.contextPath}/calendarsave',
             method: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ title, startDate, endDate, content, shareto }),
+            data: JSON.stringify(eventData),
             success: function(response) {
                 console.log('일정이 성공적으로 저장되었습니다.');
                 calendar.addEvent({
@@ -254,6 +357,7 @@
                     extendedProps: {
                         content: content,
                         shareto: shareto,
+                        customShare: customShare,
                         realEndDate: endDate  // 실제 종료일 저장
                     }
                 });
@@ -263,18 +367,23 @@
             },
             error: function(xhr, status, error) {
                 console.error('일정 저장 중 오류가 발생했습니다:', error);
+                console.log('XHR Object:', xhr);
+                console.log('Status:', status);
+                console.log('Error:', error);
                 alert('일정 저장 중 오류가 발생했습니다. 다시 시도해주세요.');
             }
         });
     }
 
-    function updateSchedule() {
+/*     function updateSchedule() {
+     
         const title = $('#editEventForm #editEventTitle').val();
         const startDate = $('#editEventForm #editEventStartDate').val();
-        const endDate = $('#editEventForm #editEventEndDate').val();
+        let endDate = $('#editEventForm #editEventEndDate').val();
         const content = $('#editEventForm #editEventContent').val();
         const shareto = $('#editEventForm #editEventShareto').val();
         const scheduleid = $('#editEventId').val();
+        let customShare = $('#customSharetoEdit').val() || null; 
 
         if (!title) {
             alert("제목을 입력해주세요.");
@@ -290,7 +399,15 @@
             return;
         }
 
-        const eventData = { scheduleid: scheduleid, title, startDate, endDate, content, shareto };
+        const eventData = { 
+                scheduleid: scheduleid,
+                title: title,
+                startDate: startDate,
+                endDate: endDate,
+                content: content,
+                shareto: shareto,
+                customShare: customShare
+        };
 
         console.log('Sending event data:', eventData);  // 데이터 확인용 로그
         
@@ -311,9 +428,75 @@
                 alert('일정 업데이트 중 오류가 발생했습니다. 다시 시도해주세요.');
             }
         });
-    }
+    } */
     
+    function updateSchedule() {
+        // event.preventDefault(); // 폼의 기본 제출 동작 방지
 
+        const scheduleid = $('#editEventId').val();
+        const title = $('#editEventTitle').val();
+        const startDate = $('#editEventStartDate').val();
+        let endDate = $('#editEventEndDate').val();
+        const content = $('#editEventContent').val();
+/*         const sharedepth1 = $('#editEventShareto').val();
+        const sharedepth2 = $('#sharedepth2').val() || null; // sharedepth2 선택 요소 가정
+        const sharedepth3 = $('#sharedepth3').val() || null; // sharedepth3 선택 요소 가정 */
+        const shareto = $('#editEventForm #editEventShareto').val();
+        let customShare = $('#customSharetoEdit').val() || null; 
+
+        if (!title) {
+            alert("제목을 입력해주세요.");
+            return;
+        }
+
+        // 날짜 유효성 검사
+        const startDateObj = new Date(startDate);
+        const endDateObj = new Date(endDate);
+        if (startDateObj > endDateObj) {
+            alert("종료일자는 시작일자보다 이전 일자로 등록할 수 없습니다.");
+            return;
+        }
+
+        
+        const eventData = { 
+            scheduleid: scheduleid,
+            title: title,
+            startDate: startDate,
+            endDate: endDate,
+            content: content,
+            shareto: shareto,
+            customShare: customShare
+        };
+
+        console.log('Sending event data:', eventData);  // 데이터 확인용 로그
+        
+        $.ajax({
+            url: '${pageContext.request.contextPath}/calendaredit',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(eventData),
+            success: function(response) {
+                console.log('일정이 성공적으로 업데이트되었습니다.');
+                calendar.refetchEvents();
+                $('#editEventModal').modal('hide');
+                location.reload(); // 페이지 새로고침 대신 특정 부분만 업데이트하는 것이 좋습니다.
+                // updateCalendarView(); // 캘린더 뷰 업데이트 함수 (별도 정의 필요)
+            },
+            error: function(xhr, status, error) {
+                console.error('일정 업데이트 중 오류가 발생했습니다:', error);
+                alert('일정 업데이트 중 오류가 발생했습니다. 다시 시도해주세요.');
+            }
+        });
+    }
+
+    // 폼 제출 이벤트 리스너
+//    $('#editEventForm').on('submit', updateSchedule);
+
+    // 캘린더 뷰 업데이트 함수 (예시)
+    function updateCalendarView() {
+        calendar.refetchEvents();
+        // 필요한 경우 추가적인 UI 업데이트 로직
+    }
     
     function adjustEndDate(endDate) {
         if (!endDate) return null;
@@ -324,13 +507,14 @@
 
 
     function handleEventDrop(event) {
+        const scheduleid = event.id;
         const title = event.title;
         const startDate = event.start.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\. /g, '-').replace('.', '');
         let endDate = event.end ? event.end.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\. /g, '-').replace('.', '') : null;
         const content = event.extendedProps.content;
-        const shareto = event.extendedProps.shareto;
-        const scheduleid = event.id;
-        
+        const shareto = event.extendedProps.category;
+        const customShare = event.extendedProps.sharedepth3;
+
         // endDate의 exclusive -> inclusive 변환부분 되돌리기 위해 endDate를 하루 줄임
         if (endDate) {
             let endDateObj = new Date(endDate);
@@ -338,7 +522,7 @@
             endDate = endDateObj.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\. /g, '-').replace('.', '');
         }
         
-        const eventData = { scheduleid: scheduleid, title, startDate, endDate, content, shareto };
+        const eventData = { scheduleid: scheduleid, title, startDate, endDate, content, shareto, customShare };
 
         console.log('Sending event data:', eventData);  // 데이터 확인용 로그
         
@@ -411,6 +595,7 @@
                     end: adjustEndDate(event.end), //new Date(event.end + 'T00:00:00'),  // 종료일 다음날로 설정
                     backgroundColor: event.extendedProps.sharecolor, // sharecolor를 backgroundColor로 설정
                     borderColor: event.extendedProps.sharecolor,  // 배경색과 같은 색으로 테두리 설정
+                    shareCategory: event.extendedProps.category,  // 수정용 카테고리 추가
                     allDay: true  // 모든 이벤트를 종일 이벤트로 처리
                 })),
                 //events: data,
@@ -431,15 +616,46 @@
             console.error("AJAX request failed: " + textStatus, errorThrown);
         });
 
+        /* function handleEditModal(event) {
+//        	$('#eventTitle').text(event.scheduleid);
+//        console.log('Event Data:', event); // 로그 추가
+//        console.log('Extended Props:', event.extendedProps); // 로그 추가
+        	$('#eventTitle').text(event.title);
+            $('#eventStartDate').text(moment(event.start).format('YYYY-MM-DD'));
+            $('#eventEndDate').text(event.extendedProps.realEndDate || moment(event.end).subtract(1, 'days').format('YYYY-MM-DD'));
+//            $('#eventEndDate').text(event.end ? moment(event.end).format('YYYY-MM-DD') : '미설정');
+            $('#eventContent').text(event.extendedProps.content);
+            $('#eventShareto').text(event.extendedProps.customname);
+            
+            $('#editEventButton').data('event', event);
+            $('#eventDetailModal').modal('show');
+                   
+        } */
+        
+        
         $('#editEventButton').on('click', function() {
             var event = $(this).data('event');
             $('#editEventId').val(event.id);
             $('#editEventTitle').val(event.title);
             $('#editEventStartDate').val(moment(event.start).format('YYYY-MM-DD'));
 //            $('#editEventEndDate').val(event.end ? moment(event.end).format('YYYY-MM-DD') : getCurrentDate());
-            $('#editEventEndDate').val(event.extendedProps.realEndDate); // DB에서 가져온 실제 종료일 사용_0724
+//            $('#editEventEndDate').val(event.extendedProps.realEndDate || moment(event.end).subtract(1, 'days').format('YYYY-MM-DD'));
+		    $('#editEventEndDate').val($('#eventEndDate').text());  // 상세 모달에서 표시된 값 사용
             $('#editEventContent').val(event.extendedProps.content);
-            $('#editEventShareto').val(event.extendedProps.shareto);
+//            $('#editEventShareto').val(event.extendedProps.customname);
+//            $('#editEventShareto').val($('#eventShareto').text());  // 상세 모달에서 표시된 값 사용
+            $('#editEventShareto').val(event.extendedProps.shareCategory);
+            console.log('ShareCategory set:', event.extendedProps.shareCategory);  // 설정된 값 로깅
+
+          	// 사용자 설정 공유 대상 처리
+            if (event.extendedProps.shareCategory === '사용자 설정') {
+                $('#customSharetoGroupEdit').show();
+                $('#customSharetoEdit').val(event.extendedProps.customname);
+                console.log('Before setting customname:', $('#customSharetoEdit').val());
+            } else {
+                $('#customSharetoGroupEdit').hide();
+            }
+          
             $('#eventDetailModal').modal('hide');
             $('#editEventModal').modal('show');
         });
