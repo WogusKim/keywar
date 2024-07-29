@@ -14,6 +14,7 @@ public class MenuDTO {
     private String userno;
     private int depth;
     private List<MenuDTO> children = new ArrayList<MenuDTO>(); // 자식 메뉴 목록 추가
+    private int isOpen;
 
 
 	// 기본 생성자
@@ -112,4 +113,12 @@ public class MenuDTO {
     public void setChildren(List<MenuDTO> children) {
         this.children = children;
     }
+    
+	public int getIsOpen() {
+		return isOpen;
+	}
+
+	public void setIsOpen(int isOpen) {
+		this.isOpen = isOpen;
+	}
 }

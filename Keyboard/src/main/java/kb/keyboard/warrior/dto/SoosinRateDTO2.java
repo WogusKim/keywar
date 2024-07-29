@@ -6,7 +6,8 @@ public class SoosinRateDTO2 {
     private String period;
     private double basicRate;
     private double customerRate;
-
+    public SoosinRateDTO2() {
+    }
     public SoosinRateDTO2(String period, double basicRate, double customerRate) {
         this.period = period;
         this.basicRate = basicRate;

@@ -1,8 +1,11 @@
 package kb.keyboard.warrior.controller;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 import javax.servlet.http.HttpSession;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import kb.keyboard.warrior.CoffixRateCrawler;
 import kb.keyboard.warrior.CurrencyRateCrawler;
 import kb.keyboard.warrior.MorRateCrawler;
 import kb.keyboard.warrior.StockCrawler;
+import kb.keyboard.warrior.dao.ExchangeRateDao;
 import kb.keyboard.warrior.dao.LoginDao;
 import kb.keyboard.warrior.dao.MemoDao;
 import kb.keyboard.warrior.dao.ToDoDao;
@@ -23,7 +27,8 @@ import kb.keyboard.warrior.dto.MenuDTO;
 import kb.keyboard.warrior.dto.MorCoffixDTO;
 import kb.keyboard.warrior.dto.MyMemoDTO;
 import kb.keyboard.warrior.dto.NoticeDTO;
-
+import kb.keyboard.warrior.dto.SoosinRateDTO;
+import kb.keyboard.warrior.dto.SoosinRateDTO2;
 import kb.keyboard.warrior.dto.StockDTO;
 
 import kb.keyboard.warrior.dto.StockFavoriteDTO;
@@ -34,230 +39,260 @@ import kb.keyboard.warrior.dto.TodoListDTO;
  */
 @Controller
 public class HomeController {
-    @Autowired
-    public SqlSession sqlSession;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String home(Model model, HttpSession session) {
+	@Autowired
+	public SqlSession sqlSession;
 
-    	// ·Î±×ÀÎ ¿©ºÎ Ã¼Å©
-    	String userno = (String) session.getAttribute("userno");
-    	String deptno = (String) session.getAttribute("deptno");
-    	// ÀÌÈÄ ·Î±×ÀÎ ¿©ºÎ Ã¼Å© ÇÊ¿ä
-    	// ¼¼¼Ç¿¡¼­ ¸Ş´º µ¥ÀÌÅÍ¸¦ È®ÀÎ (È®ÀÎÈÄ ¾øÀ¸¸é ¼¼¼Ç ¼³Á¤)!!!
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String home(Model model, HttpSession session) {
+		long startTime = System.currentTimeMillis(); // ì‹œì‘ ì‹œê°„ ê¸°ë¡
 
-        List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
-        
-        LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
+		// ë¡œê·¸ì¸ ì—¬ë¶€ ì²´í¬
+		String userno = (String) session.getAttribute("userno");
+		String deptno = (String) session.getAttribute("deptno");
+		// ì´í›„ ë¡œê·¸ì¸ ì—¬ë¶€ ì²´í¬ í•„ìš”
+		// ì„¸ì…˜ì—ì„œ ë©”ë‰´ ë°ì´í„°ë¥¼ í™•ì¸ (í™•ì¸í›„ ì—†ìœ¼ë©´ ì„¸ì…˜ ì„¤ì •)!!!
 
+		List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
 
-        menus = loginDao.getMenus(userno);
-        setMenuDepth(menus);
-        List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
+		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
 
-        session.setAttribute("menus", topLevelMenus);  // ¼¼¼Ç¿¡ ¸Ş´º µ¥ÀÌÅÍ ÀúÀå
+		menus = loginDao.getMenus(userno);
+		setMenuDepth(menus);
+		List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
 
-        model.addAttribute("menus", topLevelMenus);
+		session.setAttribute("menus", topLevelMenus); // ì„¸ì…˜ì— ë©”ë‰´ ë°ì´í„° ì €ì¥
 
-        // È¯À² Áñ°ÜÃ£±â È®ÀÎ
-        List<ExchangeFavoriteDTO> favorites = loginDao.getFavoriteCurrency(userno);
+		model.addAttribute("menus", topLevelMenus);
 
-        String favoriteCurrency1 = "0"; // µğÆúÆ® °ª: USD
-        String favoriteCurrency2 = "0"; // µğÆúÆ® °ª: JPY
-        String favoriteCurrency3 = "0"; // µğÆúÆ® °ª: EUR
+		// È¯ï¿½ï¿½ ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ È®ï¿½ï¿½
+		List<ExchangeFavoriteDTO> favorites = loginDao.getFavoriteCurrency(userno);
 
-        switch (favorites.size()) {
-            case 0:
-                // Áñ°ÜÃ£±â ¾øÀ¸¸é ±âº»À¸·Î ³ª¿À´Â 3°³
-                favoriteCurrency1 = "USD";
-                favoriteCurrency2 = "JPY";
-                favoriteCurrency3 = "EUR";
-                break;
-            case 1:
+		String favoriteCurrency1 = "0"; // ë””í´íŠ¸ ê°’: USD
+		String favoriteCurrency2 = "0"; // ë””í´íŠ¸ ê°’: JPY
+		String favoriteCurrency3 = "0"; // ë””í´íŠ¸ ê°’: EUR
 
-                // Áñ°ÜÃ£±â 1°³
-                favoriteCurrency1 = favorites.get(0).getCurrency();
-                break;
-            case 2:
-                // Áñ°ÜÃ£±â 2°³
-                favoriteCurrency1 = favorites.get(0).getCurrency();
-                favoriteCurrency2 = favorites.get(1).getCurrency();
-                break;
-            case 3:
-                // Áñ°ÜÃ£±â 3°³
-                favoriteCurrency1 = favorites.get(0).getCurrency();
-                favoriteCurrency2 = favorites.get(1).getCurrency();
-                favoriteCurrency3 = favorites.get(2).getCurrency();
-                break;
-        }
-        
+		switch (favorites.size()) {
+		case 0:
+			// ì¦ê²¨ì°¾ê¸° ì—†ìœ¼ë©´ ê¸°ë³¸ìœ¼ë¡œ ë‚˜ì˜¤ëŠ” 3ê°œ
+			favoriteCurrency1 = "USD";
+			favoriteCurrency2 = "JPY";
+			favoriteCurrency3 = "EUR";
+			break;
+		case 1:
 
-        // È¯À² Áñ°ÜÃ£±â µ¥ÀÌÅÍ Ã³¸®	
-        CurrencyRateCrawler currencyCrawler = new CurrencyRateCrawler();
-        List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeFavoriteRates(favoriteCurrency1, favoriteCurrency2, favoriteCurrency3);
-        if (!currencyRates.isEmpty()) {
-            model.addAttribute("ratesFavorite", currencyRates);   
-        } else {
-            System.out.println("No rates found.");
-        }
-        
+			// ì¦ê²¨ì°¾ê¸° 1ê°œ
+			favoriteCurrency1 = favorites.get(0).getCurrency();
+			break;
+		case 2:
+			// ì¦ê²¨ì°¾ê¸° 2ê°œ
+			favoriteCurrency1 = favorites.get(0).getCurrency();
+			favoriteCurrency2 = favorites.get(1).getCurrency();
+			break;
+		case 3:
+			// ì¦ê²¨ì°¾ê¸° 3ê°œ
+			favoriteCurrency1 = favorites.get(0).getCurrency();
+			favoriteCurrency2 = favorites.get(1).getCurrency();
+			favoriteCurrency3 = favorites.get(2).getCurrency();
+			break;
+		}
 
-        // Áõ½ÃÁñ°ÜÃ£±â
+		// í™˜ìœ¨ ì¦ê²¨ì°¾ê¸° ë°ì´í„° ì²˜ë¦¬
+//        CurrencyRateCrawler currencyCrawler = new CurrencyRateCrawler();
+//        List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeFavoriteRates(favoriteCurrency1, favoriteCurrency2, favoriteCurrency3);
+		// í¬ë¡¤ë§ì„ DBì—ì„œ ê°€ì ¸ì˜¤ëŠ” ê²ƒìœ¼ë¡œ ë°”ê¾¸ëŠ” êµ¬ë¬¸.
+		ExchangeRateDao exchangedao = sqlSession.getMapper(ExchangeRateDao.class);
+		List<ExchangeRateDTO> currencyRates = exchangedao.getAllExchangeRate();
 
-        List<StockFavoriteDTO> stock = loginDao.getFavoriteStock(userno);
+		List<ExchangeRateDTO> favoritecurrencyRates = new ArrayList<ExchangeRateDTO>();
+		for (ExchangeRateDTO dto : currencyRates) {
+			if (dto.getCurrencyCode().equals(favoriteCurrency1) || dto.getCurrencyCode().equals(favoriteCurrency2)
+					|| dto.getCurrencyCode().equals(favoriteCurrency3)) {
+				favoritecurrencyRates.add(dto);
+			}
+		}
 
+		if (!favoritecurrencyRates.isEmpty()) {
+			model.addAttribute("ratesFavorite", favoritecurrencyRates);
+		} else {
+			System.out.println("No rates found.");
+		}
 
-        String favoriteStock1 = "0"; // 
-        String favoriteStock2 = "0"; // 
-        String favoriteStock3 = "0"; //
-        String favoriteStock4 = "0"; // 
+		// ì¦ì‹œì¦ì°¾
 
+		List<StockFavoriteDTO> stock = loginDao.getFavoriteStock(userno);
 
-        switch (stock.size()) {
-            case 0:
-            	favoriteStock1 = "ÄÚ½ºÇÇ";
-            	favoriteStock2 = "ÄÚ½º´Ú";
-            	favoriteStock3 = "S&P 500";
-            	favoriteStock4 = "³ª½º´Ú Á¾ÇÕ";
+		String favoriteStock1 = "0"; //
+		String favoriteStock2 = "0"; //
+		String favoriteStock3 = "0"; //
+		String favoriteStock4 = "0"; //
 
-                break;
-            case 1:
-            	favoriteStock1 = stock.get(0).getIndexname();
-                break;
-            case 2:
-            	favoriteStock1 = stock.get(0).getIndexname();
-            	favoriteStock2 = stock.get(1).getIndexname();
-                break;
-            case 3:
-            	favoriteStock1 = stock.get(0).getIndexname();
-            	favoriteStock2 = stock.get(1).getIndexname();
-            	favoriteStock3 = stock.get(2).getIndexname();
-                break;
-            case 4:
-            	favoriteStock1 = stock.get(0).getIndexname();
-            	favoriteStock2 = stock.get(1).getIndexname();
-            	favoriteStock3 = stock.get(2).getIndexname();
-            	favoriteStock4 = stock.get(3).getIndexname();
-                break;
+		switch (stock.size()) {
+		case 0:
+			favoriteStock1 = "ì½”ìŠ¤í”¼";
+			favoriteStock2 = "ì½”ìŠ¤ë‹¥";
+			favoriteStock3 = "S&P 500";
+			favoriteStock4 = "ë‚˜ìŠ¤ë‹¥ ì¢…í•©";
 
-        }
-        
+			break;
+		case 1:
+			favoriteStock1 = stock.get(0).getIndexname();
+			break;
+		case 2:
+			favoriteStock1 = stock.get(0).getIndexname();
+			favoriteStock2 = stock.get(1).getIndexname();
+			break;
+		case 3:
+			favoriteStock1 = stock.get(0).getIndexname();
+			favoriteStock2 = stock.get(1).getIndexname();
+			favoriteStock3 = stock.get(2).getIndexname();
+			break;
+		case 4:
+			favoriteStock1 = stock.get(0).getIndexname();
+			favoriteStock2 = stock.get(1).getIndexname();
+			favoriteStock3 = stock.get(2).getIndexname();
+			favoriteStock4 = stock.get(3).getIndexname();
+			break;
 
+		}
 
-        // Áõ½Ã Áñ°ÜÃ£±â µ¥ÀÌÅÍ Ã³¸®
-        StockCrawler stockCrawler = new StockCrawler();
-        List<StockDTO> stocks = stockCrawler.fetchFavoriteStocks(favoriteStock1, favoriteStock2, favoriteStock3, favoriteStock4);
-        if (!stocks.isEmpty()) {
-            model.addAttribute("stockFavorite", stocks);   
-        } else {
-            System.out.println("No rates found.");
-        }
-        
-        
+		// ì¦ì‹œ ì¦ê²¨ì°¾ê¸° ë°ì´í„° ì²˜ë¦¬
+//		StockCrawler stockCrawler = new StockCrawler();
+//        List<StockDTO> stocks = stockCrawler.fetchFavoriteStocks(favoriteStock1, favoriteStock2, favoriteStock3, favoriteStock4);
+		List<StockDTO> stocks = exchangedao.getAllStock();
+		List<StockDTO> favoriteStocks = new ArrayList<StockDTO>();
 
-        // MOR
+		for (StockDTO stock1 : stocks) {
+			if (stock1.getIndexName().equals(favoriteStock1) || 
+				stock1.getIndexName().equals(favoriteStock2)|| 
+				stock1.getIndexName().equals(favoriteStock3)|| 
+				stock1.getIndexName().equals(favoriteStock4)) {
+				favoriteStocks.add(stock1);
+			}
+		}
 
-        MorRateCrawler morCrawler = new MorRateCrawler();
-        List<MorCoffixDTO> morRates = morCrawler.fetchMorRates();
-        if (!morRates.isEmpty()) {
-            model.addAttribute("mor", morRates);
-        }
+		if (!stocks.isEmpty()) {
+			model.addAttribute("stockFavorite", favoriteStocks);
+		} else {
+			System.out.println("No rates found.");
+		}
 
+		// MOR
 
-        // COFIX
-        CoffixRateCrawler coffixCrawler = new CoffixRateCrawler();
-        List<MorCoffixDTO> coffixRates = coffixCrawler.fetchMorRates();
-        if (!coffixRates.isEmpty()) {
-            model.addAttribute("cofix", coffixRates);
-        }
+//        MorRateCrawler morCrawler = new MorRateCrawler();
+//        List<MorCoffixDTO> morRates = morCrawler.fetchMorRates();
+		ExchangeRateDao dao = sqlSession.getMapper(ExchangeRateDao.class);
+		List<MorCoffixDTO> morRates = dao.getAllMor();
+		if (!morRates.isEmpty()) {
+			model.addAttribute("mor", morRates);
+		}
 
+		// COFIX
+//        CoffixRateCrawler coffixCrawler = new CoffixRateCrawler();
+//        List<MorCoffixDTO> coffixRates = coffixCrawler.fetchMorRates();
+		List<MorCoffixDTO> coffixRates = dao.getAllCofix();
+		if (!coffixRates.isEmpty()) {
+			model.addAttribute("cofix", coffixRates);
+		}
+		//êµ­ë¯¼ìˆ˜í¼ì •ê¸°ì˜ˆê¸ˆ
+		List<SoosinRateDTO> superRates = dao.getAllInterestRate();
+	    if (!superRates.isEmpty()) {
+	    	model.addAttribute("superRates", superRates);
+	    }
+	    //KBSTARì •ê¸°ì˜ˆê¸ˆ
+	    List<SoosinRateDTO2> kbStarRates = dao.getAllInterestRate2();
+	    if (!kbStarRates.isEmpty()) {
+	    	model.addAttribute("kbStarRates", kbStarRates);
+	    } 
 
-        // To Do List
+	    
+		// To Do List
+		ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
+		List<TodoListDTO> todoList = todoDao.getToDoList(userno);
+		model.addAttribute("todoList", todoList);
 
-        ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
-        List<TodoListDTO> todoList = todoDao.getToDoList(userno);
-        model.addAttribute("todoList", todoList);
+		// Memo Data
+		MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
+		List<MyMemoDTO> memoList = memoDao.memoView1(userno);
+		model.addAttribute("memoList", memoList);
 
+		// Notice Data
+		List<NoticeDTO> noticeList = memoDao.noticeView(deptno);
+		model.addAttribute("noticeList", noticeList);
 
-        // Memo Data
-        MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
-        List<MyMemoDTO> memoList = memoDao.memoView1(userno);
-        model.addAttribute("memoList", memoList);
+		long endTime = System.currentTimeMillis(); // ì™„ë£Œ ì‹œê°„ ê¸°ë¡
+		long duration = endTime - startTime; // ì‹¤í–‰ ì‹œê°„ ê³„ì‚°
+		System.out.println("ë©”ì¸í™”ë©´ ë¡œë”© ì†Œìš” ì‹œê°„: " + duration + "ë°€ë¦¬ì´ˆ");
 
-        // Notice Data
-        List<NoticeDTO> noticeList = memoDao.noticeView(deptno);
-        model.addAttribute("noticeList", noticeList);
+		return "main";
+	}
 
-        return "main";
-    }
+	@RequestMapping("/noticeForm")
+	public String noticeForm() {
+		return "noticeForm";
+	}
 
-    @RequestMapping("/noticeForm")
-    public String noticeForm() {		
-        return "noticeForm";
-    }
+	public void setMenuDepth(List<MenuDTO> menus) {
 
-    public void setMenuDepth(List<MenuDTO> menus) {
+		// ë©”ë‰´ IDì™€ ë©”ë‰´ ê°ì²´ë¥¼ ë§¤í•‘í•˜ëŠ” Mapì„ ìƒì„±
+		Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
+		for (MenuDTO menu : menus) {
+			menuMap.put(menu.getId(), menu);
+		}
 
-    	// ¸Ş´º ID¿Í ¸Ş´º °´Ã¼¸¦ ¸ÅÇÎÇÏ´Â MapÀ» »ı¼º 
-        Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
-        for (MenuDTO menu : menus) {
-            menuMap.put(menu.getId(), menu);
-        }
+		// ê° ë©”ë‰´ í•­ëª©ì˜ depth ê³„ì‚°
+		for (MenuDTO menu : menus) {
+			int depth = 0;
+			Integer parentId = menu.getParentId();
+			while (parentId != null) {
+				MenuDTO parent = menuMap.get(parentId);
+				if (parent == null)
+					break;
+				depth++;
+				parentId = parent.getParentId();
+			}
+			menu.setDepth(depth);
+		}
+	}
 
+	public List<MenuDTO> organizeMenuHierarchy(List<MenuDTO> menus) {
+		Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
+		for (MenuDTO menu : menus) {
+			menuMap.put(menu.getId(), menu);
+			menu.setChildren(new ArrayList<MenuDTO>());
+		}
 
-        // °¢ ¸Ş´º Ç×¸ñÀÇ depth °è»ê
-        for (MenuDTO menu : menus) {
-            int depth = 0;
-            Integer parentId = menu.getParentId();
-            while (parentId != null) {
-                MenuDTO parent = menuMap.get(parentId);
-                if (parent == null) break;
-                depth++;
-                parentId = parent.getParentId();
-            }
-            menu.setDepth(depth);
-        }
-    }
+		for (MenuDTO menu : menus) {
+			if (menu.getParentId() != null) {
+				MenuDTO parent = menuMap.get(menu.getParentId());
+				if (parent != null) {
+					parent.getChildren().add(menu);
+				}
+			}
+		}
 
-    public List<MenuDTO> organizeMenuHierarchy(List<MenuDTO> menus) {
-        Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
-        for (MenuDTO menu : menus) {
-            menuMap.put(menu.getId(), menu);
-            menu.setChildren(new ArrayList<MenuDTO>());
-        }
+		List<MenuDTO> topLevelMenus = new ArrayList<MenuDTO>();
+		for (MenuDTO menu : menus) {
+			if (menu.getParentId() == null) {
+				topLevelMenus.add(menu);
+			}
+		}
 
-        for (MenuDTO menu : menus) {
-            if (menu.getParentId() != null) {
-                MenuDTO parent = menuMap.get(menu.getParentId());
-                if (parent != null) {
-                    parent.getChildren().add(menu);
-                }
-            }
-        }
+		// ë¡œê¹…ì„ ì¶”ê°€í•˜ì—¬ ê° ìµœìƒìœ„ ë©”ë‰´ì™€ í•´ë‹¹ í•˜ìœ„ ë©”ë‰´ë“¤ì„ ì¶œë ¥
+		for (MenuDTO menu : topLevelMenus) {
+			System.out.println("Menu: " + menu.getTitle() + " (ID: " + menu.getId() + ")");
+			printChildren(menu, "  "); // ì¬ê·€ì ìœ¼ë¡œ í•˜ìœ„ ë©”ë‰´ë“¤ì„ ì¶œë ¥
+		}
 
-        List<MenuDTO> topLevelMenus = new ArrayList<MenuDTO>();
-        for (MenuDTO menu : menus) {
-            if (menu.getParentId() == null) {
-                topLevelMenus.add(menu);
-            }
-        }
+		return topLevelMenus;
+	} 
 
-
-        // ·Î±ëÀ» Ãß°¡ÇÏ¿© °¢ ÃÖ»óÀ§ ¸Ş´º¿Í ÇØ´ç ÇÏÀ§ ¸Ş´ºµéÀ» Ãâ·Â
-        for (MenuDTO menu : topLevelMenus) {
-            System.out.println("Menu: " + menu.getTitle() + " (ID: " + menu.getId() + ")");
-            printChildren(menu, "  ");  // Àç±ÍÀûÀ¸·Î ÇÏÀ§ ¸Ş´ºµéÀ» Ãâ·Â
-        }
-
-        return topLevelMenus;
-    }
-
-    private void printChildren(MenuDTO menu, String indent) {
-        for (MenuDTO child : menu.getChildren()) {
-            System.out.println(indent + "Child Menu: " + child.getTitle() + " (ID: " + child.getId() + ")");
-            if (!child.getChildren().isEmpty()) {
-                printChildren(child, indent + "  ");
-            }
-        }
-    }
+	private void printChildren(MenuDTO menu, String indent) {
+		for (MenuDTO child : menu.getChildren()) {
+			System.out.println(indent + "Child Menu: " + child.getTitle() + " (ID: " + child.getId() + ")");
+			if (!child.getChildren().isEmpty()) {
+				printChildren(child, indent + "  ");
+			}
+		}
+	}
 }

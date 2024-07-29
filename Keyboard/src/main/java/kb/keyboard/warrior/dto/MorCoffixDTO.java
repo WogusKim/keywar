@@ -14,6 +14,9 @@ public class MorCoffixDTO {
         this.currentWeekRate = currentWeekRate;
         this.change = change;
     }
+    public MorCoffixDTO() {
+
+    }
     
     // Getter and Setter
     public String getRateType() {

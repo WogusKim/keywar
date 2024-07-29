@@ -13,7 +13,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>메인 페이지</title>
+<title>김국민의 업무노트 : 메인 페이지</title>
+<link rel="icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
+<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/flag.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -149,11 +151,13 @@ document.addEventListener('DOMContentLoaded', function() {
 						<!-- Toggle -->
 						<div class="rate-toggle-buttons">
 						    <button class="toggle-button" onclick="toggleRateTable('mor')">MOR</button>
-						    <button class="toggle-button" onclick="toggleRateTable('cofix')">COFIX</button>
+						    <button class="toggle-button" onclick="toggleRateTable('cofix')" >COFIX</button>
+						    <button id="kookmin-btn" class="toggle-button">국민수퍼정기예금</button>
+							<button id="kbstar-btn" class="toggle-button">KB STAR</button>
 						</div>
 						
 						<!-- Table -->
-						<table class="rate-table">
+						<table id="loanRate" class="rate-table">
 						    <thead>
 						        <tr>
 						            <th class="rate-header"></th>
@@ -206,6 +210,87 @@ document.addEventListener('DOMContentLoaded', function() {
 						        </tr>
 						    </tbody>
 						</table>
+						<table class="rate-table"  id="kookminRate" style="font-size: small; display: none;"> 
+							<tr>
+						    	<td colspan="4" class="rate-header"> 국민수퍼정기예금</td>
+						    </tr>
+					        <tr>
+					            <th class="rate-header" >기간(개월)</th>
+					            <th class="rate-header">만기지급식</th>
+					            <th class="rate-header">월이자지급식</th>
+					            <th class="rate-header">월이자복리식</th>
+					        </tr>
+						    <tr>
+						    	<td class="rate-header">1~3개월 미만</td>
+						    	<td class="rate-cell">${superRates[0].fixedRate}</td>
+						    	<td class="rate-cell">${superRates[0].monthlyInterestRate}</td> 
+						    	<td class="rate-cell">${superRates[0].compoundMonthlyRate}</td>
+						    </tr>
+						    <tr>
+						    	<td class="rate-header">3~6개월 미만</td>
+						    	<td class="rate-cell">${superRates[1].fixedRate}</td>
+						    	<td class="rate-cell">${superRates[1].monthlyInterestRate}</td>
+						    	<td class="rate-cell">${superRates[1].compoundMonthlyRate}</td> 
+						    </tr>
+						    <tr>
+						    	<td class="rate-header">6~12개월 미만</td>
+						    	<td class="rate-cell">${superRates[2].fixedRate}</td>
+						    	<td class="rate-cell">${superRates[2].monthlyInterestRate}</td>
+						    	<td class="rate-cell">${superRates[2].compoundMonthlyRate}</td>
+						    </tr>
+						   
+						   <tr>
+						    	<td class="rate-header">12~24개월 미만</td>
+						    	<td class="rate-cell">${superRates[3].fixedRate}</td>
+						    	<td class="rate-cell">${superRates[3].monthlyInterestRate}</td>
+						    	<td class="rate-cell">${superRates[3].compoundMonthlyRate}</td>
+						    </tr>
+						     <!-- 일단 2년 이상은 굳이 안보여도 될듯 -->
+						     <%-- <tr>
+						    	<td class="rate-header">24~36</td>
+						    	<td class="rate-cell">${superRates[4].fixedRate}</td>
+						    	<td class="rate-cell">${superRates[4].monthlyInterestRate}</td>
+						    	<td class="rate-cell">${superRates[4].compoundMonthlyRate}</td>
+						    </tr>
+						    <tr>
+						    	<td class="rate-header">36</td>
+						    	<td class="rate-cell">${superRates[5].fixedRate}</td>
+						    	<td class="rate-cell">${superRates[5].monthlyInterestRate}</td>
+						    	<td class="rate-cell">${superRates[5].compoundMonthlyRate}</td>
+						    </tr> --%>
+						</table>
+						<table class="rate-table"  id="kbstarRate" style="font-size: small; display: none;">
+							<tr>
+						    	<td colspan="3" class="rate-header"> KB STAR 정기예금</td>
+						    </tr>
+					        <tr>
+					            <th class="rate-header">기간(개월)</th>
+					            <th class="rate-header">기본이율</th>
+					            <th class="rate-header">고객적용이율</th>
+					        </tr>
+						    <tr>
+						    	<td class="rate-header">1 ~ 3개월 미만</td>
+						    	<td class="rate-cell">${kbStarRates[0].basicRate}</td>
+						    	<td class="rate-cell">${kbStarRates[0].customerRate}</td>
+						    </tr>
+						    <tr>
+						    	<td class="rate-header">3 ~ 6개월 미만</td>
+						    	<td class="rate-cell">${kbStarRates[1].basicRate}</td>
+						    	<td class="rate-cell">${kbStarRates[1].customerRate}</td>
+						    </tr>
+						    <tr>
+						    	<td class="rate-header">6 ~ 12개월 미만</td>
+						    	<td class="rate-cell">${kbStarRates[2].basicRate}</td>
+						    	<td class="rate-cell">${kbStarRates[2].customerRate}</td>
+						    </tr>
+						    <tr>
+						    	<td class="rate-header">12 ~ 24개월 미만</td>
+						    	<td class="rate-cell">${kbStarRates[4].basicRate}</td>
+						    	<td class="rate-cell">${kbStarRates[4].customerRate}</td>
+						    </tr>
+						</table>
+						
+						  
 					</div>
 		    	</div>
 	    	</div>
@@ -365,6 +450,21 @@ document.addEventListener('DOMContentLoaded', function() {
 	    </div>
 	</div> 
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('#kookmin-btn').click(function() {
+            $('#loanRate').hide();
+            $('#kbstarRate').hide();
+            $('#kookminRate').show();
+        });
+        $('#kbstar-btn').click(function() {
+            $('#loanRate').hide();
+            $('#kookminRate').hide();
+            $('#kbstarRate').show();
+        });
+    });
+</script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // 완료 현황 업데이트
@@ -423,9 +523,15 @@ function toggleRateTable(table) {
     const cofixRates = document.getElementById('cofixRates');
 
     if (table === 'mor') {
+        $('#kookminRate').hide();
+        $('#loanRate').show();
+        $('#kbstarRate').hide();
         morRates.style.display = '';
         cofixRates.style.display = 'none';
     } else if (table === 'cofix') {
+        $('#kookminRate').hide();
+        $('#loanRate').show();
+        $('#kbstarRate').hide();
         cofixRates.style.display = '';
         morRates.style.display = 'none';
     }

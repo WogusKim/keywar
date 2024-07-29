@@ -6,6 +6,8 @@ import kb.keyboard.warrior.dto.MenuDTO;
 
 public interface WikiDao {
 	
+	//-------------------------------메뉴관련--------------------------------//
+	
 	//부모 id 찾기
 	Integer getParentid(String selectedId);
 	
@@ -14,13 +16,13 @@ public interface WikiDao {
 	int getMaxOrderOfnoParents();
 	
 	//최상위 아이템 추가
-	void insertMenuNoParentsItem(String title, String sharedTitle, String link, String menuType, int max_order, String userno);
+	void insertMenuNoParentsItem(String title, String sharedTitle, String link, String menuType, int max_order, String userno, int isOpenInt);
 	//최상위 폴더 추가
-	void insertMenuNoParentsFolder(String title, String sharedTitle, String menuType, int max_order, String userno);
+	void insertMenuNoParentsFolder(String title, String sharedTitle, String menuType, int max_order, String userno, int isOpenInt);
 	//중간 아이템 추가
-	void insertMenuHaveParentsItem(String selectedId, String title, String sharedTitle, String link, String menuType, int max_order, String userno);
+	void insertMenuHaveParentsItem(String selectedId, String title, String sharedTitle, String link, String menuType, int max_order, String userno, int isOpenInt);
 	//중간 폴더 추가
-	void insertMenuHaveParentsFolder(String selectedId, String title, String sharedTitle, String menuType, int max_order, String userno);
+	void insertMenuHaveParentsFolder(String selectedId, String title, String sharedTitle, String menuType, int max_order, String userno, int isOpenInt);
 	
 	//삭제 - item
 	void deleteItem(String selectedId, String userno);
@@ -35,6 +37,32 @@ public interface WikiDao {
 	//쉐어타이틀 유무에 따라 분기하여 update
 	void changeMenuNoShare(String title, String id);
 	void changeMenuYesShare(String title, String titleShare, String id);
+	
+	//공개여부 변경 메서드
+	void changeIsOpen(String isOpen, String id);
+
+	//--------------------------------메뉴관련--------------------------------//
+	
+	
+	
+	
+	//--------------------------------위키상세관련--------------------------------//
+	
+	//조회하기
+	String getData(int id);
+
+	//저장하기 (신규 / 업데이트)
+	void insertWiki(int wikiId, String editorData);
+	void updateWiki(int wikiId, String editorData);
+	
+	
+	
+	
+
+	
+	//--------------------------------위키상세관련--------------------------------//
+	
+	
 	
 	
 

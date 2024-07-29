@@ -17,31 +17,10 @@
 	    SELECT COALESCE(MAX(menu_order), 0) FROM Menu WHERE parent_id IS NULL
 	</select>
 		
+		
+	<!-- 메뉴추가 메서드 4종류 -->
 	<insert id="insertMenuNoParentsItem">
-		INSERT INTO Menu (title, titleShare, link, menuType, menu_order, userno)
-		VALUES (
-		    #{param1}, 
-		    #{param2},
-		    #{param3},
-		    #{param4},
-		    #{param5},
-		    #{param6}
-		);
-	</insert>
-	
-	<insert id="insertMenuNoParentsFolder">
-		INSERT INTO Menu (title, titleShare, menuType, menu_order, userno)
-		VALUES (
-		    #{param1}, 
-		    #{param2},
-		    #{param3},
-		    #{param4},
-		    #{param5}
-		);
-	</insert>
-	
-	<insert id="insertMenuHaveParentsItem">
-		INSERT INTO Menu (parent_id, title, titleShare, link, menuType, menu_order, userno)
+		INSERT INTO Menu (title, titleShare, link, menuType, menu_order, userno, isOpen)
 		VALUES (
 		    #{param1}, 
 		    #{param2},
@@ -53,8 +32,8 @@
 		);
 	</insert>
 	
-	<insert id="insertMenuHaveParentsFolder">
-		INSERT INTO Menu (parent_id, title, titleShare, menuType, menu_order, userno)
+	<insert id="insertMenuNoParentsFolder">
+		INSERT INTO Menu (title, titleShare, menuType, menu_order, userno, isOpen)
 		VALUES (
 		    #{param1}, 
 		    #{param2},
@@ -62,6 +41,33 @@
 		    #{param4},
 		    #{param5},
 		    #{param6}
+		);
+	</insert>
+	
+	<insert id="insertMenuHaveParentsItem">
+		INSERT INTO Menu (parent_id, title, titleShare, link, menuType, menu_order, userno, isOpen)
+		VALUES (
+		    #{param1}, 
+		    #{param2},
+		    #{param3},
+		    #{param4},
+		    #{param5},
+		    #{param6},
+		    #{param7},
+		    #{param8}
+		);
+	</insert>
+	
+	<insert id="insertMenuHaveParentsFolder">
+		INSERT INTO Menu (parent_id, title, titleShare, menuType, menu_order, userno, isOpen)
+		VALUES (
+		    #{param1}, 
+		    #{param2},
+		    #{param3},
+		    #{param4},
+		    #{param5},
+		    #{param6},
+		    #{param7}
 		);
 	</insert>
 	
@@ -93,5 +99,26 @@
 		SET title = #{param1}, titleShare = #{param2}
 		where id = #{param3}
 	</update>
+	
+	<update id="changeIsOpen">
+		UPDATE Menu SET isOpen = #{param1} where id = #{param2}
+	</update>
+	
+	
+	<!-- 위키디테일출력 -->
+	<select id="getData" resultType="String">
+		SELECT data from EditorData where id = #{param}
+	</select>
+	
+	<!-- 위키디테일저장 -->
+	<insert id="insertWiki">
+		INSERT INTO EditorData VALUES (#{param1}, #{param2})
+	</insert>
+	<update id="updateWiki">
+		UPDATE EditorData SET data = #{param2} WHERE id = #{param1}
+	</update>
+
+
+	
 	
 </mapper>

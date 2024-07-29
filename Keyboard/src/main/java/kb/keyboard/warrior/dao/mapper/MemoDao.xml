@@ -83,6 +83,11 @@
 		WHERE noticeid = #{noticeid}
 	</update>
 
+	<!-- 최대 z-index 값을 조회하는 쿼리 -->
+	<select id="getMaxZindex" resultType="int">
+		SELECT MAX(zindex) FROM notice
+	</select>
+
 
 
 </mapper>

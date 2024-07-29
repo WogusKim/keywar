@@ -16,6 +16,20 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/display.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<style>
+/* 지수가 음수일 때 */
+.negative {
+    color: blue;
+    font-weight: bold;
+}
+
+/* 지수가 양수일 때 */
+.positive {
+    color: red;
+    font-weight: bold;
+}
+
+</style>
 </head>
 
 <body>
@@ -66,12 +80,14 @@
 
 					                           onclick="changeFavorite('${stock.indexName}', this, event)"/>
 					                </td>
+					                
 					                <td>${stock.country}</td>
 					                <td>${stock.indexName}</td>
-					                <td class="${stock.changePercentage >= 0 ? 'positive' : 'negative'}">
+					                <td >
+					                
 					                    <fmt:formatNumber value="${stock.currentPrice}" pattern="#,##0.00"/>
 					                </td>
-					                <td class="${stock.changePercentage >= 0 ? 'positive' : 'negative'}">
+					                <td >
 					                    <fmt:formatNumber value="${stock.priceChange}" pattern="${stock.changePercentage >= 0 ? '+' : ''}#,##0.00"/>
 					                </td>
 					                <td class="${stock.changePercentage >= 0 ? 'positive' : 'negative'}">
