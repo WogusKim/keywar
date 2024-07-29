@@ -273,7 +273,7 @@ public class HomeController {
 		}
 
 		return topLevelMenus;
-	}
+	} 
 
 	private void printChildren(MenuDTO menu, String indent) {
 		for (MenuDTO child : menu.getChildren()) {

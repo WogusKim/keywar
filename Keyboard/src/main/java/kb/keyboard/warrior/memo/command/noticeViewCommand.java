@@ -25,12 +25,6 @@ public class noticeViewCommand implements MemoCommand {
 		MemoDao dao = sqlSession.getMapper(MemoDao.class);
 		ArrayList<NoticeDTO> notice = dao.noticeView(deptno);
 		
-		
-		System.out.println("Å×½ºÆ®");
-		System.out.println(notice.get(7).getNoticeid());
-		System.out.println(notice.get(7).getPositionX());
-		System.out.println(notice.get(7).getPositionY());
-		
 		model.addAttribute("notice", notice);
 	}
 }

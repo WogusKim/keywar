@@ -105,7 +105,7 @@ $(function() {
     fetch('${pageContext.request.contextPath}/getMaxZindex')
         .then(response => response.text())
         .then(data => {
-            maxZ = parseInt(data); // 서버에서 받은 최대값에 1을 더해 초기화
+            maxZ = parseInt(data) + 1; // 서버에서 받은 최대값에 1을 더해 초기화
         })
         .catch(error => console.error('Error loading max z-index:', error));
 
