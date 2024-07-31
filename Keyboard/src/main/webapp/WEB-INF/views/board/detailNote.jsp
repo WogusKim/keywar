@@ -233,7 +233,7 @@ function test(){
 		}, 
 		// 통신 실패시 작동할 것 
 		error : function(){
-            console.error(error);
+            console.error(error); 
             alert("댓글 등록 중 오류가 발생하였습니다.");
       }
 		
