@@ -104,7 +104,8 @@
                 <p><strong>공유 대상:</strong> <span id="eventShareto"></span></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="editEventButton">수정</button>
+            	<button type="button" class="btn btn-primary" id="deleteEventButton" style="display: none;">삭제</button>
+                <button type="button" class="btn btn-primary" id="editEventButton" style="display: none;">수정</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
             </div>
         </div>
@@ -164,34 +165,6 @@
     </div>
 </div>
 
-
-
-<!-- 공유그룹 모달 -->
-<!-- 
-<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="eventDetailModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="eventDetailModalLabel">일정 상세</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><strong>제목:</strong> <span id="eventTitle"></span></p>
-                <p><strong>시작 날짜:</strong> <span id="eventStartDate"></span></p>
-                <p><strong>종료 날짜:</strong> <span id="eventEndDate"></span></p>
-                <p><strong>내용:</strong> <span id="eventContent"></span></p>
-                <p><strong>공유 대상:</strong> <span id="eventShareto"></span></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="editEventButton">수정</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
- -->
 
 <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="customGroupModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -503,7 +476,7 @@
         $('#addScheduleForm #scheduleEndDate').val(info.dateStr); // 종료 날짜 일단 시작날짜
     } 
 
-    function handleEditModal(event) {
+/*     function handleEditModal(event) {
 //    	$('#eventTitle').text(event.scheduleid);
 //    console.log('Event Data:', event); // 로그 추가
 //    console.log('Extended Props:', event.extendedProps); // 로그 추가
@@ -517,9 +490,33 @@
         $('#editEventButton').data('event', event);
         $('#eventDetailModal').modal('show');
                
+    } */
+    
+    function showEventDetailModal(event) {
+        var sessionUserno = '${sessionScope.userno}'; // 서버에서 세션 userno를 가져옴
+        console.log('Session userno:', sessionUserno);
+        console.log('Event id:', event.extendedProps.userid);
+        
+        $('#eventTitle').text(event.title);
+        $('#eventStartDate').text(moment(event.start).format('YYYY-MM-DD'));
+        $('#eventEndDate').text(event.extendedProps.realEndDate || moment(event.end).subtract(1, 'days').format('YYYY-MM-DD'));
+        $('#eventContent').text(event.extendedProps.content);
+        $('#eventShareto').text(event.extendedProps.customname);
+        $('#eventCategory').text(event.extendedProps.category);
+
+        // 수정 및 삭제 버튼 표시 여부 결정
+        if (sessionUserno === event.extendedProps.userid) {
+            $('#editEventButton').show();
+            $('#deleteEventButton').show();
+        } else {
+            $('#editEventButton').hide();
+            $('#deleteEventButton').hide();
+        }
+
+        $('#editEventButton').data('event', event);
+        $('#eventDetailModal').modal('show');
     }
-    
-    
+
 
     function saveSchedule() {
         const title = $('#addScheduleForm #scheduleTitle').val();
@@ -598,61 +595,6 @@
         });
     }
 
-/*     function updateSchedule() {
-     
-        const title = $('#editEventForm #editEventTitle').val();
-        const startDate = $('#editEventForm #editEventStartDate').val();
-        let endDate = $('#editEventForm #editEventEndDate').val();
-        const content = $('#editEventForm #editEventContent').val();
-        const shareto = $('#editEventForm #editEventShareto').val();
-        const scheduleid = $('#editEventId').val();
-        let customShare = $('#customSharetoEdit').val() || null; 
-
-        if (!title) {
-            alert("제목을 입력해주세요.");
-            return;
-        }
-
-        // 날짜 문자열을 Date 객체로 변환
-        const startDateObj = new Date(startDate);
-        const endDateObj = new Date(endDate);
-
-        if (startDateObj > endDateObj) {
-            alert("종료일자는 시작일자보다 이전 일자로 등록할 수 없습니다.");
-            return;
-        }
-
-        const eventData = { 
-                scheduleid: scheduleid,
-                title: title,
-                startDate: startDate,
-                endDate: endDate,
-                content: content,
-                shareto: shareto,
-                customShare: customShare
-        };
-
-        console.log('Sending event data:', eventData);  // 데이터 확인용 로그
-        
-        $.ajax({
-            url: '${pageContext.request.contextPath}/calendaredit',
-            method: 'POST',
-            contentType: 'application/json',
-            //data: JSON.stringify({ id: scheduleid, title, startDate, endDate, content, shareto }),
-            data: JSON.stringify(eventData),
-            success: function(response) {
-                console.log('일정이 성공적으로 업데이트되었습니다.');
-                calendar.refetchEvents();
-                $('#editEventModal').modal('hide');
-                location.reload(); // 페이지 새로고침
-            },
-            error: function(xhr, status, error) {
-                console.error('일정 업데이트 중 오류가 발생했습니다:', error);
-                alert('일정 업데이트 중 오류가 발생했습니다. 다시 시도해주세요.');
-            }
-        });
-    } */
-    
     function updateSchedule() {
         // event.preventDefault(); // 폼의 기본 제출 동작 방지
 
@@ -730,6 +672,14 @@
 
 
     function handleEventDrop(event) {
+        var sessionUserno = '${sessionScope.userno}';
+
+        if (sessionUserno !== event.extendedProps.userid) {
+            alert('일정 이동 권한이 없습니다.');
+            location.reload(); // 캘린더 새로고침
+            return;
+        }
+        
         const scheduleid = event.id;
         const title = event.title;
         const startDate = event.start.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\. /g, '-').replace('.', '');
@@ -756,12 +706,15 @@
             data: JSON.stringify(eventData),
             success: function(response) {
                 console.log('일정이 성공적으로 업데이트되었습니다.');
-                calendar.refetchEvents();
+                location.reload();
+                //calendar.refetchEvents();
                 // 필요에 따라 모달 숨기기 등의 추가 작업을 할 수 있습니다.
             },
             error: function(xhr, status, error) {
                 console.error('일정 업데이트 중 오류가 발생했습니다:', error);
                 alert('일정 업데이트 중 오류가 발생했습니다. 다시 시도해주세요.');
+                location.reload();
+                //calendar.refetchEvents();
             }
         });
     }
@@ -820,12 +773,13 @@
                     borderColor: event.extendedProps.sharecolor,  // 배경색과 같은 색으로 테두리 설정
                     shareCategory: event.extendedProps.category,  // 수정용 카테고리 추가
                     customname: event.extendedProps.customname,  // customname 가져오기
+                    userid: event.extendedProps.userid,  // customname 가져오기
                     allDay: true  // 모든 이벤트를 종일 이벤트로 처리
                 })),
                 //events: data,
                 eventClick: function(info) {
                 	// 이벤트 클릭시 호출되는 함수
-                    handleEditModal(info.event);
+                    showEventDetailModal(info.event);
                 },
                 eventDrop: function(info) {
                     // 이벤트 드롭(이동) 시 호출되는 함수
@@ -839,6 +793,7 @@
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.error("AJAX request failed: " + textStatus, errorThrown);
         });
+        
         
         
         $('#editEventButton').on('click', function() {
@@ -865,6 +820,13 @@
             $('#editEventModal').modal('show');
         });
 
+        $('#deleteEventButton').on('click', function() {
+            var event = $('#editEventButton').data('event');
+            if (confirm('정말로 이 일정을 삭제하시겠습니까?')) {
+                deleteEvent(event.id);
+            }
+        });
+        
         $('#addScheduleForm').on('submit', function(e) {
             e.preventDefault();
             saveSchedule();
@@ -875,8 +837,27 @@
             updateSchedule();
         });
         
-
     });
+     
+     function deleteEvent(eventId) {
+    	    $.ajax({
+    	        url: '${pageContext.request.contextPath}/calendardelete',
+    	        method: 'POST',
+    	        data: { scheduleid: eventId },  // JSON.stringify 제거
+    	        // contentType: 'application/json', 제거
+    	        success: function(response) {
+    	            console.log('일정이 성공적으로 삭제되었습니다.');
+    	            $('#eventDetailModal').modal('hide');
+    	            //calendar.refetchEvents();
+	                location.reload(); // 페이지 새로고침
+    	        },
+    	        error: function(xhr, status, error) {
+    	        	console.log('eventId: ' + eventId);
+    	        	console.error('일정 삭제 중 오류가 발생했습니다:', error);
+    	            alert('일정 삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
+    	        }
+    	    });
+    	}
     
     
 </script>
