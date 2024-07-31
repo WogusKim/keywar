@@ -13,8 +13,14 @@
 		from comment c
 		join user u on c.userno = u.userno
 		where targetid = #{param1}
-		order by createdate
+		order by createdate 
     </select>
-	
+	<select id="checkLike" parameterType="kb.keyboard.warrior.dto.LikeDTO" >
+		select * from liketable where targetid = #{targetid} and userno = #{userno}
+	</select>
+	<insert id="addLike" parameterType="kb.keyboard.warrior.dto.LikeDTO" > 
+		insert into liketable (targetid, userno) VALUES
+		(#{targetid}, #{userno})
+	</insert>
 </mapper>
 

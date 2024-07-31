@@ -140,5 +140,11 @@
 		SELECT * FROM imageSize where wikiId = #{param}
 	</select>
 	
+	<select id="getAllPost" resultType="kb.keyboard.warrior.dto.BoardDTO">
+		select e.id, m.title , e.data, m.isOpen
+		from EditorData e
+		join Menu m on e.id = m.id
+		where m.isOpen = 1
+	</select>
 	
 </mapper>

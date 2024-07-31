@@ -363,7 +363,9 @@ document.addEventListener('DOMContentLoaded', function() {
 							</ul>
 					    </div>
 					    <div class="rankbox">
-					    	<h4 class="card_title">BEST 게시글</h4>
+					    <div style="display: flex; justify-content: space-between;">
+					    	<h4 class="card_title"> BEST 게시글</h4> <a href="${pageContext.request.contextPath}/hotNote" class="link-icon" >바로가기</a>
+					    </div>
 					    	<hr>
 							<ul>
 								<li>꿘예지 - 개인여신총정리</li>

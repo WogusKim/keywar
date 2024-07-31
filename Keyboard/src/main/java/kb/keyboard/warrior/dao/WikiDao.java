@@ -2,6 +2,7 @@ package kb.keyboard.warrior.dao;
 
 import java.util.List;
 
+import kb.keyboard.warrior.dto.BoardDTO;
 import kb.keyboard.warrior.dto.ImageSizeDTO;
 import kb.keyboard.warrior.dto.MenuDTO;
 
@@ -72,7 +73,9 @@ public interface WikiDao {
 	//--------------------------------위키상세관련--------------------------------//
 	
 	
+	//-------- 랭킹 관련 //
 	
+	public List<BoardDTO> getAllPost();
 	
 
 }
