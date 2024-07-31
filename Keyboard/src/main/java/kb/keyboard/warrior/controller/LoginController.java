@@ -239,5 +239,21 @@ public class LoginController {
             }
         }
     }
+    @RequestMapping("/getUserProfilePicture2")
+    public void getUserProfilePicture2(@RequestParam("userno") String userno, HttpServletRequest request, HttpServletResponse response) {
+    	
+    	LoginDao dao = sqlSession.getMapper(LoginDao.class);
+    	UserDTO user = dao.getUserProfile(userno);
+    	
+    	if (user != null && user.getPicture() != null) {
+    		response.setContentType("image/jpeg");
+    		try {
+    			response.getOutputStream().write(user.getPicture());
+    			response.getOutputStream().flush();
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    	}
+    }
 
 }

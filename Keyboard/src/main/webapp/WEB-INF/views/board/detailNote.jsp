@@ -54,18 +54,22 @@
     <!--script src="https://cdn.jsdelivr.net/npm/editorjs-mermaid@latest"></script -->
     <!-- Codeflask -->
     <script src="https://cdn.jsdelivr.net/npm/@calumk/editorjs-codeflask@latest"></script>
-    
+
+<% 
+   String userno = (String) session.getAttribute("userno");
+%>
     	
 </head>
 <style>
 .final-outline{
 	overflow-y: auto;
 	width: 100%;
-	height: 90%;
+	height: 100%;
+	text-align: center;
 }
 .editor_outline {
 	width : 75%;
-	border: 1px solid #ccc;
+	border: 1px solid #ccc; 
 	padding: 10px;
 	border-radius: 5px;
 	margin: auto;
@@ -73,10 +77,50 @@
 
 	
 }
+ 
 .editor-button-area {
 	margin: 20px 0;
 	text-align: center;
 }
+.styled-button {
+    background: linear-gradient(90deg, #007BFF, #007BFF);
+    border: none;
+    border-radius: 30px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.styled-button:hover {
+    background: linear-gradient(#007BFF, #007BFF, #007BFF);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+/* mypage profile image */
+.profile {  
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.box {
+    width: 40px;
+    height: 40px; 
+    border-radius: 70%;
+    overflow: hidden;
+}
+.switchBox{
+	width: 100%; 
+	height: 80%; 
+	margin-top: 10px; 
+	padding: 10px;
+}
+
 </style>
 <body>
 
@@ -93,22 +137,114 @@
         	<div id="finalOuter" class="final-outline" >
         	<!-- Editor 영역 -->
             <div id="myEditor" class="editor_outline"></div>
-            
             <!-- 버튼 영역 -->
             <div class="editor-button-area">
-				<button onclick="saveData()">저장하기</button>
-				<button onclick="loadData()">내용 불러오기</button>
+				<!-- <button onclick="saveData()">저장하기</button> -->  <!-- 저장은 불가능해야함. -->
+				<button onclick="loadData()">업무노트 뺏어 오기 </button>
+				<p  style="font-size: 50px; margin: 0px;">❤️ </p>
+				<p style="font-size: 30px; margin: 0px;">좋아요 개수 표출(DB에서 가져올 거임)</p>
+				
             </div>
-			</div>
+
+	            <div id="commentArea1" style="background-color: #FAFAFA; width : 75%; margin: auto; padding-left: 20px;"> 
+	            	<div style="height: 40px; width: 100%;"></div>
+	            	<c:forEach var="comment" items="${comments}">
+	            	<div style="width: 100%; min-height: 80px; " >
+	            	<div style=" display: flex; height: 40px;" id="commentWriterArea" >
+		            	<div class="box" id="profilepicture">
+		            		<img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${comment.userno}" alt="Profile Picture">
+		            	</div>	
+		            	<div style="line-height: 40px; height: 40px; margin-left: 10px; ">${comment.nickname } </div>
+	            	</div> 
+	            	
+	            	<div style="width: 100%;  text-align: left; margin-top: 10px;"> ${comment.content} </div>
+	            	<div style="width: 100%; color: gray; text-align: left; font-size: smaller;">  ${comment.createdate}</div>
+	            	</div>
+	            	
+	            	<hr> 
+	            	</c:forEach>
+	            	<br>
+	           	<!-- 댓글 남기기 영역 -->
+	            <div style="width: 80%; display: flex;  justify-content: space-between; margin: auto;">
+	            <textarea id="comment-input" rows="4" cols="50" placeholder="댓글을 입력하세요" style="width : 85%; height: 60px; resize: none; "></textarea>
+	            <button id="comment-btn" class="styled-button" onclick="test()">등록하기</button> 
+	            </div>
+	            </div> <!-- 댓글 영역 끝 -->
+	            <div style="width: 100%; height: 70px; background-color: #FAFAFA;"><!-- 댓글 밑 조금의 여백 추가 -->
+	            </div>
+			</div><!-- 여기가 바깥 범위 끝 -->
 			
-        </div>
+        </div>  <!-- 우측 컨텐츠 영역 끝 -->
     </div>
-<script>
+    
+    
+    
+    
+    <form id="addCommentForm" method="post" >
+    	<input type="hidden" id="content" name="content"  value="">
+    	<input type="hidden" id="targetid" name="targetid"  value="${id}">
+    	<input type="hidden" id="userno" name="userno"  value="<%= userno %>">
+    </form>
+    
+<script type="text/javascript"> 
+
+// URL에서 게시글 번호 가져오기
+function getQueryParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+function collapseSpaces(input) {
+    return input.replace(/\s+/g, ' ').trim();
+}
+
+function test(){
+	const id = getQueryParameter('id');
+	const content = $("textarea#comment-input").val();
+
+	
+	if(content==""||collapseSpaces(content)==""){
+		alert("등록하실 댓글을 입력해주세요.");
+		return; 
+	}
+	const data = {
+            "content" : content,
+            "targetid" : id,
+            "userno" : '<%= userno %>'
+        };
+	
+	$.ajax({
+		"url" : "${pageContext.request.contextPath}/addConmment",
+		method: "POST",
+		contentType : "application/json",
+		data : JSON.stringify(data),
+		//통신 성공시 실행할 것
+		success : function(result){
+			console.log(result);
+			if(result.result == "success"){
+				alert("댓글이 정상적으로 등록되었습니다.");
+				$("textarea#comment-input").val("");
+				var url = "${pageContext.request.contextPath}/detailNote?id=" +id +"#commentArea1" //댓글 창 맨 위로 이동.    
+				//alert(url);
+				window.location.href= url;
+			}else{
+				alert(result.result)
+			}
+			
+		}, 
+		// 통신 실패시 작동할 것 
+		error : function(){
+            console.error(error);
+            alert("댓글 등록 중 오류가 발생하였습니다.");
+      }
+		
+	})
+}
+
+
+
 
 let editor;
-
 async function saveData() {
-	
 	
     try {
         const savedData = await editor.save();
