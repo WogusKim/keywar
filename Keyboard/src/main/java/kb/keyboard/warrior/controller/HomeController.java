@@ -45,13 +45,13 @@ public class HomeController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model, HttpSession session) {
-		long startTime = System.currentTimeMillis(); // 시작 시간 기록
+		long startTime = System.currentTimeMillis(); // �떆�옉 �떆媛� 湲곕줉
 
-		// 로그인 여부 체크
+		// 濡쒓렇�씤 �뿬遺� 泥댄겕
 		String userno = (String) session.getAttribute("userno");
 		String deptno = (String) session.getAttribute("deptno");
-		// 이후 로그인 여부 체크 필요
-		// 세션에서 메뉴 데이터를 확인 (확인후 없으면 세션 설정)!!!
+		// �씠�썑 濡쒓렇�씤 �뿬遺� 泥댄겕 �븘�슂
+		// �꽭�뀡�뿉�꽌 硫붾돱 �뜲�씠�꽣瑜� �솗�씤 (�솗�씤�썑 �뾾�쑝硫� �꽭�뀡 �꽕�젙)!!!
 
 		List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
 
@@ -61,46 +61,46 @@ public class HomeController {
 		setMenuDepth(menus);
 		List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
 
-		session.setAttribute("menus", topLevelMenus); // 세션에 메뉴 데이터 저장
+		session.setAttribute("menus", topLevelMenus); // �꽭�뀡�뿉 硫붾돱 �뜲�씠�꽣 ���옣
 
 		model.addAttribute("menus", topLevelMenus);
 
-		// ȯ�� ���ã�� Ȯ��
+		// 환占쏙옙 占쏙옙占시ｏ옙占� 확占쏙옙
 		List<ExchangeFavoriteDTO> favorites = loginDao.getFavoriteCurrency(userno);
 
-		String favoriteCurrency1 = "0"; // 디폴트 값: USD
-		String favoriteCurrency2 = "0"; // 디폴트 값: JPY
-		String favoriteCurrency3 = "0"; // 디폴트 값: EUR
+		String favoriteCurrency1 = "0"; // �뵒�뤃�듃 媛�: USD
+		String favoriteCurrency2 = "0"; // �뵒�뤃�듃 媛�: JPY
+		String favoriteCurrency3 = "0"; // �뵒�뤃�듃 媛�: EUR
 
 		switch (favorites.size()) {
 		case 0:
-			// 즐겨찾기 없으면 기본으로 나오는 3개
+			// 利먭꺼李얘린 �뾾�쑝硫� 湲곕낯�쑝濡� �굹�삤�뒗 3媛�
 			favoriteCurrency1 = "USD";
 			favoriteCurrency2 = "JPY";
 			favoriteCurrency3 = "EUR";
 			break;
 		case 1:
 
-			// 즐겨찾기 1개
+			// 利먭꺼李얘린 1媛�
 			favoriteCurrency1 = favorites.get(0).getCurrency();
 			break;
 		case 2:
-			// 즐겨찾기 2개
+			// 利먭꺼李얘린 2媛�
 			favoriteCurrency1 = favorites.get(0).getCurrency();
 			favoriteCurrency2 = favorites.get(1).getCurrency();
 			break;
 		case 3:
-			// 즐겨찾기 3개
+			// 利먭꺼李얘린 3媛�
 			favoriteCurrency1 = favorites.get(0).getCurrency();
 			favoriteCurrency2 = favorites.get(1).getCurrency();
 			favoriteCurrency3 = favorites.get(2).getCurrency();
 			break;
 		}
 
-		// 환율 즐겨찾기 데이터 처리
+		// Currency Favorite Data
 //        CurrencyRateCrawler currencyCrawler = new CurrencyRateCrawler();
 //        List<ExchangeRateDTO> currencyRates = currencyCrawler.fetchExchangeFavoriteRates(favoriteCurrency1, favoriteCurrency2, favoriteCurrency3);
-		// 크롤링을 DB에서 가져오는 것으로 바꾸는 구문.
+		// WebCrawling -> get data from DB
 		ExchangeRateDao exchangedao = sqlSession.getMapper(ExchangeRateDao.class);
 		List<ExchangeRateDTO> currencyRates = exchangedao.getAllExchangeRate();
 
@@ -118,7 +118,7 @@ public class HomeController {
 			System.out.println("No rates found.");
 		}
 
-		// 증시즐찾
+		// 利앹떆利먯갼
 
 		List<StockFavoriteDTO> stock = loginDao.getFavoriteStock(userno);
 
@@ -156,7 +156,7 @@ public class HomeController {
 
 		}
 
-		// 증시 즐겨찾기 데이터 처리
+		// Stock Favorite Data
 //		StockCrawler stockCrawler = new StockCrawler();
 //        List<StockDTO> stocks = stockCrawler.fetchFavoriteStocks(favoriteStock1, favoriteStock2, favoriteStock3, favoriteStock4);
 		List<StockDTO> stocks = exchangedao.getAllStock();
@@ -220,9 +220,9 @@ public class HomeController {
 		List<NoticeDTO> noticeList = memoDao.noticeView(deptno);
 		model.addAttribute("noticeList", noticeList);
 
-		long endTime = System.currentTimeMillis(); // 완료 시간 기록
-		long duration = endTime - startTime; // 실행 시간 계산
-		System.out.println("메인화면 로딩 소요 시간: " + duration + "밀리초");
+		long endTime = System.currentTimeMillis(); // 
+		long duration = endTime - startTime; // 
+		System.out.println("mainpage loading time: " + duration + "milisecond");
 
 		return "main";
 	}
@@ -234,13 +234,13 @@ public class HomeController {
 
 	public void setMenuDepth(List<MenuDTO> menus) {
 
-		// 메뉴 ID와 메뉴 객체를 매핑하는 Map을 생성
+		// // 메뉴 ID와 메뉴 객체를 매핑하는 Map을 생성
 		Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
 		for (MenuDTO menu : menus) {
 			menuMap.put(menu.getId(), menu);
 		}
 
-		// 각 메뉴 항목의 depth 계산
+		// 		// 각 메뉴 항목의 depth 계산
 		for (MenuDTO menu : menus) {
 			int depth = 0;
 			Integer parentId = menu.getParentId();
