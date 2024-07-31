@@ -73,6 +73,7 @@
 	height: 80%; 
 	margin-top: 10px; 
 	padding: 10px;
+	overflow-y: auto; 
 }
 .profileArea{
 width:40%; 
@@ -85,7 +86,6 @@ min-width: 100px;
     text-decoration: none;
 }
 </style>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var box1 = document.getElementById('switchBox1');
@@ -160,7 +160,25 @@ min-width: 100px;
 					<button class="mypageButton pushedButton">내가 남긴 댓글</button><button class="mypageButton" >좋아하는 게시물</button><button class="mypageButton">팔로우</button>
 					</div>
 					</div>
-					<div class="switchBox" id="switchBox1" style="display: block;"> 1 1 11 1 11 1 1 </div>
+					<div class="switchBox" id="switchBox1" style="display: block;">
+					<table style="width: 100%;">
+						<colgroup>
+							<col style="width: 50%;">
+						    <col style="width: 30%;">
+						    <col style="width: 20%;">
+						</colgroup>
+						
+						<c:forEach var="comment" items="${comment}">
+						<tr>
+							<td style="  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">
+								<a href="${pageContext.request.contextPath}/detailNote?id=${comment.targetid}">${comment.content }</a>
+							</td>
+							<td style="color: gray; font-size: small; ">${comment.titleShare }</td>
+							<td style="color: gray; font-size: small;">${comment.createdate }</td>
+						</tr>
+						</c:forEach>
+					</table>
+					</div>
 					<div class="switchBox" id="switchBox2" style="display: none;"> 2 2 2 2 2 2 2 2 2 2 2</div>
 					<div class="switchBox" id="switchBox3" style="display: none;"> 3 3 3 3 3 3 3 3 3 3 </div>
 				
