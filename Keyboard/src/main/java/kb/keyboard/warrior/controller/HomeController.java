@@ -50,8 +50,12 @@ public class HomeController {
 
 	@Autowired
 	public SqlSession sqlSession;
-
 	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String test(Model model, HttpSession session) {
+		return "redirect:main";
+	}
+	
+	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public String home(Model model, HttpSession session) {
 		long startTime = System.currentTimeMillis(); // �떆�옉 �떆媛� 湲곕줉
 
