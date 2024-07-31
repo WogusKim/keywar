@@ -29,7 +29,7 @@
 		select userno from comment WHERE commentid = #{param1}
 	</select>
 	<select id="getMyComment" resultType="kb.keyboard.warrior.dto.CommentDTO">
-		select c.targetid, c.content, c.createdate, m.titleShare
+		select  c.commentid, c.targetid, c.content, c.createdate, m.titleShare
 		from comment c
 		join Menu m on c.targetid = m.id
 		where c.userno = #{param1} and c.commentstatus = 1;

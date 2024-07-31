@@ -161,7 +161,7 @@ min-width: 100px;
 					</div>
 					</div>
 					<div class="switchBox" id="switchBox1" style="display: block;">
-					<table style="width: 100%;">
+					<table style="width: 100%; table-layout: fixed; padding: 5px;">
 						<colgroup>
 							<col style="width: 50%;">
 						    <col style="width: 30%;">
@@ -170,10 +170,10 @@ min-width: 100px;
 						
 						<c:forEach var="comment" items="${comment}">
 						<tr>
-							<td style="  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">
-								<a href="${pageContext.request.contextPath}/detailNote?id=${comment.targetid}">${comment.content }</a>
+							<td style="max-width:50%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">
+								<a href="${pageContext.request.contextPath}/detailNote?id=${comment.targetid}#comment-id-${comment.commentid}">${comment.content }</a>
 							</td>
-							<td style="color: gray; font-size: small; ">${comment.titleShare }</td>
+							<td style="color: gray; font-size: small; max-width:30%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">${comment.titleShare }</td>
 							<td style="color: gray; font-size: small;">${comment.createdate }</td>
 						</tr>
 						</c:forEach>
@@ -187,7 +187,7 @@ min-width: 100px;
 				
 				<div class="outlineBox" style="height: 45%">
 				<div class="white_Box" style="width: 100%; margin-top: 20px;"> 
-				<h3 class="stress_Text">내가 작성한 업무노트 </h3>
+				<h3 class="stress_Text">내가 공유한 업무노트 </h3>
 				
 				<table style="margin: 5px; width: 100%; margin-top: 20px;">
 				<colgroup>
@@ -200,7 +200,7 @@ min-width: 100px;
     			</colgroup>
     			<tbody>
 				<tr><!-- 여기 DB에서 가져와서 포문 돌릴거임 !! -->
-				<td>제목</td>
+				<td style="max-width:50%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">제목</td>
 				<td><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/heart16.png"><a href="#" class="aTag"> 좋아요</a></td>
 				<td ><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/chat16.png"><a href="#" class="aTag"> 댓글</a></td> <!-- 여기 한글 대신 DB에 저장된 다른 숫자 등 보이게 할 거임. -->
 				<td><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/eyes.png"><a href="#" class="aTag"> 조회수</a></td>
