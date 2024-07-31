@@ -155,6 +155,10 @@ public class WikiController {
                 max_order = dao.getMaxOrderOfFather(selectedId);
                 max_order++;
                 
+                if(sharedTitle==null||sharedTitle=="")
+                	sharedTitle = title;
+                
+                
                 System.out.println("하위 아이템(폴더)을 추가합니다. - 추가정보 생성");
                 dao.insertMenuHaveParentsFolder(selectedId, title, sharedTitle, menuType, max_order, userno, isOpenInt);
             }
