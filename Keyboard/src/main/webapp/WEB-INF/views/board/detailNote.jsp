@@ -65,7 +65,7 @@
 	overflow-y: auto;
 	width: 100%;
 	height: 100%;
-	text-align: center;
+	
 }
 .editor_outline {
 	width : 75%;
