@@ -16,13 +16,35 @@
 <div class="content_outline">
 	<jsp:include page="/WEB-INF/views/sidebar.jsp" />
 	<div class="content_right">
-		<div style="width: 100%; height: 10%;"><b>BEST 게시물 모아보기</b></div>
-		<div style=" width: 100%; height: 80%; overflow-y: auto; ">
+		<div style="width: 100%; height: 10%; text-align: center;"><b style="font-size: 35px;  ">⭐ BEST 게시물 모아보기 ⭐</b></div>
+		<div style=" width: 100%; height: 80%; overflow-y: auto; text-align: center;  ">
+		<table style="text-align: center; width: 80%; margin: auto;">
+			<colgroup>
+				<col style="width: 10%;">
+			    <col style="width: 80%;">
+			    <col style="width: 10%;">
+			</colgroup>
+		    <thead style="font-size: large;">
+		        <tr>
+		        	<th scope="col" >관리번호</th>
+		            <th scope="col" >제목</th>
+		            <th scope="col" >작성자</th>
+		        </tr>				            
+		    </thead>
+					     
 			<c:forEach var="list" items="${list}">
+			<tr>
+			<td>${list.management_number}</td>
+			<td>
 	        	<a href="${pageContext.request.contextPath}/detailNote?id=${list.id}"><span>${ list.title } </span></a><br>
+			</td>
+			<td>
+			${list.username}
+			</td>
+			</tr>
 	        </c:forEach>
 		
-		
+		</table>
 		
 		
 		</div>
