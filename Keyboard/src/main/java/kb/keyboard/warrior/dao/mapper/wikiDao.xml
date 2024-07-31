@@ -143,7 +143,7 @@
 	<select id="getAllPost" resultType="kb.keyboard.warrior.dto.BoardDTO">
 		SELECT 
 		ROW_NUMBER() OVER (ORDER BY e.id ASC) AS management_number,
-		e.id, m.title, m.userno , u.username, e.data, m.isOpen
+		e.id, m.title,m.titleShare, m.userno , u.username, e.data, m.isOpen
 		from EditorData e
 		join Menu m on e.id = m.id
 		join user u on m.userno = u.userno
