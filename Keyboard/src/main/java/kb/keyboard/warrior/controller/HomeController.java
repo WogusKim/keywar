@@ -1,6 +1,7 @@
 package kb.keyboard.warrior.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,15 +9,22 @@ import java.util.Objects;
 
 import javax.servlet.http.HttpSession;
 import org.apache.ibatis.session.SqlSession;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kb.keyboard.warrior.CoffixRateCrawler;
 import kb.keyboard.warrior.CurrencyRateCrawler;
 import kb.keyboard.warrior.MorRateCrawler;
 import kb.keyboard.warrior.StockCrawler;
+import kb.keyboard.warrior.dao.DisplayDao;
 import kb.keyboard.warrior.dao.ExchangeRateDao;
 import kb.keyboard.warrior.dao.LoginDao;
 import kb.keyboard.warrior.dao.MemoDao;
@@ -223,6 +231,31 @@ public class HomeController {
 		long endTime = System.currentTimeMillis(); // 
 		long duration = endTime - startTime; // 
 		System.out.println("mainpage loading time: " + duration + "milisecond");
+		
+		
+		
+		//순서배열을 위한 임시 데이터
+		DisplayDao displayDao = sqlSession.getMapper(DisplayDao.class);
+		
+		String display1 = displayDao.getOrderDisplay1(userno);
+		String display2 = displayDao.getOrderDisplay2(userno);
+		String display3 = displayDao.getOrderDisplay3(userno);
+		
+		//기본 세팅
+		List<String> displayOrder = Arrays.asList("currency", "stock", "interests");
+		
+		//순서 정보가 있는 경우 update
+		if (display1 != null && display2 != null && display3 != null) {
+			displayOrder = Arrays.asList(display1, display2, display3);
+		} 
+        
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String displayOrderJson = mapper.writeValueAsString(displayOrder); // 리스트를 JSON 문자열로 변환
+            model.addAttribute("displayOrderJson", displayOrderJson);
+        } catch (Exception e) {
+            e.printStackTrace(); // JSON 변환 중 오류 처리
+        }
 
 		return "main";
 	}
@@ -231,6 +264,44 @@ public class HomeController {
 	public String noticeForm() {
 		return "noticeForm";
 	}
+	
+    @RequestMapping(value = "/updateDisplayOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateDisplayOrder(@RequestBody String newOrderJson, HttpSession session) {
+    	
+    	String userno = (String) session.getAttribute("userno");
+    	
+        // JSON 문자열 파싱
+        JSONObject json = new JSONObject(newOrderJson);
+        String order = json.getString("order");  // "currency,stock,interests"
+        
+        // 순서 정보 파싱
+        String[] displays = order.split(",");
+        if (displays.length == 3) {
+            System.out.println("Display 1: " + displays[0]);
+            System.out.println("Display 2: " + displays[1]);
+            System.out.println("Display 3: " + displays[2]);
+            
+            DisplayDao displayDao = sqlSession.getMapper(DisplayDao.class);
+            String checkOrder = displayDao.getOrderDisplay1(userno);
+            if(checkOrder != null) {
+            	//업데이트
+            	displayDao.updateDisplayOrder(userno, displays[0], displays[1], displays[2]);
+            } else {
+            	//인서트
+            	displayDao.insertDisplayOrder(userno, displays[0], displays[1], displays[2]);
+            }
+            
+            
+            
+        } else {
+            System.out.println("Invalid display order received.");
+        }
+        
+        return "{\"status\":\"success\"}";
+    }
+	
+	
 
 	public void setMenuDepth(List<MenuDTO> menus) {
 
