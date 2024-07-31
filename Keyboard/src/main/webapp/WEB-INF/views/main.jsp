@@ -14,6 +14,14 @@
 <head>
 <meta charset="UTF-8">
 <title>김국민의 업무노트 : 메인 페이지</title>
+
+<!-- jQuery 라이브러리 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- jQuery UI 라이브러리 -->
+<script defer src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
 <link rel="icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
 <link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
@@ -39,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	<div class="content_right">
 	    
 	    <div class="board_top">
-	    	<div class="board_inner">
+	    	<div class="board_inner" id="currency">
 				<div class="card_top">
 				    <div class="title_and_link div_underline">
 				        <h2 class="card_title">환율</h2>
@@ -66,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				    </div>
 				</div>
 	    	</div>
-	    	<div class="board_inner">
+	    	<div class="board_inner" id="stock">
 	    		<div class="card_top">
 				    <div class="title_and_link div_underline">
 				        <h2 class="card_title">증시</h2>
@@ -141,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				    
 		    	</div>
 	    	</div>
-	    	<div class="board_inner">
+	    	<div class="board_inner" id="interests">
 	    		<div class="card_top">
 				    <div class="title_and_link div_underline">
 				        <h2 class="card_title">금리</h2>
@@ -467,6 +475,19 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+
+    var displayOrder = JSON.parse('${displayOrderJson}'); // JSON 문자열을 JavaScript 객체로 파싱
+    var boardTop = document.querySelector('.board_top');
+
+    displayOrder.forEach(function(sectionId) {
+        var sectionElement = document.getElementById(sectionId);
+        if (sectionElement) {
+            boardTop.appendChild(sectionElement);
+        } else {
+            console.error('Element not found:', sectionId);
+        }
+    });
+	
     // 완료 현황 업데이트
     updateTodoCount();
     
@@ -576,6 +597,38 @@ function updateTodoCount() {
     // 완료된 개수와 전체 개수 업데이트
     document.getElementById('todo_rate').textContent = completed + ' / ' + total;
 }
+</script>
+
+<!-- 드래그앤드랍을 위한 테스트중 -->
+<script>
+
+function updateSectionOrder(newOrder) {
+    console.log("Updating order to:", newOrder); // 로그 출력으로 확인
+    $.ajax({
+        url: contextPath + '/updateDisplayOrder',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({order: newOrder}),
+        success: function(response) {
+            console.log("Order update response:", response);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error updating order:", error);
+        }
+    });
+}
+
+
+$(document).ready(function() {
+    $(".board_top").sortable({
+        placeholder: "ui-state-highlight",
+        update: function(event, ui) {
+            var newOrder = $(this).sortable('toArray').toString();
+            updateSectionOrder(newOrder);
+        }
+    });
+    $(".board_inner").disableSelection();
+});
 </script>
 </body>
 </html>

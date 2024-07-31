@@ -22,5 +22,24 @@
 
     </update>
 
+	<select id="getOrderDisplay1" resultType="String">
+		SELECT display1 FROM UserDisplayOrder WHERE userno = #{param}
+	</select>
+	<select id="getOrderDisplay2" resultType="String">
+		SELECT display2 FROM UserDisplayOrder WHERE userno = #{param}
+	</select>
+	<select id="getOrderDisplay3" resultType="String">
+		SELECT display3 FROM UserDisplayOrder WHERE userno = #{param}
+	</select>
+	
+	<update id="updateDisplayOrder">
+		UPDATE UserDisplayOrder
+		SET display1 = #{param2}, display2 = #{param3}, display3 = #{param4}
+		WHERE userno = #{param1}
+	</update>
+	<insert id="insertDisplayOrder">
+		INSERT INTO UserDisplayOrder VALUES
+		(#{param1}, #{param2}, #{param3}, #{param4})
+	</insert>
 
 </mapper>
