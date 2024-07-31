@@ -141,10 +141,13 @@
 	</select>
 	
 	<select id="getAllPost" resultType="kb.keyboard.warrior.dto.BoardDTO">
-		select e.id, m.title , e.data, m.isOpen
+		SELECT 
+		ROW_NUMBER() OVER (ORDER BY e.id ASC) AS management_number,
+		e.id, m.title, m.userno , u.username, e.data, m.isOpen
 		from EditorData e
 		join Menu m on e.id = m.id
-		where m.isOpen = 1
+		join user u on m.userno = u.userno
+		where m.isOpen = 1;
 	</select>
 	
 </mapper>

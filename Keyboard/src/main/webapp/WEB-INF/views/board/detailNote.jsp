@@ -147,9 +147,11 @@
 				
             </div>
 				  <c:set var="sessionUserno" value="<%= userno %>" />
-				  <% 
+				  
+				  
+					  <% 
 					    String currentId = request.getParameter("id");
-					%>
+						%>
 	            <div id="commentArea1" style="background-color: #FAFAFA; width : 75%; margin: auto; padding-left: 20px;"> 
 	            	<div style="height: 40px; width: 100%;"></div>
 	            	<c:forEach var="comment" items="${comments}">
