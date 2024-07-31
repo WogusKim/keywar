@@ -4,6 +4,7 @@ public class BoardDTO {
 	private String data;
 	private String management_number;
 	private String title;
+	private String titleShare;
 	private String username;
 	private int id;
 	private int isOpen;
@@ -44,6 +45,12 @@ public class BoardDTO {
 	}
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	public String getTitleShare() {
+		return titleShare;
+	}
+	public void setTitleShare(String titleShare) {
+		this.titleShare = titleShare;
 	}
 	
 	

@@ -36,7 +36,7 @@
 			<tr>
 			<td>${list.management_number}</td>
 			<td>
-	        	<a href="${pageContext.request.contextPath}/detailNote?id=${list.id}"><span>${ list.title } </span></a><br>
+	        	<a href="${pageContext.request.contextPath}/detailNote?id=${list.id}"><span>${ list.titleShare } </span></a><br>
 			</td>
 			<td>
 			${list.username}
