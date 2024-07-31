@@ -87,15 +87,33 @@ public class BoardController {
 		}else {
 			rdto.setResult("fail - 댓글 등록 중 오류가 발생하였습니다.");
 		}
-		
-//		System.out.println(dto.getContent());
-//		System.out.println(dto.getUserno());
-//		System.out.println(dto.getTargetid());
-		
-	
 	
 		String json = mapper.writeValueAsString(rdto);
 		
 		return json;
 	}
+	
+	@RequestMapping("/deleteComment")
+	public String commentDelete(Model model, @RequestParam("id") int id, @RequestParam("commentid") int commentid, HttpSession session) {
+		
+		CommentDao dao = sqlSession.getMapper(CommentDao.class); 
+		String writer = dao.findWhoWrote(commentid+"");
+		if(session.getAttribute("userno").equals(writer)) {
+			dao.commentDelete(commentid+"");
+		}else {
+			System.out.println("잘못된 접근임.");
+		}
+		return "redirect:detailNote?id="+id;
+	}
+//	
+//	@RequestMapping("/addCommentForm")
+//	public String addCommentForm(Model model, CommentDTO dto, HttpSession session) throws Exception {
+//		System.out.println("addCommentForm 진입");
+//		CommentDao dao = sqlSession.getMapper(CommentDao.class); 
+//		dao.addComment(dto);
+//		
+//		String url = " redirect:detailNote?id=" + dto.getTargetid() ; 
+//		return url;
+//	}
+	
 }
