@@ -500,9 +500,7 @@
 					chooseRateKorea1 =  (Math.round((chooseRateKorea1)*100) /100);
 				}
 				
-				
 				console.log('환전계산한 금액' + chooseRateKorea1);  
-				
 
 				var tempValue = num1/chooseRateKorea1 ;
 				tempValue = tempValue.toFixed(2);
