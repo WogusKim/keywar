@@ -53,7 +53,20 @@
     <!--script src="https://cdn.jsdelivr.net/npm/editorjs-mermaid@latest"></script -->
     <!-- Codeflask -->
     <script src="https://cdn.jsdelivr.net/npm/@calumk/editorjs-codeflask@latest"></script>
-    
+	<style>
+	.resize-handle {
+	    position: absolute;
+	    bottom: 0;
+	    right: 0;
+	    width: 20px; /* Adjust size as needed */
+	    height: 20px; /* Adjust size as needed */
+	    margin: 5px;
+	    background: url('${pageContext.request.contextPath}/resources/images/icons/resize.png') no-repeat center center;
+	    cursor: nwse-resize; /* This cursor is typically used for resizing */
+	    background-size: contain; /* Makes sure the image fits well in the div */
+	}
+	
+	</style>
     	
 </head>
 
@@ -85,7 +98,7 @@
             <!-- 버튼 영역 -->
             <div class="editor-button-area">
 				<button onclick="saveData()">저장하기</button>
-				<button onclick="loadData()">내용 불러오기</button>
+				<!-- <button onclick="loadData()">내용 불러오기</button> -->
             </div>
 
         </div>
@@ -94,9 +107,6 @@
 
 let editor;
 
-
-
-
 async function saveData() {
 	
 	
@@ -104,13 +114,24 @@ async function saveData() {
         const savedData = await editor.save();
         console.log("저장된 데이터:", savedData);
 
+        //테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중
+        const imagesData = Array.from(document.querySelectorAll('.image-tool__image img')).map(img => ({
+            url: img.src,
+            width: img.style.width
+        }));
+        const payload = {
+                editorContent: savedData,
+                images: imagesData
+            };        
+      	//테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중
+        
         // fetch API를 사용한 예제 POST 요청
         fetch('${pageContext.request.contextPath}/saveEditorData', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(savedData)
+            body: JSON.stringify(payload)
         })
         .then(response => response.json())
         .then(data => console.log('성공:', data))
@@ -130,6 +151,12 @@ document.addEventListener('DOMContentLoaded', function () {
     editor = new EditorJS({
         holder: 'myEditor',
         data: editorData,
+        //테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중
+        onReady: function() {
+            addResizeHandles();
+            resizeImages();
+        },
+        //테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중
         tools: {
             // Header 설정
             header: {
@@ -198,6 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			                .then(response => response.json())
 			                .then(data => {
 			                    if (data && data.file && data.file.url) {
+			                    	addResizeHandles();
 			                        return {
 			                            success: 1,
 			                            file: {
@@ -336,31 +364,97 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         
     });
+
+	
+	
+	//테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중
+	//테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중
+	//테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중
+	//테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중
+	//테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중
+	
+    // Function to add resize handles
+	function addResizeHandles() {
+	    const imageContainers = document.querySelectorAll('.image-tool__image');
+	
+	    imageContainers.forEach(container => {
+	        const img = container.querySelector('img'); // Ensure it targets the image directly
+	        const handle = document.createElement('div');
+	        handle.className = 'resize-handle';
+	        handle.style.cssText = 'position: absolute; bottom: 0; right: 0; width: 20px; height: 20px; cursor: nwse-resize;';
+	
+	        // Append handle directly to the container and position it over the image
+	        container.style.position = 'relative'; // Ensures the handle positions correctly
+	        container.appendChild(handle);
+	
+	        handle.addEventListener('mousedown', startResize);
+	    });
+	}
+
+
+	function startResize(e) {
+	    e.preventDefault();
+	    const handle = e.target;
+	    const container = handle.parentNode;
+	    const img = container.querySelector('img');
+
+	    const startX = e.pageX;
+	    const startY = e.pageY;
+	    const startWidth = img.offsetWidth;
+	    const startHeight = img.offsetHeight;
+
+	    function doResize(e) {
+	        const currentX = e.pageX;
+	        const currentY = e.pageY;
+	        const newWidth = startWidth + (currentX - startX);
+	        const newHeight = startHeight + (currentY - startY);
+
+	        img.style.width = newWidth + 'px';
+	        img.style.height = 'auto'; // Keeps the aspect ratio
+	        // Update handle position if needed
+	        handle.style.right = '0px';
+	        handle.style.bottom = '0px';
+	    }
+
+	    function stopResize() {
+	        window.removeEventListener('mousemove', doResize);
+	        window.removeEventListener('mouseup', stopResize);
+	    }
+
+	    window.addEventListener('mousemove', doResize);
+	    window.addEventListener('mouseup', stopResize);
+	}
+
+	
+	function resizeImages() {
+	    const imageSizeData = JSON.parse('${imageSizeList}');
+	    console.log("이미지 사이즈 데이터:", imageSizeData); // 이미지 사이즈 데이터 로그
+
+	    imageSizeData.forEach(imageInfo => {
+	        console.log("처리중인 이미지 URL:", imageInfo.url, "사이즈대상:", imageInfo.width);
+	        const imgElement = document.querySelector(`img[src*="\${imageInfo.url}"]`);
+	        
+	        if (imgElement) {
+		        console.log("찾은마크업:",imgElement);
+	            imgElement.style.width = imageInfo.width;
+	            imgElement.style.height = 'auto'; 
+	        }
+	    });
+	}
+
+    
+	
+	//테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중
+	//테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중
+	//테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중
+	//테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중테스트중
+	
+	
+	
+	
 });
 
-//파일 업로드 함수 (테스트)
-function uploadImage(file) {
-    let form_data = new FormData();
-    form_data.append('file', file);
 
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            data: form_data,
-            type: "POST",
-            url: '${pageContext.request.contextPath}/uploadFile',
-            cache: false,
-            contentType: false,
-            enctype: 'multipart/form-data',
-            processData: false,
-            success: function (url) {
-                resolve(url);
-            },
-            error: function (response) {
-                reject(response);
-            }
-        });
-    });
-}
 </script>
 
 </body>
