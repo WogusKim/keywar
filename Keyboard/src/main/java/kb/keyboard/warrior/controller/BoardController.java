@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import kb.keyboard.warrior.dao.CommentDao;
 import kb.keyboard.warrior.dao.WikiDao;
+import kb.keyboard.warrior.dto.BoardDTO;
 import kb.keyboard.warrior.dto.CommentDTO;
 import kb.keyboard.warrior.dto.ResultDTO;
 
@@ -31,25 +32,17 @@ public class BoardController {
 	public SqlSession sqlSession;
 
 	@RequestMapping("/hotNote")
-	public String wikiDetail(Model model, @RequestParam("id") int id, HttpSession session) {
-		WikiDao dao = sqlSession.getMapper(WikiDao.class);
-		String wikiData = dao.getData(id);
-		System.out.println("위키디테일진입 : " + id);
-		session.setAttribute("WikiId", id);
-
-		if (wikiData == null) {
-			System.out.println("초기값을 제공합니다.");
-			wikiData = "{\"time\":1721959855696,\"blocks\":[{\"id\":\"h6xL_peWS8\",\"type\":\"header\",\"data\":{\"text\":\"업무노트 개설을 축하합니다.\",\"level\":2}},{\"id\":\"ufod1niYAb\",\"type\":\"paragraph\",\"data\":{\"text\":\"열심히 노트를 작성하여 업무 효율을 높혀보세요!\"}}],\"version\":\"2.30.2\"}";
-		}
-		model.addAttribute("editorData", wikiData);
-
-		return "wiki/editorDetail";
-	}
-
-	public String login(HttpServletRequest request, Model model) {
+	public String wikiDetail(Model model, HttpSession session) {
 		System.out.println("hotNote창 진입");
+		WikiDao dao = sqlSession.getMapper(WikiDao.class);
+		List<BoardDTO> list = dao.getAllPost();
+		if(list !=null) {
+			model.addAttribute("list", list);
+		}
 		return "board/list";
 	}
+
+
 
 	@RequestMapping("/detailNote")
 	public String Detail(Model model, @RequestParam("id") int id, HttpSession session) {

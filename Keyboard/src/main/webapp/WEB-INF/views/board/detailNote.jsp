@@ -140,8 +140,9 @@
             <!-- 버튼 영역 -->
             <div class="editor-button-area">
 				<!-- <button onclick="saveData()">저장하기</button> -->  <!-- 저장은 불가능해야함. -->
-				<button onclick="loadData()">업무노트 뺏어 오기 </button>
-				<p  style="font-size: 50px; margin: 0px;">❤️ </p>
+				<button onclick="loadData()" style="margin-bottom: 10px;">업무노트 뺏어 오기 </button><br>
+				
+				<img src="${pageContext.request.contextPath}/resources/images/like.png"  id="likeUp" >
 				<p style="font-size: 30px; margin: 0px;">좋아요 개수 표출(DB에서 가져올 거임)</p>
 				
             </div>
@@ -169,8 +170,9 @@
 	            <textarea id="comment-input" rows="4" cols="50" placeholder="댓글을 입력하세요" style="width : 85%; height: 60px; resize: none; "></textarea>
 	            <button id="comment-btn" class="styled-button" onclick="test()">등록하기</button> 
 	            </div>
+	            <div style="background-color: #FAFAFA; width: 100%; height: 40px; "></div>
 	            </div> <!-- 댓글 영역 끝 -->
-	            <div style="width: 100%; height: 70px; background-color: #FAFAFA;"><!-- 댓글 밑 조금의 여백 추가 -->
+	            <div style="width: 100%; height: 70px; "><!-- 댓글 밑 조금의 여백 추가 -->
 	            </div>
 			</div><!-- 여기가 바깥 범위 끝 -->
 			
@@ -223,11 +225,13 @@ function test(){
 			if(result.result == "success"){
 				alert("댓글이 정상적으로 등록되었습니다.");
 				$("textarea#comment-input").val("");
-				var url = "${pageContext.request.contextPath}/detailNote?id=" +id +"#commentArea1" //댓글 창 맨 위로 이동.    
+				//var url = "${pageContext.request.contextPath}/detailNote?id=" +id +"#commentArea1" //댓글 창 맨 위로 이동.    
 				//alert(url);
-				window.location.href= url;
+				//window.location.href= url;
+				  window.location.reload();
 			}else{
-				alert(result.result)
+				alert(result.result);
+				$("textarea#comment-input").val("");
 			}
 			
 		}, 

@@ -50,10 +50,10 @@ public class WikiDetailController {
         
         WikiDao dao = sqlSession.getMapper(WikiDao.class);
 
-        //경로 제목을 위한 부모 id 검색
+        //寃쎈줈 �젣紐⑹쓣 �쐞�븳 遺�紐� id 寃��깋
         
         List<String> menuDirection = new ArrayList<String>();
-        menuDirection.add(dao.getMenuDetail(id).getTitle()); //사용자에게 받은 제목으로 시작
+        menuDirection.add(dao.getMenuDetail(id).getTitle()); //�궗�슜�옄�뿉寃� 諛쏆� �젣紐⑹쑝濡� �떆�옉
         Integer parentId = dao.getParentid(String.valueOf(id));
         
         while (parentId != null) {
@@ -61,7 +61,7 @@ public class WikiDetailController {
             parentId = dao.getParentid(String.valueOf(parentId));
         }
         
-        Collections.reverse(menuDirection); // 순서대로 정렬
+        Collections.reverse(menuDirection); // �닚�꽌��濡� �젙�젹
         for (String item : menuDirection) {
             System.out.println(item);
         }
@@ -71,14 +71,14 @@ public class WikiDetailController {
         session.setAttribute("WikiId", id);
         
         if (wikiData == null) {
-            System.out.println("초기값을 설정합니다.");
+            System.out.println("珥덇린媛믪쓣 �꽕�젙�빀�땲�떎.");
             wikiData = "{\"time\":1721959855696,\"blocks\":[{\"id\":\"h6xL_peWS8\",\"type\":\"header\",\"data\":{\"text\":\"업무노트 개설을 축하합니다.\",\"level\":2}},{\"id\":\"ufod1niYAb\",\"type\":\"paragraph\",\"data\":{\"text\":\"열심히 노트를 작성하여 업무 효율을 높혀보세요!\"}}],\"version\":\"2.30.2\"}";
         }
         model.addAttribute("editorData", wikiData);
         
         
         
-        //이미지사이즈처리
+        //�씠誘몄��궗�씠利덉쿂由�
         List<ImageSizeDTO> imageSizeList = dao.getAllSizeOfImg(id);
         ObjectMapper mapper = new ObjectMapper();
         String imageSizeJson;
@@ -108,11 +108,11 @@ public class WikiDetailController {
     	
         
         
-        // editorContent 데이터 추출
+        // editorContent �뜲�씠�꽣 異붿텧
         JSONObject json = new JSONObject(jsonData);
         JSONObject editorContent = json.getJSONObject("editorContent");
         
-        // images 데이터 추출 및 처리
+        // images �뜲�씠�꽣 異붿텧 諛� 泥섎━
         JSONArray imagesArray = json.getJSONArray("images");
         Map<String, String> imageDetails = new HashMap<String, String>();    
         
@@ -121,11 +121,11 @@ public class WikiDetailController {
             String url = image.getString("url");
             String width = image.getString("width");
 
-            // URL에서 필요한 부분만 추출
+            // URL�뿉�꽌 �븘�슂�븳 遺�遺꾨쭔 異붿텧
             String[] parts = url.split("/");
             if (parts.length > 1) {
                 String filename = parts[parts.length - 1];
-                // 이제 이 shortUrl을 사용하여 맵에 저장
+                // �씠�젣 �씠 shortUrl�쓣 �궗�슜�븯�뿬 留듭뿉 ���옣
                 imageDetails.put(filename, width);
             }
         }
@@ -136,16 +136,16 @@ public class WikiDetailController {
             String url = entry.getKey();
             String width = entry.getValue();
 
-            // 각 이미지 정보를 출력
+            // 媛� �씠誘몄� �젙蹂대�� 異쒕젰
             System.out.println("Wiki ID: " + wikiId + ", Image URL: " + url + ", Image Width: " + width);
 
-            // 기존에 정보가 있는지 체크
+            // 湲곗〈�뿉 �젙蹂닿� �엳�뒗吏� 泥댄겕
             String beforeSize = dao.getSize(wikiId, url);
             if (beforeSize != null) {
-            	//기존 정보가 있는경우 업데이트
+            	//湲곗〈 �젙蹂닿� �엳�뒗寃쎌슦 �뾽�뜲�씠�듃
             	dao.updateSize(wikiId, url, width);
             } else {
-            	//기존 정보가 없는 경우 인서트
+            	//湲곗〈 �젙蹂닿� �뾾�뒗 寃쎌슦 �씤�꽌�듃
             	dao.insertSize(wikiId, url, width);
             }
             
@@ -158,10 +158,10 @@ public class WikiDetailController {
         String wikiData = dao.getData(wikiId);
         
         if (wikiData == null) {
-            // DB에 새로운 데이터로 삽입
+            // DB�뿉 �깉濡쒖슫 �뜲�씠�꽣濡� �궫�엯
             dao.insertWiki(wikiId, editorContent.toString());
         } else {
-            // DB 데이터 업데이트
+            // DB �뜲�씠�꽣 �뾽�뜲�씠�듃
             dao.updateWiki(wikiId, editorContent.toString());
         }
         
@@ -174,17 +174,17 @@ public class WikiDetailController {
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpSession session) {
         
         Integer wikiId = (Integer) session.getAttribute("WikiId");
-        System.out.println("파일업로드 테스트");
+        System.out.println("�뙆�씪�뾽濡쒕뱶 �뀒�뒪�듃");
         
         if (!file.isEmpty()) {
             try {
 
                 String basePath = request.getSession().getServletContext().getRealPath("/resources/upload") + "/" + wikiId;
-                System.out.println("업로드 경로: " + basePath);
+                System.out.println("�뾽濡쒕뱶 寃쎈줈: " + basePath);
                 
                 File dir = new File(basePath);
                 if (!dir.exists()) {
-                    dir.mkdirs(); // 폴더가 없으면 생성
+                    dir.mkdirs(); // �뤃�뜑媛� �뾾�쑝硫� �깮�꽦
                 }
 
                 String originalFilename = file.getOriginalFilename();
@@ -192,11 +192,11 @@ public class WikiDetailController {
                 String newFilename = UUID.randomUUID().toString() + fileExtension;
 
 
-                File dest = new File(basePath, newFilename); // 파일 저장 경로에 파일명을 포함하여 생성
-                //file.transferTo(dest); // 파일을 위에서 지정한 경로와 파일명으로 저장
+                File dest = new File(basePath, newFilename); // �뙆�씪 ���옣 寃쎈줈�뿉 �뙆�씪紐낆쓣 �룷�븿�븯�뿬 �깮�꽦
+                //file.transferTo(dest); // �뙆�씪�쓣 �쐞�뿉�꽌 吏��젙�븳 寃쎈줈�� �뙆�씪紐낆쑝濡� ���옣
                 Thumbnails.of(file.getInputStream())
-                .width(500)  // 최대 크기만 지정
-                .keepAspectRatio(true)  // 비율 유지
+                .width(500)  // 理쒕� �겕湲곕쭔 吏��젙
+                .keepAspectRatio(true)  // 鍮꾩쑉 �쑀吏�
                 .toFile(dest);
                
 
