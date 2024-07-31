@@ -99,6 +99,59 @@ public class MemoController {
 
         return "memo/calendar";
     }
+
+    @RequestMapping(value = "/checkGroupName", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> checkGroupName(HttpSession session, @RequestBody Map<String, String> request) {
+        String groupName = request.get("groupName");
+        Map<String, Object> response = new HashMap<String, Object>();
+
+        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+        try {
+        	int count = dao.checkGroupName(groupName);
+            response.put("exists", count > 0);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace(); // 스택 트레이스 출력
+            response.put("error", "Error checking group name");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @RequestMapping(value = "/searchUser", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<Map<String, List<Map<String, String>>>> searchUser(@RequestBody Map<String, String> request, HttpSession session) {
+        String searchUsername = (String) request.get("username");
+        String userno = (String) session.getAttribute("userno");
+        System.out.println(searchUsername);
+        System.out.println(userno);
+        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+        System.out.println("dao 호출");
+        try {
+        	System.out.println("try 진입");
+            List<Map<String, String>> searchUserList = dao.searchUser(searchUsername, userno);
+            System.out.println("searchUserList: " + searchUserList);
+            Map<String, List<Map<String, String>>> response = new HashMap<String, List<Map<String, String>>>();
+            response.put("users", searchUserList);
+            return new ResponseEntity<Map<String, List<Map<String, String>>>>(response, HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<Map<String, List<Map<String, String>>>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @RequestMapping("/saveGroup")
+    public ResponseEntity<String> saveGroup(@RequestBody List<Map<String, String>> groupData, HttpSession session) {
+        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+        String userno = (String) session.getAttribute("userno");
+        try {
+        	dao.saveGroup(groupData);
+        	dao.saveSelf(userno);
+            return new ResponseEntity<String>("Group saved successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>("Error saving group", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     
     @RequestMapping(value = "/customsharetoload", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody

@@ -7,6 +7,55 @@
 	<select id="loadCustomShareto" parameterType="String" resultType="map">
 	    SELECT sharedepth3, customname FROM scheduleshare WHERE userno = #{userno} and sharedepth1 = '0000' and sharedepth2 = '0000' and sharedepth3 != '0000'
 	</select>
+	
+	<select id="checkGroupName" parameterType="String" resultType="int">
+	    SELECT count(*) FROM scheduleshare WHERE customname = #{groupName}
+	</select>
+	
+	<select id="searchUser" parameterType="map" resultType="map">
+	    SELECT userno, username as name, deptname, teamname 
+		FROM user u left join department d
+		on u.deptno = d.deptno
+		and u.teamno = d.teamno
+		WHERE username like CONCAT('%', #{searchUsername}, '%') and userno != #{userno}
+	</select>	
+	
+	<insert id="saveGroup" parameterType="list">
+	    <selectKey keyProperty="maxSharedepth3" resultType="string" order="BEFORE">
+	        SELECT LPAD(COALESCE(MAX(sharedepth3), 0) + 1, 4, '0') AS maxSharedepth3
+	        FROM scheduleshare
+	    </selectKey>
+        INSERT INTO scheduleshare (userno, sharedepth1, sharedepth2, sharedepth3, customname, sharecolor)
+	    VALUES
+	    <foreach collection="list" item="item" separator=",">
+	        (
+	            #{item.userno}, 
+	            '0000', 
+	            '0000', 
+	            #{maxSharedepth3},
+	            #{item.customname}, 
+	            #{item.sharecolor}
+	        )
+  		</foreach>
+	</insert>
+	
+	<insert id="saveSelf" parameterType="string" useGeneratedKeys="true" keyProperty="maxSharedepth3">
+	    <selectKey keyProperty="maxSharedepth3" resultType="string" order="BEFORE">
+	        SELECT MAX(sharedepth3) AS maxSharedepth3
+	        FROM scheduleshare
+	    </selectKey>
+        INSERT IGNORE INTO scheduleshare (userno, sharedepth1, sharedepth2, sharedepth3, customname, sharecolor)
+	    SELECT 
+	            #{userno}, 
+	            '0000', 
+	            '0000', 
+	            sharedepth3,
+	            customname, 
+	            sharecolor
+        FROM 
+        		scheduleshare
+        WHERE SHAREDEPTH3 = #{maxSharedepth3}
+	</insert>
 
     <insert id="scheduleNew" parameterType="kb.keyboard.warrior.dto.ScheduleDTO">
 	    INSERT INTO schedule (userno, title, content, startDate, endDate, sharedepth1, sharedepth2, sharedepth3)
@@ -49,26 +98,7 @@
 	</insert>
     
 	<select id="scheduleLoad" parameterType="string" resultType="kb.keyboard.warrior.dto.ScheduleDTO">
-		<!-- select distinct a.scheduleid, a.userno, a.title, a.content, a.startdate, a.enddate, 
-		    a.sharedepth1, d.deptname, 
-		    a.sharedepth2, d.teamname, 
-		    a.sharedepth3, b.customname, 
-		    b.sharecolor
-	    from schedule a 
-		    left join scheduleshare b 
-			    on a.sharedepth1 = b.sharedepth1
-			    and a.sharedepth2 = b.sharedepth2
-			    and a.sharedepth3 = b.sharedepth3
-		    left join 
-		    	(select * from user where userno = #{userno}) c
-			    on c.deptno = a.sharedepth1
-			    and c.teamno = a.sharedepth2
-		    left join department d
-			    on c.deptno = d.deptno
-			    and c.teamno = d.teamno
-	    where (a.sharedepth1 = c.deptno and a.sharedepth2 = '0000')
-		    or (a.sharedepth1 = c.deptno and a.sharedepth2 = c.teamno)
-		    or (a.sharedepth1 = '0000' and a.sharedepth2 = '0000' and b.userno = #{userno}) -->
+
 		SELECT distinct s.scheduleid, s.userno, s.title, s.content, s.startdate, s.enddate, 
 			s.sharedepth1, d.deptname, 
 			s.sharedepth2, d.teamname, 
