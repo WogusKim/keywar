@@ -20,6 +20,7 @@ public interface ScheduleDao {
 	void saveGroup(List<Map<String, String>> groupData);
 //	void saveSelf(String userno);
 	void saveSelf(@Param("userno") String userno);
+	void groupExit(String sharedepth3, String userno);
 
 
 }

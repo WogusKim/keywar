@@ -64,16 +64,17 @@ public class MemoController {
         ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
         String userno = (String) session.getAttribute("userno");
         List<ScheduleDTO> scheduleList = dao.scheduleLoad(userno);
-
         List<Map<String, Object>> events = new ArrayList<Map<String, Object>>();
         for (ScheduleDTO schedule : scheduleList) {
             Map<String, Object> event = new HashMap<String, Object>();
             event.put("id", schedule.getScheduleid());
+
             event.put("title", schedule.getTitle());
             event.put("start", schedule.getStartDate().toString());
             event.put("end", schedule.getEndDate().toString());
 
             Map<String, Object> extendedProps = new HashMap<String, Object>();
+            extendedProps.put("userid", schedule.getUserno());
             extendedProps.put("content", schedule.getContent());
             extendedProps.put("sharedepth1", schedule.getSharedepth1());
             extendedProps.put("sharedepth2", schedule.getSharedepth2());
