@@ -2,6 +2,7 @@ package kb.keyboard.warrior.dao;
 
 import java.util.List;
 
+import kb.keyboard.warrior.dto.ImageSizeDTO;
 import kb.keyboard.warrior.dto.MenuDTO;
 
 public interface WikiDao {
@@ -55,7 +56,15 @@ public interface WikiDao {
 	void insertWiki(int wikiId, String editorData);
 	void updateWiki(int wikiId, String editorData);
 	
+	//기존 사이즈정보 확인
+	String getSize(Integer wikiId, String url);
 	
+	//이미지 상세정보 저장
+	void updateSize(Integer wikiId, String url, String width);
+	void insertSize(Integer wikiId, String url, String width);
+	
+	//id 기준으로 모든 이미지 정보 불러오기
+	List<ImageSizeDTO> getAllSizeOfImg(int id);
 	
 	
 
