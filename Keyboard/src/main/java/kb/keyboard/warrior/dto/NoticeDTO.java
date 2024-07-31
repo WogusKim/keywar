@@ -17,14 +17,14 @@ public class NoticeDTO {
  private int positionY;        // 공지 위치 y좌표
  private String color;
  private int zindex;
+ private int width;
+ private int height;
 
  public NoticeDTO() {
  }
 
-
-
 public NoticeDTO(String noticeid, String title, String content, String userno, String deptno, String createdate,
-		String noticestatus, int positionX, int positionY, String color, int zindex) {
+		String noticestatus, int positionX, int positionY, String color, int zindex, int width, int height) {
 	super();
 	this.noticeid = noticeid;
 	this.title = title;
@@ -37,7 +37,11 @@ public NoticeDTO(String noticeid, String title, String content, String userno, S
 	this.positionY = positionY;
 	this.color = color;
 	this.zindex = zindex;
+	this.width = width;
+	this.height = height;
 }
+
+
 
 
 
@@ -129,6 +133,24 @@ public int getZindex() {
 public void setZindex(int zindex) {
 	this.zindex = zindex;
 }
+
+public int getWidth() {
+	return width;
+}
+
+public void setWidth(int width) {
+	this.width = width;
+}
+
+public int getHeight() {
+	return height;
+}
+
+public void setHeight(int height) {
+	this.height = height;
+}
+
+
 
 
 }

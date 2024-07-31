@@ -46,6 +46,7 @@ import kb.keyboard.warrior.util.Constant;
 @Controller
 public class MemoController {
 
+
     MemoCommand command = null;
     private SqlSession sqlSession;
 
@@ -237,14 +238,14 @@ public class MemoController {
 
         String todoId = todoListDto.getTodoid();
         String isDone = todoListDto.getIsdone();
-        // 泥댄겕諛뺤뒪 �긽�깭異쒕젰
+        // todolist id check
         System.out.println(todoId);
         System.out.println(isDone);
 
         ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
 
         if (isDone.equals("1")) {
-            // �븷�씪 �셿猷뚯쿂由�
+            // check yn
             todoDao.checkTodo(todoId);
         } else {
             todoDao.unCheckTodo(todoId);
@@ -259,8 +260,8 @@ public class MemoController {
 
         String userno = (String) session.getAttribute("userno");
         String deptno = (String) session.getAttribute("deptno");
-        System.out.println("硫붾え酉�: �쑀�� 踰덊샇: " + userno);
-        System.out.println("硫붾え酉�: 遺��꽌 踰덊샇: " + deptno);
+        System.out.println("memo userno: " + userno);
+        System.out.println("memo deptno: " + deptno);
         if (userno != null && deptno != null) {
             MemoViewCommand command = new MemoViewCommand();
             command.execute(model, userno, deptno);
@@ -277,8 +278,8 @@ public class MemoController {
 
         String userno = (String) session.getAttribute("userno");
         String deptno = (String) session.getAttribute("deptno");
-        System.out.println("怨듭��궗�빆 酉�: �쑀�� 踰덊샇: " + userno);
-        System.out.println("怨듭��궗�빆 酉�: 遺��꽌 踰덊샇: " + deptno);
+        System.out.println("notice userno: " + userno);
+        System.out.println("notice deptno: " + deptno);
         if (userno != null && deptno != null) {
             command = new noticeViewCommand(userno, deptno);
             command.execute(model);
@@ -300,8 +301,8 @@ public class MemoController {
 
         String userno = (String) session.getAttribute("userno");
         String deptno = (String) session.getAttribute("deptno");
-        System.out.println("怨듭��궗�빆 �옉�꽦: �쑀�� 踰덊샇: " + userno);
-        System.out.println("怨듭��궗�빆 �옉�꽦: 遺��꽌 踰덊샇: " + deptno);
+        System.out.println("noticewrite userno: " + userno);
+        System.out.println("noticewrite deptno: " + deptno);
         model.addAttribute("request", request);
         model.addAttribute("userno", userno);
         model.addAttribute("deptno", deptno);
@@ -319,7 +320,7 @@ public class MemoController {
         System.out.println("noticeDelete()");
 
         String userno = (String) session.getAttribute("userno");
-        System.out.println("怨듭��궗�빆 �궘�젣: �쑀�� 踰덊샇: " + userno);
+        System.out.println("noticedelete userno: " + userno);
         model.addAttribute("request", request);
         if (userno != null) {
             noticeDeleteCommand command = new noticeDeleteCommand();
@@ -335,7 +336,7 @@ public class MemoController {
         System.out.println("mymemoWrite()");
 
         String userno = (String) session.getAttribute("userno");
-        System.out.println("留덉씠硫붾え �옉�꽦: " + userno);
+        System.out.println("mymemo userno: " + userno);
         model.addAttribute("request", request);
         model.addAttribute("userno", userno);
         if (userno != null) {
@@ -353,8 +354,8 @@ public class MemoController {
 
         String userno = (String) session.getAttribute("userno");
         String deptno = (String) session.getAttribute("deptno");
-        System.out.println("遺��꽌硫붾え �옉�꽦: �쑀�� 踰덊샇: " + userno);
-        System.out.println("遺��꽌硫붾え �옉�꽦: 遺��꽌 踰덊샇: " + deptno);
+        System.out.println("deptmemo userno: " + userno);
+        System.out.println("deptno deptno: " + deptno);
         model.addAttribute("request", request);
         model.addAttribute("userno", userno);
         model.addAttribute("deptno", deptno);
@@ -372,7 +373,7 @@ public class MemoController {
         System.out.println("mymemoDelete()");
 
         String userno = (String) session.getAttribute("userno");
-        System.out.println("留덉씠硫붾え �궘�젣: �쑀�� 踰덊샇: " + userno);
+        System.out.println("mymemo delete userno: " + userno);
         model.addAttribute("request", request);
 
         if (userno != null) {
@@ -389,7 +390,7 @@ public class MemoController {
         System.out.println("deptmemoDelete()");
 
         String deptno = (String) session.getAttribute("deptno");
-        System.out.println("遺��꽌硫붾え �궘�젣: 遺��꽌 踰덊샇: " + deptno);
+        System.out.println("deptmemo delete deptno: " + deptno);
         model.addAttribute("request", request);
 
         if (deptno != null) {
@@ -406,7 +407,7 @@ public class MemoController {
         System.out.println("todoWrite()");
 
         String userno = (String) session.getAttribute("userno");
-        System.out.println("todo �옉�꽦: �쑀�� 踰덊샇: " + userno);
+        System.out.println("todo userno: " + userno);
         model.addAttribute("request", request);
         if (userno != null) {
         	todoWriteCommand command = new todoWriteCommand();
@@ -422,7 +423,7 @@ public class MemoController {
         System.out.println("todoStatus()");
 
         String userno = (String) session.getAttribute("userno");
-        System.out.println("todo �긽�깭: �쑀�� 踰덊샇: " + userno);
+        System.out.println("todo userno: " + userno);
         model.addAttribute("request", request);
 
         if (userno != null) {
@@ -437,18 +438,18 @@ public class MemoController {
     @RequestMapping(value = "/updateNoticePosition", method = RequestMethod.POST)
     @ResponseBody
     public String updateNoticePosition(@RequestBody NoticeDTO noticeDTO) {
-        System.out.println("怨듭� �쐞移� �뾽�뜲�씠�듃");
+        System.out.println("notice update controller");
         System.out.println(noticeDTO.getPositionX());
         System.out.println(noticeDTO.getPositionY());
         System.out.println(noticeDTO.getNoticeid());
         System.out.println(noticeDTO.getZindex());
-        // MemoDao瑜� �넻�빐 SQL �떎�뻾
+        // MemoDao call
         MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
 
-        // 怨듭� �쐞移� �뾽�뜲�씠�듃
+        // memodao noticeposition (x, y, z)
         memoDao.updateNoticePosition(noticeDTO);
 
-        // JSON �삎�깭濡� �쓳�떟 諛섑솚
+        // JSON send
         return "{\"status\":\"success\"}";
     }
     
@@ -465,4 +466,5 @@ public class MemoController {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
+
 }
