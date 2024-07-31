@@ -146,23 +146,33 @@
 				<p style="font-size: 30px; margin: 0px;">좋아요 개수 표출(DB에서 가져올 거임)</p>
 				
             </div>
-
+				  <c:set var="sessionUserno" value="<%= userno %>" />
+				  <% 
+					    String currentId = request.getParameter("id");
+					%>
 	            <div id="commentArea1" style="background-color: #FAFAFA; width : 75%; margin: auto; padding-left: 20px;"> 
 	            	<div style="height: 40px; width: 100%;"></div>
 	            	<c:forEach var="comment" items="${comments}">
-	            	<div style="width: 100%; min-height: 80px; " >
-	            	<div style=" display: flex; height: 40px;" id="commentWriterArea" >
-		            	<div class="box" id="profilepicture">
-		            		<img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${comment.userno}" alt="Profile Picture">
-		            	</div>	
-		            	<div style="line-height: 40px; height: 40px; margin-left: 10px; ">${comment.nickname } </div>
-	            	</div> 
-	            	
+	            	<div style="width: 100%; min-height: 80px; " id="comment-id-${comment.commentid }" >
+	            	<div id="first-line" style=" display: flex; justify-content: space-between;">
+		            	<div id="commentWriterArea"  style=" display: flex; height: 40px; width: 50%;" >
+			            	<div class="box" id="profilepicture">
+			            		<img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${comment.userno}" alt="Profile Picture">
+			            	</div>	
+			            	<div style="line-height: 40px; height: 40px; margin-left: 10px; " id="writer-nickname">${comment.nickname } </div>
+		            	</div> 
+		            	<div id="commentDelete-Btn" style="text-align: right; margin-right: 20px;">
+		            	<c:if test="${sessionUserno eq comment.userno}">
+		            	<a href="${pageContext.request.contextPath}/deleteComment?commentid=${comment.commentid}&id=<%= currentId %>" > 삭제 </a>
+		            	</c:if>
+		            	</div>
+	            	</div>
 	            	<div style="width: 100%;  text-align: left; margin-top: 10px;"> ${comment.content} </div>
 	            	<div style="width: 100%; color: gray; text-align: left; font-size: smaller;">  ${comment.createdate}</div>
+	            	<hr> 
 	            	</div>
 	            	
-	            	<hr> 
+	           
 	            	</c:forEach>
 	            	<br>
 	           	<!-- 댓글 남기기 영역 -->
@@ -170,9 +180,9 @@
 	            <textarea id="comment-input" rows="4" cols="50" placeholder="댓글을 입력하세요" style="width : 85%; height: 60px; resize: none; "></textarea>
 	            <button id="comment-btn" class="styled-button" onclick="test()">등록하기</button> 
 	            </div>
-	            <div style="background-color: #FAFAFA; width: 100%; height: 40px; "></div>
+	            <div style="background-color: #FAFAFA; width: 100%; height: 40px; " id="footer"></div>
 	            </div> <!-- 댓글 영역 끝 -->
-	            <div style="width: 100%; height: 70px; "><!-- 댓글 밑 조금의 여백 추가 -->
+	            <div style="width: 100%; height: 70px;"><!-- 댓글 밑 조금의 여백 추가 -->
 	            </div>
 			</div><!-- 여기가 바깥 범위 끝 -->
 			
@@ -182,7 +192,7 @@
     
     
     
-    <form id="addCommentForm" method="post" >
+    <form id="addCommentForm" method="post"  action="${pageContext.request.contextPath}/addCommentForm">
     	<input type="hidden" id="content" name="content"  value="">
     	<input type="hidden" id="targetid" name="targetid"  value="${id}">
     	<input type="hidden" id="userno" name="userno"  value="<%= userno %>">
@@ -214,6 +224,7 @@ function test(){
             "userno" : '<%= userno %>'
         };
 	
+	
 	$.ajax({
 		"url" : "${pageContext.request.contextPath}/addConmment",
 		method: "POST",
@@ -225,10 +236,10 @@ function test(){
 			if(result.result == "success"){
 				alert("댓글이 정상적으로 등록되었습니다.");
 				$("textarea#comment-input").val("");
-				//var url = "${pageContext.request.contextPath}/detailNote?id=" +id +"#commentArea1" //댓글 창 맨 위로 이동.    
-				//alert(url);
-				//window.location.href= url;
-				  window.location.reload();
+				window.location.href = window.location.href.split('#')[0] + '#footer'; // URL의 해시 부분을 설정
+	            setTimeout(function() {
+	                window.location.reload(); // 강제 새로 고침
+	            }, 100); // 해시 설정 후 잠시 대기
 			}else{
 				alert(result.result);
 				$("textarea#comment-input").val("");

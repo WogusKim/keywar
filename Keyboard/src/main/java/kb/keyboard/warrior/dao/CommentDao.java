@@ -10,4 +10,6 @@ public interface CommentDao {
 	public void addLike(LikeDTO dto) ;
 	public List<CommentDTO> getComment(String targerno);
 	public LikeDTO checkLike(LikeDTO dto);
+	public void commentDelete(String commentid);
+	public String findWhoWrote(String commentid);
 }

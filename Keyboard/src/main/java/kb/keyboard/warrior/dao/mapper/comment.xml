@@ -9,10 +9,10 @@
     </insert>
     <select id="getComment" resultType="kb.keyboard.warrior.dto.CommentDTO">
     	<!-- select * from comment where targetid = #{param1} -->
-    	select c.targetid, c.content, c.createdate, c.commentstatus, u.username, u.nickname, c.userno, u.picture
+    	select c.commentid, c.targetid, c.content, c.createdate, c.commentstatus, u.username, u.nickname, c.userno, u.picture, c.commentstatus
 		from comment c
 		join user u on c.userno = u.userno
-		where targetid = #{param1}
+		where targetid = #{param1} and c.commentstatus = 1
 		order by createdate 
     </select>
 	<select id="checkLike" parameterType="kb.keyboard.warrior.dto.LikeDTO" >
@@ -22,5 +22,12 @@
 		insert into liketable (targetid, userno) VALUES
 		(#{targetid}, #{userno})
 	</insert>
+	<update id="commentDelete" >
+		UPDATE comment SET commentstatus = 0 WHERE commentid = #{param1}
+	</update>
+	<select id="findWhoWrote" resultType="java.lang.String" >
+		select userno from comment WHERE commentid = #{param1}
+	</select>
+	
 </mapper>
 
