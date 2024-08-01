@@ -143,11 +143,57 @@
 	<select id="getAllPost" resultType="kb.keyboard.warrior.dto.BoardDTO">
 		SELECT 
 		ROW_NUMBER() OVER (ORDER BY e.id ASC) AS management_number,
-		e.id, m.title, m.userno , u.username, e.data, m.isOpen
+		e.id, m.title,m.titleShare, m.userno , u.username, e.data, m.isOpen, 
+		COALESCE(l.like_count, 0) AS like_count,
+		COALESCE(c.comment_count, 0) AS comment_count
 		from EditorData e
 		join Menu m on e.id = m.id
 		join user u on m.userno = u.userno
+		left outer join ( SELECT targetid, COUNT(*) AS like_count
+		FROM liketable
+		GROUP BY targetid
+		) l 
+		on e.id = l.targetid
+		left outer join (select targetid, count(*) as comment_count
+		from comment
+		group by targetid) c
+		on c.targetid = e.id
 		where m.isOpen = 1;
+	</select>
+	
+	<select id="getMyPost" resultType="kb.keyboard.warrior.dto.BoardDTO">
+		SELECT 
+		ROW_NUMBER() OVER (ORDER BY e.id ASC) AS management_number,
+		e.id, m.title,m.titleShare, m.userno , u.username, e.data, m.isOpen, 
+		COALESCE(l.like_count, 0) AS like_count,
+		COALESCE(c.comment_count, 0) AS comment_count
+		from EditorData e
+		join Menu m on e.id = m.id
+		join user u on m.userno = u.userno
+		left outer join ( SELECT targetid, COUNT(*) AS like_count
+		FROM liketable
+		GROUP BY targetid
+		) l 
+		on e.id = l.targetid
+		left outer join (select targetid, count(*) as comment_count
+		from comment
+		group by targetid) c
+		on c.targetid = e.id
+		where m.isOpen = 1 and m.userno = #{param};
+	</select>
+	
+	<select id="myTotalLike" resultType="java.lang.Integer">
+		SELECT 
+		sum(like_count) 
+		from EditorData e
+		join Menu m on e.id = m.id
+		join user u on m.userno = u.userno
+		left outer join ( SELECT targetid, COUNT(*) AS like_count
+		FROM liketable
+		GROUP BY targetid
+		) l 
+		on e.id = l.targetid
+		where m.isOpen = 1 and m.userno = #{param};
 	</select>
 	
 </mapper>

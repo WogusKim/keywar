@@ -59,38 +59,38 @@ public class WikiController {
     @RequestMapping("/addMenu")
     public String menuAdd(Model model, HttpServletRequest request, HttpSession session) {
         
-        // ì„¸ì…˜ì²´í¬
+        // ¼¼¼ÇÃ¼Å©
         String userno = (String) session.getAttribute("userno");
         
-        // ë°›ì€ ë°ì´í„°
+        // ¹ŞÀº µ¥ÀÌÅÍ
         String selectedId = request.getParameter("id");
         String selectedType = request.getParameter("type");
         String selectedDepth = request.getParameter("depth");
         
-        // ì¶”ê°€í•  ë°ì´í„°
+        // Ãß°¡ÇÒ µ¥ÀÌÅÍ
         String menuType = request.getParameter("menuType");
         String title = request.getParameter("title");
         String sharedTitle = request.getParameter("sharedTitle");
         String isOpen = request.getParameter("public");
         
-        System.out.println("ë°›ì€ id: " + selectedId);
-        System.out.println("ë°›ì€ type: " + selectedType);
-        System.out.println("ë°›ì€ depth: " + selectedDepth);
+        System.out.println("¹ŞÀº id: " + selectedId);
+        System.out.println("¹ŞÀº type: " + selectedType);
+        System.out.println("¹ŞÀº depth: " + selectedDepth);
       
-        System.out.println("ì¶”ê°€í•  Type: " + menuType);
-        System.out.println("ì¶”ê°€í•  Title: " + title);
-        System.out.println("ì¶”ê°€í•  ê³µìœ title: " + sharedTitle);
-        System.out.println("ê³µìœ ì—¬ë¶€: " + isOpen);
+        System.out.println("Ãß°¡ÇÒ Type: " + menuType);
+        System.out.println("Ãß°¡ÇÒ Title: " + title);
+        System.out.println("Ãß°¡ÇÒ °øÀ¯title: " + sharedTitle);
+        System.out.println("°øÀ¯¿©ºÎ: " + isOpen);
 
         
-        // í˜„ì¬ ë‚ ì§œì™€ ì‹œê°„ì„ 'yyyyMMdd_HHmmss' í˜•ì‹ìœ¼ë¡œ í¬ë§·
+        // ÇöÀç ³¯Â¥¿Í ½Ã°£À» 'yyyyMMdd_HHmmss' Çü½ÄÀ¸·Î Æ÷¸Ë
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         String formattedDateTime = now.format(formatter);
         
         String link = "";
         
-        // ì‚¬ìš©ì ë²ˆí˜¸ì™€ í˜„ì¬ ë‚ ì§œ ë° ì‹œê°„ì„ ê¸°ë°˜ìœ¼ë¡œ ë§í¬ ìƒì„±
+        // »ç¿ëÀÚ ¹øÈ£¿Í ÇöÀç ³¯Â¥ ¹× ½Ã°£À» ±â¹İÀ¸·Î ¸µÅ© »ı¼º
         if (menuType.equals("item")) {
             link = "/" + userno + "_" + formattedDateTime;
         } 
@@ -98,7 +98,7 @@ public class WikiController {
         
         WikiDao dao = sqlSession.getMapper(WikiDao.class);
         
-        //ë°›ì€ ë°ì´í„° ì¤‘ ìµœëŒ€ menu_order ì°¾ê¸°
+        //¹ŞÀº µ¥ÀÌÅÍ Áß ÃÖ´ë menu_order Ã£±â
         int max_order;
         int isOpenInt;
         
@@ -113,49 +113,53 @@ public class WikiController {
             max_order = dao.getMaxOrderOfnoParents();
             max_order++;
             
-            // ë¶€ëª¨ë…¸ë“œê°€ ì—†ëŠ” ìµœìƒìœ„ ê²½ìš°//
+            // ºÎ¸ğ³ëµå°¡ ¾ø´Â ÃÖ»óÀ§ °æ¿ì//
             if (menuType.equals("item")) {
-                //ìµœìƒìœ„ì— ì•„ì´í…œ ì¶”ê°€
-                System.out.println("ìµœìƒìœ„ ì•„ì´í…œì„ ì¶”ê°€í•©ë‹ˆë‹¤.");
+                //ÃÖ»óÀ§¿¡ ¾ÆÀÌÅÛ Ãß°¡
+                System.out.println("ÃÖ»óÀ§ ¾ÆÀÌÅÛÀ» Ãß°¡ÇÕ´Ï´Ù.");
                 dao.insertMenuNoParentsItem(title, sharedTitle, link, menuType, max_order, userno, isOpenInt);
             } else {
-                //ìµœìƒìœ„ì— í´ë” ì¶”ê°€ (ë§í¬ë¥¼ null ë¡œ ì„¤ì •í•  ì˜ˆì •)
-                System.out.println("ìµœìƒìœ„ í´ë”ë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.");
+                //ÃÖ»óÀ§¿¡ Æú´õ Ãß°¡ (¸µÅ©¸¦ null ·Î ¼³Á¤ÇÒ ¿¹Á¤)
+                System.out.println("ÃÖ»óÀ§ Æú´õ¸¦ Ãß°¡ÇÕ´Ï´Ù.");
                 dao.insertMenuNoParentsFolder(title, sharedTitle, menuType, max_order, userno, isOpenInt);
             }
             
         } else {
 
-            //ë¶€ëª¨ê°€ ì¡´ì¬í•˜ëŠ” ê²½ìš°//
+            //ºÎ¸ğ°¡ Á¸ÀçÇÏ´Â °æ¿ì//
             if (selectedType.equals("item")) {
                 
                 int selectedIdParent = dao.getParentid(selectedId);
-                //integer ë¥¼ ë¬¸ìì—´ë¡œ ë³€í™˜
+                //integer ¸¦ ¹®ÀÚ¿­·Î º¯È¯
                 String parentId =  String.valueOf(selectedIdParent); 
                 max_order = dao.getMaxOrderOfFather(parentId);
                 max_order++;
                 
-                System.out.println("í•˜ìœ„ ì•„ì´í…œ(í´ë”)ì„ ì¶”ê°€í•©ë‹ˆë‹¤. - ì¶”ê°€ì •ë³´ ìƒì„±");
-                //dao.insertMenuHaveParentsItem(#ë¶€ëª¨ë…¸ë“œì˜id, #íƒ€ì´í‹€, #ê³µìœ íƒ€ì´í‹€, #ë§í¬, #ë©”ë‰´íƒ€ì…, #ìœ ì €ë²ˆí˜¸)
+                System.out.println("ÇÏÀ§ ¾ÆÀÌÅÛ(Æú´õ)À» Ãß°¡ÇÕ´Ï´Ù. - Ãß°¡Á¤º¸ »ı¼º");
+                //dao.insertMenuHaveParentsItem(#ºÎ¸ğ³ëµåÀÇid, #Å¸ÀÌÆ², #°øÀ¯Å¸ÀÌÆ², #¸µÅ©, #¸Ş´ºÅ¸ÀÔ, #À¯Àú¹øÈ£)
                 dao.insertMenuHaveParentsItem(parentId, title, sharedTitle, link, menuType, max_order, userno, isOpenInt);
             } else {
-                //í´ë”ì¶”ê°€
+                //Æú´õÃß°¡
                 
-                //ë¶€ëª¨ê°€ ì¡´ì¬í•˜ëŠ”ë°, depthê°€ 4ì¸ê²½ìš° ì œí•œì´ í•„ìš”. (0ì´ ìµœìƒìœ„, ì´í›„ 5ê°œê¹Œì§€ í—ˆìš© ê°€ëŠ¥)
+                //ºÎ¸ğ°¡ Á¸ÀçÇÏ´Âµ¥, depth°¡ 4ÀÎ°æ¿ì Á¦ÇÑÀÌ ÇÊ¿ä. (0ÀÌ ÃÖ»óÀ§, ÀÌÈÄ 5°³±îÁö Çã¿ë °¡´É)
                 int selectedDepthInt = Integer.parseInt(selectedDepth); 
                 if (selectedDepthInt >= 4 ) {
                     
-                session.setAttribute("errorMessage", "í´ë” ë° ì•„ì´í…œì„ ì¶”ê°€í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ìµœëŒ€ ì‚¬ìš© ì œí•œì…ë‹ˆë‹¤.");
+                session.setAttribute("errorMessage", "Æú´õ ¹× ¾ÆÀÌÅÛÀ» Ãß°¡ÇÒ ¼ö ¾ø½À´Ï´Ù. ÃÖ´ë »ç¿ë Á¦ÇÑÀÔ´Ï´Ù.");
                 
                 return "redirect:menuSetting";
                     
                 }
                 
-                //ìˆœì„œì˜ ì‹œì‘ì„ ì°¾ì•„ì•¼í•¨.
+                //¼ø¼­ÀÇ ½ÃÀÛÀ» Ã£¾Æ¾ßÇÔ.
                 max_order = dao.getMaxOrderOfFather(selectedId);
                 max_order++;
                 
-                System.out.println("í•˜ìœ„ ì•„ì´í…œ(í´ë”)ì„ ì¶”ê°€í•©ë‹ˆë‹¤. - ì¶”ê°€ì •ë³´ ìƒì„±");
+                if(sharedTitle==null||sharedTitle=="")
+                	sharedTitle = title;
+                
+                
+                System.out.println("ÇÏÀ§ ¾ÆÀÌÅÛ(Æú´õ)À» Ãß°¡ÇÕ´Ï´Ù. - Ãß°¡Á¤º¸ »ı¼º");
                 dao.insertMenuHaveParentsFolder(selectedId, title, sharedTitle, menuType, max_order, userno, isOpenInt);
             }
         }
@@ -169,33 +173,33 @@ public class WikiController {
     @RequestMapping("/deleteMenu")
     public String deleteMenu(Model model, HttpServletRequest request, HttpSession session) {
         
-        // ì„¸ì…˜ì²´í¬
+        // ¼¼¼ÇÃ¼Å©
         String userno = (String) session.getAttribute("userno");
         
         
-        // ë°›ì€ ë°ì´í„°
+        // ¹ŞÀº µ¥ÀÌÅÍ
         String selectedId = request.getParameter("id");
         String selectedType = request.getParameter("type");
         String selectedDepth = request.getParameter("depth");
         
-        System.out.println("ì‚­ì œëŒ€ìƒ id: " + selectedId);
-        System.out.println("ì‚­ì œëŒ€ìƒ type: " + selectedType);
-        System.out.println("ì‚­ì œëŒ€ìƒ depth: " + selectedDepth);
+        System.out.println("»èÁ¦´ë»ó id: " + selectedId);
+        System.out.println("»èÁ¦´ë»ó type: " + selectedType);
+        System.out.println("»èÁ¦´ë»ó depth: " + selectedDepth);
         
         WikiDao dao = sqlSession.getMapper(WikiDao.class);
         
-        //ì‚­ì œí•˜ë ¤ëŠ” ëŒ€ìƒì´ ì•„ì´í…œì¸ ê²½ìš°
+        //»èÁ¦ÇÏ·Á´Â ´ë»óÀÌ ¾ÆÀÌÅÛÀÎ °æ¿ì
         if (selectedType.equals("item")) {
             dao.deleteItem(selectedId, userno);
         } else {
             
-            //ì‚­ì œí•˜ë ¤ëŠ” ëŒ€ìƒì´ í´ë”ì¸ ê²½ìš°
+            //»èÁ¦ÇÏ·Á´Â ´ë»óÀÌ Æú´õÀÎ °æ¿ì
             
             Set<Integer> allIdsToDelete = new HashSet<Integer>();
             collectAllIdsToDelete(Integer.parseInt(selectedId), allIdsToDelete, dao);            
             
-            //í˜„ì¬ê¹Œì§€ëŠ” ì‚­ì œí•  ëª¨ë“  ë°ì´í„°ë¥¼ ì˜ ê°€ì ¸ì˜¤ì§€ë§Œ,
-            //FK ì¡°ê±´ì„ ë¬´ì‹œí•˜ë©´ ì‚­ì œí•˜ë ¤ë©´ depth ë¥¼ íŒŒì•…í•˜ì—¬ ì‚­ì œì§„í–‰í•´ì•¼í•¨.
+            //ÇöÀç±îÁö´Â »èÁ¦ÇÒ ¸ğµç µ¥ÀÌÅÍ¸¦ Àß °¡Á®¿ÀÁö¸¸,
+            //FK Á¶°ÇÀ» ¹«½ÃÇÏ¸é »èÁ¦ÇÏ·Á¸é depth ¸¦ ÆÄ¾ÇÇÏ¿© »èÁ¦ÁøÇàÇØ¾ßÇÔ.
             Map<Integer, Integer> depthMap = new HashMap<Integer, Integer>();
             for (Integer id : allIdsToDelete) {
                 
@@ -209,23 +213,23 @@ public class WikiController {
                     parentId = parentIdNext;
                 }
                 depthMap.put(id, depth);
-                System.out.println("ì‚­ì œëŒ€ìƒ)) ë©”ë‰´id : " + id + " depth : " + depth);
+                System.out.println("»èÁ¦´ë»ó)) ¸Ş´ºid : " + id + " depth : " + depth);
             }
             
-            //depth ë³„ë¡œ ì •ë ¬ëœ ë°ì´í„°ë¥¼ depth ìˆœì„œ ë‚´ë¦¼ì°¨ìˆœìœ¼ë¡œ ì •ë ¬í•´ì¤€ë‹¤.
-            // depthMapì„ ê°’ì— ë”°ë¼ ë‚´ë¦¼ì°¨ìˆœ ì •ë ¬
+            //depth º°·Î Á¤·ÄµÈ µ¥ÀÌÅÍ¸¦ depth ¼ø¼­ ³»¸²Â÷¼øÀ¸·Î Á¤·ÄÇØÁØ´Ù.
+            // depthMapÀ» °ª¿¡ µû¶ó ³»¸²Â÷¼ø Á¤·Ä
             List<Map.Entry<Integer, Integer>> list = new ArrayList<Map.Entry<Integer, Integer>>(depthMap.entrySet());
 
-            // Comparatorë¥¼ ì‚¬ìš©í•œ ì •ë ¬
+            // Comparator¸¦ »ç¿ëÇÑ Á¤·Ä
             Collections.sort(list, new Comparator<Map.Entry<Integer, Integer>>() {
                 public int compare(Map.Entry<Integer, Integer> o1, Map.Entry<Integer, Integer> o2) {
                     return o2.getValue().compareTo(o1.getValue());
                 }
             });
             
-            //ì‚­ì œì§„í–‰
+            //»èÁ¦ÁøÇà
             for (Map.Entry<Integer, Integer> entry : list) {
-                // í•´ë‹¹ IDë¥¼ ë°ì´í„°ë² ì´ìŠ¤ì—ì„œ ì‚­ì œ
+                // ÇØ´ç ID¸¦ µ¥ÀÌÅÍº£ÀÌ½º¿¡¼­ »èÁ¦
                 dao.deleteItem(entry.getKey().toString(), userno);
                 System.out.println("Deleted ID: " + entry.getKey() + " with depth: " + entry.getValue());
             }
@@ -262,7 +266,7 @@ public class WikiController {
             
             if (dto != null) {
                 ObjectMapper mapper = new ObjectMapper();
-                String jsonResult = mapper.writeValueAsString(dto); // ê°ì²´ë¥¼ JSON ë¬¸ìì—´ë¡œ ë³€í™˜
+                String jsonResult = mapper.writeValueAsString(dto); // °´Ã¼¸¦ JSON ¹®ÀÚ¿­·Î º¯È¯
                 
                 return new ResponseEntity<String>(jsonResult, HttpStatus.OK);
             } else {    
@@ -283,25 +287,25 @@ public class WikiController {
         String titleShare = request.getParameter("titleShare");
         String isOpen = request.getParameter("isOpen");
         
-        System.out.println("======== ìˆ˜ì • ì•¡ì…˜ ì…ë ¥ ========");
+        System.out.println("======== ¼öÁ¤ ¾×¼Ç ÀÔ·Â ========");
         System.out.println(id);
         System.out.println(title);
         System.out.println(titleShare);
-        System.out.println("ê³µê°œì—¬ë¶€ : " + isOpen);
-        System.out.println("======== ìˆ˜ì • ì•¡ì…˜ ì…ë ¥ ========");
+        System.out.println("°ø°³¿©ºÎ : " + isOpen);
+        System.out.println("======== ¼öÁ¤ ¾×¼Ç ÀÔ·Â ========");
         
         WikiDao dao = sqlSession.getMapper(WikiDao.class);
         
-        //ì œëª©ì²˜ë¦¬
+        //Á¦¸ñÃ³¸®
         if (titleShare.length() == 0) {
-            System.out.println("ê³µìœ ìš© ì œëª©ì´ ì—†ìŒ. null ë¡œ ì²˜ë¦¬í•©ë‹ˆë‹¤.");
+            System.out.println("°øÀ¯¿ë Á¦¸ñÀÌ ¾øÀ½. null ·Î Ã³¸®ÇÕ´Ï´Ù.");
             dao.changeMenuNoShare(title, id);
         } else {
-            System.out.println("ê³µìœ ìš© ì œëª© ì¡´ì¬í•¨.");
+            System.out.println("°øÀ¯¿ë Á¦¸ñ Á¸ÀçÇÔ.");
             dao.changeMenuYesShare(title,titleShare, id);
         }
         
-        //ê³µê°œì—¬ë¶€ ë³€ê²½ì²˜ë¦¬
+        //°ø°³¿©ºÎ º¯°æÃ³¸®
         dao.changeIsOpen(isOpen, id);
 
         
@@ -319,13 +323,13 @@ public class WikiController {
     }    
     
     public void setMenuDepth(List<MenuDTO> menus) {
-        // ë©”ë‰´ IDì™€ ë©”ë‰´ ê°ì²´ë¥¼ ë§¤í•‘í•˜ëŠ” Mapì„ ìƒì„±
+        // ¸Ş´º ID¿Í ¸Ş´º °´Ã¼¸¦ ¸ÅÇÎÇÏ´Â MapÀ» »ı¼º
         Map<Integer, MenuDTO> menuMap = new HashMap<Integer, MenuDTO>();
         for (MenuDTO menu : menus) {
             menuMap.put(menu.getId(), menu);
         }
 
-        // ê° ë©”ë‰´ í•­ëª©ì˜ depth ê³„ì‚°
+        // °¢ ¸Ş´º Ç×¸ñÀÇ depth °è»ê
         for (MenuDTO menu : menus) {
             int depth = 0;
             Integer parentId = menu.getParentId();
@@ -362,10 +366,10 @@ public class WikiController {
             }
         }
 
-        // ë””ë²„ê¹…ì„ ìœ„í•´ ê° ìµœìƒìœ„ ë©”ë‰´ì™€ í•´ë‹¹ í•˜ìœ„ ë©”ë‰´ë“¤ì„ ì¶œë ¥
+        // µğ¹ö±ëÀ» À§ÇØ °¢ ÃÖ»óÀ§ ¸Ş´º¿Í ÇØ´ç ÇÏÀ§ ¸Ş´ºµéÀ» Ãâ·Â
 //        for (MenuDTO menu : topLevelMenus) {
 //            System.out.println("Menu: " + menu.getTitle() + " (ID: " + menu.getId() + ")");
-//            printChildren(menu, "  ");  // ì¬ê·€ì ìœ¼ë¡œ í•˜ìœ„ ë©”ë‰´ë“¤ì„ ì¶œë ¥
+//            printChildren(menu, "  ");  // Àç±ÍÀûÀ¸·Î ÇÏÀ§ ¸Ş´ºµéÀ» Ãâ·Â
 //        }
 
         return topLevelMenus;

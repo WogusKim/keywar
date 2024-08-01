@@ -21,14 +21,16 @@
 		<table style="text-align: center; width: 80%; margin: auto;">
 			<colgroup>
 				<col style="width: 10%;">
-			    <col style="width: 80%;">
+			    <col style="width: 70%;">
 			    <col style="width: 10%;">
+			    <col style="width: 10%;"> 
 			</colgroup>
 		    <thead style="font-size: large;">
 		        <tr>
 		        	<th scope="col" >관리번호</th>
 		            <th scope="col" >제목</th>
 		            <th scope="col" >작성자</th>
+		            <th scope="col" >좋아요</th>
 		        </tr>				            
 		    </thead>
 					     
@@ -36,10 +38,13 @@
 			<tr>
 			<td>${list.management_number}</td>
 			<td>
-	        	<a href="${pageContext.request.contextPath}/detailNote?id=${list.id}"><span>${ list.title } </span></a><br>
+	        	<a href="${pageContext.request.contextPath}/detailNote?id=${list.id}"><span>${ list.titleShare } </span></a><br>
 			</td>
 			<td>
 			${list.username}
+			</td>
+			<td>
+			${list.like_count}
 			</td>
 			</tr>
 	        </c:forEach>

@@ -103,7 +103,7 @@ function changeNickname() {
                         <br>
                         <div class="editBox">
                             <span style="font-size: 20px;">별명 </span>
-                            <input type="text" value="${dto.username}" class="editText" id="nickname" name="nickname" />
+                            <input type="text" value="${dto.nickname}" class="editText" id="nickname" name="nickname" />
                         </div>
                         <button class="imageEditButton" style="background-color: #92D1BA;" onclick="changeNickname()">저장하기</button>
                     </div>

@@ -12,6 +12,7 @@ private String createdate;       // 작성일
 private String commentstatus;  // 댓글 상태 (0: 삭제됨, 1: 활성)
 private byte[] picture;
 private String nickname;
+private String titleShare;
  
  byte[] getPicture() {
 	return picture;
@@ -89,4 +90,13 @@ public CommentDTO() {
  public void setCommentstatus(String commentstatus) {
      this.commentstatus = commentstatus;
  }
+
+public String getTitleShare() {
+	return titleShare;
+}
+
+public void setTitleShare(String titleShare) {
+	this.titleShare = titleShare;
+}
+ 
 }

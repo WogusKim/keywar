@@ -3,25 +3,25 @@ package kb.keyboard.warrior.dto;
 
 //LikeDTO.java
 public class LikeDTO {
- private String likeid;    // 좋아요 id
+ private int likeid;    // 좋아요 id
  private String targetid;  // 대상 문서 id (wiki, document 등)
  private String userno;    // 사번
 
  public LikeDTO() {
  }
 
- public LikeDTO(String likeid, String targetid, String userno) {
+ public LikeDTO(int likeid, String targetid, String userno) {
      this.likeid = likeid;
      this.targetid = targetid;
      this.userno = userno;
  }
 
  // Getters and Setters
- public String getLikeid() {
+ public int getLikeid() {
      return likeid;
  }
 
- public void setLikeid(String likeid) {
+ public void setLikeid(int likeid) {
      this.likeid = likeid;
  }
 

@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kb.keyboard.warrior.dao.CommentDao">
+	<!-- 댓글 등록/삭제/가져오기  -->
 	<insert id="addComment" parameterType="kb.keyboard.warrior.dto.CommentDTO" >
        insert into comment (targetid, userno, content, commentstatus) VALUES
         (#{targetid}, #{userno}, #{content}, 1)
@@ -15,19 +16,29 @@
 		where targetid = #{param1} and c.commentstatus = 1
 		order by createdate 
     </select>
-	<select id="checkLike" parameterType="kb.keyboard.warrior.dto.LikeDTO" >
-		select * from liketable where targetid = #{targetid} and userno = #{userno}
-	</select>
-	<insert id="addLike" parameterType="kb.keyboard.warrior.dto.LikeDTO" > 
-		insert into liketable (targetid, userno) VALUES
-		(#{targetid}, #{userno})
-	</insert>
 	<update id="commentDelete" >
 		UPDATE comment SET commentstatus = 0 WHERE commentid = #{param1}
 	</update>
 	<select id="findWhoWrote" resultType="java.lang.String" >
 		select userno from comment WHERE commentid = #{param1}
 	</select>
+	<select id="getMyComment" resultType="kb.keyboard.warrior.dto.CommentDTO">
+		select  c.commentid, c.targetid, c.content, c.createdate, m.titleShare
+		from comment c
+		join Menu m on c.targetid = m.id
+		where c.userno = #{param1} and c.commentstatus = 1;
+	</select>
 	
+	<!-- 좋아요 관련 메소드  -->
+	<select id="checkLike" parameterType="kb.keyboard.warrior.dto.LikeDTO"  resultType="java.lang.Integer">
+		select count(*) from liketable where targetid = #{targetid} and userno = #{userno}
+	</select>
+	<select id="checkLikeByContent" resultType="java.lang.Integer"><!-- 게시물 별 좋아요 개수 int로 반환 -->
+		select count(*) from liketable where targetid = #{param1};
+	</select>
+	<insert id="addLike" parameterType="kb.keyboard.warrior.dto.LikeDTO" > 
+		insert into liketable (targetid, userno) VALUES
+		(#{targetid}, #{userno})
+	</insert>
 </mapper>
 
