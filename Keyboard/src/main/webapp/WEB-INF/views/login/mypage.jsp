@@ -199,7 +199,7 @@ min-width: 100px;
 				<div class="white_Box" style="width: 100%; margin-top: 20px;"> 
 				<h3 class="stress_Text">내가 공유한 업무노트 </h3>
 				<div style="overflow-y: auto; height: 85%; margin-top: 20px; width: 100%; padding: 5px;">
-				<table style="width: 100%; ">
+				<table style="width: 100%; padding: 5px;">
 				<colgroup>
        	 			<col style="width: 65%;">
        	 			<col style="width: 7%;">

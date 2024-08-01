@@ -201,10 +201,12 @@ public class LoginController {
 	public @ResponseBody String changeNickname(@RequestBody  UserDTO userdto) throws Exception {
 		System.out.println("changeNickname 실행");
 		System.out.println("넘겨받은 값 있는지 확인 : " + userdto.getNickname());
+		System.out.println("userno 확인 : " + userdto.getUserno());
 		
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
+		dao.changeNickname(userdto.getUserno(),  userdto.getNickname());
 		UserDTO dto = dao.isRightUserno(userdto.getUserno());
-
+		
 		if (dto != null) {
 				System.out.println("모두 일치하는 직원정보 찾았다 ! 부서번호  : " +dto.getDeptno());
 		} else {
