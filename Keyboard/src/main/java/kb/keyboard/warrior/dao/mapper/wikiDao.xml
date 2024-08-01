@@ -140,10 +140,12 @@
 		SELECT * FROM imageSize where wikiId = #{param}
 	</select>
 	
+	
+	<!-- 게시글 관련 메소드들 -->
 	<select id="getAllPost" resultType="kb.keyboard.warrior.dto.BoardDTO">
 		SELECT 
 		ROW_NUMBER() OVER (order by like_count desc, comment_count desc) AS management_number,
-		e.id, m.title,m.titleShare, m.userno , u.username, e.data, m.isOpen, 
+		e.id, m.title,m.titleShare, m.userno , u.nickname, u.username, e.data, m.isOpen, 
 		COALESCE(l.like_count, 0) AS like_count,
 		COALESCE(c.comment_count, 0) AS comment_count
 		from EditorData e
