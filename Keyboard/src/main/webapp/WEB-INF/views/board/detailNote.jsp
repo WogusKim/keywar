@@ -194,6 +194,9 @@
 	            <div style="background-color: #FAFAFA; width: 100%; height: 40px; " id="footer"></div>
 	            </div> <!-- 댓글 영역 끝 -->
 	            <div style="width: 100%; height: 70px;"><!-- 댓글 밑 조금의 여백 추가 -->
+		            <div style="text-align: center; margin-top: 20px;">
+		            <a href="${pageContext.request.contextPath}/hotNote"><button id="goBack-btn" class="styled-button" style="margin: auto;">게시판으로 돌아가기</button></a>
+		            </div>
 	            </div>
 			</div><!-- 여기가 바깥 범위 끝 -->
 			
