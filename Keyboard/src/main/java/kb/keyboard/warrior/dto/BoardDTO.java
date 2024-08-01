@@ -6,6 +6,7 @@ public class BoardDTO {
 	private String title;
 	private String titleShare;
 	private String username;
+	private String nickname;
 	private int id;
 	private int isOpen;
 	private int like_count;
@@ -65,6 +66,12 @@ public class BoardDTO {
 	}
 	public void setComment_count(int comment_count) {
 		this.comment_count = comment_count;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 	
 	

@@ -82,10 +82,7 @@ display: flex;
 justify-content: space-between;
 min-width: 100px;
 }
-.aTag{
-    text-decoration: none;
-    color: black;
-}
+
 </style>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
