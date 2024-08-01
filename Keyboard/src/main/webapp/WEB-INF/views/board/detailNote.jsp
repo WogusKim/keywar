@@ -57,8 +57,19 @@
 
 <% 
    String userno = (String) session.getAttribute("userno");
+	String errormessage = (String) session.getAttribute("errormessage");
+	if (errormessage != null) {
 %>
+	<script>
+	alert("<%= errormessage %>");
+	</script>    	
+<%
+    // 세션에서 errormessage를 제거하여 다시 표시되지 않도록 함
+    session.removeAttribute("errormessage");
+	}
+%>    	
     	
+    
 </head>
 <style>
 .final-outline{
@@ -125,13 +136,14 @@
 <body>
 
 	<!-- 헤더 -->
-    <%@ include file="/WEB-INF/views/header.jsp"%>
+    <%@ include file="/WEB-INF/views/header.jsp" %> 
 	
 	<!-- 컨텐츠영역 -->
     <div class="content_outline">
     	<!-- 메뉴영역 -->
         <%@ include file="/WEB-INF/views/sidebar.jsp"%>
-        
+          
+	  <% String currentId = request.getParameter("id"); %>
         <!-- 우측 컨텐츠 영역 -->
         <div class="content_right">
         	<div id="finalOuter" class="final-outline" >
@@ -142,16 +154,13 @@
 				<!-- <button onclick="saveData()">저장하기</button> -->  <!-- 저장은 불가능해야함. -->
 				<button onclick="loadData()" style="margin-bottom: 10px;">업무노트 뺏어 오기 </button><br>
 				
-				<img src="${pageContext.request.contextPath}/resources/images/like.png"  id="likeUp" >
-				<p style="font-size: 30px; margin: 0px;">좋아요 개수 표출(DB에서 가져올 거임)</p>
+				<a href="${pageContext.request.contextPath}/likeUp?id=<%= currentId %>"><img src="${pageContext.request.contextPath}/resources/images/like.png"  id="likeUp" ></a>
+				<p style="font-size: 30px; margin: 0px;">${like}</p>
 				
             </div>
 				  <c:set var="sessionUserno" value="<%= userno %>" />
 				  
-				  
-					  <% 
-					    String currentId = request.getParameter("id");
-						%>
+				
 	            <div id="commentArea1" style="background-color: #FAFAFA; width : 75%; margin: auto; padding-left: 20px;"> 
 	            	<div style="height: 40px; width: 100%;"></div>
 	            	<c:forEach var="comment" items="${comments}">
@@ -190,7 +199,6 @@
 			
         </div>  <!-- 우측 컨텐츠 영역 끝 -->
     </div>
-    
     
     
     

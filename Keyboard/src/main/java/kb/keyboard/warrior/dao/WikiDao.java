@@ -75,7 +75,8 @@ public interface WikiDao {
 	
 	//-------- 랭킹 관련 //
 	
-	public List<BoardDTO> getAllPost();
-	
+	public List<BoardDTO> getAllPost(); //전체 공개로 되어있는 게시물 들 조회 
+	public List<BoardDTO> getMyPost(String userno); //마이페이지에서 조회될 나의 게시물 조회
+	public int myTotalLike(String userno);  // 내가 작성한 게시물들의 좋아요 개수 조회
 
 }

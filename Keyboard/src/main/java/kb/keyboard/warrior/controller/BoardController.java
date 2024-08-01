@@ -23,6 +23,7 @@ import kb.keyboard.warrior.dao.CommentDao;
 import kb.keyboard.warrior.dao.WikiDao;
 import kb.keyboard.warrior.dto.BoardDTO;
 import kb.keyboard.warrior.dto.CommentDTO;
+import kb.keyboard.warrior.dto.LikeDTO;
 import kb.keyboard.warrior.dto.ResultDTO;
 
 @Controller
@@ -63,6 +64,8 @@ public class BoardController {
 			System.out.println("댓글 불러오기 완료");
 			model.addAttribute("comments", comments);
 		}
+		int like = cdao.checkLikeByContent(id+"");
+		model.addAttribute("like", like);
 		
 		return "board/detailNote";
 	}
@@ -105,15 +108,24 @@ public class BoardController {
 		}
 		return "redirect:detailNote?id="+id;
 	}
-//	
-//	@RequestMapping("/addCommentForm")
-//	public String addCommentForm(Model model, CommentDTO dto, HttpSession session) throws Exception {
-//		System.out.println("addCommentForm 진입");
-//		CommentDao dao = sqlSession.getMapper(CommentDao.class); 
-//		dao.addComment(dto);
-//		
-//		String url = " redirect:detailNote?id=" + dto.getTargetid() ; 
-//		return url;
-//	}
+	
+	@RequestMapping("/likeUp")
+	public String likeUp(Model model, @RequestParam("id") int id, HttpSession session, LikeDTO dto) {
+		CommentDao dao = sqlSession.getMapper(CommentDao.class);
+		String userno = (String) session.getAttribute("userno");
+		dto.setTargetid(id+"");
+		dto.setUserno(userno);
+		System.out.println("userno : " + userno + "\n id : "+id);
+		int result = 0;
+		result = dao.checkLike(dto);
+		if(result == 0) {
+			System.out.println("좋아요 등록된 거 없지롱 ~");
+			dao.addLike(dto);
+		}else {
+			session.setAttribute("errormessage", "이미 좋아하는 게시물입니다.");
+		}
+		return "redirect:detailNote?id="+id;
+	}
+	
 	
 }

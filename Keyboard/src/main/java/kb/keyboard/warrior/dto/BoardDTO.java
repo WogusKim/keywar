@@ -8,7 +8,8 @@ public class BoardDTO {
 	private String username;
 	private int id;
 	private int isOpen;
-	
+	private int like_count;
+	private int comment_count;
 	
 	public String getData() {
 		return data;
@@ -51,6 +52,18 @@ public class BoardDTO {
 	}
 	public void setTitleShare(String titleShare) {
 		this.titleShare = titleShare;
+	}
+	public int getLike_count() {
+		return like_count;
+	}
+	public void setLike_count(int like_count) {
+		this.like_count = like_count;
+	}
+	public int getComment_count() {
+		return comment_count;
+	}
+	public void setComment_count(int comment_count) {
+		this.comment_count = comment_count;
 	}
 	
 	
