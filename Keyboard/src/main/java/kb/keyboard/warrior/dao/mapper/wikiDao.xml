@@ -156,6 +156,7 @@
 		on e.id = l.targetid
 		left outer join (select targetid, count(*) as comment_count
 		from comment
+		where commentstatus = 1
 		group by targetid) c
 		on c.targetid = e.id
 		where m.isOpen = 1;
@@ -177,11 +178,11 @@
 		on e.id = l.targetid
 		left outer join (select targetid, count(*) as comment_count
 		from comment
+		where commentstatus = 1
 		group by targetid) c
 		on c.targetid = e.id
 		where m.isOpen = 1 and m.userno = #{param};
 	</select>
-	
 	<select id="myTotalLike" resultType="java.lang.Integer">
 		SELECT 
 		COALESCE(sum(like_count) , 0) 
