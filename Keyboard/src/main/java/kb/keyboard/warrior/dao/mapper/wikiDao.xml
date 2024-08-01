@@ -142,7 +142,7 @@
 	
 	<select id="getAllPost" resultType="kb.keyboard.warrior.dto.BoardDTO">
 		SELECT 
-		ROW_NUMBER() OVER (ORDER BY e.id ASC) AS management_number,
+		ROW_NUMBER() OVER (order by like_count desc, comment_count desc) AS management_number,
 		e.id, m.title,m.titleShare, m.userno , u.username, e.data, m.isOpen, 
 		COALESCE(l.like_count, 0) AS like_count,
 		COALESCE(c.comment_count, 0) AS comment_count
@@ -159,7 +159,8 @@
 		where commentstatus = 1
 		group by targetid) c
 		on c.targetid = e.id
-		where m.isOpen = 1;
+		where m.isOpen = 1
+		order by like_count desc, comment_count desc
 	</select>
 	
 	<select id="getMyPost" resultType="kb.keyboard.warrior.dto.BoardDTO">
@@ -181,7 +182,7 @@
 		where commentstatus = 1
 		group by targetid) c
 		on c.targetid = e.id
-		where m.isOpen = 1 and m.userno = #{param};
+		where m.isOpen = 1 and m.userno = #{param}
 	</select>
 	<select id="myTotalLike" resultType="java.lang.Integer">
 		SELECT 
