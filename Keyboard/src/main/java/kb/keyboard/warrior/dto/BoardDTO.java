@@ -10,6 +10,7 @@ public class BoardDTO {
 	private int isOpen;
 	private int like_count;
 	private int comment_count;
+
 	
 	public String getData() {
 		return data;
