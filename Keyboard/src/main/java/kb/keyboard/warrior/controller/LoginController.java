@@ -170,10 +170,13 @@ public class LoginController {
 			model.addAttribute("comment", list);
 		WikiDao wdao = sqlSession.getMapper(WikiDao.class);
 		List<BoardDTO> mypost = wdao.getMyPost(userno);
+		List<BoardDTO> likedpost = wdao.getLikedPost(userno);
 		int myLikeCount = 0;
 		myLikeCount = wdao.myTotalLike(userno);
 		if(mypost!=null)
 			model.addAttribute("mypost", mypost);
+		if(likedpost!=null)
+			model.addAttribute("likedpost", likedpost);
 		
 		model.addAttribute("myLikeCount", myLikeCount);
 		

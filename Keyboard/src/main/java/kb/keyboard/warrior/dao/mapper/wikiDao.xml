@@ -198,4 +198,12 @@
 		where m.isOpen = 1 and m.userno = #{param};
 	</select>
 	
+	<select id="getLikedPost" resultType="kb.keyboard.warrior.dto.BoardDTO">
+		select l.targetid as id, l.userno, m.titleShare
+		from liketable l 
+		join Menu m
+		on l.targetid = m.id
+		where l.userno = #{param1}
+	</select>
+	
 </mapper>

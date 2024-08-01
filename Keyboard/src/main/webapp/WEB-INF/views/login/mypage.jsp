@@ -84,7 +84,7 @@ min-width: 100px;
 }
 .aTag{
     text-decoration: none;
-    color: black; 
+    color: black;
 }
 </style>
 <script>
@@ -180,7 +180,19 @@ min-width: 100px;
 						</c:forEach>
 					</table>
 					</div>
-					<div class="switchBox" id="switchBox2" style="display: none;"> 2 2 2 2 2 2 2 2 2 2 2</div>
+					<div class="switchBox" id="switchBox2" style="display: none;">
+					
+						<table style="width: 100%; table-layout: fixed; padding: 5px;">
+						<c:forEach var="likedpost" items="${likedpost}">
+						<tr>
+							<td><a class="aTag" href="${pageContext.request.contextPath}/detailNote?id=${likedpost.id}">${likedpost.titleShare}</a></td>
+						</tr>
+						</c:forEach>
+						</table>
+				
+					 
+					 
+					 </div>
 					<div class="switchBox" id="switchBox3" style="display: none;"> 3 3 3 3 3 3 3 3 3 3 </div>
 				
 				</div>
