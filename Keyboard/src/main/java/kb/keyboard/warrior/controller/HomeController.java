@@ -50,6 +50,7 @@ public class HomeController {
 
 	@Autowired
 	public SqlSession sqlSession;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String test(Model model, HttpSession session) {
 		return "redirect:main";
