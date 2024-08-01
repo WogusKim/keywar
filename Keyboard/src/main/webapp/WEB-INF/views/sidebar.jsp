@@ -9,6 +9,21 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
+.content_left{
+	position: relative; /* 부모 요소를 상대적 위치 컨테이너로 설정 */
+	display: flex;
+    flex-direction: column; /* 자식 요소들을 세로로 나열 */
+    justify-content: space-between; /* 첫 번째 요소는 위에, 마지막 요소는 아래에 위치 */
+    border-radius: 10px;
+    background-color: white;
+    padding: 20px 5px;
+    width: 17%;
+    height: 100%;
+    margin-right: 15px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+
+}
+
 .menu_list {
 	display: flex;
 	align-item: center;
@@ -49,6 +64,13 @@
 	background-image: url('${pageContext.request.contextPath}/resources/images/icons/menu_setting.png');
 }
 
+.fold-icon {
+	background-image: url('${pageContext.request.contextPath}/resources/images/icons/menu_fold.png');
+}
+.unfold-icon {
+	background-image: url('${pageContext.request.contextPath}/resources/images/icons/menu_unfold.png');
+}
+
 .menu_setting {
     position: absolute; /* 절대 위치 사용 */
     right: 10px; /* 우측으로부터 10px 떨어진 위치 */
@@ -56,8 +78,24 @@
     padding: 10px; /* 패딩 */
     display: flex; /* Flexbox 사용 */
     align-items: center; /* 세로 중앙 정렬 */
-    
 }
+
+.menu_onoff {
+    position: absolute;
+    right: 5px; /* 우측에서 10px 떨어진 위치에 배치 */
+    top: 50%; /* 상단에서 50% 위치에 배치 */
+    transform: translateY(-50%); /* Y축 기준 50%만큼 이동, 자신의 높이의 절반만큼 올림 */
+}
+
+.icon-fold {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 6px;
+}
+
 
 .hidden {
     visibility: hidden; /* 요소 숨김 */
@@ -200,6 +238,10 @@
 	    <div class="icon-setting menu-icon"></div>
 	    <a href="${pageContext.request.contextPath}/menuSetting">메뉴 설정</a>
 	</div>
+	<div class="menu_onoff">
+		<div class="icon-fold fold-icon"></div>
+		<div class="icon-fold unfold-icon" style="display:none"></div>
+	</div>
 </div>
 <script>
 function toggleFolder(element) {
@@ -233,6 +275,29 @@ function toggleFolder(element) {
 // 모든 ul 요소의 기본 display를 block으로 설정
 $(document).ready(function() {
     $('.menu-tree ul').css('display', 'block');
+    
+
+    var isCollapsed = false; // 상태 표시 변수
+    
+    $('.menu_onoff .fold-icon').click(function() {
+        // 사이드바 접기
+        $('.menu-tree, .menu_setting').slideUp(300);
+        $('.content_left').animate({ width: '50px' }, 300); // 너비 축소
+        $('.fold-icon').hide(); // 접기 아이콘 숨기기
+        $('.unfold-icon').show(); // 펼치기 아이콘 표시
+        isCollapsed = true;
+    });
+
+    $('.menu_onoff .unfold-icon').click(function() {
+        // 사이드바 펼치기
+        $('.menu-tree, .menu_setting').slideDown(300);
+        $('.content_left').animate({ width: '17%' }, 300); // 원래 너비로 복구
+        $('.unfold-icon').hide(); // 펼치기 아이콘 숨기기
+        $('.fold-icon').show(); // 접기 아이콘 표시
+        isCollapsed = false;
+    });
+
+    
 });
 
 </script>
