@@ -22,136 +22,127 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.geometry.Positions;
-
+import kb.keyboard.warrior.dao.ScheduleDao;
 import kb.keyboard.warrior.dao.WikiDao;
-
-
-
+import kb.keyboard.warrior.dto.ScheduleDTO;
+import net.coobird.thumbnailator.Thumbnails;
 
 @Controller
 public class WikiDetailController {
-	
-	
-    @Autowired
-    public SqlSession sqlSession;
-    
-    
-    @RequestMapping("/wikiDetail")
-    public String wikiDetail(Model model, @RequestParam("id") int id, HttpSession session) {
-    	
-    	WikiDao dao = sqlSession.getMapper(WikiDao.class);
 
-    	//경로 제공을 위한 부모 id 탐색
-    	
-    	List<String> menuDirection = new ArrayList<String>();
-    	menuDirection.add(dao.getMenuDetail(id).getTitle()); //자기자신 타이틀 넣고 시작
-    	Integer parentId = dao.getParentid(String.valueOf(id));
-    	
-        while (parentId != null) {
-            menuDirection.add(dao.getMenuDetail(parentId).getTitle());
-            parentId = dao.getParentid(String.valueOf(parentId));
-        }
-        
-    	Collections.reverse(menuDirection); // 역순으로 정렬
-    	for (String item : menuDirection) {
-    		System.out.println(item);
-    	}
-    	model.addAttribute("direction", menuDirection);
-    	
-    	String wikiData = dao.getData(id);
-    	session.setAttribute("WikiId", id);
-    	
-    	if (wikiData == null) {
-    		System.out.println("초기값을 제공합니다.");
-    		wikiData = "{\"time\":1721959855696,\"blocks\":[{\"id\":\"h6xL_peWS8\",\"type\":\"header\",\"data\":{\"text\":\"업무노트 개설을 축하합니다.\",\"level\":2}},{\"id\":\"ufod1niYAb\",\"type\":\"paragraph\",\"data\":{\"text\":\"열심히 노트를 작성하여 업무 효율을 높혀보세요!\"}}],\"version\":\"2.30.2\"}";
-    	}
-    	model.addAttribute("editorData", wikiData);
-    	
-    	return "wiki/editorDetail";
-    }
+	@Autowired
+	public SqlSession sqlSession;
 
-    
+	// 핸들러 메소드: wiki 상세 페이지를 불러오는 메소드
+	@RequestMapping("/wikiDetail")
+	public String wikiDetail(Model model, @RequestParam("id") int id, HttpSession session) {
+
+		WikiDao dao = sqlSession.getMapper(WikiDao.class);
+
+		// 경로 제공을 위한 부모 id 탐색
+
+		List<String> menuDirection = new ArrayList<String>();
+		menuDirection.add(dao.getMenuDetail(id).getTitle()); // 자기자신 타이틀 넣고 시작
+		Integer parentId = dao.getParentid(String.valueOf(id));
+
+		while (parentId != null) {
+			menuDirection.add(dao.getMenuDetail(parentId).getTitle());
+			parentId = dao.getParentid(String.valueOf(parentId));
+		}
+
+		Collections.reverse(menuDirection); // 역순으로 정렬
+		for (String item : menuDirection) {
+			System.out.println(item);
+		}
+		model.addAttribute("direction", menuDirection);
+
+		String wikiData = dao.getData(id);
+		session.setAttribute("WikiId", id);
+
+		if (wikiData == null) {
+			System.out.println("초기값을 제공합니다.");
+			wikiData = "{\"time\":1721959855696,\"blocks\":[{\"id\":\"h6xL_peWS8\",\"type\":\"header\",\"data\":{\"text\":\"업무노트 개설을 축하합니다.\",\"level\":2}},{\"id\":\"ufod1niYAb\",\"type\":\"paragraph\",\"data\":{\"text\":\"열심히 노트를 작성하여 업무 효율을 높혀보세요!\"}}],\"version\":\"2.30.2\"}";
+		}
+		model.addAttribute("editorData", wikiData);
+
+		return "wiki/editorDetail";
+	}
+
 	private String toString(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
 	@RequestMapping(value = "/saveEditorData", method = RequestMethod.POST)
 	public ResponseEntity<String> saveEditorData(@RequestBody String editorData, HttpSession session) {
-
-		Integer wikiId = (Integer) session.getAttribute("WikiId");
-	    
-	    System.out.println("wikiId");
-	    System.out.println("Received data: " + editorData);
-	    
+	    Integer wikiId = (Integer) session.getAttribute("WikiId");
 	    WikiDao dao = sqlSession.getMapper(WikiDao.class);
-	    String wikiData = dao.getData(wikiId);
-	    
-	    if (wikiData == null) {
-	    	//insert 실행
-	    	dao.insertWiki(wikiId, editorData);
-	    } else {
-	    	//update 실행
-	    	dao.updateWiki(wikiId, editorData);
+	    try {
+	        if (dao.getData(wikiId) == null) {
+	            dao.insertWiki(wikiId, editorData);
+	        } else {
+	            dao.updateWiki(wikiId, editorData);
+	        }
+	     // 데이터 저장 성공 시
+	        return new ResponseEntity("{\"message\":\"Data received successfully\"}", HttpStatus.OK);
+
+
+	    } catch (Exception e) {
+	    	// 서버 내부 에러 발생 시
+	    	return new ResponseEntity("{\"error\":\"" + e.getMessage() + "\"}", HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
-	    
-	
-	    // Return a response with HTTP 200 OK
-	    return new ResponseEntity<String>("Data received successfully", HttpStatus.OK);
 	}
 	
+	// 핸들러 메소드: 파일을 서버에 업로드
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpSession session) {
-		
-		Integer wikiId = (Integer) session.getAttribute("WikiId");
-		System.out.println("파일업로드 테스트");
-		
+	public ResponseEntity<HashMap<String, Object>> uploadFile(
+	    @RequestParam("file") MultipartFile file,
+	    @RequestParam(value = "width", required = false) Integer width,
+	    @RequestParam(value = "height", required = false) Integer height,
+	    HttpServletRequest request,
+	    HttpSession session) {
+
+	    Integer wikiId = (Integer) session.getAttribute("WikiId");
 	    if (!file.isEmpty()) {
 	        try {
+	            String basePath = request.getSession().getServletContext().getRealPath("/resources/upload") + "/" + wikiId;
+	            File dir = new File(basePath);
+	            if (!dir.exists()) dir.mkdirs(); // 폴더가 없다면 생성
 
-	        	String basePath = request.getSession().getServletContext().getRealPath("/resources/upload") + "/" + wikiId;
-	        	System.out.println("업로드 경로: " + basePath);
-	        	
-	        	File dir = new File(basePath);
-	        	if (!dir.exists()) {
-	        	    dir.mkdirs(); // 폴더가 없다면 생성
-	        	}
+	            String originalFilename = file.getOriginalFilename();
+	            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+	            String newFilename = UUID.randomUUID().toString() + fileExtension;
 
-	        	String originalFilename = file.getOriginalFilename();
-	        	String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-	        	String newFilename = UUID.randomUUID().toString() + fileExtension;
+	            File dest = new File(basePath, newFilename);
+	            Thumbnails.of(file.getInputStream()).size(width != null ? width : 200, height != null ? height : 200).toFile(dest);
 
-	        	File dest = new File(basePath, newFilename); // 파일 저장 경로에 파일명을 포함하여 생성
-	        	//file.transferTo(dest); // 파일을 위에서 지정한 경로와 파일명으로 저장
-	            Thumbnails.of(file.getInputStream())
-	            .width(500)  // 가로 크기만 지정
-	            .keepAspectRatio(true)  // 비율 유지
-	            .toFile(dest);
+	            HashMap<String, Object> response = new HashMap<String, Object>();
+	            response.put("success", 1);
+	            HashMap<String, String> fileDetails = new HashMap<String, String>();
+	            fileDetails.put("url", request.getContextPath() + "/resources/upload/" + wikiId + "/" + newFilename);
+	            response.put("file", fileDetails);
 
-	        	HashMap response = new HashMap();
-	        	response.put("success", 1);
-	        	HashMap fileDetails = new HashMap();
-	        	fileDetails.put("url", request.getContextPath() + "/resources/upload/" + wikiId + "/" + newFilename);
-	        	response.put("file", fileDetails);
-
-	            return new ResponseEntity<HashMap>(response, HttpStatus.OK);
+	            return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
 	        } catch (Exception e) {
-	            HashMap error = new HashMap();
+	            HashMap<String, Object> error = new HashMap<String, Object>();
 	            error.put("success", 0);
-	            error.put("message", "File upload failed");
-	            return new ResponseEntity<HashMap>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+	            error.put("message", "File upload failed: " + e.getMessage());
+	            return new ResponseEntity<HashMap<String, Object>>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	        }
 	    } else {
-	        HashMap error = new HashMap();
+	        HashMap<String, Object> error = new HashMap<String, Object>();
 	        error.put("success", 0);
 	        error.put("message", "No file uploaded");
-	        return new ResponseEntity<HashMap>(error, HttpStatus.BAD_REQUEST);
+	        return new ResponseEntity<HashMap<String, Object>>(error, HttpStatus.BAD_REQUEST);
 	    }
 	}
+
 	
-	
-	
+	@RequestMapping("/aa")
+	public String aa() {
+
+		return "aa";
+	}
+
+
 }
