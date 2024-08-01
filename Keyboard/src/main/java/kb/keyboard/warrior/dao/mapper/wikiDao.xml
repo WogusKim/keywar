@@ -112,13 +112,42 @@
 	
 	<!-- 위키디테일저장 -->
 	<insert id="insertWiki">
-		 INSERT INTO EditorData (id, data) VALUES (#{wikiId}, #{editorData})
+		 INSERT INTO EditorData (id, data) VALUES (#{param1}, #{param2})
 	</insert>
 	<update id="updateWiki">
 		UPDATE EditorData SET data = #{param2} WHERE id = #{param1}
 	</update>
-
-
 	
+	<!-- 사진사이즈저장 값이 있는지 확인 -->
+	<select id="getSize" resultType="String">
+		SELECT width from imageSize where wikiId = #{param1} and url = #{param2}
+	</select>
+	
+	<!-- 사진정보 INSERT -->
+	<insert id="insertSize">
+		INSERT INTO imageSize VALUES (#{param1}, #{param2}, #{param3})
+	</insert>
+	
+	<!-- 사진정보 UPDATE -->
+	<update id="updateSize">
+		UPDATE imageSize
+		SET width = #{param3}
+		WHERE wikiId = #{param1} and url =#{param2}
+	</update>
+	
+	<!-- 이미지정보 모두 불러오기 -->
+	<select id="getAllSizeOfImg" resultType="kb.keyboard.warrior.dto.ImageSizeDTO">
+		SELECT * FROM imageSize where wikiId = #{param}
+	</select>
+	
+	<select id="getAllPost" resultType="kb.keyboard.warrior.dto.BoardDTO">
+		SELECT 
+		ROW_NUMBER() OVER (ORDER BY e.id ASC) AS management_number,
+		e.id, m.title,m.titleShare, m.userno , u.username, e.data, m.isOpen
+		from EditorData e
+		join Menu m on e.id = m.id
+		join user u on m.userno = u.userno
+		where m.isOpen = 1;
+	</select>
 	
 </mapper>

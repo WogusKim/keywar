@@ -19,13 +19,17 @@ public class ScheduleDTO {
 	private String customShare; //
 	private String shareto; //
 	private String status; //
+	private String groupName; //
+	private String username; //
+	private String maxSharedepth3;
 
 	public ScheduleDTO() {
 	}
 
 	public ScheduleDTO(String scheduleid, String userno, String title, String content, String startDate, String endDate,
 			String sharedepth1, String deptname, String sharedepth2, String teamname, String sharedepth3, String customname, 
-			String customShare, String sharecolor, String shareto, String category, String status) {
+			String customShare, String sharecolor, String shareto, String category, String status, String groupName, String username
+			, String maxSharedepth3) {
 		this.scheduleid = scheduleid;
 		this.userno = userno;
 		this.title = title;
@@ -43,6 +47,9 @@ public class ScheduleDTO {
 		this.shareto = shareto;
 		this.category = category;
 		this.status = status;
+		this.groupName = groupName;
+		this.username = username;
+		this.maxSharedepth3 = maxSharedepth3;
 	}
 
 	// Getters and Setters
@@ -181,6 +188,31 @@ public class ScheduleDTO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getMaxSharedepth3() {
+		return maxSharedepth3;
+	}
+
+	public void setMaxSharedepth3(String maxSharedepth3) {
+		this.maxSharedepth3 = maxSharedepth3;
+	}
+	
 	
 	
 

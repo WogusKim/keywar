@@ -2,6 +2,7 @@ package kb.keyboard.warrior.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kb.keyboard.warrior.dao.CommentDao;
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.fasterxml.jackson.databind.SerializationFeature;
 import kb.keyboard.warrior.dao.LoginDao;
@@ -160,6 +162,12 @@ public class LoginController {
 		UserDTO dto = dao.isRightUserno(userno);
 		model.addAttribute("dto", dto);
 		
+		//내가 작성한 댓글 가져오기
+		CommentDao cdao = sqlSession.getMapper(CommentDao.class);
+		List<CommentDTO> list = cdao.getMyComment(userno);
+		if(list!=null)
+			model.addAttribute("comment", list);
+		
 		return "login/mypage";
 	}
 	
@@ -238,6 +246,22 @@ public class LoginController {
                 e.printStackTrace();
             }
         }
+    }
+    @RequestMapping("/getUserProfilePicture2")
+    public void getUserProfilePicture2(@RequestParam("userno") String userno, HttpServletRequest request, HttpServletResponse response) {
+    	
+    	LoginDao dao = sqlSession.getMapper(LoginDao.class);
+    	UserDTO user = dao.getUserProfile(userno);
+    	
+    	if (user != null && user.getPicture() != null) {
+    		response.setContentType("image/jpeg");
+    		try {
+    			response.getOutputStream().write(user.getPicture());
+    			response.getOutputStream().flush();
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    	}
     }
 
 }

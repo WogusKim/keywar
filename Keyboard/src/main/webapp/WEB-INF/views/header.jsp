@@ -131,8 +131,8 @@ width: 100%;
 <header>
 <div class="header_outline">
 <div class="header_innerBox">
-<a href="${pageContext.request.contextPath}" > <img  class="header_logo" src="${pageContext.request.contextPath}/resources/images/mainLogo.png"></a>
- <div class="header_innerText"><a href="${pageContext.request.contextPath}" style="color: inherit; font-family: inherit; font-size: inherit; text-decoration: none; ">김국민의 업무노트</a></div>
+<a href="${pageContext.request.contextPath}/main" > <img  class="header_logo" src="${pageContext.request.contextPath}/resources/images/mainLogo.png"></a>
+ <div class="header_innerText"><a href="${pageContext.request.contextPath}/main" style="color: inherit; font-family: inherit; font-size: inherit; text-decoration: none; ">김국민의 업무노트</a></div>
 </div>
  <div class="header_iconArea">
  	<c:choose>
