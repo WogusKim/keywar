@@ -188,7 +188,7 @@ min-width: 100px;
 				<div class="outlineBox" style="height: 45%">
 				<div class="white_Box" style="width: 100%; margin-top: 20px;"> 
 				<h3 class="stress_Text">내가 공유한 업무노트 </h3>
-				
+				<div style="overflow-y: auto; "></div>
 				<table style="margin: 5px; width: 100%; margin-top: 20px;">
 				<colgroup>
        	 			<col style="width: 65%;">

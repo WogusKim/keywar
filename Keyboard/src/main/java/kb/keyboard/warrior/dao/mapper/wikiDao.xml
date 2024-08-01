@@ -184,7 +184,7 @@
 	
 	<select id="myTotalLike" resultType="java.lang.Integer">
 		SELECT 
-		sum(like_count) 
+		COALESCE(sum(like_count) , 0) 
 		from EditorData e
 		join Menu m on e.id = m.id
 		join user u on m.userno = u.userno
