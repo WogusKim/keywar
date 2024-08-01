@@ -14,6 +14,30 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js'></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/calendar.css">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+	.btn-mint {
+	    background-color: #BDE2CE;
+	    border-color: #BDE2CE;
+	    color: #ffffff;
+	}
+	.btn-mint:hover {
+	    background-color: #A8CBBA;
+	    border-color: #A8CBBA;
+	    color: #ffffff;
+	}
+	.btn-pastel-pink {
+	    background-color: #FFB3BA;
+	    border-color: #FFB3BA;
+	    color: #ffffff;
+	}
+	.btn-pastel-pink:hover {
+	    background-color: #FFA0AB;
+	    border-color: #FFA0AB;
+	    color: #ffffff;
+	}
+</style>
+
 </head>
 <body>
 
@@ -165,8 +189,32 @@
     </div>
 </div>
 
+<!-- 사용자 설정 그룹 관련 설정 옵션 모달 -->
+<div class="modal fade" id="settingsOptionsModal" tabindex="-1" role="dialog" aria-labelledby="settingsOptionsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="settingsOptionsModalLabel">설정 옵션</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+<!--                 <button type="button" class="btn btn-primary btn-block mb-2" id="createGroupBtn">사용자 설정 그룹 만들기</button>
+                <button type="button" class="btn btn-danger btn-block" id="inviteGroupBtn">기존 그룹에 사용자 초대하기</button>
+                <button type="button" class="btn btn-danger btn-block" id="leaveGroupBtn">기존 사용자 설정 그룹 나가기</button>
+ -->
+                <button type="button" class="btn btn-mint btn-block mb-2" id="createGroupBtn">사용자 설정 그룹 만들기</button>
+                <button type="button" class="btn btn-mint btn-block mb-2" id="inviteGroupBtn">기존 그룹에 사용자 초대하기</button>
+                <button type="button" class="btn btn-pastel-pink btn-block" id="leaveGroupBtn">기존 사용자 설정 그룹 나가기</button>
 
-<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="customGroupModalLabel" aria-hidden="true">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 사용자 설정 그룹 만들기 모달 -->
+<div class="modal fade" id="createGroupModal" tabindex="-1" role="dialog" aria-labelledby="customGroupModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -205,6 +253,61 @@
     </div>
 </div>
 
+
+
+<!-- 기존 그룹에 사용자 초대하기 모달 -->
+<div class="modal fade" id="inviteGroupModal" tabindex="-1" role="dialog" aria-labelledby="inviteGroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="inviteGroupModalLabel">그룹에 사용자 초대하기</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 그룹 선택 -->
+                <div class="form-group">
+                    <label for="groupSelect">그룹 선택:</label>
+                    <select class="form-control" id="groupSelect"></select>
+                </div>
+                <!-- 사용자 초대 검색 -->
+                <div class="form-group">
+                    <label for="inviteUserSearch">사용자 초대:</label>
+                    <input type="text" class="form-control" id="inviteUserSearch">
+                    <button type="button" class="btn btn-primary" id="inviteSearchUserButton">검색</button>
+                </div>
+                <!-- 검색 결과 -->
+                <div id="inviteSearchResults"></div>
+                <!-- 선택된 사용자 목록 -->
+                <div id="inviteSelectedUsers"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="inviteUsersButton">초대하기</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- 기존 그룹 나가기 모달 -->
+<div class="modal fade" id="leaveGroupModal" tabindex="-1" role="dialog" aria-labelledby="leaveGroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="leaveGroupModalLabel">사용자 설정 그룹 나가기</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 여기에 그룹 목록이 동적으로 추가됩니다 -->
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -754,8 +857,8 @@
                 customButtons: {
                 	shareGroup: {
                         text: '설정',
-                        click: function() {
-                            $('#settingsModal').modal('show'); // 모달 창 열기
+                        click: function() { 
+                            $('#settingsOptionsModal').modal('show'); // 모달 창 열기
                             // 사용자 정의 동작을 여기에 정의합니다.
                         }
                     }
@@ -839,25 +942,150 @@
         
     });
      
-     function deleteEvent(eventId) {
-    	    $.ajax({
-    	        url: '${pageContext.request.contextPath}/calendardelete',
-    	        method: 'POST',
-    	        data: { scheduleid: eventId },  // JSON.stringify 제거
-    	        // contentType: 'application/json', 제거
-    	        success: function(response) {
-    	            console.log('일정이 성공적으로 삭제되었습니다.');
-    	            $('#eventDetailModal').modal('hide');
-    	            //calendar.refetchEvents();
-	                location.reload(); // 페이지 새로고침
-    	        },
-    	        error: function(xhr, status, error) {
-    	        	console.log('eventId: ' + eventId);
-    	        	console.error('일정 삭제 중 오류가 발생했습니다:', error);
-    	            alert('일정 삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
-    	        }
+     $(document).ready(function() {
+    	    // 사용자 설정 그룹 만들기 버튼 클릭 시
+    	    $('#createGroupBtn').on('click', function() {
+    	        $('#settingsOptionsModal').modal('hide');
+    	        $('#createGroupModal').modal('show');
     	    });
-    	}
+
+    	    // 기존 그룹에 사용자 초대하기 버튼 클릭 시
+    	    $('#inviteGroupBtn').on('click', function() {
+    	        $('#settingsOptionsModal').modal('hide');
+    	        loadUserGroupsForInvite();
+    	    });
+
+	    	    // 사용자 검색 버튼 클릭 이벤트
+	    	    $('#inviteSearchUserButton').on('click', function() {
+	    	        searchUsersForInvite();
+	    	    });
+	    	    
+	    	    // 초대하기 버튼 클릭 이벤트
+	    	    $('#inviteUsersButton').on('click', function() {
+	    	        inviteUsersToGroup();
+	    	    });
+    	    
+    		// 기존 사용자 설정 그룹 나가기 버튼 클릭 시
+    	    $('#leaveGroupBtn').on('click', function() {
+    	        $('#settingsOptionsModal').modal('hide');
+    	        loadUserGroups();
+    	    });
+    	});
+     
+		// 사용자가 속한 그룹 로드
+		function loadUserGroups() {
+		    $.ajax({
+		        url: '${pageContext.request.contextPath}/getUserGroups',
+		        method: 'GET',
+		        success: function(response) {
+		            showLeaveGroupModal(response);
+		        },
+		        error: function(xhr, status, error) {
+		            console.error('그룹 로드 중 오류 발생:', error);
+		            alert('그룹 정보를 불러오는 데 실패했습니다.');
+		        }
+		    });
+		}
+  	 
+	    // 사용자의 그룹 목록 로드 (초대용)
+		function loadUserGroupsForInvite() {
+		    $.ajax({
+		        url: '${pageContext.request.contextPath}/getUserGroups',
+		        method: 'GET',
+		        success: function(response) {
+		            populateGroupSelect(response);
+		            $('#inviteGroupModal').modal('show');
+		        },
+		        error: function(xhr, status, error) {
+		            console.error('그룹 로드 중 오류 발생:', error);
+		            alert('그룹 정보를 불러오는 데 실패했습니다.');
+		        }
+		    });
+		}
+	    
+		// 그룹 선택 옵션 채우기
+		function populateGroupSelect(groups) {
+		    const $select = $('#groupSelect');
+		    $select.empty();
+		    groups.forEach(function(group) {
+		        $select.append($('<option>', {
+		            value: group.id,
+		            text: group.name
+		        }));
+		    });
+		}
+		
+		// 검색 결과 표시 (초대용)
+		function displayInviteSearchResults(users) {
+		    const $results = $('#inviteSearchResults');
+		    $results.empty();
+		    
+		    users.forEach(user => {
+		        const $checkbox = $('<input>', {
+		            type: 'checkbox',
+		            value: user.userno,
+		            id: 'invite-user-' + user.userno
+		        });
+		        const $label = $('<label>', {
+		            for: 'invite-user-' + user.userno,
+		            text: `${user.name} (${user.userno}) - ${user.deptname} / ${user.teamname}`
+		        });
+		        $results.append($('<div>').append($checkbox).append($label));
+		    });
+		}
+		
+		// 선택된 사용자들을 그룹에 초대
+		function inviteUsersToGroup() {
+		    const groupId = $('#groupSelect').val();
+		    const selectedUsers = [];
+		    $('#inviteSearchResults input:checked').each(function() {
+		        selectedUsers.push($(this).val());
+		    });
+
+		    if (selectedUsers.length === 0) {
+		        alert('초대할 사용자를 선택해주세요.');
+		        return;
+		    }
+
+		    $.ajax({
+		        url: '${pageContext.request.contextPath}/inviteUsersToGroup',
+		        method: 'POST',
+		        data: JSON.stringify({
+		            groupId: groupId,
+		            userIds: selectedUsers
+		        }),
+		        contentType: 'application/json',
+		        success: function(response) {
+		            alert('선택한 사용자들을 그룹에 성공적으로 초대했습니다.');
+		            $('#inviteGroupModal').modal('hide');
+		        },
+		        error: function(xhr, status, error) {
+		            console.error('사용자 초대 중 오류 발생:', error);
+		            alert('사용자 초대 중 오류가 발생했습니다. 다시 시도해주세요.');
+		        }
+		    });
+		}
+
+     
+		function deleteEvent(eventId) {
+		    $.ajax({
+		        url: '${pageContext.request.contextPath}/calendardelete',
+		        method: 'POST',
+		        data: { scheduleid: eventId },  // JSON.stringify 제거
+		        // contentType: 'application/json', 제거
+		        success: function(response) {
+		            console.log('일정이 성공적으로 삭제되었습니다.');
+		            $('#eventDetailModal').modal('hide');
+		            //calendar.refetchEvents();
+		            location.reload(); // 페이지 새로고침
+		        },
+		        error: function(xhr, status, error) {
+		        	console.log('eventId: ' + eventId);
+		        	console.error('일정 삭제 중 오류가 발생했습니다:', error);
+		            alert('일정 삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
+		        }
+		    });
+		}
     
     
 </script>
