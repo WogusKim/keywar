@@ -454,6 +454,22 @@ public class MemoController {
         return "{\"status\":\"success\"}";
     }
     
+	@RequestMapping(value = "/updateNoticeSize", method = RequestMethod.POST)
+	@ResponseBody
+	public String updateNoticeSize(@RequestBody NoticeDTO noticeDTO) {
+		System.out.println("공지 위치 및 크기 업데이트");
+		System.out.println(noticeDTO.getWidth());
+		System.out.println(noticeDTO.getHeight());
+
+		// MemoDao를 통해 SQL 실행
+		MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
+
+		// 공지 위치 및 크기 업데이트
+		memoDao.updateNoticeSize(noticeDTO);
+
+		// JSON 형태로 응답 반환
+		return "{\"status\":\"success\"}";
+	}
     
     @RequestMapping(value = "/getMaxZindex", method = RequestMethod.GET)
     public void getMaxZindex(HttpServletResponse response) {
