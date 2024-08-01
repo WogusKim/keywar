@@ -202,9 +202,9 @@ min-width: 100px;
     			<c:forEach var="post" items="${mypost}">
 
 					<tr><!-- 여기 DB에서 가져와서 포문 돌릴거임 !! -->
-					<td style="max-width:50%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${post.titleShare}</td>
-					<td><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/heart16.png"><a href="#" class="aTag"> 좋아요 ${post.like_count}</a></td>
-					<td ><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/chat16.png"><a href="#" class="aTag"> 댓글 ${post.comment_count}</a></td> <!-- 여기 한글 대신 DB에 저장된 다른 숫자 등 보이게 할 거임. -->
+					<td style="max-width:50%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="${pageContext.request.contextPath}/detailNote?id=${post.id}" class="aTag">${post.titleShare}</a></td>
+					<td><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/heart16.png"><a href="${pageContext.request.contextPath}/detailNote?id=${post.id}#likeUp" class="aTag"> 좋아요 ${post.like_count}</a></td>
+					<td ><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/chat16.png"><a href="${pageContext.request.contextPath}/detailNote?id=${post.id}#commentArea1" class="aTag"> 댓글 ${post.comment_count}</a></td> <!-- 여기 한글 대신 DB에 저장된 다른 숫자 등 보이게 할 거임. -->
 					<td><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/eyes.png"><a href="#" class="aTag"> 조회수</a></td>
 					<td style="text-align: center;"><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/edit.png"><a href="${pageContext.request.contextPath}/wikiDetail?id=${post.id}" class="aTag"> 수정</a></td>
 					<td style="text-align: center;"><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/delete.png"><a href="#" class="aTag"> 삭제</a></td>
