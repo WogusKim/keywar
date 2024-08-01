@@ -144,10 +144,18 @@ public class MemoController {
     @RequestMapping("/saveGroup")
     public ResponseEntity<String> saveGroup(@RequestBody List<Map<String, String>> groupData, HttpSession session) {
         ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
-        String userno = (String) session.getAttribute("userno");
+        String inviteNo = (String) session.getAttribute("userno");
         try {
         	dao.saveGroup(groupData);
-        	dao.saveSelf(userno);
+        	dao.saveSelf(inviteNo);
+        	for (Map<String, String> userData : groupData) {
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("inviteNo", inviteNo);
+                params.put("userno", userData.get("userno"));
+                params.put("customname", userData.get("customname"));
+                
+                dao.alertInsertCalendar(params);
+            }
             return new ResponseEntity<String>("Group saved successfully", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
