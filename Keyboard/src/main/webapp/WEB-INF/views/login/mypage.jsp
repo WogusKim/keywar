@@ -84,6 +84,7 @@ min-width: 100px;
 }
 .aTag{
     text-decoration: none;
+    color: black; 
 }
 </style>
 <script>
@@ -171,7 +172,7 @@ min-width: 100px;
 						<c:forEach var="comment" items="${comment}">
 						<tr>
 							<td style="max-width:50%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">
-								<a href="${pageContext.request.contextPath}/detailNote?id=${comment.targetid}#comment-id-${comment.commentid}">${comment.content }</a>
+								<a class="aTag" href="${pageContext.request.contextPath}/detailNote?id=${comment.targetid}#comment-id-${comment.commentid}">${comment.content }</a>
 							</td>
 							<td style="color: gray; font-size: small; max-width:30%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">${comment.titleShare }</td>
 							<td style="color: gray; font-size: small;">${comment.createdate }</td>
