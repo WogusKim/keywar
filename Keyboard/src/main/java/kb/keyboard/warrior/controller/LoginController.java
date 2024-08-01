@@ -25,6 +25,7 @@ import kb.keyboard.warrior.dao.CommentDao;
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.fasterxml.jackson.databind.SerializationFeature;
 import kb.keyboard.warrior.dao.LoginDao;
+import kb.keyboard.warrior.dao.WikiDao;
 import kb.keyboard.warrior.dto.*;
 import kb.keyboard.warrior.util.PasswordEncoderUtil;
 
@@ -167,6 +168,14 @@ public class LoginController {
 		List<CommentDTO> list = cdao.getMyComment(userno);
 		if(list!=null)
 			model.addAttribute("comment", list);
+		WikiDao wdao = sqlSession.getMapper(WikiDao.class);
+		List<BoardDTO> mypost = wdao.getMyPost(userno);
+		int myLikeCount = 0;
+		myLikeCount = wdao.myTotalLike(userno);
+		if(mypost!=null)
+			model.addAttribute("mypost", mypost);
+		
+		model.addAttribute("myLikeCount", myLikeCount);
 		
 		return "login/mypage";
 	}
