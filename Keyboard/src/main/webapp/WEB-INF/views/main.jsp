@@ -364,10 +364,9 @@ document.addEventListener('DOMContentLoaded', function() {
 					    	<h4 class="card_title">BEST 저자</h4>
 					    	<hr>
 							<ul>
-								<li>김wogus</li>
-								<li>무느재우그</li>
-								<li>성은초이</li>
-								<li>꿘예지</li>
+							<c:forEach var="bestWriter" items="${bestWriter}">
+								<li><a class="aTag" href="#"> ${bestWriter.nickname }</a></li>
+							</c:forEach>
 							</ul>
 					    </div>
 					    <div class="rankbox">
@@ -375,11 +374,11 @@ document.addEventListener('DOMContentLoaded', function() {
 					    	<h4 class="card_title"> BEST 게시글</h4> <a href="${pageContext.request.contextPath}/hotNote" class="link-icon" >바로가기</a>
 					    </div>
 					    	<hr>
-							<ul>
-								<li>꿘예지 - 개인여신총정리</li>
-								<li>꿘예지</li>
-								<li>성은초이</li>
-								<li>무느재우그</li>
+							<ul> 
+							<c:forEach var="bestPost" items="${bestPost}">
+								<li><a class="aTag" href="${pageContext.request.contextPath}/detailNote?id=${bestPost.id}">${bestPost.titleShare } - ${bestPost.nickname }</a></li>
+														
+							</c:forEach>
 							</ul>
 					    </div>
 				    </div>

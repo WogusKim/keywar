@@ -205,5 +205,51 @@
 		on l.targetid = m.id
 		where l.userno = #{param1}
 	</select>
+	<select id="getBestPost" resultType="kb.keyboard.warrior.dto.BoardDTO">
+		SELECT 
+		    ROW_NUMBER() OVER (ORDER BY e.id ASC) AS management_number,
+		    e.id, 
+		    m.title, 
+		    m.titleShare, 
+		    m.userno, 
+		    u.nickname, 
+		    e.data, 
+		    m.isOpen, 
+		    COALESCE(l.like_count, 0) AS like_count,
+		    COALESCE(c.comment_count, 0) AS comment_count
+		FROM EditorData e
+		JOIN Menu m ON e.id = m.id
+		JOIN user u ON m.userno = u.userno
+		LEFT OUTER JOIN (
+		    SELECT targetid, COUNT(*) AS like_count
+		    FROM liketable
+		    GROUP BY targetid
+		) l ON e.id = l.targetid
+		LEFT OUTER JOIN (
+		    SELECT targetid, COUNT(*) AS comment_count
+		    FROM comment
+		    WHERE commentstatus = 1
+		    GROUP BY targetid
+		) c ON c.targetid = e.id
+		WHERE m.isOpen = 1
+		ORDER BY like_count DESC, comment_count DESC
+		LIMIT 5;
+	</select>
+	<select id="getBestWriter" resultType="kb.keyboard.warrior.dto.BoardDTO">
+		SELECT 
+		sum(like_count) as like_count, u.nickname
+		FROM EditorData e
+		JOIN Menu m ON e.id = m.id
+		JOIN user u ON m.userno = u.userno
+		LEFT OUTER JOIN (
+		    SELECT targetid, COUNT(*) AS like_count
+		    FROM liketable
+		    GROUP BY targetid
+		) l ON e.id = l.targetid
+		WHERE m.isOpen = 1
+		group by u.nickname
+		order by like_count desc
+		LIMIT 5;
+	</select>
 	
 </mapper>
