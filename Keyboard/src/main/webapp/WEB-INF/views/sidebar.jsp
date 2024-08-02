@@ -275,29 +275,42 @@ function toggleFolder(element) {
 // 모든 ul 요소의 기본 display를 block으로 설정
 $(document).ready(function() {
     $('.menu-tree ul').css('display', 'block');
-    
 
-    var isCollapsed = false; // 상태 표시 변수
-    
+    // 페이지 로드 시 저장된 사이드바 상태 확인
+    var isCollapsed = localStorage.getItem('isCollapsed') === 'true';
+
+    if (isCollapsed) {
+        // 사이드바를 접은 상태로 설정
+        $('.menu-tree, .menu_setting').hide();
+        $('.content_left').css('width', '50px');
+        $('.fold-icon').hide();
+        $('.unfold-icon').show();
+    } else {
+        // 사이드바를 펼친 상태로 설정
+        $('.menu-tree, .menu_setting').show();
+        $('.content_left').css('width', '17%');
+        $('.unfold-icon').hide();
+        $('.fold-icon').show();
+    }
+
+    // 접기 버튼 클릭 이벤트
     $('.menu_onoff .fold-icon').click(function() {
-        // 사이드바 접기
         $('.menu-tree, .menu_setting').slideUp(300);
-        $('.content_left').animate({ width: '50px' }, 300); // 너비 축소
-        $('.fold-icon').hide(); // 접기 아이콘 숨기기
-        $('.unfold-icon').show(); // 펼치기 아이콘 표시
-        isCollapsed = true;
+        $('.content_left').animate({ width: '50px' }, 300);
+        $('.fold-icon').hide();
+        $('.unfold-icon').show();
+        localStorage.setItem('isCollapsed', 'true'); // 상태 저장
     });
 
+    // 펼치기 버튼 클릭 이벤트
     $('.menu_onoff .unfold-icon').click(function() {
-        // 사이드바 펼치기
         $('.menu-tree, .menu_setting').slideDown(300);
-        $('.content_left').animate({ width: '17%' }, 300); // 원래 너비로 복구
-        $('.unfold-icon').hide(); // 펼치기 아이콘 숨기기
-        $('.fold-icon').show(); // 접기 아이콘 표시
-        isCollapsed = false;
+        $('.content_left').animate({ width: '17%' }, 300);
+        $('.unfold-icon').hide();
+        $('.fold-icon').show();
+        localStorage.setItem('isCollapsed', 'false'); // 상태 저장
     });
 
-    
 });
 
 </script>
