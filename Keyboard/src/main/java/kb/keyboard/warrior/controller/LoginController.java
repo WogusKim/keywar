@@ -49,7 +49,7 @@ public class LoginController {
 		HttpSession session = request.getSession();
 		session.invalidate(); // 세션 값 완전 삭제! 
 		System.out.println("로그아웃 실행");
-		return "login/login";
+		return "redirect:login";
 	}
 	@RequestMapping("/loginAction")
 	public String loginAction(HttpServletRequest request, Model model, UserDTO dto, RedirectAttributes attributes) {
@@ -73,7 +73,7 @@ public class LoginController {
 			HttpSession session = request.getSession();
 			session.setAttribute("userno", fromDbDto.getUserno()); // 세션에 값 넣기
 			session.setAttribute("deptno", fromDbDto.getDeptno()); // 세션에 값 넣기
-			return "redirect:/";
+			return "redirect:main";
 		}else {
 			System.out.println("직원번호는 있는데 비번 오류");
 			return "redirect:login";
@@ -92,6 +92,7 @@ public class LoginController {
 		
 		return "login/testPage";
 	}
+	
 	// Regarding password reset 
 	@RequestMapping("/findPassword")
 	public String findPW(HttpServletRequest request, Model model) {
