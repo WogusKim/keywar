@@ -7,63 +7,11 @@
 <meta charset="UTF-8">
 <title>메인 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
-<!--link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/setting.css"-->
-<style>
-
-/* 추후 css로 뺄 예정 */
-
-:root {
-    --main-bgcolor: #BDE2CE; /* 변수 선언 */
-}
-
-.settingPage {
-	border-radius: 10px;
-    background-color: var(--main-bgcolor);
-    width: 30%;
-    height: 50%;
-    padding: 15px;
-    margin-right: 10px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-}
-.innerSetting {
-	border-radius: 10px;
-    background-color: white;
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    margin-right: 10px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-}
-.color-circle {
-    width: 70px; /* 원의 크기 */
-    height: 70px; /* 원의 크기 */
-    border-radius: 50%; /* 원형 만들기 */
-    cursor: pointer;
-    display: inline-block; /* 옆으로 나열 */
-    margin-bottom: 15px; /* 하단 간격 조정 */
-}
-
-.color-selection {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3개의 열로 나누기 */
-    gap: 10px; /* 각 원 사이의 간격 */
-}
-
-input[type="radio"] {
-    display: none; /* 라디오 버튼 숨기기 */
-}
-
-input[type="radio"]:checked + .color-circle {
-    border: 3px solid black; /* 선택 시 테두리 추가 */
-}
-</style>
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/setting.css">
 </head>
 
 <body>
-
 	<%@ include file="/WEB-INF/views/header.jsp"%>
-
 	<div class="content_outline">
 		<%@ include file="/WEB-INF/views/sidebar.jsp"%>
 		<div class="content_right">
