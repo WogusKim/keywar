@@ -701,3 +701,7 @@ hr {
 .deleteButton11:hover { /* yeji */
 	background-color: #B53D3D;
 }
+.aTag{
+    text-decoration: none;
+    color: black;
+}

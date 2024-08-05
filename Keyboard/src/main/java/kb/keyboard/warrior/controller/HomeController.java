@@ -29,6 +29,8 @@ import kb.keyboard.warrior.dao.ExchangeRateDao;
 import kb.keyboard.warrior.dao.LoginDao;
 import kb.keyboard.warrior.dao.MemoDao;
 import kb.keyboard.warrior.dao.ToDoDao;
+import kb.keyboard.warrior.dao.WikiDao;
+import kb.keyboard.warrior.dto.BoardDTO;
 import kb.keyboard.warrior.dto.ExchangeFavoriteDTO;
 import kb.keyboard.warrior.dto.ExchangeRateDTO;
 import kb.keyboard.warrior.dto.MenuDTO;
@@ -261,7 +263,15 @@ public class HomeController {
         } catch (Exception e) {
             e.printStackTrace(); // JSON 변환 중 오류 처리
         }
-
+        
+        WikiDao wdao = sqlSession.getMapper(WikiDao.class);
+        List<BoardDTO> bestPost = wdao.getBestPost();
+        if(bestPost!=null)
+			model.addAttribute("bestPost", bestPost);
+        List<BoardDTO> bestWriter = wdao.getBestWriter();
+        if(bestPost!=null)
+        	model.addAttribute("bestWriter", bestWriter);
+        
 		return "main";
 	}
 

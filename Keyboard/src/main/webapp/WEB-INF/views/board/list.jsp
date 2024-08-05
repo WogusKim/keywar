@@ -21,8 +21,8 @@
 		<table style="text-align: center; width: 80%; margin: auto;">
 			<colgroup>
 				<col style="width: 10%;">
-			    <col style="width: 70%;">
-			    <col style="width: 10%;">
+			    <col style="width: 65%;">
+			    <col style="width: 15%;">
 			    <col style="width: 10%;"> 
 			</colgroup>
 		    <thead style="font-size: large;">
@@ -41,7 +41,7 @@
 	        	<a href="${pageContext.request.contextPath}/detailNote?id=${list.id}"><span>${ list.titleShare } </span></a><br>
 			</td>
 			<td>
-			${list.username}
+			${list.nickname}<%-- (${list.username}) --%>
 			</td>
 			<td>
 			${list.like_count}

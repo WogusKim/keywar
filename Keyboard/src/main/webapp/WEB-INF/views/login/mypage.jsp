@@ -82,9 +82,7 @@ display: flex;
 justify-content: space-between;
 min-width: 100px;
 }
-.aTag{
-    text-decoration: none;
-}
+
 </style>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -171,7 +169,7 @@ min-width: 100px;
 						<c:forEach var="comment" items="${comment}">
 						<tr>
 							<td style="max-width:50%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">
-								<a href="${pageContext.request.contextPath}/detailNote?id=${comment.targetid}#comment-id-${comment.commentid}">${comment.content }</a>
+								<a class="aTag" href="${pageContext.request.contextPath}/detailNote?id=${comment.targetid}#comment-id-${comment.commentid}">${comment.content }</a>
 							</td>
 							<td style="color: gray; font-size: small; max-width:30%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">${comment.titleShare }</td>
 							<td style="color: gray; font-size: small;">${comment.createdate }</td>
@@ -179,7 +177,19 @@ min-width: 100px;
 						</c:forEach>
 					</table>
 					</div>
-					<div class="switchBox" id="switchBox2" style="display: none;"> 2 2 2 2 2 2 2 2 2 2 2</div>
+					<div class="switchBox" id="switchBox2" style="display: none;">
+					
+						<table style="width: 100%; table-layout: fixed; padding: 5px;">
+						<c:forEach var="likedpost" items="${likedpost}">
+						<tr>
+							<td><a class="aTag" href="${pageContext.request.contextPath}/detailNote?id=${likedpost.id}">${likedpost.titleShare}</a></td>
+						</tr>
+						</c:forEach>
+						</table>
+				
+					 
+					 
+					 </div>
 					<div class="switchBox" id="switchBox3" style="display: none;"> 3 3 3 3 3 3 3 3 3 3 </div>
 				
 				</div>
@@ -189,7 +199,7 @@ min-width: 100px;
 				<div class="white_Box" style="width: 100%; margin-top: 20px;"> 
 				<h3 class="stress_Text">내가 공유한 업무노트 </h3>
 				<div style="overflow-y: auto; height: 85%; margin-top: 20px; width: 100%; padding: 5px;">
-				<table style="width: 100%; ">
+				<table style="width: 100%; padding: 5px;">
 				<colgroup>
        	 			<col style="width: 65%;">
        	 			<col style="width: 7%;">
@@ -202,9 +212,9 @@ min-width: 100px;
     			<c:forEach var="post" items="${mypost}">
 
 					<tr><!-- 여기 DB에서 가져와서 포문 돌릴거임 !! -->
-					<td style="max-width:50%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${post.titleShare}</td>
-					<td><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/heart16.png"><a href="#" class="aTag"> 좋아요 ${post.like_count}</a></td>
-					<td ><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/chat16.png"><a href="#" class="aTag"> 댓글 ${post.comment_count}</a></td> <!-- 여기 한글 대신 DB에 저장된 다른 숫자 등 보이게 할 거임. -->
+					<td style="max-width:50%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="${pageContext.request.contextPath}/detailNote?id=${post.id}" class="aTag">${post.titleShare} <span style="color: gray; font-size: small;">${post.title}</span></a></td> 
+					<td><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/heart16.png"><a href="${pageContext.request.contextPath}/detailNote?id=${post.id}#likeUp" class="aTag"> 좋아요 ${post.like_count}</a></td>
+					<td ><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/chat16.png"><a href="${pageContext.request.contextPath}/detailNote?id=${post.id}#commentArea1" class="aTag"> 댓글 ${post.comment_count}</a></td> <!-- 여기 한글 대신 DB에 저장된 다른 숫자 등 보이게 할 거임. -->
 					<td><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/eyes.png"><a href="#" class="aTag"> 조회수</a></td>
 					<td style="text-align: center;"><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/edit.png"><a href="${pageContext.request.contextPath}/wikiDetail?id=${post.id}" class="aTag"> 수정</a></td>
 					<td style="text-align: center;"><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/delete.png"><a href="#" class="aTag"> 삭제</a></td>

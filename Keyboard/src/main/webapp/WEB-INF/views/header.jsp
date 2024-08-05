@@ -22,6 +22,9 @@ width: 100%;
 .alertContentArea{
 width: 100%;
 }
+
+
+
 </style>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
@@ -147,6 +150,30 @@ width: 100%;
     
     </script>
 
+<!-- 로그인 정합성 체크 멈추려면 여기 밑에 스크립트 주석하기 ! -->
+<%
+	String userno1 = (String) session.getAttribute("userno");
+%>
+<script type="text/javascript">
+        window.onload = function() {
+            var currentPath = window.location.pathname;
+            var loginPath = '/login';
+            var findPassword = '/findPassword'
+            var setNewPassword = '/setNewPassword'
+            var resetPassword = '/resetPassword'
+            
+            var userno = '<%= userno1 %>';
+ 
+            // 현재 페이지가 로그인 페이지가 아니면 로그인 상태를 확인
+            if (currentPath == loginPath||currentPath == findPassword||currentPath == setNewPassword||currentPath == resetPassword) {
+            }else{
+            	 if(userno == null || userno == "null"){
+					alert("로그인 후 이용하세요.");
+					window.location.href = '${pageContext.request.contextPath}/login'
+                }
+            }
+        };
+    </script>
 
 </head>
 
