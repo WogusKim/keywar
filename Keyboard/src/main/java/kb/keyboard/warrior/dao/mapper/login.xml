@@ -55,10 +55,15 @@
     <select id="getUserProfile" resultType="kb.keyboard.warrior.dto.UserDTO">
         SELECT * FROM `user` WHERE userno = #{userno}
     </select>
+	
 	<update id="changeNickname">
 		UPDATE user 
 		SET nickname = #{param2}
 		WHERE userno = #{param1}
 	</update>
 
+ 	<select id="getColor" resultType="String">
+		SELECT displayColor FROM userDisplayColor WHERE userno = #{param}
+	</select>
+  
 </mapper>

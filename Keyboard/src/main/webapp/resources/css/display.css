@@ -1,3 +1,7 @@
+:root {
+    --main-bgcolor: #BDE2CE; /* º¯¼ö ¼±¾ğ */
+}
+
 @font-face {
     font-family: 'textL';
     src: url('../fonts/KBFGTextL.ttf') format('truetype');
@@ -10,21 +14,21 @@ html {
 }
 
 body{
-    background-color: #BDE2CE;
+    background-color: var(--main-bgcolor);
     font-family: 'textL';
     padding: 15px;
     height: calc(100% - 60px);
     margin: 0; 
 }
 
-/* í™˜å ì™ì˜™ */
+/* È¯À² */
 .board_currency {
     border-radius: 10px;
-    background-color: #BDE2CE;
+    background-color: var(--main-bgcolor);
     display: flex;
-    flex-direction: column;         /* ï¿½ê½­æ¿¡ì’•ì¤ˆ ï¿½êµ¹ï¿½ë¿´ï¿½ë¸¯ï¿½ë£„æ¿¡ï¿½ ï¿½ê½•ï¿½ì ™ */
-    justify-content: flex-start;    /* ï¿½ê¶¡éºï¿½ ï¿½ìŠ‚ï¿½ëƒ¼ï¿½ë±¾ï¿½ì“£ ï¿½ê¸½ï¿½ë–’ï¿½ë¿‰ è«›ê³—íŠ‚ */
-    align-items: center;            /* ï¿½ê¶¡éºï¿½ ï¿½ìŠ‚ï¿½ëƒ¼ï¿½ë±¾ï¿½ì“£ ï¿½ë‹”ï¿½ë£Š ä»¥ë¬’ë¸°ï¿½ë¿‰ è«›ê³—íŠ‚ */
+    flex-direction: column;         /* ¼¼·Î ¹æÇâ Á¤·Ä ¼³Á¤ */
+    justify-content: flex-start;    /* Ç×¸ñµéÀ» »ó´ÜÀÇ ½ÃÀÛÁ¡¿¡ Á¤·Ä */
+    align-items: center;            /* Ç×¸ñµéÀ» ¼öÆò Áß¾Ó¿¡ Á¤·Ä */
     width: 100%;
     height:  100%;
     padding: 18px;
@@ -42,11 +46,11 @@ body{
 }
 
 .all_currency {
-	width: 100%;
+    width: 100%;
 }
 
 .all_currency th {
-	padding: 8px;
+    padding: 8px;
 }
 
 .all_currency td {
@@ -54,80 +58,77 @@ body{
     text-align: center; /* Center align text within each cell */
     border-bottom: 1px solid #f0f0f0; /* Light grey border for subtle lines */
 }
-/* ï¿½ì†šï¿½ì‘‰ */
+/* ±İ¸® */
 
-/* æ¹²ëˆâ” */
-
+/* ÁÖ½Ä */
 .interestRates {
-	display: flex;
-	justify-content: space-between; /* ï¿½ë‹”ï¿½ì ™ï¿½ë§‚ ï¿½ëƒ½ï¿½ê½¦ */
-	height: 100%;
+    display: flex;
+    justify-content: space-between; /* Ç×¸ñµéÀ» ¾çÂÊ ³¡¿¡ Á¤·Ä */
+    height: 100%;
 }
 
 .half_box {
-	flex: 1; /* è«›ëº¤ë’ªåª›ï¿½ è€Œâ‘¦ë€’ï¿½ì” ï¿½ê¼«ï¿½ì“½ åª›ï¿½ï¿½ë’«ï¿½ë¸³ ï§ë¡®ï¿½ æ€¨ë“¦ì»™ï¿½ì“£ ï§¡â‘¥ï¿½ï¿½ë¸¯ï¿½ë£„æ¿¡ï¿½ ï¿½ê½•ï¿½ì ™ */
-	margin: 0 10px; /* è«›ëº¤ë’ª ï¿½ê¶—ï¿½ì” ï¿½ë¿‰ åª›ê¾§êº½ ç•°ë¶½ï¿½ */
-	padding: 15px;
-	height: 90%;
-	border-radius: 10px;
-	background-color: #f0f0f0;
+    flex: 1; /* °¢ ¹Ú½º°¡ µ¿ÀÏÇÑ ºñÀ²·Î °ø°£À» Â÷ÁöÇÏµµ·Ï ¼³Á¤ */
+    margin: 0 10px; /* °¢ ¹Ú½º »çÀÌÀÇ ¿©¹é */
+    padding: 15px;
+    height: 90%;
+    border-radius: 10px;
+    background-color: #f0f0f0;
 }
 
 .half_box h3 { 
-	font-size: 20px; /* ï¿½ì‚ï¿½ë–†: ï¿½ë£¿ï¿½ë“ƒ ï¿½ê²•æ¹²ï¿½ */
-    color: gray; /* ï¿½ì‚ï¿½ë–†: ï¿½ë£¿ï¿½ë“ƒ ï¿½ê¹‹ï¿½ê¸½ */
+    font-size: 20px; /* ±Û¾¾ Å©±â: Á¦¸ñ Å©±â */
+    color: gray; /* ±Û¾¾ »ö»ó: È¸»ö */
     margin-top: 5px;
-    margin-bottom: 10px; /* ï¿½ì‚ï¿½ë–†: ï¿½ë¸˜ï¿½ì˜’ï§Ÿï¿½ ï¿½ë¿¬è«›ï¿½ */
+    margin-bottom: 10px; /* ±Û¾¾ ¿©¹é: Á¦¸ñ À§¾Æ·¡ */
 }
 
 
-/* å ìŒ¥ëªŒì˜™ */
+/* ÁÖ½Ä */
 
-/* ï¿½êº† ï¿½ìºï¿½ë¿­ ï¿½ìŸ¾ï§£ï¿½ ï¿½ê½•ï¿½ì ™ */
+/* °¢ ÅÇÀÇ ¹è°æ»ö°ú Á¤·Ä ¼³Á¤ */
 .stock_tab_area {
     display: flex;
     justify-content: space-between;
-    background-color: #BDE2CE; /* æ¹²ê³•ë‚¯ è«›ê³Œê¼ï¿½ê¹‹ */
+    background-color: var(--main-bgcolor); /* ¿¬ÇÑ È¸»ö ¹è°æ */
     padding: 10px 80px 10px 80px;
     border-radius: 10px;
 }
 
-/* åª›ï¿½ ï¿½êº†ï¿½ì“½ æ¹²ê³•ë‚¯ ï¿½ë’ªï¿½ï¿½ï¿½ì”ª */
+/* ÁÖ½Ä °¢ ÅÇÀÇ ¹è°æ »ö»ó */
 .stock_tab {
     cursor: pointer;
     padding: 10px;
     font-weight: bold;
-    background-color: #BDE2CE; /* ï¿½êº†ï¿½ì“½ è«›ê³Œê¼ï¿½ê¹‹ */
-    border-radius: 5px; /* ï¿½êº†ï¿½ì“½ ï§â‘¥ê½Œç”±ï¿½ ï¿½ë«æ¹²ï¿½å¯ƒï¿½ */
-    margin-right: 5px; /* ï¿½êº† ï¿½ê¶—ï¿½ì” ï¿½ì“½ åª›ê¾§êº½ */
-    transition: background-color 0.3s ease; /* è«›ê³Œê¼ï¿½ê¹‹ è¹‚ï¿½å¯ƒï¿½ ï¿½ìŠšæ€¨ï¿½ éºï¿½ï¿½ë±¶ï¿½ì‡å¯ƒï¿½ */
+    background-color: var(--main-bgcolor); /* ÁÖ½Ä ÅÇ ¹è°æ»ö */
+    border-radius: 5px; /* ÁÖ½Ä ÅÇ ¸ğ¼­¸® µÕ±Û°Ô */
+    margin-right: 5px; /* °¢ ÅÇ »çÀÌÀÇ ¿©¹é */
+    transition: background-color 0.3s ease; /* ¹è°æ»ö ÀüÈ¯ ¾Ö´Ï¸ŞÀÌ¼Ç */
 }
 
 
-/* ï§ë‰ï¿½ï§ï¿½ ï¿½êº†ï¿½ì“½ ï§ë‰ì­Š ï¿½ì £å«„ï¿½ */
+/* ¸¶Áö¸· ÅÇÀÇ ¿©¹é Á¦°Å */
 .stock_tab:last-child {
     margin-right: 0;
 }
 
-/* ï¿½ì†¢ï¿½ê½¦ï¿½ì†•ï¿½ë§‚ ï¿½êº†ï¿½ì“½ ï¿½ë’ªï¿½ï¿½ï¿½ì”ª */
+/* È°¼ºÈ­µÈ ÁÖ½Ä ÅÇ ¹è°æ »ö»ó */
 .stock_tab.active {
-    background-color: white; /* ï¿½ì†¢ï¿½ê½¦ ï¿½êº†ï¿½ì“½ è«›ê³Œê¼ï¿½ê¹‹ è¹‚ï¿½å¯ƒï¿½ */
-    color: blue; /* ï¿½ì†¢ï¿½ê½¦ ï¿½êº†ï¿½ì“½ æ¹²ï¿½ï¿½ì˜„ï¿½ê¹‹ è¹‚ï¿½å¯ƒï¿½ */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* æ´¹ëªƒâ”ï¿½ì˜„ ï¿½ìŠšæ€¨ï¿½ ç•°ë¶½ï¿½ */
+    background-color: white; /* È°¼ºÈ­µÈ ÅÇ ¹è°æ»ö */
+    color: blue; /* È°¼ºÈ­µÈ ÅÇ ±Û¾¾ »ö»ó */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* ±×¸²ÀÚ È¿°ú */
 }
 
-/* ï¿½êº† ï¿½ê¶¡ï¿½ìŠœ ï¿½ìºï¿½ë¿­ */
+/* ÁÖ½Ä ÅÇ ³»¿ë ¼û±â±â */
 .stock_tab_content {
-    display: none; /* æ¹²ê³•ë‚¯ï¿½ìŸ»ï¿½ì‘æ¿¡ï¿½ ï¿½ë‹²æºï¿½ ï§£ì„â” */
+    display: none; /* ³»¿ë ¼û±â±â */
     background-color: white;
     height: 84%;
     padding: 10px 0px 10px 0px;
     border-radius: 0 0 10px 10px;
 }
 
-/* ï¿½ì†¢ï¿½ê½¦ï¿½ì†•ï¿½ë§‚ ï¿½êº† ï¿½ê¶¡ï¿½ìŠœ ï¿½ìºï¿½ë¿­ ï¿½ëª´ï¿½ë–† */
+/* È°¼ºÈ­µÈ ÁÖ½Ä ÅÇ ³»¿ë Ç¥½Ã */
 .active {
     display: block;
 }
-
-

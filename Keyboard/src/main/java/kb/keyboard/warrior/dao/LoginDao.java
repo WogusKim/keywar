@@ -21,6 +21,9 @@ public interface LoginDao {
 	// 새로 추가된 메소드
     void updateUserProfilePicture(@Param("userno") String userno, @Param("picture") InputStream picture);
     UserDTO getUserProfile(@Param("userno") String userno);
+    
+    //색상찾기
+	public String getColor(String userno);
 	
 
 }

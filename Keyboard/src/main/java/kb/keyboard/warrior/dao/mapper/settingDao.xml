@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kb.keyboard.warrior.dao.SettingDao">
+	
+	<!-- 컬러세팅 -->
+	<update id="updateColor">
+		UPDATE userDisplayColor SET displayColor = #{param1} WHERE userno = #{param2}
+	</update>
+	<insert id="insertColor">
+		INSERT INTO userDisplayColor VALUES (#{param2}, #{param1})
+	</insert>
+	
+</mapper>
