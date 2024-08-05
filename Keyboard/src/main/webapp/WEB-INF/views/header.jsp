@@ -126,6 +126,8 @@ width: 100%;
     
     
     </script>
+
+<!-- 로그인 정합성 체크 멈추려면 여기 밑에 스크립트 주석하기 ! -->
 <%
 	String userno1 = (String) session.getAttribute("userno");
 %>
