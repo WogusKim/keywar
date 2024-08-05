@@ -73,6 +73,14 @@ public class LoginController {
 			HttpSession session = request.getSession();
 			session.setAttribute("userno", fromDbDto.getUserno()); // 세션에 값 넣기
 			session.setAttribute("deptno", fromDbDto.getDeptno()); // 세션에 값 넣기
+			
+			//색상관련 처리
+			String bgcolor = dao.getColor(fromDbDto.getUserno());
+			if (bgcolor == null) {
+				bgcolor = "green";
+			}
+			session.setAttribute("bgcolor", bgcolor);
+			
 			return "redirect:/";
 		}else {
 			System.out.println("직원번호는 있는데 비번 오류");

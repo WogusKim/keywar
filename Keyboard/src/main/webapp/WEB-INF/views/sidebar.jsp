@@ -272,8 +272,9 @@ function toggleFolder(element) {
     }
 }
 
-// 모든 ul 요소의 기본 display를 block으로 설정
+
 $(document).ready(function() {
+	// 모든 ul 요소의 기본 display를 block으로 설정
     $('.menu-tree ul').css('display', 'block');
 
     // 페이지 로드 시 저장된 사이드바 상태 확인

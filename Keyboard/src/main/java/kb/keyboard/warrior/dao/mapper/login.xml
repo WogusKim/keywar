@@ -55,6 +55,9 @@
     <select id="getUserProfile" resultType="kb.keyboard.warrior.dto.UserDTO">
         SELECT * FROM `user` WHERE userno = #{userno}
     </select>
-
+	
+	<select id="getColor" resultType="String">
+		SELECT displayColor FROM userDisplayColor WHERE userno = #{param}
+	</select>
 
 </mapper>

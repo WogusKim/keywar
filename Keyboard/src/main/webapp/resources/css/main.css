@@ -1,3 +1,8 @@
+:root {
+    --main-bgcolor: #BDE2CE; /* 변수 선언 */
+    --todo-checked: #888;
+}
+
 @font-face {
     font-family: 'textL';
     src: url('../fonts/KBFGTextL.ttf') format('truetype');
@@ -10,7 +15,7 @@ html {
 }
 
 body{
-    background-color: #BDE2CE;
+    background-color: var(--main-bgcolor);
     font-family: 'textL';
     padding: 15px;
     height: 95%;
@@ -87,7 +92,7 @@ body{
 
 .board_back { /* yeji */
     border-radius: 10px;
-    background-color: #BDE2CE;
+    background-color: var(--main-bgcolor);
     display: flex;
     flex-direction: column;         /* 세로로 나열하도록 설정 */
     justify-content: flex-start;    /* 내부 요소들을 상단에 배치 */
@@ -101,7 +106,7 @@ body{
 
 .board_back1 { /* yeji */
     border-radius: 10px;
-    background-color: #BDE2CE;
+    background-color: var(--main-bgcolor);
     width: 100%;
     height: 100%;
     padding: 18px;
@@ -159,7 +164,7 @@ body{
     justify-content: space-between; /* �궡遺� �슂�냼�뱾 �궗�씠�뿉 洹좊벑 媛꾧꺽�쓣 �젣怨듯빀�땲�떎 */
     align-items: center;           /* �궡遺� �슂�냼�뱾�쓣 �꽭濡� 以묒븰�뿉 諛곗튂�빀�땲�떎 */
     border-radius: 10px;
-    background-color: #BDE2CE;
+    background-color: var(--main-bgcolor);
     width: 100%;
     height: 45%;                   /* 而⑦뀒�씠�꼫 �넂�씠 �꽕�젙 */
     padding: 18px;   
@@ -187,7 +192,7 @@ body{
     justify-content: space-between; /* �궡遺� �슂�냼�뱾 �궗�씠�뿉 洹좊벑 媛꾧꺽�쓣 �젣怨듯빀�땲�떎 */
     align-items: center;           /* �궡遺� �슂�냼�뱾�쓣 �꽭濡� 以묒븰�뿉 諛곗튂�빀�땲�떎 */
     border-radius: 10px;
-    background-color: #BDE2CE;
+    background-color: var(--main-bgcolor);
     width: 100%;
     height: 52%;                   /* 而⑦뀒�씠�꼫 �넂�씠 �꽕�젙 */
     padding: 18px; 
@@ -217,7 +222,7 @@ body{
     justify-content: space-between; 
     align-items: center;           
     border-radius: 10px;
-    background-color: #BDE2CE;
+    background-color: var(--main-bgcolor);
     width: 100%;
     height: 100%;                  
     padding: 18px; 
@@ -231,7 +236,7 @@ body{
     width: 49%;                    /* 각 내부 요소의 너비를 30%로 설정 */
     height: 100%;                  /* 높이를 부모와 같게 설정 */
     padding: 10px;
-	background-color: #BDE2CE;
+	background-color: var(--main-bgcolor);
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -250,7 +255,7 @@ body{
     padding: 10px; /* 내부 패딩 */
     margin-right: 10px; /* 오른쪽에 마진 추가 */
     height: 100%;
-    background-color: #BDE2CE;
+    background-color: var(--main-bgcolor);
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
 }
@@ -269,7 +274,7 @@ body{
 /*댓글좋아요박스*/
 .reply_like {
 	border-radius: 10px;
-	background-color: #BDE2CE;
+	background-color: var(--main-bgcolor);
 	padding: 15px;
 	height: 100%;
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -411,7 +416,7 @@ body{
 .tab_area {
     display: flex;
     justify-content: space-between;
-    background-color: #BDE2CE; /* 기본 배경색 */
+    background-color: var(--main-bgcolor); /* 기본 배경색 */
     padding: 10px 80px 10px 80px;
     border-radius: 10px;
 }
@@ -421,7 +426,7 @@ body{
     cursor: pointer;
     padding: 10px;
     font-weight: bold;
-    background-color: #BDE2CE; /* 탭의 배경색 */
+    background-color: var(--main-bgcolor); /* 탭의 배경색 */
     border-radius: 5px; /* 탭의 모서리 둥글게 */
     margin-right: 5px; /* 탭 사이의 간격 */
     transition: background-color 0.3s ease; /* 배경색 변경 효과 부드럽게 */
@@ -625,7 +630,7 @@ hr {
 
 .checked {
     text-decoration: line-through; /* 완료된 항목에 취소선 */
-    color: #888; /* 색상 변경 */
+    color: var(--todo-checked); /* 색상 변경 */
 }
 
 .todo_item input[type="checkbox"] {

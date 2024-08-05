@@ -29,6 +29,7 @@ width: 100%;
 
     <script>
       document.addEventListener('DOMContentLoaded', (event) => {
+    	  
         const notifyButton = document.getElementById('notifyButton');
         const notifyButton1 = document.getElementById('notifyButton1');
         const notificationBox = document.getElementById('notificationBox');
@@ -49,6 +50,28 @@ width: 100%;
                 notificationBox.style.display = 'none'; // 박스 숨기기
             }
         });
+        
+        // 세션에서 배경색 정보를 읽어옵니다.
+        var bgColor = '${sessionScope.bgcolor}';
+
+        // 색상 값을 매핑합니다.
+        var colorMap = {
+            'green': '#BDE2CE',
+            'red': '#ff1b1bcf',
+            'orange': '#ef803bad',
+            'blue': '#40a0e7',
+            'yellow': '#e2ff005e',
+            'purple': '#d862eb4f'
+        };
+
+        // 루트 CSS 변수 업데이트
+        document.documentElement.style.setProperty('--main-bgcolor', colorMap[bgColor] || colorMap['green']);
+        
+        //red의 경우 checked 글자도 변경
+        if (bgColor === 'red' || bgColor === 'orange') {
+        	document.documentElement.style.setProperty('--todo-checked', '#fff');	
+        }
+        
     });
     
     function checkForNotifications() {
@@ -144,12 +167,11 @@ width: 100%;
         </c:otherwise>
     </c:choose>
  
- 
     <a href="${pageContext.request.contextPath}/calendar"><img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/calendar.png"></a>
     <a href="${pageContext.request.contextPath}/mypage"> <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/mypage.png"></a>
     <a href="#;"  id="notifyButton"><img id="alarm" class="header_icon" src="${pageContext.request.contextPath}/resources/images/alarm.png"></a>
-    <img  class="header_icon" src="${pageContext.request.contextPath}/resources/images/setting.png">
-    
+    <a href="${pageContext.request.contextPath}/setting"><img class="header_icon" src="${pageContext.request.contextPath}/resources/images/setting2.png"></a>
+       
  </div>
 </div>
 </header>
