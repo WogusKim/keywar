@@ -255,9 +255,9 @@ public class MemoController {
 
         if (isDone.equals("1")) {
             // check yn
-            todoDao.checkTodo(todoId);
+            todoDao.checkTodo(todoId, todoListDto.getProgress());
         } else {
-            todoDao.unCheckTodo(todoId);
+            todoDao.unCheckTodo(todoId, todoListDto.getProgress());
         }
 
         return "{\"status\":\"success\"}";
@@ -514,14 +514,7 @@ public class MemoController {
 	@ResponseBody
 	public String addTodo(@RequestBody TodoListDTO dto) {
 		System.out.println("TODOLIST 등록창  진입");
-		
-		System.out.println("넘겨받은 userno : " + dto.getUserno());
-		System.out.println("넘겨받은 task : " + dto.getTask());
-		System.out.println("넘겨받은 Duedate: " + dto.getDuedate());
-		System.out.println("넘겨받은 Importance : " + dto.getImportance());
-		System.out.println("넘겨받은 Progress: " + dto.getProgress());
-		System.out.println("넘겨받은 Detail : " + dto.getDetail());
-		
+
 		ToDoDao dao = sqlSession.getMapper(ToDoDao.class);
 		dao.addTodo(dto);
 		
@@ -529,8 +522,11 @@ public class MemoController {
 	}
 	@RequestMapping(value = "/deleteTodo", method = RequestMethod.POST)
 	@ResponseBody
-	public String deleteTodo(@RequestBody TodoListDTO todoListdto) {
+	public String deleteTodo(@RequestBody TodoListDTO dto) {
 		System.out.println("TODOLIST 수정창 진입");
+		
+		System.out.println("넘겨받은 todo id : " + dto.getTodoid());
+		sqlSession.getMapper(ToDoDao.class).deleteTodo(dto.getTodoid());
 		
 		return "{\"status\":\"success\"}";
 	}

@@ -9,11 +9,12 @@ public interface ToDoDao {
 	List<TodoListDTO> getToDoList(String userno);
 
 	//메인 ToDoList 변경
-	void checkTodo(String todoId);
-	void unCheckTodo(String todoId);
+	void checkTodo(String todoId, String progress);
+	void unCheckTodo(String todoId, String progress);
 	
 	
 	//TO DO List 개선 후 추가
 	public void editTodo(TodoListDTO dto) ;
 	public void addTodo(TodoListDTO dto) ;
+	public void deleteTodo(String todoid) ;
 }

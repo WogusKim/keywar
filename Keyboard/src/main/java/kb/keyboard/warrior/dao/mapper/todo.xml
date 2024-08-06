@@ -11,10 +11,16 @@
     </select>
     
     <update id="checkTodo">
-    	update todolist set isdone = 1 where todoid = #{param}
+    	update todolist 
+    	set isdone = 1 ,
+    	progress = #{param2}
+    	where todoid = #{param1} 
     </update>
     <update id = "unCheckTodo">
-    	update todolist set isdone = 0 where todoid = #{param}
+    	update todolist 
+    	set isdone = 0 ,
+    	progress = #{param2}
+    	where todoid = #{param1}
     </update>
 	<update id="editTodo" parameterType="kb.keyboard.warrior.dto.TodoListDTO">
 		UPDATE todolist
@@ -29,5 +35,10 @@
 	<insert id="addTodo" parameterType="kb.keyboard.warrior.dto.TodoListDTO">
 		INSERT INTO todolist(userno, task, isdone, status, importance, progress, category, duedate, detail)VALUES 
 		(#{userno}, #{task}, 0 , 1 ,#{importance},#{progress},#{category},#{duedate},#{detail})
+	</insert>
+	<insert id="deleteTodo" >
+		UPDATE todolist
+		SET status = 0
+		WHERE todoid = #{todoid};
 	</insert>
 </mapper>

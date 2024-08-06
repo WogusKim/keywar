@@ -417,10 +417,9 @@
 
 <script>
     // Modal 열기(수정모달)
-    function openModal(todoid, task, importance, todoCategory, todoprogress, duedate,detail) {
+    function openModal(todoid, task, importance, todoCategory, todoprogress, duedate, detail) {
     	updateFormAction("${pageContext.request.contextPath}/editTodo");
         document.getElementById("myModal").style.display = "flex";
-        console.log("넘겨받은 importance : "+importance)
         $("#todoTitle-edit").val(task);
         $("#todoid").val(todoid); 
          
@@ -524,10 +523,11 @@
 <div id="deleteModal" class="modal2">
 	<div style="	background-color: #fefefe; margin : auto; padding: 20px; border: 1px solid #888; width: 30%; height: 30%;  text-align: center;">
 	<span class="close" onclick="closeDeleteModal()">&times;</span>
-		<h2 style="margin-top: 60px;">정말 삭제하시겠습니까 ?</h2>
+	<img src="${pageContext.request.contextPath}/resources/images/warning.png" style="margin-top: 20px;"/>
+		<h2 style="margin-top: 10px;">정말 삭제하시겠습니까 ?</h2>
 		<p>삭제한 일정은 복구할 수 없습니다.</p>
-		<div style="display: flex; justify-content: center; gap: 30px; margin-top : 30px;">
-			<button class="styled-button" onclick="closeDeleteModal()">취소</button><button class="styled-button">삭제</button>
+		<div style="display: flex; justify-content: center; gap: 30px; margin-top : 20px;">
+			<button class="styled-button" onclick="closeDeleteModal()">취소</button><button class="styled-button" onclick="deleteTodo()">삭제</button>
 		</div>
 	</div>
 </div>
@@ -553,7 +553,6 @@
     
     //등록하기 눌렀을 때 실행할 것.
     function addTodo(){
-    	
     	var task = $("#todoTitle-add").val();    
     	var duedate = $("#todoDuedate-add").val()+" 09:00:00";  
     	var importance = $("#todoEditImportance-add").val();  
@@ -596,7 +595,34 @@
             console.error('Error:', error);
         });
     }
-
+    
+    //삭제하기 눌렀을 때 실행할 것.
+    function deleteTodo(){
+    	var todoid = $("#todoid").val(); 
+    	
+        fetch('${pageContext.request.contextPath}/deleteTodo', {   
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            	todoid : todoid
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            if(data.status == "success"){
+            	alert("정상적으로 삭제되었습니다.");
+            	document.getElementById("deleteModal").style.display = "none";
+            	document.getElementById("myModal2").style.display = "none";
+            	location.reload();
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
     
     // Modal2 열기 (삭제여부 묻는 창)
     function openDeleteModal2() {
@@ -627,10 +653,7 @@
     }
 </script>
 
-<style>
 
-
-</style>
 
 
 <script>
@@ -638,8 +661,10 @@
 function checkTodo(todoid, isChecked) {
     console.log("Todo ID:", todoid);
     var isCheckedNum = isChecked ? 1 : 0;
+    var progress = isChecked ? 'Done' : 'In progress';
     console.log("상태확인", isChecked);
     console.log("Is Done:", isCheckedNum);
+    console.log("progress : " + progress );
     
     var checkbox = document.querySelector('input[data-todoid="' + todoid + '"]');
     checkbox.dataset.done = isCheckedNum;
@@ -651,49 +676,20 @@ function checkTodo(todoid, isChecked) {
         },
         body: JSON.stringify({
             todoid: todoid,
+            progress : progress,
             isdone: isCheckedNum
         })
     })
     .then(response => response.json())
     .then(data => {
         console.log('Success:', data);
+        location.reload();
     })
     .catch((error) => {
         console.error('Error:', error);
     });
 }
 
-// 전체 할 일의 완료 현황을 업데이트하는 함수
-/* function updateTodoCount() {
-    var checkboxes = document.querySelectorAll('.todo_list input[type="checkbox"]');
-    var total = checkboxes.length;
-    var completed = Array.from(checkboxes).filter(cb => cb.checked).length;
-
-    document.getElementById('todo_rate').textContent = completed + ' / ' + total;
-}
-
-document.addEventListener('DOMContentLoaded', (event) => {
-    const todos = document.querySelectorAll('.todo_list input[type="checkbox"]');
-    todos.forEach(checkbox => {
-        const listItem = checkbox.closest('li');
-        if (checkbox.checked) {
-            listItem.classList.add('checked');
-        } else {
-            listItem.classList.remove('checked');
-        }
-
-        checkbox.addEventListener('change', function() {
-            if (this.checked) {
-                listItem.classList.add('checked');
-            } else {
-                listItem.classList.remove('checked');
-            }
-            checkTodo(this.getAttribute('data-todoid'), this.checked);
-        });
-    });
-
-    updateTodoCount();
-}); */
 </script>
     <script>
         // 현재 날짜를 가져와서 'YYYY-MM-DD' 형식으로 변환
