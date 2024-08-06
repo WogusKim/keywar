@@ -16,5 +16,18 @@
     <update id = "unCheckTodo">
     	update todolist set isdone = 0 where todoid = #{param}
     </update>
-
+	<update id="editTodo" parameterType="kb.keyboard.warrior.dto.TodoListDTO">
+		UPDATE todolist
+		SET task =  #{task},
+		duedate = #{duedate},
+        importance = #{importance},
+        progress = #{progress},
+        category = #{category},
+    	detail =  #{detail}
+		WHERE todoid = #{todoid};
+	</update>
+	<insert id="addTodo" parameterType="kb.keyboard.warrior.dto.TodoListDTO">
+		INSERT INTO todolist(userno, task, isdone, status, importance, progress, category, duedate, detail)VALUES 
+		(#{userno}, #{task}, 0 , 1 ,#{importance},#{progress},#{category},#{duedate},#{detail})
+	</insert>
 </mapper>

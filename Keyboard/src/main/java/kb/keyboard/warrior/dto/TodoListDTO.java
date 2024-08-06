@@ -13,6 +13,7 @@ public class TodoListDTO {
  private String importance;   // 중요도
  private String progress;   // 진행상태
  private String category;   // 카테고리
+ private String detail;   // 상세내용
 
  public TodoListDTO() {
  }
@@ -98,6 +99,14 @@ public String getCategory() {
 
 public void setCategory(String category) {
 	this.category = category;
+}
+
+public String getDetail() {
+	return detail;
+}
+
+public void setDetail(String detail) {
+	this.detail = detail;
 }
  
 }

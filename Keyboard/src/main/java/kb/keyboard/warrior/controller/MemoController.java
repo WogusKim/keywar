@@ -495,15 +495,35 @@ public class MemoController {
 //    투두리스트 관련 추가(성은)
 	@RequestMapping(value = "/editTodo", method = RequestMethod.POST)
 	@ResponseBody
-	public String editTodo(@RequestBody TodoListDTO todoListdto) {
+	public String editTodo(@RequestBody TodoListDTO dto) {
 		System.out.println("TODOLIST 수정창 진입");
+		
+		System.out.println("넘겨받은 todo id : " + dto.getTodoid());
+		System.out.println("넘겨받은 task : " + dto.getTask());
+		System.out.println("넘겨받은 Duedate: " + dto.getDuedate());
+		System.out.println("넘겨받은 Importance : " + dto.getImportance());
+		System.out.println("넘겨받은 Progress: " + dto.getProgress());
+		System.out.println("넘겨받은 Detail : " + dto.getDetail());
+		
+		ToDoDao dao = sqlSession.getMapper(ToDoDao.class);
+		dao.editTodo(dto);
 		
 		return "{\"status\":\"success\"}";
 	}
 	@RequestMapping(value = "/addTodo", method = RequestMethod.POST)
 	@ResponseBody
-	public String addTodo(@RequestBody TodoListDTO todoListdto) {
-		System.out.println("TODOLIST 수정창 진입");
+	public String addTodo(@RequestBody TodoListDTO dto) {
+		System.out.println("TODOLIST 등록창  진입");
+		
+		System.out.println("넘겨받은 userno : " + dto.getUserno());
+		System.out.println("넘겨받은 task : " + dto.getTask());
+		System.out.println("넘겨받은 Duedate: " + dto.getDuedate());
+		System.out.println("넘겨받은 Importance : " + dto.getImportance());
+		System.out.println("넘겨받은 Progress: " + dto.getProgress());
+		System.out.println("넘겨받은 Detail : " + dto.getDetail());
+		
+		ToDoDao dao = sqlSession.getMapper(ToDoDao.class);
+		dao.addTodo(dto);
 		
 		return "{\"status\":\"success\"}";
 	}
