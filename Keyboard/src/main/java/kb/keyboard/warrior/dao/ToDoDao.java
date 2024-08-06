@@ -12,4 +12,8 @@ public interface ToDoDao {
 	void checkTodo(String todoId);
 	void unCheckTodo(String todoId);
 	
+	
+	//TO DO List 개선 후 추가
+	public void editTodo(TodoListDTO dto) ;
+	public void addTodo(TodoListDTO dto) ;
 }

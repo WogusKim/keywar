@@ -1,6 +1,7 @@
 package kb.keyboard.warrior.util;
 
 import org.apache.ibatis.session.SqlSession;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,6 +14,7 @@ import kb.keyboard.warrior.dto.SoosinRateDTO2;
 import kb.keyboard.warrior.dto.StockDTO;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,9 +62,15 @@ public class ScheduledThread {
 				dao.updateExchangeRate(rate);
 
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        } catch (HttpStatusException e) {
+            System.err.println("HTTP error fetching URL. Status: " + e.getStatusCode());
+        } catch (SocketTimeoutException e) {
+            System.err.println("Connection timed out. Please try again later.");
+        } catch (IOException e) {
+            System.err.println("IOException occurred: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("An unexpected error occurred: " + e.getMessage());
+        }
 		long endTime = System.currentTimeMillis(); // 완료 시간 기록
 		long duration = endTime - startTime; // 실행 시간 계산
 		System.out.println("환율 자동 크롤링 실행  소요 시간: " + duration + "밀리초");
@@ -95,10 +103,15 @@ public class ScheduledThread {
 
 				dao.updateMor(morDTO);
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-
-		}
+        } catch (HttpStatusException e) {
+            System.err.println("HTTP error fetching URL. Status: " + e.getStatusCode());
+        } catch (SocketTimeoutException e) {
+            System.err.println("Connection timed out. Please try again later.");
+        } catch (IOException e) {
+            System.err.println("IOException occurred: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("An unexpected error occurred: " + e.getMessage());
+        }
 		long endTime = System.currentTimeMillis(); // 완료 시간 기록
 		long duration = endTime - startTime; // 실행 시간 계산
 		System.out.println("mor 금리 자동 크롤링 실행  소요 시간: " + duration + "밀리초");
@@ -122,9 +135,15 @@ public class ScheduledThread {
 				MorCoffixDTO morDTO = new MorCoffixDTO(rateType, previousWeekRate, currentWeekRate, change);
 				dao.updateCofix(morDTO);
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        } catch (HttpStatusException e) {
+            System.err.println("HTTP error fetching URL. Status: " + e.getStatusCode());
+        } catch (SocketTimeoutException e) {
+            System.err.println("Connection timed out. Please try again later.");
+        } catch (IOException e) {
+            System.err.println("IOException occurred: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("An unexpected error occurred: " + e.getMessage());
+        }
 		long endTime = System.currentTimeMillis(); // 완료 시간 기록
 		long duration = endTime - startTime; // 실행 시간 계산
 		System.out.println("cofix 금리 자동 크롤링 실행  소요 시간: " + duration + "밀리초");
@@ -178,9 +197,15 @@ public class ScheduledThread {
 
 				dao.updateStock(stockDTO);
 
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	        } catch (HttpStatusException e) {
+	            System.err.println("HTTP error fetching URL. Status: " + e.getStatusCode());
+	        } catch (SocketTimeoutException e) {
+	            System.err.println("Connection timed out. Please try again later.");
+	        } catch (IOException e) {
+	            System.err.println("IOException occurred: " + e.getMessage());
+	        } catch (Exception e) {
+	            System.err.println("An unexpected error occurred: " + e.getMessage());
+	        }
 		}
 		long endTime = System.currentTimeMillis(); // 완료 시간 기록
 		long duration = endTime - startTime; // 실행 시간 계산
@@ -282,11 +307,17 @@ public class ScheduledThread {
 
 				dao.updateStock(stockDTO);
 
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (NumberFormatException e) {
+	        } catch (HttpStatusException e) {
+	            System.err.println("HTTP error fetching URL. Status: " + e.getStatusCode());
+	        } catch (SocketTimeoutException e) {
+	            System.err.println("Connection timed out. Please try again later.");
+	        } catch (IOException e) {
+	            System.err.println("IOException occurred: " + e.getMessage());
+	        }  catch (NumberFormatException e) {
 				System.err.println("Number format exception occurred for URL: " + url);
 				e.printStackTrace();
+			}catch (Exception e) {
+	            System.err.println("An unexpected error occurred: " + e.getMessage());
 			}
 		}
 		long endTime = System.currentTimeMillis(); // 완료 시간 기록
