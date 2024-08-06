@@ -7,7 +7,8 @@
 
 	<select id="todoView"
 		resultType="kb.keyboard.warrior.dto.TodoListDTO">
-		SELECT * FROM todolist
+		SELECT todoid, userno, task, detail, startdate, isdone, status, importance, progress, category, SUBSTRING(duedate, 1, 10) AS duedate
+		FROM todolist
 		WHERE userno = #{param1}
 		AND status =
 		1
