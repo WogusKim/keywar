@@ -10,6 +10,9 @@ public class TodoListDTO {
  private String startdate;    // 시작일
  private String duedate;    // 마감일
  private String isdone;   // 상태
+ private String importance;   // 중요도
+ private String progress;   // 진행상태
+ private String category;   // 카테고리
 
  public TodoListDTO() {
  }
@@ -72,4 +75,29 @@ public String getDuedate() {
  public void setIsdone(String isdone) {
      this.isdone = isdone;
  }
+
+public String getImportance() {
+	return importance;
+}
+
+public void setImportance(String importance) {
+	this.importance = importance;
+}
+
+public String getProgress() {
+	return progress;
+}
+
+public void setProgress(String progress) {
+	this.progress = progress;
+}
+
+public String getCategory() {
+	return category;
+}
+
+public void setCategory(String category) {
+	this.category = category;
+}
+ 
 }

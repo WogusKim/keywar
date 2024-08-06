@@ -114,7 +114,7 @@ public class MemoController {
             response.put("exists", count > 0);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace(); // 스택 트레이스 출력
+            e.printStackTrace(); // �뒪�깮 �듃�젅�씠�뒪 異쒕젰
             response.put("error", "Error checking group name");
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -128,9 +128,9 @@ public class MemoController {
         System.out.println(searchUsername);
         System.out.println(userno);
         ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
-        System.out.println("dao 호출");
+        System.out.println("dao �샇異�");
         try {
-        	System.out.println("try 진입");
+        	System.out.println("try 吏꾩엯");
             List<Map<String, String>> searchUserList = dao.searchUser(searchUsername, userno);
             System.out.println("searchUserList: " + searchUserList);
             Map<String, List<Map<String, String>>> response = new HashMap<String, List<Map<String, String>>>();
@@ -181,13 +181,13 @@ public class MemoController {
             return new ResponseEntity<String>("User not logged in", HttpStatus.UNAUTHORIZED);
         }
         dto.setUserno(userno);
-        System.out.println("Received DTO: " + dto);  // 로그 추가
+        System.out.println("Received DTO: " + dto);  // 濡쒓렇 異붽�
         ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
         try {
             dao.scheduleNew(dto);
             return new ResponseEntity<String>("Event saved successfully", HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace(); // 스택 트레이스 출력
+            e.printStackTrace(); // �뒪�깮 �듃�젅�씠�뒪 異쒕젰
             return new ResponseEntity<String>("Error saving event", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -465,17 +465,17 @@ public class MemoController {
 	@RequestMapping(value = "/updateNoticeSize", method = RequestMethod.POST)
 	@ResponseBody
 	public String updateNoticeSize(@RequestBody NoticeDTO noticeDTO) {
-		System.out.println("공지 위치 및 크기 업데이트");
+		System.out.println("怨듭� �쐞移� 諛� �겕湲� �뾽�뜲�씠�듃");
 		System.out.println(noticeDTO.getWidth());
 		System.out.println(noticeDTO.getHeight());
 
-		// MemoDao를 통해 SQL 실행
+		// MemoDao瑜� �넻�빐 SQL �떎�뻾
 		MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
 
-		// 공지 위치 및 크기 업데이트
+		// 怨듭� �쐞移� 諛� �겕湲� �뾽�뜲�씠�듃
 		memoDao.updateNoticeSize(noticeDTO);
 
-		// JSON 형태로 응답 반환
+		// JSON �삎�깭濡� �쓳�떟 諛섑솚
 		return "{\"status\":\"success\"}";
 	}
     
@@ -492,4 +492,28 @@ public class MemoController {
         }
     }
 
+//    투두리스트 관련 추가(성은)
+	@RequestMapping(value = "/editTodo", method = RequestMethod.POST)
+	@ResponseBody
+	public String editTodo(@RequestBody TodoListDTO todoListdto) {
+		System.out.println("TODOLIST 수정창 진입");
+		
+		return "{\"status\":\"success\"}";
+	}
+	@RequestMapping(value = "/addTodo", method = RequestMethod.POST)
+	@ResponseBody
+	public String addTodo(@RequestBody TodoListDTO todoListdto) {
+		System.out.println("TODOLIST 수정창 진입");
+		
+		return "{\"status\":\"success\"}";
+	}
+	@RequestMapping(value = "/deleteTodo", method = RequestMethod.POST)
+	@ResponseBody
+	public String deleteTodo(@RequestBody TodoListDTO todoListdto) {
+		System.out.println("TODOLIST 수정창 진입");
+		
+		return "{\"status\":\"success\"}";
+	}
+    
+    
 }
