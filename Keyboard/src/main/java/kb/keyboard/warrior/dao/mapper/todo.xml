@@ -12,14 +12,12 @@
     
     <update id="checkTodo">
     	update todolist 
-    	set isdone = 1 ,
-    	progress = #{param2}
+    	set isdone = 1 
     	where todoid = #{param1} 
     </update>
     <update id = "unCheckTodo">
     	update todolist 
-    	set isdone = 0 ,
-    	progress = #{param2}
+    	set isdone = 0 
     	where todoid = #{param1}
     </update>
 	<update id="editTodo" parameterType="kb.keyboard.warrior.dto.TodoListDTO">
@@ -27,14 +25,13 @@
 		SET task =  #{task},
 		duedate = #{duedate},
         importance = #{importance},
-        progress = #{progress},
         category = #{category},
     	detail =  #{detail}
 		WHERE todoid = #{todoid};
 	</update>
 	<insert id="addTodo" parameterType="kb.keyboard.warrior.dto.TodoListDTO">
-		INSERT INTO todolist(userno, task, isdone, status, importance, progress, category, duedate, detail)VALUES 
-		(#{userno}, #{task}, 0 , 1 ,#{importance},#{progress},#{category},#{duedate},#{detail})
+		INSERT INTO todolist(userno, task, isdone, status, importance, category, duedate, detail)VALUES 
+		(#{userno}, #{task}, 0 , 1 ,#{importance},#{category},#{duedate},#{detail})
 	</insert>
 	<insert id="deleteTodo" >
 		UPDATE todolist

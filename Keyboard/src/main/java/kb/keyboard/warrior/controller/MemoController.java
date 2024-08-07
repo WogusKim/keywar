@@ -255,9 +255,9 @@ public class MemoController {
 
         if (isDone.equals("1")) {
             // check yn
-            todoDao.checkTodo(todoId, todoListDto.getProgress());
+            todoDao.checkTodo(todoId);
         } else {
-            todoDao.unCheckTodo(todoId, todoListDto.getProgress());
+            todoDao.unCheckTodo(todoId);
         }
 
         return "{\"status\":\"success\"}";
@@ -502,7 +502,6 @@ public class MemoController {
 		System.out.println("넘겨받은 task : " + dto.getTask());
 		System.out.println("넘겨받은 Duedate: " + dto.getDuedate());
 		System.out.println("넘겨받은 Importance : " + dto.getImportance());
-		System.out.println("넘겨받은 Progress: " + dto.getProgress());
 		System.out.println("넘겨받은 Detail : " + dto.getDetail());
 		
 		ToDoDao dao = sqlSession.getMapper(ToDoDao.class);
