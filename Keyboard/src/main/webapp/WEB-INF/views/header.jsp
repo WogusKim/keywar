@@ -62,7 +62,7 @@ width: 100%;
             'green': '#BDE2CE',
             'red': '#ff1b1bcf',
             'orange': '#ef803bad',
-            'blue': '#40a0e7',
+            'blue': '#ADCDFF',
             'yellow': '#e2ff005e',
             'purple': '#d862eb4f'
         };
@@ -71,7 +71,7 @@ width: 100%;
         document.documentElement.style.setProperty('--main-bgcolor', colorMap[bgColor] || colorMap['green']);
         
         //red의 경우 checked 글자도 변경
-        if (bgColor === 'red' || bgColor === 'orange') {
+        if (bgColor === 'red' || bgColor === 'orange' || bgColor === 'blue') {
         	document.documentElement.style.setProperty('--todo-checked', '#fff');	
         }
         

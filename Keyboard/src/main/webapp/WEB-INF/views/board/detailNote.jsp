@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,15 +79,46 @@
 	height: 100%;
 	
 }
+
+.others_wikiTitle {
+    width: 40%;
+    margin: auto;
+    border-radius: 75px;
+    text-align: center; /* 모든 내용을 가운데 정렬 */
+    padding: 20px 10px; /* 위아래 패딩으로 공간 추가 */
+    border-bottom: 1px solid #ccc; /* 하단 경계선 추가 */
+    background-color: #f9f9f9; /* 배경색 설정 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 그림자 효과 */
+}
+
+.writer_profile {
+    width: 50px; /* 이미지 크기 설정 */
+    height: 50px; /* 이미지 높이 설정 */
+    border-radius: 50%; /* 원형으로 표시 */
+    object-fit: cover; /* 이미지 비율 유지 */
+    margin-bottom: 10px; /* 이미지와 텍스트 간 간격 */
+    display: inline-block; /* 이미지를 인라인 블록으로 설정 */
+}
+
+.others_wikiTitle img.mini_icon {
+    vertical-align: middle; /* 아이콘을 텍스트 중간에 위치 */
+    margin-right: 5px; /* 아이콘 간 간격 */
+}
+
+.others_wikiTitle span {
+    display: inline-block; /* 스팬을 인라인 블록으로 설정 */
+    margin: 0 10px; /* 좌우 마진 설정 */
+    font-size: 14px; /* 폰트 크기 설정 */
+}
+
 .editor_outline {
 	width : 75%;
 	border: 1px solid #ccc; 
 	padding: 10px;
 	border-radius: 5px;
 	margin: auto;
+	margin-top : 20px;
 /* 	height: 100%; */
-
-	
 }
  
 .editor-button-area {
@@ -147,6 +179,20 @@
         <!-- 우측 컨텐츠 영역 -->
         <div class="content_right">
         	<div id="finalOuter" class="final-outline" >
+        	<!-- 제목 -->
+			<div class="others_wikiTitle">
+			    <img class="writer_profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${menuDto.userno}" alt="Writer's Profile Picture">
+			    <div>
+			        <h2>우주최강귀요미님의</h2>
+			        <h1>메뉴얼 ${menuDto.titleShare}</h1>
+			        <div>
+			            <img class="mini_icon" src="/resources/images/heart16.png" alt="likes"> 좋아요 ${like}&nbsp;&nbsp;
+			            <img class="mini_icon" src="/resources/images/chat16.png" alt="comments"> 댓글 <c:out value="${fn:length(comments)}" />&nbsp;&nbsp;
+			            <img class="mini_icon" src="/resources/images/eyes.png" alt="views"> 조회수 ${hits}
+			        </div>
+			    </div>
+			</div>
+			        	
         	<!-- Editor 영역 -->
             <div id="myEditor" class="editor_outline"></div>
             <!-- 버튼 영역 -->
@@ -272,29 +318,6 @@ function test(){
 
 
 let editor;
-async function saveData() {
-	
-    try {
-        const savedData = await editor.save();
-        console.log("저장된 데이터:", savedData);
-
-        // fetch API를 사용한 예제 POST 요청
-        fetch('${pageContext.request.contextPath}/saveEditorData', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(savedData)
-        })
-        .then(response => response.json())
-        .then(data => console.log('성공:', data))
-        .catch((error) => {
-            console.error('오류:', error);
-        });
-    } catch (error) {
-        console.error('저장 실패:', error);
-    }
-}
 
 document.addEventListener('DOMContentLoaded', function () {
 	
@@ -303,31 +326,8 @@ document.addEventListener('DOMContentLoaded', function () {
     
     editor = new EditorJS({
         holder: 'myEditor',
+        readOnly: true,
         data: editorData,
-/*         {
-        	blocks: [
-                {
-                    "type": "header",
-                    "data": {
-                        "text": "이것은 첨부터 보이는 데이터",
-                        "level": 2
-                    }
-                },
-                {
-                    "type": "list",
-                    "data": {
-                        "style": "ordered",
-                        "items": [
-                            "이거슨 리스트 아이템이예용",
-                            "리스트라니까용",
-                            "간단하고 파워풀하지용",
-                            "비슷한 설정이 반복되는 게 못생겼어요"
-                        ]
-                    }
-                }
-        	]
-        } */
-    
         tools: {
             // Header 설정
             header: {

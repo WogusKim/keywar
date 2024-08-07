@@ -24,6 +24,7 @@ import kb.keyboard.warrior.dao.WikiDao;
 import kb.keyboard.warrior.dto.BoardDTO;
 import kb.keyboard.warrior.dto.CommentDTO;
 import kb.keyboard.warrior.dto.LikeDTO;
+import kb.keyboard.warrior.dto.MenuDTO;
 import kb.keyboard.warrior.dto.ResultDTO;
 
 @Controller
@@ -37,9 +38,24 @@ public class BoardController {
 		System.out.println("hotNote창 진입");
 		WikiDao dao = sqlSession.getMapper(WikiDao.class);
 		List<BoardDTO> list = dao.getAllPost();
+		
 		if(list !=null) {
+			
+			for (BoardDTO bDto : list) {
+				Integer hits = dao.getHitsById(bDto.getId());
+				if (hits != null) {
+					bDto.setHits_count(hits);
+				} else {
+					bDto.setHits_count(0);
+				}
+				
+				bDto.setUserno(dao.getMenuDetail(bDto.getId()).getUserno());
+				
+			}
+			
 			model.addAttribute("list", list);
 		}
+		
 		return "board/list";
 	}
 
@@ -56,7 +72,13 @@ public class BoardController {
 			System.out.println("초기값을 제공합니다.");
 			wikiData = "{\"time\":1721959855696,\"blocks\":[{\"id\":\"h6xL_peWS8\",\"type\":\"header\",\"data\":{\"text\":\"업무노트 개설을 축하합니다.\",\"level\":2}},{\"id\":\"ufod1niYAb\",\"type\":\"paragraph\",\"data\":{\"text\":\"열심히 노트를 작성하여 업무 효율을 높혀보세요!\"}}],\"version\":\"2.30.2\"}";
 		}
-		model.addAttribute("editorData", wikiData);
+		model.addAttribute("editorData", wikiData); //위키내용상세
+		
+		MenuDTO menuDto = dao.getMenuDetail(id);
+		model.addAttribute("menuDto", menuDto); //메뉴상세
+		
+		String writerName = dao.getWriterNickName(menuDto.getUserno()); //작성자 이름찾아야함.
+		model.addAttribute("writerNickName", writerName);
 
 		CommentDao cdao = sqlSession.getMapper(CommentDao.class); 
 		List<CommentDTO> comments = cdao.getComment(id+"");
@@ -64,8 +86,29 @@ public class BoardController {
 			System.out.println("댓글 불러오기 완료");
 			model.addAttribute("comments", comments);
 		}
+		
 		int like = cdao.checkLikeByContent(id+"");
 		model.addAttribute("like", like);
+		
+		
+	    //조회수 처리
+	    Long lastViewTime = (Long) session.getAttribute("lastViewTime_" + id); //세션에서 마지막 조회수업데이트 시간 조회
+	    long currentTime = System.currentTimeMillis();//현재시간
+	    
+	    if (lastViewTime == null || (currentTime - lastViewTime) > 10 * 60 * 1000) { // 10분 이상 지났다면
+	        Integer hits = dao.getHitsById(id); // 기존 조회수 체크
+	        if (hits != null) {
+	            // 조회수 update
+	            dao.updateHits(id);
+	            hits++;
+	        } else {
+	            // 조회수 insert
+	            dao.insertHits(id);
+	            hits = 1;
+	        }
+	        session.setAttribute("lastViewTime_" + id, currentTime); // 마지막 조회 시간 업데이트
+	    }
+	    model.addAttribute("hits", dao.getHitsById(id)); // 최신 조회수 가져오기
 		
 		return "board/detailNote";
 	}
