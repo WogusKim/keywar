@@ -591,7 +591,7 @@
     function openModal2() {
     	updateFormAction("${pageContext.request.contextPath}/addTodo");
         document.getElementById("myModal2").style.display = "flex";
-
+        setTodayDate();
     }
     
     //등록하기 눌렀을 때 실행할 것.
@@ -693,6 +693,16 @@
             modal.style.display = "none";
         }
     }
+    
+    // ESC 키를 눌렀을 때 모달 닫기
+    document.onkeydown = function(event) {
+        if (event.key === 'Escape') {
+            closeModal();
+            closeModal2();
+            closeDeleteModal();
+        }
+    }
+    
 </script>
 
 
@@ -749,7 +759,7 @@ function checkTodo(todoid, isChecked) {
             form.action = newActionUrl;
         }
         // 페이지 로드 시 현재 날짜를 설정합니다.
-        window.onload = setTodayDate;
+        // window.onload = setTodayDate;
     </script>
 </body>
 </html>

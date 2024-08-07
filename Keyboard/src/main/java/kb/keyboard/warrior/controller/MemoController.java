@@ -498,12 +498,6 @@ public class MemoController {
 	public String editTodo(@RequestBody TodoListDTO dto) {
 		System.out.println("TODOLIST 수정창 진입");
 		
-		System.out.println("넘겨받은 todo id : " + dto.getTodoid());
-		System.out.println("넘겨받은 task : " + dto.getTask());
-		System.out.println("넘겨받은 Duedate: " + dto.getDuedate());
-		System.out.println("넘겨받은 Importance : " + dto.getImportance());
-		System.out.println("넘겨받은 Detail : " + dto.getDetail());
-		
 		ToDoDao dao = sqlSession.getMapper(ToDoDao.class);
 		dao.editTodo(dto);
 		
