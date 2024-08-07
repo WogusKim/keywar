@@ -343,8 +343,20 @@ label {
 			    	 <c:choose>
 			    		<c:when test="${empty todoList}">
 			    			<div class="mainTodoNotFountOutline" >
-				    			<img src="${pageContext.request.contextPath}/resources/images/not-found.png" />
-				    			<div style="margin-top: 10px; color: #727272;">오늘이 마감일인  <br>
+			    				<div style="width:50%;height:0;padding-bottom:50%;position:relative;">
+								    <iframe src="https://giphy.com/embed/SkJRWt1Mo9CSlgrHcE" 
+								            width="100%" 
+								            height="100%" 
+								            style="position:absolute;pointer-events:none;" 
+								            frameBorder="0" 
+								            class="giphy-embed" 
+								            allowFullScreen>
+								    </iframe>
+								    <div style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>
+								</div>
+			    				<!-- <div style="width:50%;height:0;padding-bottom:50%;position:relative;"><iframe src="https://giphy.com/embed/SkJRWt1Mo9CSlgrHcE" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div> -->
+				    			<%-- <img src="${pageContext.request.contextPath}/resources/images/not-found.png" /> --%>
+				    			<div style="color: #727272;">오늘이 마감일인  <br>
 				    			미완료 상태의 할 일이 없습니다.<br>
 				    			자세한 오늘의 할 일을 보고 싶으시면 <br> 
 				    			위의 상세보기를 눌러주세요.
@@ -354,7 +366,7 @@ label {
 			    		<c:otherwise>
 					    	<div  class="mainTodoInnerBox">
 							    <c:forEach var="dto" items="${todoList}">
-							    <div class="mainTodoContentOutline">
+							    <div class="mainTodoContentOutline ${dto.checkstatus == 0 ? 'past-to-do' : ''}">
 							    	<div class="arrangeBox" >
 										<div style="display: flex; text-align: center; text-align: center;" > 
 											<input type="checkbox" onclick="checkTodo(${dto.todoid}, this.checked)"

@@ -628,7 +628,7 @@ hr {
 /* mor, cofix*/
 
 .todo_list {
-    margin-top: 20px;
+/*     margin-top: 20px; */
      height: 75%;
 }
 
@@ -730,4 +730,8 @@ hr {
 	white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.past-to-do{
+	background-color: #FFC7CE;
+	
 }

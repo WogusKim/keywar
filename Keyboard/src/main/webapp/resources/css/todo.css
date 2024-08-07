@@ -200,7 +200,6 @@
 	background-color: white; 
 	padding : 15px; 
 	border-radius: 10px; 
-	border: 1px solid #F2F2F2; 
 	width : 100%; 
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 	margin-bottom: 10px;	
@@ -214,11 +213,11 @@
 }
 .mainTodoNotFountOutline{
 	width: 100%; 
-	height: 95%;  
-	overflow-y: auto; 
-	padding: 10px; 
+	height: 100%;  
+
+/* 	padding: 10px;  */
 	text-align: center; 
-	margin-top: 45px; 
+
 }
 
 
