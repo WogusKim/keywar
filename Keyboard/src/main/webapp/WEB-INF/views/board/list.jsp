@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
 <style>
 table {
-    width: 80%; /* 테이블 너비 */
+    width: 95%; /* 테이블 너비 */
     margin: 20px auto; /* 중앙 정렬 및 상하 여백 설정 */
     border-collapse: collapse; /* 테이블 경계선 병합 */
     background-color: #fff; /* 배경색 */
@@ -20,6 +20,7 @@ table {
 }
 
 th, td {
+	height: 60px;
     padding: 7px 15px; /* 셀 패딩 */
     text-align: center; /* 텍스트 중앙 정렬 */
     border-bottom: 1px solid #ddd; /* 하단 경계선 */
@@ -76,7 +77,7 @@ tr:last-child td {
 	<div class="content_right">
 		<div style="width: 100%; height: 10%; text-align: center;"><b style="font-size: 35px;  ">⭐ BEST 게시물 모아보기 ⭐</b></div>
 		<div style=" width: 100%; height: 80%; overflow-y: auto; text-align: center;  ">
-		<table style="text-align: center; width: 80%; margin: auto;">
+		<table>
 			<colgroup>
 				<col style="width: 10%;">
 			    <col style="width: 50%;">

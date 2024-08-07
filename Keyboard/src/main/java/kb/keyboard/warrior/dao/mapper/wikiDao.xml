@@ -104,6 +104,9 @@
 		UPDATE Menu SET isOpen = #{param1} where id = #{param2}
 	</update>
 	
+	<select id="getNewCopyId" resultType="Integer">
+		SELECT MAX(id) FROM Menu WHERE userno = #{param} 
+	</select>
 	
 	<!-- 위키디테일출력 -->
 	<select id="getData" resultType="String">
