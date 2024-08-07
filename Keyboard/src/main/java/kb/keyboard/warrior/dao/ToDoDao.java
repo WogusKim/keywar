@@ -14,7 +14,8 @@ public interface ToDoDao {
 	
 	
 	//TO DO List 개선 후 추가
-	public void editTodo(TodoListDTO dto) ;
-	public void addTodo(TodoListDTO dto) ;
-	public void deleteTodo(String todoid) ;
+	public void editTodo(TodoListDTO dto);
+	public void addTodo(TodoListDTO dto);
+	public void deleteTodo(String todoid);
+	public void getTodayTasks(String userno);
 }

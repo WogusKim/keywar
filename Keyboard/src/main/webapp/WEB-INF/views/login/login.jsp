@@ -35,10 +35,22 @@ div.addEventListener('mouseout', (event) => {
 function submitForm() {
     document.getElementById('loginForm').submit();
 }
+
+
+
 </script>
 </head>
 <body>
-
+<script>
+// 문서에서 키가 눌렸을 때 이벤트 핸들러
+document.onkeydown = function(event) {
+    // 엔터 키 코드 확인
+    if (event.key === 'Enter') {
+        event.preventDefault(); // 기본 동작 방지 (폼 제출 방지)
+        submitForm();
+    }
+}
+</script>
 <%@ include file="/WEB-INF/views/header.jsp" %>
 <div style="
     display: flex;
