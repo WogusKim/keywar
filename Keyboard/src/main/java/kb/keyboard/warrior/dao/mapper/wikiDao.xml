@@ -254,4 +254,20 @@
 		LIMIT 5;
 	</select>
 	
+	<select id="getWriterNickName" resultType="String">
+		SELECT nickname FROM user WHERE userno = #{param}
+	</select>
+	
+	<!-- 조회수 찾기-->
+	<select id="getHitsById" resultType="Integer">
+		SELECT hits FROM WikiHits WHERE wikiId = #{param}
+	</select>
+	<!-- 조회수 업데이트 (++) -->
+	<update id="updateHits">
+		UPDATE WikiHits SET hits = hits + 1 WHERE wikiId = #{param}
+	</update>
+	<insert id="insertHits">
+		INSERT INTO WikiHits VALUES (#{param}, 1)	
+	</insert>
+	
 </mapper>
