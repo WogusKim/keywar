@@ -343,8 +343,9 @@ label {
 			    	 <c:choose>
 			    		<c:when test="${empty todoList}">
 			    			<div class="mainTodoNotFountOutline" >
-				    			<img src="${pageContext.request.contextPath}/resources/images/not-found.png" />
-				    			<div style="margin-top: 10px; color: #727272;">오늘이 마감일인  <br>
+			    				<div style="width:50%;height:0;padding-bottom:50%;position:relative;"><iframe src="https://giphy.com/embed/SkJRWt1Mo9CSlgrHcE" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
+				    			<%-- <img src="${pageContext.request.contextPath}/resources/images/not-found.png" /> --%>
+				    			<div style="color: #727272;">오늘이 마감일인  <br>
 				    			미완료 상태의 할 일이 없습니다.<br>
 				    			자세한 오늘의 할 일을 보고 싶으시면 <br> 
 				    			위의 상세보기를 눌러주세요.

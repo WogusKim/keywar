@@ -302,7 +302,6 @@ label {
 <script>
     // Modal 열기(수정모달)
     function openModal(todoid, task, importance, todoCategory, todoprogress, duedate, detail) {
-    	updateFormAction("${pageContext.request.contextPath}/editTodo");
         document.getElementById("myModal").style.display = "flex";
         $("#todoTitle-edit").val(task);
         $("#todoid").val(todoid); 
@@ -422,7 +421,6 @@ label {
 <script>
     // Modal 열기
     function openModal2() {
-    	updateFormAction("${pageContext.request.contextPath}/addTodo");
         document.getElementById("myModal2").style.display = "flex";
         setTodayDate();
     }
@@ -577,12 +575,7 @@ function checkTodo(todoid, isChecked) {
         // 날짜 입력 필드에 오늘 날짜를 설정합니다.
         document.getElementById('todoDuedate-add').value = formattedDate;
     }
-    function updateFormAction(newActionUrl) {
-        // 폼 요소를 가져옵니다.
-        var form = document.getElementById('addTodo');
-        // 새로운 action URL을 설정합니다.
-        form.action = newActionUrl;
-    }
+
     // 페이지 로드 시 현재 날짜를 설정합니다.
     // window.onload = setTodayDate;
 </script>
