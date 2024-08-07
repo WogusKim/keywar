@@ -325,6 +325,7 @@ label {
     width: 30px; 
     height: 30px;
 }
+
 </style>
 	    
 	    
@@ -341,7 +342,7 @@ label {
 			    	<div class="todo_list" >
 			    	 <c:choose>
 			    		<c:when test="${empty todoList}">
-			    			<div style="width: 100%; height: 95%;  overflow-y: auto; padding: 10px; text-align: center; margin-top: 45px;">
+			    			<div class="mainTodoNotFountOutline" >
 				    			<img src="${pageContext.request.contextPath}/resources/images/not-found.png" />
 				    			<div style="margin-top: 10px; color: #727272;">오늘이 마감일인  <br>
 				    			미완료 상태의 할 일이 없습니다.<br>
@@ -351,20 +352,20 @@ label {
 			    			</div>
 			    		</c:when>
 			    		<c:otherwise>
-					    	<div  style="width: 100%; height: 95%;  overflow-y: auto; ">
-								<ul>
-								    <c:forEach var="dto" items="${todoList}">
-								    	<div class="arrangeBox" style="">
-											<div style="display: flex; text-align: center;" > 
-												<input type="checkbox" onclick="checkTodo(${dto.todoid}, this.checked)"
-											${dto.isdone == 1 ? 'checked' : ''} data-todoid="${dto.todoid}"
-											data-done="${dto.isdone}"  id="check-${dto.todoid}" > <label for="check-${dto.todoid}"></label> <div style="text-align: center; height: 30px; vertical-align: middle;">${dto.task}</div>
-											</div>
+					    	<div  class="mainTodoInnerBox">
+							    <c:forEach var="dto" items="${todoList}">
+							    <div class="mainTodoContentOutline">
+							    	<div class="arrangeBox" >
+										<div style="display: flex; text-align: center; text-align: center;" > 
+											<input type="checkbox" onclick="checkTodo(${dto.todoid}, this.checked)"
+												${dto.isdone == 1 ? 'checked' : ''} data-todoid="${dto.todoid}"
+												data-done="${dto.isdone}"  id="check-${dto.todoid}" > <label for="check-${dto.todoid}"></label> 
+											<div style="text-align: center; height: 30px; vertical-align: middle;">${dto.task}</div>
 										</div>
-										<div style="color: gray; font-size: small; margin-bottom: 10px; margin-left: 25px;"> 마감 기일 : ${dto.duedate}</div>  
-								    
-								    </c:forEach>
-								</ul>
+									</div>
+									<div style="color: gray; font-size: small; margin-left: 5px;"> 마감 기일 : ${dto.duedate}</div>  
+							    </div>
+							    </c:forEach>
 							</div>
 								
 							<div class="todo_rate" style="padding: 0px; ">
