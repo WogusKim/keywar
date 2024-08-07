@@ -156,7 +156,6 @@ width: 100%;
 %>
 <script type="text/javascript">
  window.onload = function() {
-	 console.log('로그인 체크 실행');
      var currentPath = window.location.pathname;
      var loginPath = '/login';
      var findPassword = '/findPassword'

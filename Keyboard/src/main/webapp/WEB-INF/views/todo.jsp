@@ -6,44 +6,27 @@
 <head>
 <meta charset="UTF-8">
 <title>김국민의 업무노트 : TO DO LIST</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/todo.css">
 <style>
-.board_todo ul {
-	list-style-type: none; /* 리스트 스타일을 없앱니다 */
-	padding: 0;
+/* 기본 체크박스 감춤 */
+input[type="checkbox"][id^="check"] {
+    display: none;
 }
-
-.board_todo li {
-	margin-bottom: 10px; /* 각 항목 사이에 여백을 줍니다 */
-	display: flex; /* 수평 배치 설정 */
-	align-items: center; /* 수직 가운데 정렬 */
+/* off */
+input[type="checkbox"][id^="check"] + label { 
+    background-repeat: no-repeat; /* 반복 방지 */
+    background-image: url('${pageContext.request.contextPath}/resources/images/checkbox.png'); /* off 이미지 */
 }
-
-.board_todo li.checked .task {
-	text-decoration: line-through; /* 체크된 항목에만 삭선 적용 */
+/* on */
+input[type="checkbox"][id^="check"]:checked + label {
+    background-repeat: no-repeat; /* 반복 방지 */
+    background-image: url('${pageContext.request.contextPath}/resources/images/checked.png'); /* on 이미지 */
 }
-
-#new-task {
-	flex: 1; /* 입력창이 남은 공간을 모두 차지하도록 설정 */
-	padding: 10px;
-	font-size: 16px;
-	border: 1px solid #ccc;
-	border-radius: 10px;
-	margin-right: 10px; /* 입력창과 버튼 사이에 오른쪽 여백 추가 */
-}
-
-.deleteButton1 {
-	margin-left: 10px; /* 할 일 문구와 삭제 버튼 사이에 여백 추가 */
-	margin-bottom: 10px;
-	cursor: pointer; /* 커서가 포인터로 변경되도록 설정 */
-	color: red; /* 삭제 버튼을 빨간색으로 설정 */
-	text-decoration: none; /* 삭제 버튼에 삭선 제거 */
-}
-
-.flex_box {
-	display: flex;
-	align-items: center; /* 수직 가운데 정렬 */
+label { 
+    display: block; 
+    width: 30px; 
+    height: 30px;
 }
 </style>
 </head>
@@ -66,170 +49,7 @@
 					<h2 class="card_title" >To-Do List</h2>
 					<hr>
 					<!-- 여기부터 성은 수정 -->
-					<style>
-					.todoBox{
-						padding: 20px; 
-						width : 32%; 
-						height: 100%;
-						background-color: #F2F2F2;
-						border-radius: 15px; 
-						box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-					}
-					.todoBoxTitle{
-						font-size: 20px; 
-						font-weight: bold;
-					}  
-					.arrangeBox{
-						display: flex;
-						justify-content: space-between;
-					}
-					.innerTodoBox{
-						border-radius: 15px; 
-						 background-color: white;
-			 			border: 1px solid #F2F2F2; 
-						height: 150px; 
-						width : 100%;
-						margin-bottom: 20px; 
-						padding: 15px;
-						box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-					}
-					.importance{
-						width : 100px;
-						border-radius: 15px; 
-						text-align: center;
-						display: flex;
-						justify-content: center;
-						vertical-align: middle;
-						margin-right: 10px;
-					}
-					.todoDetail{
-						margin-top: 10px; 
-						width: 100%; 
-						height: 50px;  
-						overflow: hidden; 
-						text-overflow: ellipsis;  
-						display: -webkit-box; 
-						-webkit-line-clamp: 2; 
-						-webkit-box-orient: vertical;  
-						white-space: normal;  
-						line-height: 1.5;
-					}
-				    /* 기본 체크박스 감춤 */
-			        input[type="checkbox"][id^="check"] {
-			            display: none;
-			        }
-			        /* off */
-			        input[type="checkbox"][id^="check"] + label { 
-			            background-repeat: no-repeat; /* 반복 방지 */
-			            background-image: url('${pageContext.request.contextPath}/resources/images/checkbox.png'); /* off 이미지 */
-			        }
-			        /* on */
-			        input[type="checkbox"][id^="check"]:checked + label {
-			            background-repeat: no-repeat; /* 반복 방지 */
-			            background-image: url('${pageContext.request.contextPath}/resources/images/checked.png'); /* on 이미지 */
-			        }
-			        label { 
-			            display: block; 
-			            width: 30px; 
-			            height: 30px;
-			        }
-			        .todoFooter{
-				        display: flex; 
-				        justify-content: center; 
-				        margin-top: 10px; 
-				        margin-bottom: 20px;
-			        }
-			        /* Modal Container */
-					.modal { 
-					 	display: none;
-						position: fixed;
-						z-index: 1;
-						left: 0;
-						top: 0;
-						width: 100%;
-						height: 100%;
-						overflow: auto;
-						background-color: rgb(0, 0, 0);
-						background-color: rgba(0, 0, 0, 0.4);
-						justify-content: center;
-					 	text-align: center;  
-					} 
-					/* Modal2 Container */
-					.modal2 { 
-					 	display: none;
-						position: fixed;
-						z-index: 2;
-						left: 0;
-						top: 0;
-						width: 100%;
-						height: 100%;
-						overflow: auto;
-						background-color: rgb(0, 0, 0);
-						background-color: rgba(0, 0, 0, 0.4);
-						justify-content: center;
-					 	text-align: center;  
-					} 
-					/* Modal Content */
-					.modal-content {
-						background-color: #fefefe;
-						margin : auto;
-						padding: 20px; 
-						border: 1px solid #888;
-						width: 25%;
-						height: 64%; 
-						text-align: left;
-					}
-					/* Close Button */
-					.close {
-						color: #aaa;
-						float: right;
-						font-size: 28px;
-						font-weight: bold;
-					}
 					
-					.close:hover, .close:focus {
-						color: black;
-						text-decoration: none;
-						cursor: pointer;
-					}
-					.modal-input-text{
-						width: 100%;
-						padding:10px;
-						font-size: 12px;
-						border: 1px solid gray; 
-						box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-						transition: border-color 0.3s, box-shadow 0.3s;
-						outline: none;
-					}
-					.styled-button {
-					    background-color: #6200ea;
-					    color: white;
-						padding : 10px;
-					    font-size: 12px;
-					    border: none;
-					    border-radius: 5px;
-					    cursor: pointer;
-					    transition: background-color 0.3s, transform 0.3s;
-					    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-					    text-transform: uppercase;
-					}
-					
-					.styled-button:hover {
-					    background-color: #3700b3;
-					    transform: scale(1.05);
-					}
-					
-					.styled-button:active {
-					    background-color: #1a00e6;
-					    transform: scale(1);
-					}
-					
-					.styled-button:focus {
-					    outline: none;
-					    box-shadow: 0 0 0 3px rgba(98, 0, 234, 0.5);
-					}
-					
-					</style>
 					<div style="height: 90%; display: flex; justify-content:  space-between; padding: 10px;">
 
 						
@@ -416,11 +236,11 @@
 								placeholder="할 일을 입력하세요"> <input type="submit"
 								value="추가하기" class="addButton">
 						</div>
-					</form>
+					</form>--%>
 				</div>
 			</div>
 		</div>
-	</div> --%>
+	</div> 
 	
 	
 <!--  모달창 영역  -->
@@ -443,12 +263,6 @@
             <option value="대출관리">대출관리</option>
             <option value="Other">Other</option>
         </select>
-        <!-- <p>진행상태</p>
-        <select id="todoprogress" name="todoprogress" class="modal-input-text"> 
-            <option value="To do">To do</option>
-            <option value="In progress">In progress</option>
-            <option value="Done">Done</option>
-        </select> -->
         <p>종료일</p>
         <input type="date" value="2024-08-05"  id="todoDuedate" name="todoDuedate" class="modal-input-text"/>
         <p>내용</p>
@@ -548,12 +362,6 @@
             <option value="대출관리">대출관리</option>
             <option value="Other">Other</option>
         </select>
-<!--         <p>진행상태</p>
-        <select id="todoprogress-add" name="todoprogress-add" class="modal-input-text"> 
-            <option value="To do">To do</option>
-            <option value="In progress">In progress</option>
-            <option value="Done">Done</option>
-        </select> -->
         <p>종료일</p>
         <input type="date" value=""  id="todoDuedate-add" name="todoDuedate-add" class="modal-input-text"/>
         <p>내용</p>
@@ -575,7 +383,7 @@
 		</div>
 	</div>
 </div>
-<form id="addTodo" method="post" action="/submit-url">
+
     <input type="hidden" id="todoid" name="todoid" value=""/>
     <input type="hidden" id="userno" name="userno" value=""/>
     <input type="hidden" id="task" name="task" value=""/>
@@ -585,7 +393,7 @@
     <input type="hidden" id="importance" name="importance" value=""/>
     <input type="hidden" id="progress" name="progress" value=""/>
     <input type="hidden" id="category" name="category" value=""/>
-</form>
+
 <script>
     // Modal 열기
     function openModal2() {
@@ -702,13 +510,7 @@
             closeDeleteModal();
         }
     }
-    
-</script>
 
-
-
-
-<script>
 // TODOLIST 업데이트 로직
 function checkTodo(todoid, isChecked) {
     console.log("Todo ID:", todoid);
@@ -739,27 +541,25 @@ function checkTodo(todoid, isChecked) {
     });
 }
 
+    // 현재 날짜를 가져와서 'YYYY-MM-DD' 형식으로 변환
+    function setTodayDate() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더합니다.
+        const day = String(today.getDate()).padStart(2, '0'); // 날짜를 두 자리로 맞춥니다.
+        const formattedDate = year+'-'+month+'-'+ day;
+        console.log(formattedDate);
+        // 날짜 입력 필드에 오늘 날짜를 설정합니다.
+        document.getElementById('todoDuedate-add').value = formattedDate;
+    }
+    function updateFormAction(newActionUrl) {
+        // 폼 요소를 가져옵니다.
+        var form = document.getElementById('addTodo');
+        // 새로운 action URL을 설정합니다.
+        form.action = newActionUrl;
+    }
+    // 페이지 로드 시 현재 날짜를 설정합니다.
+    // window.onload = setTodayDate;
 </script>
-    <script>
-        // 현재 날짜를 가져와서 'YYYY-MM-DD' 형식으로 변환
-        function setTodayDate() {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더합니다.
-            const day = String(today.getDate()).padStart(2, '0'); // 날짜를 두 자리로 맞춥니다.
-            const formattedDate = year+'-'+month+'-'+ day;
-            console.log(formattedDate);
-            // 날짜 입력 필드에 오늘 날짜를 설정합니다.
-            document.getElementById('todoDuedate-add').value = formattedDate;
-        }
-        function updateFormAction(newActionUrl) {
-            // 폼 요소를 가져옵니다.
-            var form = document.getElementById('addTodo');
-            // 새로운 action URL을 설정합니다.
-            form.action = newActionUrl;
-        }
-        // 페이지 로드 시 현재 날짜를 설정합니다.
-        // window.onload = setTodayDate;
-    </script>
 </body>
 </html>

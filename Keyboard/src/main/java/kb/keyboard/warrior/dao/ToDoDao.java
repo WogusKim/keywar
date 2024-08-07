@@ -17,5 +17,5 @@ public interface ToDoDao {
 	public void editTodo(TodoListDTO dto);
 	public void addTodo(TodoListDTO dto);
 	public void deleteTodo(String todoid);
-	public void getTodayTasks(String userno);
+	public List<TodoListDTO> getTodayTasks(String userno);
 }
