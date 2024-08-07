@@ -28,6 +28,28 @@ label {
     width: 30px; 
     height: 30px;
 }
+/* 전체 스크롤바 스타일 */
+::-webkit-scrollbar {
+    width: 4px; /* 스크롤바의 너비 */
+    height: 8px; /* 가로 스크롤바의 높이 (optional) */
+}
+
+/* 스크롤바의 트랙 (스크롤바 배경) */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* 배경 색상 */
+    border-radius: 10px; /* 모서리를 둥글게 */
+}
+
+/* 스크롤바의 핸들 (사용자가 잡는 부분) */
+::-webkit-scrollbar-thumb {
+    background: #888; /* 핸들의 배경 색상 */
+    border-radius: 10px; /* 모서리를 둥글게 */
+}
+
+/* 스크롤바 핸들의 호버 상태 */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; /* 핸들이 호버 상태일 때의 색상 */
+}
 </style>
 </head>
 
@@ -51,7 +73,6 @@ label {
 					<!-- 여기부터 성은 수정 -->
 					
 					<div style="height: 90%; display: flex; justify-content:  space-between; padding: 10px;">
-
 						
 						<div id="In progress" class="todoBox" style="background-color: var(--main-bgcolor); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); ">
 							<div class="arrangeBox" >
@@ -67,7 +88,8 @@ label {
 									<div style="display: flex; text-align: center;" > 
 										<input type="checkbox" onclick="checkTodo(${dto.todoid}, this.checked)"
 									${dto.isdone == 1 ? 'checked' : ''} data-todoid="${dto.todoid}"
-									data-done="${dto.isdone}"  id="check-${dto.todoid}" > <label for="check-${dto.todoid}"></label> <div style="text-align: center; height: 30px; vertical-align: middle;">${dto.task}</div>
+									data-done="${dto.isdone}"  id="check-${dto.todoid}" > <label for="check-${dto.todoid}"></label> 
+									<div class="No-line-break" style="text-align: center; height: 30px; vertical-align: middle;" >${dto.task }</div> 
 									</div>  
 									<img src="${pageContext.request.contextPath}/resources/images/more.png" style="width: 20px; height: 20px;" onclick="openModal('${dto.todoid}', '${dto.task}','${dto.importance}','${dto.category}','${dto.progress}','${dto.duedate}','${dto.detail}')" />
 								</div>	
@@ -97,7 +119,8 @@ label {
 									<div style="display: flex; text-align: center;" > 
 										<input type="checkbox" onclick="checkTodo(${dto.todoid}, this.checked)"
 									${dto.isdone == 1 ? 'checked' : ''} data-todoid="${dto.todoid}"
-									data-done="${dto.isdone}"  id="check-${dto.todoid}" > <label for="check-${dto.todoid}"></label> <div style="text-align: center; height: 30px; vertical-align: middle;">${dto.task}</div>
+									data-done="${dto.isdone}"  id="check-${dto.todoid}" > <label for="check-${dto.todoid}"></label> 
+									<div class="No-line-break" style="text-align: center; height: 30px; vertical-align: middle;">${dto.task}</div>
 									</div>  
 									<img src="${pageContext.request.contextPath}/resources/images/more.png" style="width: 20px; height: 20px;" onclick="openModal('${dto.todoid}', '${dto.task}','${dto.importance}','${dto.category}','${dto.progress}','${dto.duedate}','${dto.detail}')" />
 								</div>	
@@ -139,7 +162,8 @@ label {
 									<div style="display: flex; text-align: center;" > 
 										<input type="checkbox" onclick="checkTodo(${dto.todoid}, this.checked)"
 									${dto.isdone == 1 ? 'checked' : ''} data-todoid="${dto.todoid}"
-									data-done="${dto.isdone}"  id="check-${dto.todoid}" > <label for="check-${dto.todoid}"></label> <div style="text-align: center; height: 30px; vertical-align: middle;">${dto.task}</div>
+									data-done="${dto.isdone}"  id="check-${dto.todoid}" > <label for="check-${dto.todoid}"></label> 
+									<div class="No-line-break" style="text-align: center; height: 30px; vertical-align: middle;">${dto.task}</div>
 									</div>  
 									<img src="${pageContext.request.contextPath}/resources/images/more.png" style="width: 20px; height: 20px;" onclick="openModal('${dto.todoid}', '${dto.task}','${dto.importance}','${dto.category}','${dto.progress}','${dto.duedate}','${dto.detail}')" />
 								</div>	
@@ -182,7 +206,8 @@ label {
 									<div style="display: flex; text-align: center;" > 
 										<input type="checkbox" onclick="checkTodo(${dto.todoid}, this.checked)"
 									${dto.isdone == 1 ? 'checked' : ''} data-todoid="${dto.todoid}"
-									data-done="${dto.isdone}"  id="check-${dto.todoid}" > <label for="check-${dto.todoid}"></label> <div style="text-align: center; height: 30px; vertical-align: middle;">${dto.task}</div>
+									data-done="${dto.isdone}"  id="check-${dto.todoid}" > <label for="check-${dto.todoid}"></label> 
+									<div class="No-line-break" style="text-align: center; height: 30px; vertical-align: middle;">${dto.task}</div>
 									</div>  
 									<img src="${pageContext.request.contextPath}/resources/images/more.png" style="width: 20px; height: 20px;" onclick="openModal('${dto.todoid}', '${dto.task}','${dto.importance}','${dto.category}','${dto.progress}','${dto.duedate}','${dto.detail}')" />
 								</div>	
