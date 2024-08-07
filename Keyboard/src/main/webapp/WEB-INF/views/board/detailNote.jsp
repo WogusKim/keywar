@@ -309,7 +309,21 @@
 				<!-- <button onclick="saveData()">저장하기</button> -->  <!-- 저장은 불가능해야함. -->
 				<button id="copyNoteBtn" class="styled-button">업무노트 훔치기</button><br>
 				
-				<a href="${pageContext.request.contextPath}/likeUp?id=<%= currentId %>"><img src="${pageContext.request.contextPath}/resources/images/like.png"  id="likeUp" ></a>
+				
+				
+				<div style="position:relative; display:inline-block;">
+				    <a href="${pageContext.request.contextPath}/likeUp?id=<%= currentId %>" style="display:inline-block;">
+				        <div style="width:150px; height:150px; position:relative;">
+				            <iframe src="https://giphy.com/embed/05IRAGzP2Q6EY4E9eg" width="150" height="150" style="pointer-events:none;" frameBorder="0" allowFullScreen></iframe>
+				            <div style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>
+				        </div>
+				    </a>
+				</div>
+				
+				<%-- <a href="${pageContext.request.contextPath}/likeUp?id=<%= currentId %>"><iframe src="https://giphy.com/embed/05IRAGzP2Q6EY4E9eg" width="150" height="150" style="" frameBorder="0" allowFullScreen></iframe></a> --%>
+				
+				
+<%-- 				<a href="${pageContext.request.contextPath}/likeUp?id=<%= currentId %>"><img src="${pageContext.request.contextPath}/resources/images/like.png"  id="likeUp" ></a> --%>
 				<p style="font-size: 30px; margin: 0px;">${like}</p>
 				
             </div>
