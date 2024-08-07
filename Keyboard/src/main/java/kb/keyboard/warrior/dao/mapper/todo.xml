@@ -7,7 +7,7 @@
   	<select id="getToDoList" resultType="kb.keyboard.warrior.dto.TodoListDTO">
        select * 
        from todolist 
-       where userno = #{param} order by todoid
+       where status = "1" AND userno = #{param} order by todoid
     </select>
     
     <update id="checkTodo">

@@ -1,0 +1,197 @@
+.board_todo ul {
+	list-style-type: none; /* 리스트 스타일을 없앱니다 */
+	padding: 0;
+}
+
+.board_todo li {
+	margin-bottom: 10px; /* 각 항목 사이에 여백을 줍니다 */
+	display: flex; /* 수평 배치 설정 */
+	align-items: center; /* 수직 가운데 정렬 */
+}
+
+.board_todo li.checked .task {
+	text-decoration: line-through; /* 체크된 항목에만 삭선 적용 */
+}
+
+#new-task {
+	flex: 1; /* 입력창이 남은 공간을 모두 차지하도록 설정 */
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	margin-right: 10px; /* 입력창과 버튼 사이에 오른쪽 여백 추가 */
+}
+
+.deleteButton1 {
+	margin-left: 10px; /* 할 일 문구와 삭제 버튼 사이에 여백 추가 */
+	margin-bottom: 10px;
+	cursor: pointer; /* 커서가 포인터로 변경되도록 설정 */
+	color: red; /* 삭제 버튼을 빨간색으로 설정 */
+	text-decoration: none; /* 삭제 버튼에 삭선 제거 */
+}
+
+.flex_box {
+	display: flex;
+	align-items: center; /* 수직 가운데 정렬 */
+}
+.todoBox{
+	padding: 20px; 
+	width : 32%; 
+	height: 100%;
+	background-color: #F2F2F2;
+	border-radius: 15px; 
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.todoBoxTitle{
+	font-size: 20px; 
+	font-weight: bold;
+}  
+.arrangeBox{
+	display: flex;
+	justify-content: space-between;
+}
+.innerTodoBox{
+	border-radius: 15px; 
+	 background-color: white;
+		border: 1px solid #F2F2F2; 
+	height: 150px; 
+	width : 100%;
+	margin-bottom: 20px; 
+	padding: 15px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.importance{
+	width : 100px;
+	border-radius: 15px; 
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+.todoDetail{
+	margin-top: 10px; 
+	width: 100%; 
+	height: 50px;  
+	overflow: hidden; 
+	text-overflow: ellipsis;  
+	display: -webkit-box; 
+	-webkit-line-clamp: 2; 
+	-webkit-box-orient: vertical;  
+	white-space: normal;  
+	line-height: 1.5;
+}
+   /* 기본 체크박스 감춤 */
+      input[type="checkbox"][id^="check"] {
+          display: none;
+      }
+      /* off */
+      input[type="checkbox"][id^="check"] + label { 
+          background-repeat: no-repeat; /* 반복 방지 */
+          background-image: url('${pageContext.request.contextPath}/resources/images/checkbox.png'); /* off 이미지 */
+      }
+      /* on */
+      input[type="checkbox"][id^="check"]:checked + label {
+          background-repeat: no-repeat; /* 반복 방지 */
+          background-image: url('${pageContext.request.contextPath}/resources/images/checked.png'); /* on 이미지 */
+      }
+      label { 
+          display: block; 
+          width: 30px; 
+          height: 30px;
+      }
+      .todoFooter{
+       display: flex; 
+       justify-content: center; 
+       margin-top: 10px; 
+       margin-bottom: 20px;
+      }
+      /* Modal Container */
+.modal { 
+ 	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgb(0, 0, 0);
+	background-color: rgba(0, 0, 0, 0.4);
+	justify-content: center;
+ 	text-align: center;  
+} 
+/* Modal2 Container */
+.modal2 { 
+ 	display: none;
+	position: fixed;
+	z-index: 2;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgb(0, 0, 0);
+	background-color: rgba(0, 0, 0, 0.4);
+	justify-content: center;
+ 	text-align: center;  
+} 
+/* Modal Content */
+.modal-content {
+	background-color: #fefefe;
+	margin : auto;
+	padding: 20px; 
+	border: 1px solid #888;
+	width: 25%;
+	height: 64%; 
+	text-align: left;
+}
+/* Close Button */
+.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover, .close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+.modal-input-text{
+	width: 100%;
+	padding:10px;
+	font-size: 12px;
+	border: 1px solid gray; 
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	transition: border-color 0.3s, box-shadow 0.3s;
+	outline: none;
+}
+.styled-button {
+    background-color: #6200ea;
+    color: white;
+	padding : 10px;
+    font-size: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+}
+
+.styled-button:hover {
+    background-color: #3700b3;
+    transform: scale(1.05);
+}
+
+.styled-button:active {
+    background-color: #1a00e6;
+    transform: scale(1);
+}
+
+.styled-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(98, 0, 234, 0.5);
+}
