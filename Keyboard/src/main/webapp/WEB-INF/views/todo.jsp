@@ -228,52 +228,12 @@
 					    outline: none;
 					    box-shadow: 0 0 0 3px rgba(98, 0, 234, 0.5);
 					}
+					
 					</style>
 					<div style="height: 90%; display: flex; justify-content:  space-between; padding: 10px;">
-						<div id="To do" style="" class="todoBox">
-							<div class="arrangeBox" > 
-								<b class="todoBoxTitle">Upcoming tasks</b> <img src="${pageContext.request.contextPath}/resources/images/add.png" style="width: 20px; height: 20px;" onclick="openModal2()"/>
-							</div>
-							<div style="overflow-y: auto; height: 95%; margin-top: 20px;" ><!-- 여기에 투두리스트 보여짐  -->
-							<!-- 여기부터 포문 돌리는 영역 -->
-							<c:forEach items="${list}" var="dto">
-							<c:if test="${dto.checkstatus == '2'&&dto.isdone=='0'}">
-								<div class="innerTodoBox" >
-								<div class="arrangeBox" >
-									<div style="display: flex; text-align: center;" > 
-										<input type="checkbox" onclick="checkTodo(${dto.todoid}, this.checked)"
-									${dto.isdone == 1 ? 'checked' : ''} data-todoid="${dto.todoid}"
-									data-done="${dto.isdone}"  id="check-${dto.todoid}" > <label for="check-${dto.todoid}"></label> <div style="text-align: center; height: 30px; vertical-align: middle;">${dto.task}</div>
-									</div>  
-									<img src="${pageContext.request.contextPath}/resources/images/more.png" style="width: 20px; height: 20px;" onclick="openModal('${dto.todoid}', '${dto.task}','${dto.importance}','${dto.category}','${dto.progress}','${dto.duedate}','${dto.detail}')" />
-								</div>	
-									<div  style="display: flex; margin-top: 5px;">
-										<div class="importance" style="background-color: #FEA800; width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" >
-											${dto.importance}<!-- DB에 입력되어있는 중요도 -->
-										</div>
-										<div class="importance" style="background-color: #9F45E3; color : white;  width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" >
-											${dto.category}<!-- DB에 입력되어있는 분류 -->
-										</div>
-										<div style="color: gray; width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-											${dto.duedate}
-										</div>
-									</div>
-									<div class="todoDetail" style=""  >
-										${dto.detail}
-									</div>
-									</div>
-								</c:if>
-								</c:forEach>
-								<!-- 포문 여기서 끝 -->
-								
-								<div class="todoFooter">
-								<img src="${pageContext.request.contextPath}/resources/images/add.png" style="width: 15px; height: 15px;" onclick="openModal2()"/> <div style="color: gray; font-size: small;"onclick="openModal2()"> Add task</div>
-								</div>
-							</div>
-						</div>
+
 						
-						
-						<div id="In progress" class="todoBox">
+						<div id="In progress" class="todoBox" style="background-color: var(--main-bgcolor); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); ">
 							<div class="arrangeBox" >
 								<b class="todoBoxTitle">Today's tasks</b> <img src="${pageContext.request.contextPath}/resources/images/add.png" style="width: 20px; height: 20px;" onclick="openModal2()"/>
 							</div>
@@ -344,6 +304,51 @@
 								</div>
 							</div>
 						</div>
+						
+						<!-- Upcoming -->
+						<div id="To do" style="" class="todoBox">
+							<div class="arrangeBox" > 
+								<b class="todoBoxTitle">Upcoming tasks</b> <img src="${pageContext.request.contextPath}/resources/images/add.png" style="width: 20px; height: 20px;" onclick="openModal2()"/>
+							</div>
+							<div style="overflow-y: auto; height: 95%; margin-top: 20px;" ><!-- 여기에 투두리스트 보여짐  -->
+							<!-- 여기부터 포문 돌리는 영역 -->
+							<c:forEach items="${list}" var="dto">
+							<c:if test="${dto.checkstatus == '2'&&dto.isdone=='0'}">
+								<div class="innerTodoBox" >
+								<div class="arrangeBox" >
+									<div style="display: flex; text-align: center;" > 
+										<input type="checkbox" onclick="checkTodo(${dto.todoid}, this.checked)"
+									${dto.isdone == 1 ? 'checked' : ''} data-todoid="${dto.todoid}"
+									data-done="${dto.isdone}"  id="check-${dto.todoid}" > <label for="check-${dto.todoid}"></label> <div style="text-align: center; height: 30px; vertical-align: middle;">${dto.task}</div>
+									</div>  
+									<img src="${pageContext.request.contextPath}/resources/images/more.png" style="width: 20px; height: 20px;" onclick="openModal('${dto.todoid}', '${dto.task}','${dto.importance}','${dto.category}','${dto.progress}','${dto.duedate}','${dto.detail}')" />
+								</div>	
+									<div  style="display: flex; margin-top: 5px;">
+										<div class="importance" style="background-color: #FEA800; width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" >
+											${dto.importance}<!-- DB에 입력되어있는 중요도 -->
+										</div>
+										<div class="importance" style="background-color: #9F45E3; color : white;  width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" >
+											${dto.category}<!-- DB에 입력되어있는 분류 -->
+										</div>
+										<div style="color: gray; width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+											${dto.duedate}
+										</div>
+									</div>
+									<div class="todoDetail" style=""  >
+										${dto.detail}
+									</div>
+									</div>
+								</c:if>
+								</c:forEach>
+								<!-- 포문 여기서 끝 -->
+								
+								<div class="todoFooter">
+								<img src="${pageContext.request.contextPath}/resources/images/add.png" style="width: 15px; height: 15px;" onclick="openModal2()"/> <div style="color: gray; font-size: small;"onclick="openModal2()"> Add task</div>
+								</div>
+							</div>
+						</div>
+						
+						
 						<div id="Done" class="todoBox">
 							<div class="arrangeBox" >
 								<b class="todoBoxTitle">Done</b> <img src="${pageContext.request.contextPath}/resources/images/add.png" style="width: 20px; height: 20px;"  onclick="openModal2()"/>
