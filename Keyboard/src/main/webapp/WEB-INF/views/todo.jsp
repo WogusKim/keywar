@@ -78,12 +78,12 @@ label {
 							<div class="arrangeBox" >
 								<b class="todoBoxTitle">Today's tasks</b> <img src="${pageContext.request.contextPath}/resources/images/add.png" style="width: 20px; height: 20px;" onclick="openModal2()"/>
 							</div>
-							<div style="overflow-y: auto; height: 95%; margin-top: 20px;" >  <!-- 여기에 투두리스트 보여짐  -->
+							<div style="overflow-y: auto; height: 95%; margin-top: 20px; padding-right: 10px;" >  <!-- 여기에 투두리스트 보여짐  -->
 							<!-- 여기부터 포문 돌리는 영역 --> 
 							<!-- 지난 거는 강조하기 -->
 							<c:forEach items="${list}" var="dto">
 							<c:if test="${dto.checkstatus == '0' &&dto.isdone=='0'}">
-								<div class="innerTodoBox" style="border: 5px solid red;">
+								<div class="innerTodoBox" style=" /* border: 5px solid red; */ border : none;  background-color: #FFC7CE; ">
 								<div class="arrangeBox" >
 									<div style="display: flex; text-align: center;" > 
 										<input type="checkbox" onclick="checkTodo(${dto.todoid}, this.checked)"
@@ -153,7 +153,7 @@ label {
 							<div class="arrangeBox" > 
 								<b class="todoBoxTitle">Upcoming tasks</b> <img src="${pageContext.request.contextPath}/resources/images/add.png" style="width: 20px; height: 20px;" onclick="openModal2()"/>
 							</div>
-							<div style="overflow-y: auto; height: 95%; margin-top: 20px;" ><!-- 여기에 투두리스트 보여짐  -->
+							<div style="overflow-y: auto; height: 95%; margin-top: 20px; padding-right: 10px;" ><!-- 여기에 투두리스트 보여짐  -->
 							<!-- 여기부터 포문 돌리는 영역 -->
 							<c:forEach items="${list}" var="dto">
 							<c:if test="${dto.checkstatus == '2'&&dto.isdone=='0'}">
@@ -197,7 +197,7 @@ label {
 							<div class="arrangeBox" >
 								<b class="todoBoxTitle">Done</b> <img src="${pageContext.request.contextPath}/resources/images/add.png" style="width: 20px; height: 20px;"  onclick="openModal2()"/>
 							</div>
-							<div style="overflow-y: auto; height: 95%; margin-top: 20px; /* filter: blur(1px);  */">  <!-- 여기에 투두리스트 보여짐  -->
+							<div style="overflow-y: auto; height: 95%; margin-top: 20px;  padding-right: 10px;/* filter: blur(1px);  */">  <!-- 여기에 투두리스트 보여짐  -->
 							<!-- 여기부터 포문 돌리는 영역 -->
 							<c:forEach items="${list}" var="dto">
 							<c:if test="${dto.isdone=='1'}">

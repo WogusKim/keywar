@@ -731,3 +731,7 @@ hr {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.past-to-do{
+	background-color: #FFC7CE;
+	
+}

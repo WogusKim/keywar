@@ -354,7 +354,7 @@ label {
 			    		<c:otherwise>
 					    	<div  class="mainTodoInnerBox">
 							    <c:forEach var="dto" items="${todoList}">
-							    <div class="mainTodoContentOutline">
+							    <div class="mainTodoContentOutline ${dto.checkstatus == 0 ? 'past-to-do' : ''}">
 							    	<div class="arrangeBox" >
 										<div style="display: flex; text-align: center; text-align: center;" > 
 											<input type="checkbox" onclick="checkTodo(${dto.todoid}, this.checked)"
