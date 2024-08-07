@@ -14,6 +14,7 @@ public class TodoListDTO {
  private String progress;   // 진행상태
  private String category;   // 카테고리
  private String detail;   // 상세내용
+ private String checkstatus;   // 상세내용
 
  public TodoListDTO() {
  }
@@ -107,6 +108,14 @@ public String getDetail() {
 
 public void setDetail(String detail) {
 	this.detail = detail;
+}
+
+public String getCheckstatus() {
+	return checkstatus;
+}
+
+public void setCheckstatus(String checkstatus) {
+	this.checkstatus = checkstatus;
 }
  
 }
