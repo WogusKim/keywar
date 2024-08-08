@@ -36,6 +36,9 @@
 .edit-icon {
 	background-image: url('${pageContext.request.contextPath}/resources/images/icons/edit.png');
 }
+
+
+
 </style>
 </head>
 
