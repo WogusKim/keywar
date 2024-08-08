@@ -63,6 +63,7 @@ public interface WikiDao {
 	//이미지 상세정보 저장
 	void updateSize(Integer wikiId, String url, String width);
 	void insertSize(Integer wikiId, String url, String width);
+	void updateImageAlign(Integer wikiId, int imageId, String align);
 	
 	//id 기준으로 모든 이미지 정보 불러오기
 	List<ImageSizeDTO> getAllSizeOfImg(int id);
@@ -81,5 +82,8 @@ public interface WikiDao {
 	public List<BoardDTO> getLikedPost(String userno); //내가 좋아하는 게시물 가져오기
 	public List<BoardDTO> getBestPost(); // 좋아요 많은 순 게시물 5개 가져오기 ! 
 	public List<BoardDTO> getBestWriter(); // 좋아요 많은 순 게시물 5개 가져오기 ! 
+
+
+
 
 }
