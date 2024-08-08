@@ -66,6 +66,7 @@ public interface WikiDao {
 	//이미지 상세정보 저장
 	void updateSize(Integer wikiId, String url, String width);
 	void insertSize(Integer wikiId, String url, String width);
+	void updateImageAlign(Integer wikiId, int imageId, String align);
 	
 	//id 기준으로 모든 이미지 정보 불러오기
 	List<ImageSizeDTO> getAllSizeOfImg(int id);
@@ -93,5 +94,8 @@ public interface WikiDao {
 	//조회수 처리
 	void updateHits(int id);
 	void insertHits(int id);
+
+
+
 
 }

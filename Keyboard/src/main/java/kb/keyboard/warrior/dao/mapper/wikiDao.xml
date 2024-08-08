@@ -3,186 +3,217 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kb.keyboard.warrior.dao.WikiDao">
-	
+
 	<!-- 부모id 찾기 -->
 	<select id="getParentid" resultType="Integer">
-		SELECT parent_id from Menu where id = #{param}
+		SELECT parent_id from Menu
+		where id = #{param}
 	</select>
 	<!-- 일반 max order 찾기 -->
 	<select id="getMaxOrderOfFather" resultType="Integer">
-	    SELECT COALESCE(MAX(menu_order), 0) FROM Menu WHERE parent_id = #{param}
+		SELECT COALESCE(MAX(menu_order), 0) FROM Menu WHERE parent_id = #{param}
 	</select>
 	<!-- 최상위인경우 max order 찾기 -->
 	<select id="getMaxOrderOfnoParents" resultType="Integer">
-	    SELECT COALESCE(MAX(menu_order), 0) FROM Menu WHERE parent_id IS NULL
+		SELECT COALESCE(MAX(menu_order), 0) FROM Menu WHERE parent_id IS NULL
 	</select>
-		
-		
+
+
 	<!-- 메뉴추가 메서드 4종류 -->
 	<insert id="insertMenuNoParentsItem">
-		INSERT INTO Menu (title, titleShare, link, menuType, menu_order, userno, isOpen)
+		INSERT INTO Menu (title, titleShare, link, menuType,
+		menu_order, userno, isOpen)
 		VALUES (
-		    #{param1}, 
-		    #{param2},
-		    #{param3},
-		    #{param4},
-		    #{param5},
-		    #{param6},
-		    #{param7}
+		#{param1},
+		#{param2},
+		#{param3},
+		#{param4},
+		#{param5},
+		#{param6},
+		#{param7}
 		);
 	</insert>
-	
+
 	<insert id="insertMenuNoParentsFolder">
-		INSERT INTO Menu (title, titleShare, menuType, menu_order, userno, isOpen)
+		INSERT INTO Menu (title, titleShare, menuType,
+		menu_order, userno, isOpen)
 		VALUES (
-		    #{param1}, 
-		    #{param2},
-		    #{param3},
-		    #{param4},
-		    #{param5},
-		    #{param6}
+		#{param1},
+		#{param2},
+		#{param3},
+		#{param4},
+		#{param5},
+		#{param6}
 		);
 	</insert>
-	
+
 	<insert id="insertMenuHaveParentsItem">
-		INSERT INTO Menu (parent_id, title, titleShare, link, menuType, menu_order, userno, isOpen)
+		INSERT INTO Menu (parent_id, title, titleShare, link,
+		menuType, menu_order, userno, isOpen)
 		VALUES (
-		    #{param1}, 
-		    #{param2},
-		    #{param3},
-		    #{param4},
-		    #{param5},
-		    #{param6},
-		    #{param7},
-		    #{param8}
+		#{param1},
+		#{param2},
+		#{param3},
+		#{param4},
+		#{param5},
+		#{param6},
+		#{param7},
+		#{param8}
 		);
 	</insert>
-	
+
 	<insert id="insertMenuHaveParentsFolder">
-		INSERT INTO Menu (parent_id, title, titleShare, menuType, menu_order, userno, isOpen)
+		INSERT INTO Menu (parent_id, title, titleShare,
+		menuType, menu_order, userno, isOpen)
 		VALUES (
-		    #{param1}, 
-		    #{param2},
-		    #{param3},
-		    #{param4},
-		    #{param5},
-		    #{param6},
-		    #{param7}
+		#{param1},
+		#{param2},
+		#{param3},
+		#{param4},
+		#{param5},
+		#{param6},
+		#{param7}
 		);
 	</insert>
-	
+
 	<!-- 삭제 -->
-	<delete id ="deleteItem">
-		DELETE FROM Menu where id = #{param1} and userno = #{param2}
+	<delete id="deleteItem">
+		DELETE FROM Menu where id = #{param1} and userno =
+		#{param2}
 	</delete>
-	
-	<select id="getChildIds" parameterType="Integer" resultType="Integer">
-	    SELECT id FROM Menu WHERE parent_id = #{parentId}
+
+	<select id="getChildIds" parameterType="Integer"
+		resultType="Integer">
+		SELECT id FROM Menu WHERE parent_id = #{parentId}
 	</select>
-	
+
 	<delete id="deleteFolder" parameterType="map">
-	    DELETE FROM Menu WHERE id = #{param1} AND userno = #{param2}
+		DELETE FROM Menu WHERE id = #{param1} AND userno = #{param2}
 	</delete>
-	
-	<select id="getMenuDetail" resultType="kb.keyboard.warrior.dto.MenuDTO">
+
+	<select id="getMenuDetail"
+		resultType="kb.keyboard.warrior.dto.MenuDTO">
 		SELECT * FROM Menu WHERE id = #{param}
 	</select>
-	
+
 	<update id="changeMenuNoShare">
 		UPDATE Menu
 		SET title = #{param1}, titleShare = NULL
 		where id = #{param2}
 	</update>
-	
+
 	<update id="changeMenuYesShare">
 		UPDATE Menu
-		SET title = #{param1}, titleShare = #{param2}
+		SET title = #{param1}, titleShare =
+		#{param2}
 		where id = #{param3}
 	</update>
-	
+
 	<update id="changeIsOpen">
-		UPDATE Menu SET isOpen = #{param1} where id = #{param2}
+		UPDATE Menu SET isOpen = #{param1} where id =
+		#{param2}
 	</update>
+
 	
 	<select id="getNewCopyId" resultType="Integer">
 		SELECT MAX(id) FROM Menu WHERE userno = #{param} 
 	</select>
-	
+
 	<!-- 위키디테일출력 -->
 	<select id="getData" resultType="String">
-		SELECT data from EditorData where id = #{param}
+		SELECT data from EditorData
+		where id = #{param}
 	</select>
-	
+
 	<!-- 위키디테일저장 -->
 	<insert id="insertWiki">
-		 INSERT INTO EditorData (id, data) VALUES (#{param1}, #{param2})
+		INSERT INTO EditorData (id, data) VALUES (#{param1}, #{param2})
 	</insert>
 	<update id="updateWiki">
-		UPDATE EditorData SET data = #{param2} WHERE id = #{param1}
+		UPDATE EditorData SET data = #{param2} WHERE id =
+		#{param1}
 	</update>
-	
+
 	<!-- 사진사이즈저장 값이 있는지 확인 -->
 	<select id="getSize" resultType="String">
-		SELECT width from imageSize where wikiId = #{param1} and url = #{param2}
+		SELECT width from imageSize
+		where wikiId = #{param1} and url = #{param2}
 	</select>
-	
+
 	<!-- 사진정보 INSERT -->
 	<insert id="insertSize">
-		INSERT INTO imageSize VALUES (#{param1}, #{param2}, #{param3})
+		INSERT INTO imageSize VALUES (#{param1}, #{param2},
+		#{param3})
 	</insert>
-	
+
 	<!-- 사진정보 UPDATE -->
 	<update id="updateSize">
 		UPDATE imageSize
 		SET width = #{param3}
-		WHERE wikiId = #{param1} and url =#{param2}
+		WHERE wikiId =
+		#{param1} and url =#{param2}
 	</update>
-	
+
 	<!-- 이미지정보 모두 불러오기 -->
-	<select id="getAllSizeOfImg" resultType="kb.keyboard.warrior.dto.ImageSizeDTO">
+	<select id="getAllSizeOfImg"
+		resultType="kb.keyboard.warrior.dto.ImageSizeDTO">
 		SELECT * FROM imageSize where wikiId = #{param}
 	</select>
-	
-	
+
+
 	<!-- 게시글 관련 메소드들 -->
-	<select id="getAllPost" resultType="kb.keyboard.warrior.dto.BoardDTO">
-		SELECT 
-		ROW_NUMBER() OVER (order by like_count desc, comment_count desc) AS management_number,
-		e.id, m.title,m.titleShare, m.userno , u.nickname, u.username, e.data, m.isOpen, 
+	<select id="getAllPost"
+		resultType="kb.keyboard.warrior.dto.BoardDTO">
+		SELECT
+		ROW_NUMBER() OVER (order by like_count desc, comment_count desc) AS
+		management_number,
+		e.id, m.title,m.titleShare, m.userno , u.nickname,
+		u.username, e.data, m.isOpen,
 		COALESCE(l.like_count, 0) AS like_count,
 		COALESCE(c.comment_count, 0) AS comment_count
-		from EditorData e
+		from
+		EditorData e
 		join Menu m on e.id = m.id
-		join user u on m.userno = u.userno
+		join user u on m.userno =
+		u.userno
 		left outer join ( SELECT targetid, COUNT(*) AS like_count
-		FROM liketable
+		FROM
+		liketable
 		GROUP BY targetid
-		) l 
+		) l
 		on e.id = l.targetid
-		left outer join (select targetid, count(*) as comment_count
+		left outer join (select targetid, count(*) as
+		comment_count
 		from comment
 		where commentstatus = 1
 		group by targetid) c
 		on c.targetid = e.id
 		where m.isOpen = 1
-		order by like_count desc, comment_count desc
+		order by like_count desc,
+		comment_count desc
 	</select>
-	
-	<select id="getMyPost" resultType="kb.keyboard.warrior.dto.BoardDTO">
-		SELECT 
+
+	<select id="getMyPost"
+		resultType="kb.keyboard.warrior.dto.BoardDTO">
+		SELECT
 		ROW_NUMBER() OVER (ORDER BY e.id ASC) AS management_number,
-		e.id, m.title,m.titleShare, m.userno , u.username, e.data, m.isOpen, 
+		e.id,
+		m.title,m.titleShare, m.userno , u.username, e.data, m.isOpen,
 		COALESCE(l.like_count, 0) AS like_count,
-		COALESCE(c.comment_count, 0) AS comment_count
+		COALESCE(c.comment_count, 0)
+		AS comment_count
 		from EditorData e
 		join Menu m on e.id = m.id
-		join user u on m.userno = u.userno
-		left outer join ( SELECT targetid, COUNT(*) AS like_count
+		join user u
+		on m.userno = u.userno
+		left outer join ( SELECT targetid, COUNT(*) AS
+		like_count
 		FROM liketable
 		GROUP BY targetid
-		) l 
+		) l
 		on e.id = l.targetid
-		left outer join (select targetid, count(*) as comment_count
+		left outer join (select targetid, count(*) as
+		comment_count
 		from comment
 		where commentstatus = 1
 		group by targetid) c
@@ -190,72 +221,82 @@
 		where m.isOpen = 1 and m.userno = #{param}
 	</select>
 	<select id="myTotalLike" resultType="java.lang.Integer">
-		SELECT 
-		COALESCE(sum(like_count) , 0) 
+		SELECT
+		COALESCE(sum(like_count) , 0)
 		from EditorData e
 		join Menu m on e.id = m.id
-		join user u on m.userno = u.userno
+		join user u on m.userno =
+		u.userno
 		left outer join ( SELECT targetid, COUNT(*) AS like_count
-		FROM liketable
+		FROM
+		liketable
 		GROUP BY targetid
-		) l 
+		) l
 		on e.id = l.targetid
 		where m.isOpen = 1 and m.userno = #{param};
 	</select>
-	
-	<select id="getLikedPost" resultType="kb.keyboard.warrior.dto.BoardDTO">
+
+	<select id="getLikedPost"
+		resultType="kb.keyboard.warrior.dto.BoardDTO">
 		select l.targetid as id, l.userno, m.titleShare
-		from liketable l 
+		from
+		liketable l
 		join Menu m
 		on l.targetid = m.id
 		where l.userno = #{param1}
 	</select>
-	<select id="getBestPost" resultType="kb.keyboard.warrior.dto.BoardDTO">
-		SELECT 
-		    ROW_NUMBER() OVER (ORDER BY e.id ASC) AS management_number,
-		    e.id, 
-		    m.title, 
-		    m.titleShare, 
-		    m.userno, 
-		    u.nickname, 
-		    e.data, 
-		    m.isOpen, 
-		    COALESCE(l.like_count, 0) AS like_count,
-		    COALESCE(c.comment_count, 0) AS comment_count
+	<select id="getBestPost"
+		resultType="kb.keyboard.warrior.dto.BoardDTO">
+		SELECT
+		ROW_NUMBER() OVER (ORDER BY e.id ASC) AS management_number,
+		e.id,
+		m.title,
+		m.titleShare,
+		m.userno,
+		u.nickname,
+		e.data,
+		m.isOpen,
+		COALESCE(l.like_count, 0) AS like_count,
+		COALESCE(c.comment_count, 0) AS comment_count
 		FROM EditorData e
 		JOIN Menu m ON e.id = m.id
-		JOIN user u ON m.userno = u.userno
+		JOIN
+		user u ON m.userno = u.userno
 		LEFT OUTER JOIN (
-		    SELECT targetid, COUNT(*) AS like_count
-		    FROM liketable
-		    GROUP BY targetid
+		SELECT targetid, COUNT(*) AS like_count
+		FROM liketable
+		GROUP BY targetid
 		) l ON e.id = l.targetid
 		LEFT OUTER JOIN (
-		    SELECT targetid, COUNT(*) AS comment_count
-		    FROM comment
-		    WHERE commentstatus = 1
-		    GROUP BY targetid
+		SELECT targetid, COUNT(*) AS comment_count
+		FROM comment
+		WHERE commentstatus = 1
+		GROUP BY targetid
 		) c ON c.targetid = e.id
 		WHERE m.isOpen = 1
-		ORDER BY like_count DESC, comment_count DESC
+		ORDER BY
+		like_count DESC, comment_count DESC
 		LIMIT 5;
 	</select>
-	<select id="getBestWriter" resultType="kb.keyboard.warrior.dto.BoardDTO">
-		SELECT 
+	<select id="getBestWriter"
+		resultType="kb.keyboard.warrior.dto.BoardDTO">
+		SELECT
 		sum(like_count) as like_count, u.nickname
 		FROM EditorData e
 		JOIN Menu m ON e.id = m.id
 		JOIN user u ON m.userno = u.userno
 		LEFT OUTER JOIN (
-		    SELECT targetid, COUNT(*) AS like_count
-		    FROM liketable
-		    GROUP BY targetid
+		SELECT targetid, COUNT(*) AS like_count
+		FROM liketable
+		GROUP BY targetid
 		) l ON e.id = l.targetid
 		WHERE m.isOpen = 1
-		group by u.nickname
+		group by
+		u.nickname
 		order by like_count desc
 		LIMIT 5;
 	</select>
+
 	
 	<select id="getWriterNickName" resultType="String">
 		SELECT nickname FROM user WHERE userno = #{param}
@@ -272,5 +313,5 @@
 	<insert id="insertHits">
 		INSERT INTO WikiHits VALUES (#{param}, 1)	
 	</insert>
-	
+
 </mapper>

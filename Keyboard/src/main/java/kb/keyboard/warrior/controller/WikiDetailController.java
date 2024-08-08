@@ -1,6 +1,7 @@
 package kb.keyboard.warrior.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,9 +9,12 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -92,6 +96,9 @@ public class WikiDetailController {
 	    	return new ResponseEntity("{\"error\":\"" + e.getMessage() + "\"}", HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	}
+
+
+
 	
 	// 핸들러 메소드: 파일을 서버에 업로드
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
@@ -99,6 +106,7 @@ public class WikiDetailController {
 	    @RequestParam("file") MultipartFile file,
 	    @RequestParam(value = "width", required = false) Integer width,
 	    @RequestParam(value = "height", required = false) Integer height,
+	    @RequestParam(value = "align", required = false) String align, // 정렬 상태 파라미터 추가
 	    HttpServletRequest request,
 	    HttpSession session) {
 
@@ -136,13 +144,10 @@ public class WikiDetailController {
 	        return new ResponseEntity<HashMap<String, Object>>(error, HttpStatus.BAD_REQUEST);
 	    }
 	}
-
 	
-	@RequestMapping("/aa")
-	public String aa() {
 
-		return "aa";
-	}
+
+
 
 
 }
