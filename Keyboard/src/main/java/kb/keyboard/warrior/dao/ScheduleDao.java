@@ -22,6 +22,7 @@ public interface ScheduleDao {
 	void saveSelf(@Param("userno") String userno);
 	void groupExit(String sharedepth3, String userno);
 	void alertInsertCalendar(Map<String, Object> params);
+	List<ScheduleDTO> countTodoList(@Param("userno") String userno);
 
 
 }
