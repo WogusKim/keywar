@@ -320,10 +320,7 @@
 				    </a>
 				</div>
 				
-				<%-- <a href="${pageContext.request.contextPath}/likeUp?id=<%= currentId %>"><iframe src="https://giphy.com/embed/05IRAGzP2Q6EY4E9eg" width="150" height="150" style="" frameBorder="0" allowFullScreen></iframe></a> --%>
-				
-				
-<%-- 				<a href="${pageContext.request.contextPath}/likeUp?id=<%= currentId %>"><img src="${pageContext.request.contextPath}/resources/images/like.png"  id="likeUp" ></a> --%>
+<%-- 			<a href="${pageContext.request.contextPath}/likeUp?id=<%= currentId %>"><img src="${pageContext.request.contextPath}/resources/images/like.png"  id="likeUp" ></a> --%>
 				<p style="font-size: 30px; margin: 0px;">${like}</p>
 				
             </div>
