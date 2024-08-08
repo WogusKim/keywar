@@ -150,13 +150,6 @@
 		#{param1} and url =#{param2}
 	</update>
 
-	<!-- 이미지 정렬 정보 업데이트 -->
-	<update id="updateImageAlign">
-		UPDATE imageSize
-		SET align = #{align}
-		WHERE wikiId = #{wikiId} AND imageId = #{imageId}
-	</update>
-
 	<!-- 이미지정보 모두 불러오기 -->
 	<select id="getAllSizeOfImg"
 		resultType="kb.keyboard.warrior.dto.ImageSizeDTO">
