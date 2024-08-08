@@ -103,7 +103,7 @@ width: 100%;
                 // 알림 메시지 추가
                 data.forEach(function(item) {
                 	var alertNo = 'contentNo'+item.alertid;
-                    $('#alertContentArea').append('<div id="'+ alertNo +'" class="alertContent" onclick="getDetail('+item.alertid+')">  </div>');
+                    $('#alertContentArea').append('<div id="alert-'+ alertNo +'" class="alertContent" onclick="getDetail('+item.alertid+')">  </div>');
                     $('#'+alertNo).append('<p>' + item.message + '</p>');
                     $('#'+alertNo).append('<p class="alertTimeStamp">' + item.senddate + '</div>');
                     $('#'+alertNo).append('<hr class="alerthr">');
@@ -156,6 +156,7 @@ width: 100%;
 %>
 <script type="text/javascript">
  window.onload = function() {
+	 console.log('로그인 체크 실행');
      var currentPath = window.location.pathname;
      var loginPath = '/login';
      var findPassword = '/findPassword'
@@ -214,7 +215,7 @@ width: 100%;
         
         
     </div>
-    
+   
     </div>
 
 </body>
