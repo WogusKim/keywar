@@ -63,9 +63,9 @@
 	        FROM user
 	        WHERE userno = #{inviteNo}
 	    </selectKey>	
-	    INSERT IGNORE INTO alert (userno, message)
+	    INSERT IGNORE INTO alert (userno, category, message)
 	    VALUES (
-	        #{userno}, 
+	        #{userno}, 'calendar', 
             CONCAT('일정: ', #{inviteName}, ' 님의 초대로 ', #{customname}, ' 그룹의 일원이 되셨습니다.')
         )
 	</insert>
@@ -195,5 +195,15 @@
 		and sharedepth3 = #{sharedepth3}
 		and userid = #{userid};
     </update>
+    
+    <select id="countTodoList" parameterType="String" resultType="kb.keyboard.warrior.dto.ScheduleDTO">
+		select count(*) as todocount, duedate 
+		from (select date_format(duedate, '%Y-%m-%d') as duedate, userno from todolist
+		where userno = #{userno}
+		and isdone = '0') a
+		group by duedate
+		;
+    </select>
+    
     
 </mapper>
