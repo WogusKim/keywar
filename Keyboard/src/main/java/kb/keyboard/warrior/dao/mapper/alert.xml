@@ -10,5 +10,8 @@
 	<update id="updateIsread" >
 		UPDATE alert SET isread = 1 WHERE alertid = #{param1};
 	</update>
-
+	<insert id="addNoticeAlert" parameterType="kb.keyboard.warrior.dto.AlertDTO">
+		insert into alert (userno, message, category)
+		values (#{userno}, #{message}, 'notice')
+	</insert>
 </mapper>

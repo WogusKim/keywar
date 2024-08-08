@@ -102,8 +102,9 @@ width: 100%;
 
                 // 알림 메시지 추가
                 data.forEach(function(item) {
-                	var alertNo = 'contentNo'+item.alertid;
-                    $('#alertContentArea').append('<div id="alert-'+ alertNo +'" class="alertContent" onclick="getDetail('+item.alertid+')">  </div>');
+                	console.log(item);
+                	var alertNo = 'contentNo-'+item.alertid;
+                    $('#alertContentArea').append('<div id="'+ alertNo +'" class="alertContent" onclick="getDetail('+item.alertid+',\''+ item.category+'\')">  </div>');
                     $('#'+alertNo).append('<p>' + item.message + '</p>');
                     $('#'+alertNo).append('<p class="alertTimeStamp">' + item.senddate + '</div>');
                     $('#'+alertNo).append('<hr class="alerthr">');
@@ -137,9 +138,25 @@ width: 100%;
     	 var img = document.getElementById('alarm');
         img.src = '${pageContext.request.contextPath}/resources/images/alarm.png';
     }
-    function getDetail(alertno1){
-    	window.location.href = '${pageContext.request.contextPath}/testUrl?alertid='+alertno1;
+    
+    //이동 url
+    function getDetail(alertno1, category, detail){
+    	
+    	
+    	alert("alert id : "+alertno1 + " / 분류 : "+ category);
+    	var nextpage = '${pageContext.request.contextPath}/testUrl?alertid='+alertno1+ '&nextpage=';
+    	if(category == 'calendar'){
+    		nextpage = nextpage + 'calendar';
+    	}else if(category == 'wiki'){
+    		nextpage = nextpage+ 'detailNote?id=' + detail;
+    	}else if(category == 'notice'){
+    		nextpage = nextpage + 'notice';
+    	}
+    	
+    	window.location.href = nextpage;
     }
+    
+    
     function logout(){
     	alert("정상적으로 로그아웃 되었습니다.");
     	window.location.href = "${pageContext.request.contextPath}/logout";
@@ -156,7 +173,6 @@ width: 100%;
 %>
 <script type="text/javascript">
  window.onload = function() {
-	 console.log('로그인 체크 실행');
      var currentPath = window.location.pathname;
      var loginPath = '/login';
      var findPassword = '/findPassword'
@@ -174,6 +190,8 @@ width: 100%;
          }else{ 
          }
      }
+     
+     checkForNotifications();
  };
 </script>
 
