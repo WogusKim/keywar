@@ -8,6 +8,8 @@
 <title>김국민의 업무노트 : TO DO LIST</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/todo.css">
+<link rel="icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
+<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
 <style>
 /* 기본 체크박스 감춤 */
 input[type="checkbox"][id^="check"] {

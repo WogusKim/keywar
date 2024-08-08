@@ -334,7 +334,7 @@ label {
 				<div class="board_inner_inner">
 		    		<div class="card_top">
 					    <div class="title_and_link">
-					        <h2 class="card_title">Today's tasks</h2>
+					        <h2 class="card_title No-line-break">Today's tasks</h2>
 					        <a href="${pageContext.request.contextPath}/todo" class="link-icon">바로가기</a>
 					    </div>
 			    	</div>
@@ -367,15 +367,15 @@ label {
 					    	<div  class="mainTodoInnerBox">
 							    <c:forEach var="dto" items="${todoList}">
 							    <div class="mainTodoContentOutline ${dto.checkstatus == 0 ? 'past-to-do' : ''}">
-							    	<div class="arrangeBox" >
-										<div style="display: flex; text-align: center; text-align: center;" > 
+							    	<div class="arrangeBox" style="width: 100%;">
+										<div style="display: flex; text-align: center; text-align: center; width: 100%;" > 
 											<input type="checkbox" onclick="checkTodo(${dto.todoid}, this.checked)"
 												${dto.isdone == 1 ? 'checked' : ''} data-todoid="${dto.todoid}"
 												data-done="${dto.isdone}"  id="check-${dto.todoid}" > <label for="check-${dto.todoid}"></label> 
-											<div style="text-align: center; height: 30px; vertical-align: middle;">${dto.task}</div>
+											<div style="text-align: left; height: 30px; vertical-align: middle; width: 90%;" class="No-line-break">${dto.task}</div>
 										</div>
 									</div>
-									<div style="color: gray; font-size: small; margin-left: 5px;"> 마감 기일 : ${dto.duedate}</div>  
+									<div style="color: gray; font-size: small; margin-left: 5px;" class="No-line-break"> 마감 기일 : ${dto.duedate}</div>  
 							    </div>
 							    </c:forEach>
 							</div>
