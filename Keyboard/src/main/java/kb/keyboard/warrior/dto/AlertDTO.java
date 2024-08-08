@@ -8,6 +8,8 @@ public class AlertDTO {
  private String message;   // 메시지
  private String senddate;    // 발송일
  private String isread;    // 읽음 여부
+ private String category;    // 분류
+ private String detail;    // 상세
 
  public AlertDTO() {
  }
@@ -60,4 +62,21 @@ public class AlertDTO {
  public void setIsread(String isread) {
      this.isread = isread;
  }
+
+public String getCategory() {
+	return category;
+}
+
+public void setCategory(String category) {
+	this.category = category;
+}
+
+public String getDetail() {
+	return detail;
+}
+
+public void setDetail(String detail) {
+	this.detail = detail;
+}
+ 
 }

@@ -1,5 +1,6 @@
 package kb.keyboard.warrior.memo.command;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,7 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.ui.Model;
 
+import kb.keyboard.warrior.dao.AlertDao;
+import kb.keyboard.warrior.dao.LoginDao;
 import kb.keyboard.warrior.dao.MemoDao;
+import kb.keyboard.warrior.dto.AlertDTO;
 import kb.keyboard.warrior.util.Constant;
 
 public class noticeWriteCommand implements MemoCommand {
@@ -28,7 +32,31 @@ public class noticeWriteCommand implements MemoCommand {
 		SqlSession sqlSession = Constant.sqlSession;
 		MemoDao dao = sqlSession.getMapper(MemoDao.class);
 		dao.noticeWrite(title,content,color,userno,deptno);
-
+		
+		
+		AlertDao adao = sqlSession.getMapper(AlertDao.class);
+		LoginDao ldao = sqlSession.getMapper(LoginDao.class);
+		
+		List<String> members = (ldao.getAllDeptMember(deptno));
+		System.out.println("공지 등록한 부점의 사용자 수  : "+members.size());
+		
+		AlertDTO dto = new AlertDTO();
+		// 공지 등록한 사람 이름 찾아서 이름 등록
+		String writerName = ldao.isRightUserno(userno).getUsername(); 
+		dto.setMessage(writerName + "님이 부점 공지를 등록하였습니다.");	
+		dto.setCategory("notice");
+		if(members.size()!=0) {
+			System.out.println("공지사항 alert 추가 시작 !");
+			for(String userno1 : members) {
+				if(userno1.equals(userno)) 
+					continue;
+				
+				dto.setUserno(userno1);
+				System.out.println(userno1 + "님에게  alert 추가.");
+				adao.addNoticeAlert(dto);
+			}
+		}
+		
 	}
 
 }

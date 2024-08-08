@@ -70,13 +70,13 @@ public class AjaxNotificationController {
     
     
     @RequestMapping(value = "/testUrl", method = RequestMethod.GET)
-    public String readCheck(HttpServletResponse response, @RequestParam("alertid") String alertid) throws Exception {
+    public String readCheck(HttpServletResponse response,@RequestParam("alertid") String alertid ,@RequestParam("nextpage") String nextpage) throws Exception {
     	System.out.println("alertno : "+alertid);
-    	
+    	System.out.println("nextpage : "+nextpage);
     	AlertDao dao = sqlSession.getMapper(AlertDao.class);
     	dao.updateIsread(alertid);
     	
-    	return "redirect:testPage";
+    	return "redirect:"+nextpage;
     }
     
     

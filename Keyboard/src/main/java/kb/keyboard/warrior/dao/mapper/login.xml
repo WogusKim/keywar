@@ -65,5 +65,7 @@
  	<select id="getColor" resultType="String">
 		SELECT displayColor FROM userDisplayColor WHERE userno = #{param}
 	</select>
-  
+	<select id="getAllDeptMember"  resultType="String">
+		select userno from user where deptno = #{param1}
+	</select>
 </mapper>

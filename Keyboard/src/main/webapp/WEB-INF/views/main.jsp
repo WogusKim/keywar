@@ -547,8 +547,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 	
-    // 완료 현황 업데이트
-    updateTodoCount();
+
     
     // 탭 활성화 로직
     const tabs = document.querySelectorAll('.tab');
@@ -593,6 +592,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (firstTab) {
         firstTab.click(); // 이벤트를 강제로 호출하여 첫 탭을 활성화
     }
+    
+    // 완료 현황 업데이트
+    updateTodoCount();
 });
 
 

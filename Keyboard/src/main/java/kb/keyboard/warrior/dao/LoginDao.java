@@ -25,5 +25,8 @@ public interface LoginDao {
     //색상찾기
 	public String getColor(String userno);
 	
+	//부서별 직원 찾기
+	public List<String> getAllDeptMember(String deptno);
+	
 
 }
