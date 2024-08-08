@@ -75,17 +75,15 @@ function changeNickname() {
 <body>
 <%@ include file="/WEB-INF/views/header.jsp" %>
 
-<div class="content_outline" style="height: 100%;">
+<div class="content_outline" >
     <%@ include file="/WEB-INF/views/sidebar.jsp" %>
-    <div class="content_right" style="height: 90%;">
+    <div class="content_right" >
         <div class="board_currency">
-            <div class="board_currency_inner" style="background-color: #92D1BA;">
+            <div class="board_currency_inner" style="background-color: #ffffff73;">
                 <div class="outlineBox">
                     <div style="float: left;"><h2 class="card_title">마이페이지 수정</h2></div>
                     <div style="float: right;">
-                        <a href="${pageContext.request.contextPath}/editProfile">
-                            <img class="header_icon" style="margin-top: 5px;" src="${pageContext.request.contextPath}/resources/images/setting.png">
-                        </a>
+                       
                     </div>
                 </div>
                 <hr>
@@ -97,15 +95,15 @@ function changeNickname() {
                         </div>
                         <form action="${pageContext.request.contextPath}/uploadProfilePicture" method="post" enctype="multipart/form-data">
                             <input type="file" name="picture" style="display: none;" id="profilePictureInput" />
-                            <button class="imageEditButton" type="button" onclick="document.getElementById('profilePictureInput').click();">프로필 사진 선택</button>
-                            <button class="imageEditButton" type="submit">업로드</button>
+                            <button class="imageEditButton" type="button" style="background-color: var(--main-bgcolor);" onclick="document.getElementById('profilePictureInput').click();">프로필 사진 선택</button>
+                            <button class="imageEditButton" type="submit" style="background-color: var(--main-bgcolor);">업로드</button>
                         </form>
                         <br>
                         <div class="editBox">
-                            <span style="font-size: 20px;">별명 </span>
+                            <span style="font-size: 20px; font-weight: bold;">별명 </span>
                             <input type="text" value="${dto.nickname}" class="editText" id="nickname" name="nickname" />
                         </div>
-                        <button class="imageEditButton" style="background-color: #92D1BA;" onclick="changeNickname()">저장하기</button>
+                        <button class="imageEditButton" style="background-color: var(--main-bgcolor);" onclick="changeNickname()">저장하기</button>
                     </div>
                 </div>
                 <input type="hidden" name="userno" id="userno" value="${dto.userno}" />

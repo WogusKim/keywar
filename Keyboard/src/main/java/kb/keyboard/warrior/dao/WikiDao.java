@@ -42,6 +42,9 @@ public interface WikiDao {
 	
 	//공개여부 변경 메서드
 	void changeIsOpen(String isOpen, String id);
+	
+	//방금 추가한 메뉴 id 찾기
+	int getNewCopyId(String userno);
 
 	//--------------------------------메뉴관련--------------------------------//
 	
@@ -82,6 +85,15 @@ public interface WikiDao {
 	public List<BoardDTO> getLikedPost(String userno); //내가 좋아하는 게시물 가져오기
 	public List<BoardDTO> getBestPost(); // 좋아요 많은 순 게시물 5개 가져오기 ! 
 	public List<BoardDTO> getBestWriter(); // 좋아요 많은 순 게시물 5개 가져오기 ! 
+	
+	//닉네임조회
+	String getWriterNickName(String userno);
+	
+	//위키 조회수 찾기
+	Integer getHitsById(int id);
+	//조회수 처리
+	void updateHits(int id);
+	void insertHits(int id);
 
 
 

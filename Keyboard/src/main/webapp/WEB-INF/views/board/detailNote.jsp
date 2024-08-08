@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,15 +79,50 @@
 	height: 100%;
 	
 }
+
+.others_wikiTitle {
+    width: 90%;
+    margin: auto;
+    border-radius: 75px;
+    padding: 20px 10px; /* 위아래 패딩으로 공간 추가 */
+    border-bottom: 1px solid #ccc; /* 하단 경계선 추가 */
+    background-color: #f9f9f9; /* 배경색 설정 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 그림자 효과 */
+}
+
+.otherWikiTitle {
+	text-align: center; /* 모든 내용을 가운데 정렬 */
+}
+
+.writer_profile {
+    width: 50px; /* 이미지 크기 설정 */
+    height: 50px; /* 이미지 높이 설정 */
+    border-radius: 50%; /* 원형으로 표시 */
+    object-fit: cover; /* 이미지 비율 유지 */
+    margin-bottom: 10px; /* 이미지와 텍스트 간 간격 */
+    display: inline-block; /* 이미지를 인라인 블록으로 설정 */
+}
+
+.others_wikiTitle img.mini_icon {
+    vertical-align: middle; /* 아이콘을 텍스트 중간에 위치 */
+    margin-right: 5px; /* 아이콘 간 간격 */
+}
+
+.others_wikiTitle span {
+    display: inline-block; /* 스팬을 인라인 블록으로 설정 */
+    margin: 0 10px; /* 좌우 마진 설정 */
+    font-size: 14px; /* 폰트 크기 설정 */
+}
+
 .editor_outline {
 	width : 75%;
 	border: 1px solid #ccc; 
 	padding: 10px;
-	border-radius: 5px;
+	border-radius: 15px;
 	margin: auto;
+	margin-top : 20px;
+	background-color: white;
 /* 	height: 100%; */
-
-	
 }
  
 .editor-button-area {
@@ -132,6 +168,109 @@
 	padding: 10px;
 }
 
+.commentArea1 {
+	background-color: #f9f9f9; 
+	border-radius: 20px;
+	width : 75%; 
+	margin: auto; 
+	padding: 10px 20px;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.styled-button {
+    background: linear-gradient(to right, #6a82fb, #fc5c7d); /* 그라디언트 색상 업데이트 */
+    border: none;
+    border-radius: 30px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 12px 25px; /* 패딩 조정 */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    margin: 20px 0px; /* 마진 상단 추가 */
+}
+
+.styled-button:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px); /* 변환 값 조정 */
+}
+
+
+/* 업무노트 훔쳐오기를 위한 모달 팝업 관련 css */
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    height: 100%;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.selectAndInput {
+	display: flex;
+	height: 100%;
+}
+
+.section1 {
+	width : 50%;
+	height: 70%;
+	border-radius: 20px;
+	padding: 20px 10px;
+	background-color: #d9d9d985;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+	
+}
+
+.section2 {
+	width: 40%;
+	height: 100%;
+	margin: auto 10px;
+	border-radius: 20px;
+	padding: 20px 10px;
+	background-color: #d9d9d985;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.selected {
+    background-color: #f0f8ff; /* 연한 파란색 배경 */
+    border: 2px solid #007BFF; /* 파란색 테두리 */
+    border-radius: 5px; /* 모서리를 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2); /* 파란색 그림자 */
+    color: #007BFF; /* 파란색 텍스트 */
+    font-weight: bold; /* 볼드체 */
+    
+}
+/* 업무노트 훔쳐오기를 위한 모달 팝업 관련 css */
+
+
 </style>
 <body>
 
@@ -147,21 +286,48 @@
         <!-- 우측 컨텐츠 영역 -->
         <div class="content_right">
         	<div id="finalOuter" class="final-outline" >
-        	<!-- Editor 영역 -->
-            <div id="myEditor" class="editor_outline"></div>
+        	<!-- 제목 -->
+			<div class="others_wikiTitle">
+				<div class="otherWikiTitle">
+				    <img class="writer_profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${menuDto.userno}" alt="Writer's Profile Picture">
+				    <div>
+				        <h2>${writerNickName}님의 메뉴얼</h2>
+				        <h1>${menuDto.titleShare}</h1>
+				        <div>
+				            <img class="mini_icon" src="/resources/images/heart16.png" alt="likes"> 좋아요 ${like}&nbsp;&nbsp;
+				            <img class="mini_icon" src="/resources/images/chat16.png" alt="comments"> 댓글 <c:out value="${fn:length(comments)}" />&nbsp;&nbsp;
+				            <img class="mini_icon" src="/resources/images/eyes.png" alt="views"> 조회수 ${hits}
+				        </div>
+				    </div>
+				</div>
+			        	
+	        	<!-- Editor 영역 -->
+	            <div id="myEditor" class="editor_outline"></div>
+            </div>
             <!-- 버튼 영역 -->
             <div class="editor-button-area">
 				<!-- <button onclick="saveData()">저장하기</button> -->  <!-- 저장은 불가능해야함. -->
-				<button onclick="loadData()" style="margin-bottom: 10px;">업무노트 뺏어 오기 </button><br>
+				<button id="copyNoteBtn" class="styled-button">업무노트 훔치기</button><br>
 				
-				<a href="${pageContext.request.contextPath}/likeUp?id=<%= currentId %>"><img src="${pageContext.request.contextPath}/resources/images/like.png"  id="likeUp" ></a>
+				
+				
+				<div style="position:relative; display:inline-block;">
+				    <a href="${pageContext.request.contextPath}/likeUp?id=<%= currentId %>" style="display:inline-block;">
+				        <div style="width:150px; height:150px; position:relative;">
+				            <iframe src="https://giphy.com/embed/05IRAGzP2Q6EY4E9eg" width="150" height="150" style="pointer-events:none;" frameBorder="0" allowFullScreen></iframe>
+				            <div style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>
+				        </div>
+				    </a>
+				</div>
+				
+<%-- 			<a href="${pageContext.request.contextPath}/likeUp?id=<%= currentId %>"><img src="${pageContext.request.contextPath}/resources/images/like.png"  id="likeUp" ></a> --%>
 				<p style="font-size: 30px; margin: 0px;">${like}</p>
 				
             </div>
 				  <c:set var="sessionUserno" value="<%= userno %>" />
 				  
 				
-	            <div id="commentArea1" style="background-color: #FAFAFA; width : 75%; margin: auto; padding-left: 20px;"> 
+	            <div id="commentArea1" class="commentArea1"> 
 	            	<div style="height: 40px; width: 100%;"></div>
 	            	<c:forEach var="comment" items="${comments}">
 	            	<div style="width: 100%; min-height: 80px; " id="comment-id-${comment.commentid }" >
@@ -211,7 +377,146 @@
     	<input type="hidden" id="userno" name="userno"  value="<%= userno %>">
     </form>
     
+    <!-- 모달 팝업 HTML 추가 -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>업무노트 훔치기</h3>
+            <form id="copyNoteForm" action="${pageContext.request.contextPath}/copyNote?copyId=${menuDto.id}" method="post">
+                <hr>
+                <div class="selectAndInput">
+	                <div class="menu-tree section1">
+	                    <h4>폴더 선택</h4>
+						
+						<!-- 세션에서 로그인 사용자의 메뉴 리스트보여주기 -->
+				        <ul>
+				            <c:forEach var="menu" items="${menus}">
+				                <li>
+				                	<div class="menu_list">
+					                    <div class="icon ${menu.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${menu.menuType}" onclick="toggleFolder(this)"></div>
+							            <span onclick="selectFolder(this, ${menu.id}, '${menu.menuType}', ${menu.depth})">${menu.title}</span>
+				                    </div>
+				                    <c:if test="${not empty menu.children}">
+				                        <ul>
+				                            <c:forEach var="child1" items="${menu.children}">
+				                                <li>
+				                                	<div class="menu_list">
+					                                    <div class="icon ${child1.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child1.menuType}" onclick="toggleFolder(this)"></div>
+											            <span onclick="selectFolder(this, ${child1.id}, '${child1.menuType}', ${child1.depth})">${child1.title}</span>
+				                                    </div>
+				                                    <c:if test="${not empty child1.children}">
+				                                        <ul>
+				                                            <c:forEach var="child2" items="${child1.children}">
+				                                                <li>
+				                                                	<div class="menu_list">
+					                                                    <div class="icon ${child2.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child2.menuType}" onclick="toggleFolder(this)"></div>
+															            <span onclick="selectFolder(this, ${child2.id}, '${child2.menuType}', ${child2.depth})">${child2.title}</span>
+				                                                    </div>
+				                                                    <c:if test="${not empty child2.children}">
+				                                                        <ul>
+				                                                            <c:forEach var="child3" items="${child2.children}">
+				                                                                <li><div class="menu_list">
+					                                                                    <div class="icon ${child3.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child3.menuType}" onclick="toggleFolder(this)"></div>
+																			            <span onclick="selectFolder(this, ${child3.id}, '${child3.menuType}', ${child3.depth})">${child3.title}</span>
+				                                                                    </div>
+				                                                                    <c:if test="${not empty child3.children}">
+				                                                                        <ul>
+				                                                                            <c:forEach var="child4" items="${child3.children}">
+				                                                                                <li>
+				                                                                                	<div class="menu_list">
+					                                                                                    <div class="icon ${child4.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child4.menuType}" onclick="toggleFolder(this)"></div>
+																							            <!-- menuType에 따라 다른 처리 -->
+																							            <span onclick="selectFolder(this, ${child4.id}, '${child4.menuType}', ${child4.depth})">${child4.title}</span>
+				                                                                                    </div>
+				                                                                                </li>
+				                                                                            </c:forEach>
+				                                                                        </ul>
+				                                                                    </c:if>
+				                                                                </li>
+				                                                            </c:forEach>
+				                                                        </ul>
+				                                                    </c:if>
+				                                                </li>
+				                                            </c:forEach>
+				                                        </ul>
+				                                    </c:if>
+				                                </li>
+				                            </c:forEach>
+				                        </ul>
+				                    </c:if>
+				                </li>
+				            </c:forEach>
+				        </ul>
+				        <!-- 세션에서 로그인 사용자의 메뉴 리스트보여주기 -->
+	                </div>
+	                <div class="input_outer section2">
+	                    <input type="hidden" id="selectedId" name="id">
+	                    <input type="hidden" id="selectedType" name="type" value="item">
+	                    <input type="hidden" id="selectedDepth" name="depth">
+	
+	                    <div class="edit_field">
+	                        <label class="label-fixed-width">노트 제목:</label>
+	                        <input type="text" id="title" name="title" class="edit_input" required>
+	                    </div>
+	
+	                    <div class="edit_field">
+	                        <label class="label-fixed-width">공유용 제목:</label>
+	                        <input type="text" name="sharedTitle" class="edit_input">
+	                    </div>
+	                </div>
+                </div>
+                <div class="submit_buttonArea">
+                    <button type="submit" class="styled-button">확인</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    
 <script type="text/javascript"> 
+
+// 모달 열기/닫기 스크립트
+var modal = document.getElementById("myModal");
+var btn = document.getElementById("copyNoteBtn");
+var span = document.getElementsByClassName("close")[0];
+
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+function selectFolder(element, id, menuType, depth) {
+	
+	console.log('뎁스는 ', depth);
+	
+	if (depth >= 4) {
+		alert('해당 폴더에는 더 메뉴를 만들 수 없습니다.');
+	} else {
+		
+	    if (menuType === 'folder') {
+	        document.getElementById('selectedId').value = id;
+	        document.getElementById('selectedType').value = menuType;
+	        document.getElementById('selectedDepth').value = depth;
+
+	        // 선택된 폴더 스타일 변경
+	        var selected = document.querySelectorAll('.selected');
+	        selected.forEach(function(el) {
+	            el.classList.remove('selected');
+	        });
+	        element.classList.add('selected');
+	    }
+	}
+}
+
 
 // URL에서 게시글 번호 가져오기
 function getQueryParameter(name) {
@@ -272,29 +577,6 @@ function test(){
 
 
 let editor;
-async function saveData() {
-	
-    try {
-        const savedData = await editor.save();
-        console.log("저장된 데이터:", savedData);
-
-        // fetch API를 사용한 예제 POST 요청
-        fetch('${pageContext.request.contextPath}/saveEditorData', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(savedData)
-        })
-        .then(response => response.json())
-        .then(data => console.log('성공:', data))
-        .catch((error) => {
-            console.error('오류:', error);
-        });
-    } catch (error) {
-        console.error('저장 실패:', error);
-    }
-}
 
 document.addEventListener('DOMContentLoaded', function () {
 	
@@ -303,31 +585,8 @@ document.addEventListener('DOMContentLoaded', function () {
     
     editor = new EditorJS({
         holder: 'myEditor',
+        readOnly: true,
         data: editorData,
-/*         {
-        	blocks: [
-                {
-                    "type": "header",
-                    "data": {
-                        "text": "이것은 첨부터 보이는 데이터",
-                        "level": 2
-                    }
-                },
-                {
-                    "type": "list",
-                    "data": {
-                        "style": "ordered",
-                        "items": [
-                            "이거슨 리스트 아이템이예용",
-                            "리스트라니까용",
-                            "간단하고 파워풀하지용",
-                            "비슷한 설정이 반복되는 게 못생겼어요"
-                        ]
-                    }
-                }
-        	]
-        } */
-    
         tools: {
             // Header 설정
             header: {
@@ -501,6 +760,12 @@ document.addEventListener('DOMContentLoaded', function () {
         
     });
 });
+
+/* function copyNote() {
+    const noteId = '${menuDto.id}'; // JSP에서 서버 측 변수를 사용
+    const redirectUrl = '${pageContext.request.contextPath}/copyNote?id=' + noteId; // 이 URL은 실제 애플리케이션의 로직에 맞게 조정되어야 함
+    window.location.href = redirectUrl;
+} */
 </script>
 </body>
 </html>

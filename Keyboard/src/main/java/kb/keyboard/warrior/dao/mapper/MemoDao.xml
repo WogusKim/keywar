@@ -7,12 +7,17 @@
 
 	<select id="todoView"
 		resultType="kb.keyboard.warrior.dto.TodoListDTO">
-		SELECT todoid, userno, task, detail, startdate, isdone, status, importance, progress, category, SUBSTRING(duedate, 1, 10) AS duedate
+		SELECT todoid, userno, task, IFNULL(detail, '투두리스트에 대한 상세한 설명을 넣어놓는 곳입니다.') AS detail,  
+		startdate, isdone, status, importance, progress, category, SUBSTRING(duedate, 1, 10) AS duedate
+		, CASE 
+			WHEN DATE(duedate) &lt; CURDATE() THEN 0
+			WHEN DATE(duedate) = CURDATE() THEN 1 
+	        WHEN DATE(duedate) &gt; CURDATE() THEN 2 
+		END AS checkstatus	
 		FROM todolist
-		WHERE userno = #{param1}
-		AND status =
-		1
-		ORDER BY todoid
+		WHERE userno = #{param1} AND 
+		status = 1
+		ORDER BY duedate
 	</select>
 
 

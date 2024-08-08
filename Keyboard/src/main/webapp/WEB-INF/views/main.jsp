@@ -26,6 +26,7 @@
 <link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/flag.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/todo.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 var contextPath = '${pageContext.request.contextPath}';
@@ -304,29 +305,86 @@ document.addEventListener('DOMContentLoaded', function() {
 	    	</div>
 	    </div>
 	    
+<style>
+/* 기본 체크박스 감춤 */
+input[type="checkbox"][id^="check"] {
+    display: none;
+}
+/* off */
+input[type="checkbox"][id^="check"] + label { 
+    background-repeat: no-repeat; /* 반복 방지 */
+    background-image: url('${pageContext.request.contextPath}/resources/images/checkbox.png'); /* off 이미지 */
+}
+/* on */
+input[type="checkbox"][id^="check"]:checked + label {
+    background-repeat: no-repeat; /* 반복 방지 */
+    background-image: url('${pageContext.request.contextPath}/resources/images/checked.png'); /* on 이미지 */
+}
+label { 
+    display: block; 
+    width: 30px; 
+    height: 30px;
+}
+
+</style>
+	    
+	    
 	    <div class="board_bottom">
 	    	<div class="board_inner2">
 				<div class="board_inner_inner">
 		    		<div class="card_top">
 					    <div class="title_and_link">
-					        <h2 class="card_title">To Do List</h2>
+					        <h2 class="card_title">Today's tasks</h2>
 					        <a href="${pageContext.request.contextPath}/todo" class="link-icon">바로가기</a>
 					    </div>
 			    	</div>
 			    	<hr>
-			    	<div class="todo_list">
-			    	
-						<ul>
-						    <c:forEach var="todo" items="${todoList}">
-						        <li class="todo_item ${todo.isdone == 1 ? 'checked' : ''}">
-						            <input type="checkbox" onclick="checkTodo(${todo.todoid}, this.checked)" ${todo.isdone == 1 ? 'checked' : ''} data-todoid="${todo.todoid}" data-done="${todo.isdone}">
-						            ${todo.todoid} / ${todo.task}
-						        </li>
-						    </c:forEach>
-						</ul>
-						<div class="todo_rate">
-						    <span id="todo_rate" style="text-align: center;">0 / ${todoList.size()}</span>
-						</div>
+			    	<div class="todo_list" >
+			    	 <c:choose>
+			    		<c:when test="${empty todoList}">
+			    			<div class="mainTodoNotFountOutline" >
+			    				<div style="width:50%;height:0;padding-bottom:50%;position:relative;">
+								    <iframe src="https://giphy.com/embed/SkJRWt1Mo9CSlgrHcE" 
+								            width="100%" 
+								            height="100%" 
+								            style="position:absolute;pointer-events:none;" 
+								            frameBorder="0" 
+								            class="giphy-embed" 
+								            allowFullScreen>
+								    </iframe>
+								    <div style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>
+								</div>
+			    				<!-- <div style="width:50%;height:0;padding-bottom:50%;position:relative;"><iframe src="https://giphy.com/embed/SkJRWt1Mo9CSlgrHcE" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div> -->
+				    			<%-- <img src="${pageContext.request.contextPath}/resources/images/not-found.png" /> --%>
+				    			<div style="color: #727272;">오늘이 마감일인  <br>
+				    			미완료 상태의 할 일이 없습니다.<br>
+				    			자세한 오늘의 할 일을 보고 싶으시면 <br> 
+				    			위의 상세보기를 눌러주세요.
+				    			</div>
+			    			</div>
+			    		</c:when>
+			    		<c:otherwise>
+					    	<div  class="mainTodoInnerBox">
+							    <c:forEach var="dto" items="${todoList}">
+							    <div class="mainTodoContentOutline ${dto.checkstatus == 0 ? 'past-to-do' : ''}">
+							    	<div class="arrangeBox" >
+										<div style="display: flex; text-align: center; text-align: center;" > 
+											<input type="checkbox" onclick="checkTodo(${dto.todoid}, this.checked)"
+												${dto.isdone == 1 ? 'checked' : ''} data-todoid="${dto.todoid}"
+												data-done="${dto.isdone}"  id="check-${dto.todoid}" > <label for="check-${dto.todoid}"></label> 
+											<div style="text-align: center; height: 30px; vertical-align: middle;">${dto.task}</div>
+										</div>
+									</div>
+									<div style="color: gray; font-size: small; margin-left: 5px;"> 마감 기일 : ${dto.duedate}</div>  
+							    </div>
+							    </c:forEach>
+							</div>
+								
+							<div class="todo_rate" style="padding: 0px; ">
+								    <span id="todo_rate" style="text-align: center; margin-right: 10px;">0 / ${todoList.size()}</span>
+							</div>
+			    		</c:otherwise>
+			    	</c:choose>
 
 			        </div>
 				</div>

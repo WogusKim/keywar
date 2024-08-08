@@ -29,52 +29,49 @@ import kb.keyboard.warrior.dao.WikiDao;
 import kb.keyboard.warrior.dto.*;
 import kb.keyboard.warrior.util.PasswordEncoderUtil;
 
-
-
 @Controller
 public class LoginController {
 	
 	@Autowired
 	public SqlSession sqlSession;
 	
-
 	// Regarding login
 	@RequestMapping("/login")
 	public String login(HttpServletRequest request, Model model) {		
-		System.out.println("ë¡œê·¸ì¸ ì°½ ì§„ì…");
+		System.out.println("·Î±×ÀÎ Ã¢ ÀÔÀå");
 		return "login/login";
 	}
 	@RequestMapping("/logout")
 	public String logout(HttpServletRequest request, Model model) {		
 		HttpSession session = request.getSession();
-		session.invalidate(); // ì„¸ì…˜ ê°’ ì™„ì „ ì‚­ì œ! 
-		System.out.println("ë¡œê·¸ì•„ì›ƒ ì‹¤í–‰");
+		session.invalidate(); // ¼¼¼Ç Á¤º¸ »èÁ¦! 
+		System.out.println("·Î±×¾Æ¿ô ½ÇÇà");
 		return "redirect:login";
 	}
 	@RequestMapping("/loginAction")
 	public String loginAction(HttpServletRequest request, Model model, UserDTO dto, RedirectAttributes attributes) {
 		
-		System.out.println("ì…ë ¥í•œ ì§ì›ë²ˆí˜¸ : "+ dto.getUserno());
-		System.out.println("ì…ë ¥í•œ ë¹„ë°€ë²ˆí˜¸ : "+ dto.getUserpw());
+		System.out.println("ÀÔ·ÂÇÑ Á÷¿ø¹øÈ£ : "+ dto.getUserno());
+		System.out.println("ÀÔ·ÂÇÑ ºñ¹Ğ¹øÈ£ : "+ dto.getUserpw());
 		String encodedPassword  = PasswordEncoderUtil.encodePassword(dto.getUserpw());
 		
 		UserDTO fromDbDto = new UserDTO();
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
 		fromDbDto = dao.isRightUserno(dto.getUserno());
 		if(fromDbDto == null) {
-			System.out.println("ì˜ëª»ëœ ì§ì›ë²ˆí˜¸ì…ë‹ˆë‹¤.");
+			System.out.println("Àß¸øµÈ Á÷¿ø¹øÈ£ÀÔ´Ï´Ù.");
 			return "redirect:login";
 		}else if(dto.getUserno().equals(fromDbDto.getUserpw())) {
-			System.out.println("ë¹„ë°€ë²ˆí˜¸ ì´ˆê¸°ìƒíƒœ ! ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ì´ í•„ìš”í•©ë‹ˆë‹¤.");
+			System.out.println("ºñ¹Ğ¹øÈ£ ÃÊ±â ¼³Á¤ »óÅÂ ! ºñ¹Ğ¹øÈ£ º¯°æÀÌ ÇÊ¿äÇÕ´Ï´Ù.");
 			attributes.addFlashAttribute("userno", fromDbDto);
 			return "redirect:/resetPassword";
 		}else if(PasswordEncoderUtil.matches(dto.getUserpw(), fromDbDto.getUserpw())) {
-			System.out.println("ë¡œê·¸ì¸ ì„±ê³µ");
+			System.out.println("·Î±×ÀÎ ¼º°ø");
 			HttpSession session = request.getSession();
-			session.setAttribute("userno", fromDbDto.getUserno()); // ì„¸ì…˜ì— ê°’ ë„£ê¸°
-			session.setAttribute("deptno", fromDbDto.getDeptno()); // ì„¸ì…˜ì— ê°’ ë„£ê¸°
+			session.setAttribute("userno", fromDbDto.getUserno()); // ¼¼¼Ç¿¡ Á¤º¸ ÀúÀå
+			session.setAttribute("deptno", fromDbDto.getDeptno()); // ¼¼¼Ç¿¡ Á¤º¸ ÀúÀå
       
-			//ìƒ‰ìƒê´€ë ¨ ì²˜ë¦¬
+			//¹è°æ»ö»ó Ã³¸®
 			String bgcolor = dao.getColor(fromDbDto.getUserno());
 			if (bgcolor == null) {
 				bgcolor = "green";
@@ -83,12 +80,11 @@ public class LoginController {
 
 			return "redirect:main";
 		}else {
-			System.out.println("ì§ì›ë²ˆí˜¸ëŠ” ìˆëŠ”ë° ë¹„ë²ˆ ì˜¤ë¥˜");
+			System.out.println("Á÷¿ø¹øÈ£´Â ÀÖ´Âµ¥ ºñ¹Ğ¹øÈ£ ¿À·ù");
 			return "redirect:login";
 		}
 	
 	}
-	
 	
 	// Regarding password reset 
 	@RequestMapping("/testPage")
@@ -110,45 +106,45 @@ public class LoginController {
 		if(pagedto.getKey()!=null&&pagedto.getKey().equals("itiscorrect")) {
 			LoginDao dao = sqlSession.getMapper(LoginDao.class);
 			userdto = dao.isRightUserno(userdto.getUserno());
-			System.out.println(userdto.getDeptno());  // ê°’ ì˜ ê°€ì ¸ì™”ëŠ”ì§€ í™•ì¸ ë¹„ë°€ë²ˆí˜¸ ë°”ê¾¸ê¸°ë¡œ í•œ ì‚¬ëŒì´ DBì— ìˆëŠ” ì§€ í™•ì¸
+			System.out.println(userdto.getDeptno());  // Àß ¿Å°Ü¿Ô´ÂÁö È®ÀÎ ºñ¹Ğ¹øÈ£ Àç¼³Á¤À¸·Î ÇÑ »ç¶÷ÀÇ DB¿¡ ÀÖ´Â Áö È®ÀÎ
 			
 			model.addAttribute("pagedto", pagedto);
 			model.addAttribute("userdto", userdto);
 			return "login/setPw";
 		}
-		System.out.println("ì˜ëª»ëœ ì ‘ê·¼, ë©”ì¸ í™”ë©´ìœ¼ë¡œ ëŒì•„ê°‘ë‹ˆë‹¤.");
+		System.out.println("Àß¸øµÈ Á¢±Ù, ¸ŞÀÎ È­¸éÀ¸·Î µ¹¾Æ°©´Ï´Ù.");
 		return "redirect:/";
 	}
 	
 	@RequestMapping("/resetPassword")
 	public String resetPW(HttpServletRequest request, Model model) {
-		System.out.println("ë¹„ë°€ë²ˆí˜¸ ì¬ì„¤ì • í™”ë©´ ì§„ì…");
+		System.out.println("ºñ¹Ğ¹øÈ£ Àç¼³Á¤ È­¸é ÀÔÀå");
 		return "login/resetPassword";
 	}
 	@RequestMapping("/resetPasswordAction")
 	public String resetPWAction(HttpServletRequest request, Model model, UserDTO dto) {
 		System.out.println("./resetPasswordAction");
-		System.out.println("ë¹„ë°€ë²ˆí˜¸ ë°”ê¿€ ì§ì›ì˜ ì§ì›ë²ˆí˜¸ : "+dto.getUserno());
+		System.out.println("ºñ¹Ğ¹øÈ£ Àç¼³Á¤ÇÒ Á÷¿øÀÇ Á÷¿ø¹øÈ£ : "+dto.getUserno());
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
 		String encodedPassword  = PasswordEncoderUtil.encodePassword(dto.getUserpw());
 		
 		dao.UpdatePw(dto.getUserno(), encodedPassword);
-		System.out.println("ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ì™„ë£Œ ~~");
+		System.out.println("ºñ¹Ğ¹øÈ£ º¯°æ ¿Ï·á ~~");
 		return "redirect:login";
 	}
 	// Regarding Asynchronous
 	@RequestMapping(value = "/findPw",  produces = "application/json", consumes = "application/json", method = RequestMethod.POST ) // , method=RequestMethod.POST // consumes = "application/json"	/*	*/
 	public @ResponseBody String findPw(@RequestBody  UserDTO userdto) throws Exception {
-		System.out.println("findPw ì‹¤í–‰");
-		System.out.println("ë„˜ê²¨ë°›ì€ ê°’ ìˆëŠ”ì§€ í™•ì¸ : " + userdto.getUserno());
+		System.out.println("findPw ½ÇÇà");
+		System.out.println("ÀÔ·ÂÇÑ Á÷¿ø¹øÈ£ È®ÀÎ : " + userdto.getUserno());
 		
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
 		UserDTO dto = dao.findPw(userdto);
 
 		if (dto != null) {
-				System.out.println("ëª¨ë‘ ì¼ì¹˜í•˜ëŠ” ì§ì›ì •ë³´ ì°¾ì•˜ë‹¤ ! ë¶€ì„œë²ˆí˜¸  : " +dto.getDeptno());
+				System.out.println("¸ğµÎ ÀÏÄ¡ÇÏ´Â Á÷¿øÁ¤º¸ ¹ß°ß ! ºÎ¼­¹øÈ£  : " +dto.getDeptno());
 		} else {
-			System.out.println("DBì¡°íšŒ ê²°ê³¼ ì—†ìŒ");
+			System.out.println("DBÁ¶È¸ °á°ú ¾øÀ½");
 			dto = new UserDTO();
 		}
 
@@ -163,18 +159,29 @@ public class LoginController {
 	public String mypage(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		String userno = (String) session.getAttribute("userno");	
-		System.out.println("ì„¸ì…˜ì— ìˆëŠ” userno : "+ userno);
+		System.out.println("¼¼¼Ç¿¡ ÀÖ´Â userno : "+ userno);
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
 		UserDTO dto = dao.isRightUserno(userno);
 		model.addAttribute("dto", dto);
 		
-		//ë‚´ê°€ ì‘ì„±í•œ ëŒ“ê¸€ ê°€ì ¸ì˜¤ê¸°
+		//³»°¡ ÀÛ¼ºÇÑ ´ñ±Û °¡Á®¿À±â
 		CommentDao cdao = sqlSession.getMapper(CommentDao.class);
 		List<CommentDTO> list = cdao.getMyComment(userno);
 		if(list!=null)
 			model.addAttribute("comment", list);
 		WikiDao wdao = sqlSession.getMapper(WikiDao.class);
 		List<BoardDTO> mypost = wdao.getMyPost(userno);
+		
+		//mypost¿¡ Á¶È¸¼ö µ¥ÀÌÅÍ ³Ö¾îÁÖ±â
+		for (BoardDTO bDto : mypost) {
+			Integer hits = wdao.getHitsById(bDto.getId());
+			if (hits != null) {
+				bDto.setHits_count(hits);
+			} else {
+				bDto.setHits_count(0);
+			}
+		}
+		
 		List<BoardDTO> likedpost = wdao.getLikedPost(userno);
 		int myLikeCount = 0;
 		myLikeCount = wdao.myTotalLike(userno);
@@ -193,7 +200,7 @@ public class LoginController {
 	public String editProfile(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		String userno = (String) session.getAttribute("userno");	
-		System.out.println("ì„¸ì…˜ì— ìˆëŠ” userno : "+ userno);
+		System.out.println("¼¼¼Ç¿¡ ÀÖ´Â userno : "+ userno);
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
 		UserDTO dto = dao.isRightUserno(userno);
 		model.addAttribute("dto", dto);
@@ -201,21 +208,21 @@ public class LoginController {
 		return "login/editProfile";
 	}
 	
-	// Regarding Asynchronous  -- ì•„ì§ ë‹‰ë„¤ì„ ì»¬ëŸ¼ì´ ì—†ì–´ì„œ ë³€ê²½ì€ ëª»í•¨.
+	// Regarding Asynchronous  -- ºñµ¿±â Ã³¸®ÇÔ¼ö ¹Ì»ç¿ëÀ¸·Î º¯°æ
 	@RequestMapping(value = "/changeNickname",  produces = "application/json", consumes = "application/json", method = RequestMethod.POST ) // , method=RequestMethod.POST // consumes = "application/json"	/*	*/
 	public @ResponseBody String changeNickname(@RequestBody  UserDTO userdto) throws Exception {
-		System.out.println("changeNickname ì‹¤í–‰");
-		System.out.println("ë„˜ê²¨ë°›ì€ ê°’ ìˆëŠ”ì§€ í™•ì¸ : " + userdto.getNickname());
-		System.out.println("userno í™•ì¸ : " + userdto.getUserno());
+		System.out.println("changeNickname ½ÇÇà");
+		System.out.println("º¯°æÇÒ ´Ğ³×ÀÓ È®ÀÎ : " + userdto.getNickname());
+		System.out.println("userno È®ÀÎ : " + userdto.getUserno());
 		
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
 		dao.changeNickname(userdto.getUserno(),  userdto.getNickname());
 		UserDTO dto = dao.isRightUserno(userdto.getUserno());
 		
 		if (dto != null) {
-				System.out.println("ëª¨ë‘ ì¼ì¹˜í•˜ëŠ” ì§ì›ì •ë³´ ì°¾ì•˜ë‹¤ ! ë¶€ì„œë²ˆí˜¸  : " +dto.getDeptno());
+				System.out.println("¸ğµÎ ÀÏÄ¡ÇÏ´Â Á÷¿øÁ¤º¸ ¹ß°ß ! ºÎ¼­¹øÈ£  : " +dto.getDeptno());
 		} else {
-			System.out.println("DBì¡°íšŒ ê²°ê³¼ ì—†ìŒ");
+			System.out.println("DBÁ¶È¸ °á°ú ¾øÀ½");
 			dto = new UserDTO();
 		}
 
@@ -231,7 +238,7 @@ public class LoginController {
         String userno = (String) session.getAttribute("userno");
 
         if (file.isEmpty()) {
-            attributes.addFlashAttribute("message", "íŒŒì¼ì´ ì—…ë¡œë“œë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
+            attributes.addFlashAttribute("message", "ÆÄÀÏÀÌ ¾÷·ÎµåµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
             return "redirect:/editProfile";
         }
 
@@ -239,10 +246,10 @@ public class LoginController {
             InputStream inputStream = file.getInputStream();
             LoginDao dao = sqlSession.getMapper(LoginDao.class);
             dao.updateUserProfilePicture(userno, inputStream);
-            attributes.addFlashAttribute("message", "í”„ë¡œí•„ ì‚¬ì§„ì´ ì„±ê³µì ìœ¼ë¡œ ì—…ë¡œë“œë˜ì—ˆìŠµë‹ˆë‹¤.");
+            attributes.addFlashAttribute("message", "ÇÁ·ÎÇÊ »çÁøÀÌ ¼º°øÀûÀ¸·Î ¾÷·ÎµåµÇ¾ú½À´Ï´Ù.");
         } catch (IOException e) {
             e.printStackTrace();
-            attributes.addFlashAttribute("message", "íŒŒì¼ ì—…ë¡œë“œ ì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.");
+            attributes.addFlashAttribute("message", "ÆÄÀÏ ¾÷·Îµå Áß ¿À·ù°¡ ¹ß»ıÇß½À´Ï´Ù.");
         }
 
         return "redirect:/editProfile";

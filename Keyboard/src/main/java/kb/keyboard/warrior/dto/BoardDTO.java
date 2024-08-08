@@ -11,7 +11,29 @@ public class BoardDTO {
 	private int isOpen;
 	private int like_count;
 	private int comment_count;
+	
+	//프로필사진을 위해서 급조함 20240806
+	private String userno;
+	
+	public String getUserno() {
+		return userno;
+	}
+	public void setUserno(String userno) {
+		this.userno = userno;
+	}
+	//프로필사진을 위해서 급조함 20240806	
 
+
+	//조회수 관련 추가 20240806
+	private Integer hits_count;
+	
+	public Integer getHits_count() {
+		return hits_count;
+	}
+	public void setHits_count(Integer hits_count) {
+		this.hits_count = hits_count;
+	}
+	//조회수 관련 추가 20240806
 	
 	public String getData() {
 		return data;

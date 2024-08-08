@@ -495,22 +495,31 @@ public class MemoController {
 //    투두리스트 관련 추가(성은)
 	@RequestMapping(value = "/editTodo", method = RequestMethod.POST)
 	@ResponseBody
-	public String editTodo(@RequestBody TodoListDTO todoListdto) {
+	public String editTodo(@RequestBody TodoListDTO dto) {
 		System.out.println("TODOLIST 수정창 진입");
+		
+		ToDoDao dao = sqlSession.getMapper(ToDoDao.class);
+		dao.editTodo(dto);
 		
 		return "{\"status\":\"success\"}";
 	}
 	@RequestMapping(value = "/addTodo", method = RequestMethod.POST)
 	@ResponseBody
-	public String addTodo(@RequestBody TodoListDTO todoListdto) {
-		System.out.println("TODOLIST 수정창 진입");
+	public String addTodo(@RequestBody TodoListDTO dto) {
+		System.out.println("TODOLIST 등록창  진입");
+
+		ToDoDao dao = sqlSession.getMapper(ToDoDao.class);
+		dao.addTodo(dto);
 		
 		return "{\"status\":\"success\"}";
 	}
 	@RequestMapping(value = "/deleteTodo", method = RequestMethod.POST)
 	@ResponseBody
-	public String deleteTodo(@RequestBody TodoListDTO todoListdto) {
+	public String deleteTodo(@RequestBody TodoListDTO dto) {
 		System.out.println("TODOLIST 수정창 진입");
+		
+		System.out.println("넘겨받은 todo id : " + dto.getTodoid());
+		sqlSession.getMapper(ToDoDao.class).deleteTodo(dto.getTodoid());
 		
 		return "{\"status\":\"success\"}";
 	}

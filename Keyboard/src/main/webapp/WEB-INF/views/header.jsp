@@ -62,7 +62,7 @@ width: 100%;
             'green': '#BDE2CE',
             'red': '#ff1b1bcf',
             'orange': '#ef803bad',
-            'blue': '#40a0e7',
+            'blue': '#ADCDFF',
             'yellow': '#e2ff005e',
             'purple': '#d862eb4f'
         };
@@ -71,7 +71,7 @@ width: 100%;
         document.documentElement.style.setProperty('--main-bgcolor', colorMap[bgColor] || colorMap['green']);
         
         //red의 경우 checked 글자도 변경
-        if (bgColor === 'red' || bgColor === 'orange') {
+        if (bgColor === 'red' || bgColor === 'orange' || bgColor === 'blue') {
         	document.documentElement.style.setProperty('--todo-checked', '#fff');	
         }
         
@@ -155,24 +155,25 @@ width: 100%;
 	String userno1 = (String) session.getAttribute("userno");
 %>
 <script type="text/javascript">
-       window.onload = function() {
-           var currentPath = window.location.pathname;
-           var loginPath = '/login';
-           var findPassword = '/findPassword'
-           var setNewPassword = '/setNewPassword'
-           var resetPassword = '/resetPassword'
-           
-           var userno = '<%= userno1 %>';
+ window.onload = function() {
+     var currentPath = window.location.pathname;
+     var loginPath = '/login';
+     var findPassword = '/findPassword'
+     var setNewPassword = '/setNewPassword'
+     var resetPassword = '/resetPassword'
+     
+     var userno = '<%= userno1 %>';
 
-           // 현재 페이지가 로그인 페이지가 아니면 로그인 상태를 확인
-           if (currentPath == loginPath||currentPath == findPassword||currentPath == setNewPassword||currentPath == resetPassword) {
-           }else{
-           	 if(userno == null || userno == "null"){
-				alert("로그인 후 이용하세요.");
-				window.location.href = '${pageContext.request.contextPath}/login'
-               }
-           }
-       };
+     // 현재 페이지가 로그인 페이지가 아니면 로그인 상태를 확인
+     if (currentPath == loginPath||currentPath == findPassword||currentPath == setNewPassword||currentPath == resetPassword) {
+     }else{
+     	 if(userno == null || userno == "null"){
+			alert("로그인 후 이용하세요.");
+			window.location.href = '${pageContext.request.contextPath}/login'
+         }else{ 
+         }
+     }
+ };
 </script>
 
 </head>

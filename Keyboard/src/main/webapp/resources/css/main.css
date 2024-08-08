@@ -2,6 +2,28 @@
     --main-bgcolor: #BDE2CE; /* 변수 선언 */
     --todo-checked: #888;
 }
+/* 전체 스크롤바 스타일 */
+::-webkit-scrollbar {
+    width: 4px; /* 스크롤바의 너비 */
+    height: 8px; /* 가로 스크롤바의 높이 (optional) */
+}
+
+/* 스크롤바의 트랙 (스크롤바 배경) */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* 배경 색상 */
+    border-radius: 10px; /* 모서리를 둥글게 */
+}
+
+/* 스크롤바의 핸들 (사용자가 잡는 부분) */
+::-webkit-scrollbar-thumb {
+    background: #888; /* 핸들의 배경 색상 */
+    border-radius: 10px; /* 모서리를 둥글게 */
+}
+
+/* 스크롤바 핸들의 호버 상태 */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; /* 핸들이 호버 상태일 때의 색상 */
+}
 
 @font-face {
     font-family: 'textL';
@@ -606,8 +628,7 @@ hr {
 /* mor, cofix*/
 
 .todo_list {
-    margin-top: 20px;
-     overflow-y: auto; 
+/*     margin-top: 20px; */
      height: 75%;
 }
 
@@ -704,4 +725,13 @@ hr {
 .aTag{
     text-decoration: none;
     color: black;
+}
+.No-line-break{
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.past-to-do{
+	background-color: #FFC7CE;
+	
 }

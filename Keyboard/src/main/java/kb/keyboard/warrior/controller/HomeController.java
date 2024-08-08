@@ -223,7 +223,7 @@ public class HomeController {
 	    
 		// To Do List
 		ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
-		List<TodoListDTO> todoList = todoDao.getToDoList(userno);
+		List<TodoListDTO> todoList = todoDao.getTodayTasks(userno);
 		model.addAttribute("todoList", todoList);
 
 		// Memo Data
