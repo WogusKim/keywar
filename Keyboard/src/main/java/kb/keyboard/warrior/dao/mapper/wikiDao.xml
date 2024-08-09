@@ -272,5 +272,11 @@
 	<insert id="insertHits">
 		INSERT INTO WikiHits VALUES (#{param}, 1)	
 	</insert>
-	
+	<select id="findWriterName" resultType="kb.keyboard.warrior.dto.BoardDTO" > 
+		select m.*, u.username 
+		from Menu m
+		join user u
+		on m.userno = u.userno
+		where isopen ='1' and m.id=#{param1} 
+	</select>
 </mapper>

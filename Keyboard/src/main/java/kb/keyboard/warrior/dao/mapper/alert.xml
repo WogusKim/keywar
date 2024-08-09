@@ -14,4 +14,8 @@
 		insert into alert (userno, message, category)
 		values (#{userno}, #{message}, 'notice')
 	</insert>
+	<insert id="addWikiAlert" parameterType="kb.keyboard.warrior.dto.AlertDTO">
+		insert into alert (userno, message, category, detail)
+		values (#{userno}, #{message}, 'wiki', #{detail})
+	</insert>
 </mapper>

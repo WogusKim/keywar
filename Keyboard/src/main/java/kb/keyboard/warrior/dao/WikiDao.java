@@ -87,6 +87,7 @@ public interface WikiDao {
 	
 	//닉네임조회
 	String getWriterNickName(String userno);
+	public BoardDTO findWriterName(String targetid);
 	
 	//위키 조회수 찾기
 	Integer getHitsById(int id);
