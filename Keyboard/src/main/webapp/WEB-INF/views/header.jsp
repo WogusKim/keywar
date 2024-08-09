@@ -233,9 +233,9 @@ width: 100%;
  </div>
 </div>
 </header>
-    <div id="notificationBox" class="notification-box1">
+    <div id="notificationBox" class="notification-box1" style="width: 320px;">
     <div><a href="#;" class="deleteButton11" id="notifyButton1">X</a></div>
-    <div id="alertContentArea" class="alertContentArea"> 
+    <div id="alertContentArea" class="alertContentArea" > 
     	<div class="alertContent">
 	    	<div style="margin-top: 50px; text-align: center;">
 			<iframe src="https://giphy.com/embed/EDgXbeWptb15W9Ed3j" width="150" height="150" style="pointer-events: none;"  frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
