@@ -99,9 +99,14 @@
 .button-container {
 	display: flex; /* 버튼을 나란히 배치 */
 	gap: 10px; /* 버튼 사이 간격 조정 */
+	margin-bottom: 10px;
 	/* margin-top: 10px */ /* 이미지와 버튼 사이 간격 조정 */
 }
-
+.wiki_fileIcon {
+	width: 30px;
+	height: 30px;
+	margin-right: 12px;
+}
 
 </style>
 </head>
@@ -249,7 +254,8 @@ document.addEventListener('DOMContentLoaded', function () {
         onReady: function () { // 에디터 준비 완료 후 모든 이미지 블록에 대해 실행
         	addClickButtons(); //이미지에 정렬 버튼 붙이기
         	applyImageAlignment(editorData.blocks);
-        
+            
+            updateFileIcons();// 파일 아이콘 변경 로직        
         
             const blocks = editorData.blocks; // 블록 데이터 접근
             console.log("블록확인",blocks);
@@ -471,31 +477,45 @@ document.addEventListener('DOMContentLoaded', function () {
             attaches: {
                 class: AttachesTool,
                 config: {
-                    /**
-                     * Custom uploader
-                     */
                     uploader: {
-                        /**
-                         * Upload file to the server and return an uploaded image data
-                         * @param {File} file - file selected from the device or pasted by drag-n-drop
-                         * @return {Promise.<{success, file: {url}}>}
-                         */
                         uploadByFile(file) {
-                            // your own uploading logic here
-                            return MyAjax.upload(file).then((response) => {
-                                return {
-                                    success: 1,
-                                    file: {
-                                        url: response.fileurl,
-                                        // any data you want
-                                        // for example: name, size, title
+                            console.log('Attempting to upload file...');
+                            return new Promise((resolve, reject) => {
+                                const formData = new FormData();
+                                formData.append('file', file);
+                                fetch('${pageContext.request.contextPath}/uploadFile2', {
+                                    method: 'POST',
+                                    body: formData
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        console.log('File uploaded:', data.file.url);
+                                        resolve({
+	                                        success: 1,
+	                                        file: {
+	                                            url: data.file.url,
+	                                        }
+                                        });
+                                        setTimeout(() => {
+                                            updateFileIcons();
+                                        }, 100);
+
+                                        
+                                    } else {
+                                        reject(new Error('File upload failed: ' + data.message));
                                     }
-                                };
+                                })
+                                .catch(error => {
+                                    console.error('Error uploading file:', error);
+                                    reject(error);
+                                });
                             });
-                        },
+                        }
                     }
                 }
             },
+            
             marker: {
                 class: Marker,
                 shortcut: 'CMD+SHIFT+M',
@@ -632,6 +652,36 @@ function setAlignment(wrapper, align) {
         wrapper.style.marginLeft = 'auto';
         wrapper.style.marginRight = '0';
     }
+}
+
+function updateFileIcons() {
+    const fileBlocks = document.querySelectorAll('.cdx-attaches');
+
+    fileBlocks.forEach(function(block) {
+    	
+    	const downloadButton = block.querySelector('a.cdx-attaches__download-button');
+
+        if (downloadButton) {
+        	
+            const href = downloadButton.getAttribute('href');
+            const fileExtension = href.split('.').pop().toLowerCase(); // Get the file extension from URL
+            
+            console.log(fileExtension);
+
+            const fileIconContainer = block.querySelector('.cdx-attaches__file-icon');
+			
+            if (fileExtension === 'pdf') {
+            	fileIconContainer.innerHTML = '';
+                fileIconContainer.innerHTML = '<img src="/resources/images/icons/wiki_file/pdf.png" class="wiki_fileIcon" alt="PDF Icon" style="width: 24px; height: 24px;">';
+            } else if (fileExtension === 'ppt' || fileExtension === 'pptx') {
+            	fileIconContainer.innerHTML = '';
+                fileIconContainer.innerHTML = '<img src="/resources/images/icons/wiki_file/ppt.png" class="wiki_fileIcon" alt="PPT Icon" style="width: 24px; height: 24px;">';
+            } else if (fileExtension === 'doc' || fileExtension === 'docx') {
+            	fileIconContainer.innerHTML = '';
+                fileIconContainer.innerHTML = '<img src="/resources/images/icons/wiki_file/doc.png" class="wiki_fileIcon" alt="DOC Icon" style="width: 24px; height: 24px;">';
+            }
+        }
+    });
 }
 
 </script>
