@@ -156,13 +156,14 @@
 }
 
 /* 모달 콘텐츠 */
-.modal-content {
+.modal-content2 {
 	border-radius: 10px;
     background-color: #fefefe;
     margin: 15% auto; /* 15% 상단에서부터 자동 가운데 정렬 */
     padding: 20px;
     border: 1px solid #888;
     width: 500px; /* 대부분의 화면에서 적절한 폭 */
+    heigth: 400px;
 }
 
 .input_outer {
@@ -172,6 +173,8 @@
 .edit_field {
 	margin: 5px;
 	padding:10px;
+	display: flex;
+	
 }
 
 .label-fixed-width {
@@ -194,6 +197,16 @@
 
 .edit_submit {
 	width : 200px;
+	padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.label_modal {
+	width: 60px;
 }
 
 hr.modal_hr {
@@ -216,6 +229,18 @@ hr.modal_hr {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    margin-right: 10px;
+}
+
+input[type="text"], input[type="radio"] {
+    margin-right: 5px;
 }
 /* 모달팝업관련 */
 </style>
@@ -359,9 +384,9 @@ hr.modal_hr {
 
 <!-- 페이지 추가 모달 팝업 -->
 <div id="addModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content2">
         <span class="close">&times;</span>
-        <h3>노트(폴더) 추가</h3>
+        <h3>업무노트 추가</h3>
         
         <form id="addForm" action="${pageContext.request.contextPath}/fastAddItem" method="post">
         	<hr class="modal_hr">
@@ -371,20 +396,13 @@ hr.modal_hr {
 		        <input type="hidden" id="selectedType" name="type">
 		        <input type="hidden" id="selectedDepth" name="depth">
 		        
-		        <div class="edit_field">
-		        	<label class="label-fixed-width">메뉴 타입:</label>
-		        	<input type="radio" name="menuType" value="folder">
-                    <label for="isOpenYes">폴더</label>
-                    <input type="radio" name="menuType" value="item">
-                    <label for="isOpenNo">업무노트</label>
-		        </div>
 		        
 		        <div class="edit_field">
 		        	<label class="label-fixed-width">공개 여부:</label>
 		        	<input type="radio" name="public" value="yes">
-                    <label for="isOpenYes">공개</label>
+                    <label for="isOpenYes" class="label_modal">공개</label>
                     <input type="radio" name="public" value="no">
-                    <label for="isOpenNo">비공개</label>
+                    <label for="isOpenNo" class="label_modal">비공개</label>
 		        </div>
 		        
 	            <div class="edit_field">
@@ -484,15 +502,30 @@ $(document).ready(function() {
 // 아이템 추가 함수
 function addItem(folderId, depth) {
     
-    // 여기서 folderId를 사용하여 새 아이템 추가 로직을 구현합니다.
-    
     //depth가 4인 경우 거절해야함.
     if (depth >= 4) {
     	alert('최대 허용 depth 를 초과하였습니다.');
     } else {
-    	alert('폴더 ID: ' + folderId + '에 (뎁스:' + depth + ') 새 아이템을 추가합니다.');
+        // 모달을 띄우기 전에 폴더 ID와 depth 값을 설정합니다.
+        $('#selectedId').val(folderId);
+        $('#selectedDepth').val(depth);
+        $('#selectedType').val('item'); // 기본 타입을 설정합니다.
+        
+        // 모달을 띄웁니다.
+        $('#addModal').show();
     }
 }
+
+// 모달을 닫는 함수
+$('.close').click(function() {
+    $('#addModal').hide();
+});
+
+$(window).click(function(event) {
+    if (event.target == $('#addModal')[0]) {
+        $('#addModal').hide();
+    }
+});
 
 </script>
 </body>

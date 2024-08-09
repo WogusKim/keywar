@@ -10,11 +10,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/wiki.css">
 <style>
 .folder-icon {
-    background-image: url('${pageContext.request.contextPath}/resources/images/icons/folder_open.png');
+    background-image: url('${pageContext.request.contextPath}/resources/images/icons/folder_open2.png');
 }
 
 .file-icon {
-    background-image: url('${pageContext.request.contextPath}/resources/images/icons/page.png');
+    background-image: url('${pageContext.request.contextPath}/resources/images/icons/page2.png');
 }
 
 .menu-icon {
@@ -337,18 +337,18 @@ function toggleFolder(element) {
             element.classList.toggle('folder-open');
             element.classList.toggle('folder-closed');
             element.style.backgroundImage = element.classList.contains('folder-open') ?
-                'url("${pageContext.request.contextPath}/resources/images/icons/folder_open.png")' :
-                'url("${pageContext.request.contextPath}/resources/images/icons/folder.png")';
+                'url("${pageContext.request.contextPath}/resources/images/icons/folder_open2.png")' :
+                'url("${pageContext.request.contextPath}/resources/images/icons/folder2.png")';
             return;
         }
 
         // ul 요소가 존재하는 경우의 기존 로직 실행
         if (nextUl.style.display === 'none' || !nextUl.style.display) {
             nextUl.style.display = 'block';
-            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder_open.png")';
+            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder_open2.png")';
         } else {
             nextUl.style.display = 'none';
-            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder.png")';
+            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder2.png")';
         }
     }
 }
