@@ -224,9 +224,10 @@ width: 100%;
     <div><a href="#;" class="deleteButton11" id="notifyButton1">X</a></div>
     <div id="alertContentArea" class="alertContentArea"> 
     	<div class="alertContent">
-        <p id="alertTitle">새로운 알림이 없습니다!</p>
-<!--         <p id="alertTimeStamp" class="alertSendTime" > / </p>
-        <hr class="alerthr"> -->
+	    	<div style="margin-top: 50px; text-align: center;">
+			<iframe src="https://giphy.com/embed/EDgXbeWptb15W9Ed3j" width="150" height="150" style="pointer-events: none;"  frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+	        <p id="alertTitle">새로운 알림이 없습니다!</p>
+			</div>
         </div>
         
         
