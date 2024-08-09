@@ -405,18 +405,28 @@ label {
 			    	<div class="memo_list" style="padding: 0px; margin: 0px; height: 65%; padding: 0px;">
 			    		<!-- 탭 전환시 보여질 영역(1, 나의 메모) -->
 			    		<div id="myMemoArea" style="padding-bottom: 10px;">
-			    			
-				    			<c:forEach var="memo" items="${memo1}" begin="0" end="4">
-				    				<div class="mainTodoContentOutline" >
-								    	<div class="arrangeBox" style="width: 100%;">
-											<div style="text-align: left; vertical-align: middle; width: 100% ;  overflow: hidden; text-overflow: ellipsis; display: -webkit-box;
-   											 -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
-   											 ${memo.content}
- 											</div>
-										</div>
-										<div style="color: gray; font-size: small;" class="No-line-break"> 메모 등록일자 : ${memo.createdate}</div>  
-								    </div>
-				    			</c:forEach>
+			    			<c:forEach var="memo" items="${memo1}" begin="0" end="4">
+			    				<div class="mainTodoContentOutline" >
+							    	<div class="arrangeBox" style="width: 100%;">
+										<div style="text-align: left; vertical-align: middle; width: 100% ;  overflow: hidden; text-overflow: ellipsis; display: -webkit-box;
+  											 -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
+  											 ${memo.content}
+											</div>
+									</div>
+									<div style="color: gray; font-size: small;" class="No-line-break"> 메모 등록일자 : ${memo.createdate}</div>  
+							    </div>
+			    			</c:forEach>
+			    			<c:if test="${empty memo1 }">
+	    				    	<div style="text-align: center;">
+									<iframe src="https://giphy.com/embed/xEpP5fhLTLNMnXLkeQ" width="130px;" height="130px;" style="pointer-events: none; margin: 0;"  frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+								</div>
+								<div style="text-align: center;">
+							        <p id="alertTitle" style="color: #727272; margin: 0px;">등록된 나의 메모가 없습니다.<br>
+							        업무에 필요한 메모를 등록하고 <br>
+							        한 눈에 확인해보세요 !
+							        </p>
+								</div>
+			    			</c:if>
 				    	
 			    		</div>
 			    		<!-- 탭 전환시 보여질 영역2, 부점 메모) -->
@@ -432,6 +442,17 @@ label {
 									<div style="color: gray; font-size: small;" class="No-line-break"> 메모 등록일자 : ${memo.createdate}</div>  
 							    </div>
 				    		</c:forEach>
+				    		<c:if test="${empty memo2 }">
+	    				    	<div style="text-align: center;">
+									<iframe src="https://giphy.com/embed/C88XS01rDVHsoDxIrZ" width="130px;" height="130px;" style="pointer-events: none; margin: 0;"  frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+								</div>
+								<div style="text-align: center;">
+							        <p id="alertTitle" style="color: #727272; margin: 0px;">등록된 부점 메모가 없습니다.<br>
+							        업무에 필요한 메모를 등록하고 <br>
+							        한 눈에 확인해보세요 !
+							        </p>
+								</div>
+			    			</c:if>
 			    		</div>
 			    
 			    	</div>
