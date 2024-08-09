@@ -23,6 +23,7 @@ public interface ScheduleDao {
 	void groupExit(String sharedepth3, String userno);
 	void alertInsertCalendar(Map<String, Object> params);
 	List<ScheduleDTO> countTodoList(@Param("userno") String userno);
-
+	List<ScheduleDTO> getUserGroups(@Param("userno") String userno);
+	List<Map<String, String>> searchUserForInvite(@Param("searchUsername") String searchUsername, @Param("userno") String userno, @Param("groupNum") String groupNum);
 
 }

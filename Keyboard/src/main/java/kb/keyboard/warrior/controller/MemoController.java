@@ -163,6 +163,48 @@ public class MemoController {
         }
     }
     
+    @RequestMapping(value = "/getUserGroups", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public List<ScheduleDTO> getUserGroups(HttpSession session) {
+    	String userno = (String) session.getAttribute("userno");
+        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+        System.out.println("userno for userGroups: " + userno);
+        return dao.getUserGroups(userno);
+    }
+    
+    @RequestMapping(value = "/getUserGroupsForInvite", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public List<ScheduleDTO> getUserGroupsForInvite(HttpSession session) {
+    	String userno = (String) session.getAttribute("userno");
+        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+        System.out.println("userno for userGroups: " + userno);
+        return dao.getUserGroups(userno);
+    }
+    
+    @RequestMapping(value = "/searchUserForInvite", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<Map<String, List<Map<String, String>>>> searchUserForInvite(@RequestBody Map<String, String> request, HttpSession session) {
+        String searchUsername = (String) request.get("username");
+        String groupNum = (String) request.get("groupNum");
+        String userno = (String) session.getAttribute("userno");
+        System.out.println(searchUsername);
+        System.out.println(userno);
+        System.out.println(groupNum);
+        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+        System.out.println("dao load");
+        try {
+        	System.out.println("try in");
+            List<Map<String, String>> searchUserList = dao.searchUserForInvite(searchUsername, userno, groupNum);
+            System.out.println("searchUserList: " + searchUserList);
+            Map<String, List<Map<String, String>>> response = new HashMap<String, List<Map<String, String>>>();
+            response.put("users", searchUserList);
+            return new ResponseEntity<Map<String, List<Map<String, String>>>>(response, HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<Map<String, List<Map<String, String>>>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    
     @RequestMapping(value = "/customsharetoload", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public List<Map<String, String>> loadCustomShareto(HttpSession session) {

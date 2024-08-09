@@ -205,5 +205,29 @@
 		;
     </select>
     
+    <select id="getUserGroups" parameterType="String" resultType="kb.keyboard.warrior.dto.ScheduleDTO">
+		select sharedepth3, customname, sharecolor from scheduleshare
+		where userno = #{userno}
+		and status = '1'
+		and sharedepth1 = '0000'
+		and sharedepth2 = '0000'
+		and sharedepth3 != '0000'
+		;
+    </select>
+    	
+	<select id="searchUserForInvite" parameterType="map" resultType="map">
+	    SELECT userno, username as name, deptname, teamname 
+		FROM user u left join department d
+		on u.deptno = d.deptno
+		and u.teamno = d.teamno
+        left join 
+        (select distinct userno, '1' as ssyn
+        from scheduleshare 
+        where sharedepth1 = '0000' and sharedepth2 = '0000' and   
+        sharedepth3 = #{groupNum} and status = '1') ss
+        on ss.userno = u.userno
+		WHERE username like CONCAT('%', #{searchUsername}, '%') and userno != #{userno}
+        and ss.ssyn is null
+	</select>	
     
 </mapper>
