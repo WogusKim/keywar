@@ -80,28 +80,38 @@
 	src="https://cdn.jsdelivr.net/npm/@calumk/editorjs-codeflask@latest"></script>
 
 <style>
-.custom-button {
-	background-size: contain;
-	border: none;
-	width: 25px;
-	height: 25px;
-	cursor: pointer;
-	outline: none; /* 버튼 선택 시 외곽선 제거 */
-	display: inline-block; /* 버튼을 인라인 블록으로 표시 */
-}
-
-.custom-button:hover, .custom-button:focus, .custom-button:active {
-	background-color: transparent; /* 호버, 포커스, 액티브 상태에서 배경색 제거 */
-	outline: none; /* 포커스 시 외곽선 제거 */
-	box-shadow: none; /* 호버 시 그림자 제거 */
+.image-tool__image {
+    position: relative; /* 상대적 위치 설정 */
 }
 
 .button-container {
-	display: flex; /* 버튼을 나란히 배치 */
-	gap: 10px; /* 버튼 사이 간격 조정 */
-	margin-bottom: 10px;
-	/* margin-top: 10px */ /* 이미지와 버튼 사이 간격 조정 */
+    background-color: #a3a3a33d;
+    border-radius: 10px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+    width: 110px;
+    height: 30px;
+    padding: 5px;
+    display: flex; /* 플렉스 컨테이너 설정 */
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: space-around; /* 버튼 사이의 간격 균등 배분 */
 }
+
+.custom-button {
+    width: 20px; /* 버튼 크기 */
+    height: 20px; /* 버튼 높이 */
+    background-size: cover; /* 배경 이미지 크기 조정 */
+}
+
+
+.image-tool__caption {
+    width: 100%; /* 캡션 폭을 이미지 영역과 동일하게 설정 */
+    padding: 8px; /* 패딩으로 내부 여백 추가 */
+    box-sizing: border-box; /* 패딩을 너비에 포함 */
+}
+
 .wiki_fileIcon {
 	width: 30px;
 	height: 30px;
@@ -255,7 +265,9 @@ document.addEventListener('DOMContentLoaded', function () {
         	addClickButtons(); //이미지에 정렬 버튼 붙이기
         	applyImageAlignment(editorData.blocks);
             
-            updateFileIcons();// 파일 아이콘 변경 로직        
+            updateFileIcons(); // 파일 아이콘 변경 로직        
+            
+            initializeSorting(); //드래그기능 관련
         
             const blocks = editorData.blocks; // 블록 데이터 접근
             console.log("블록확인",blocks);
@@ -682,6 +694,42 @@ function updateFileIcons() {
             }
         }
     });
+}
+
+function initializeSorting() {
+    $('#myEditor').sortable({
+        items: '.ce-block', // Specify the blocks you want to be sortable
+        axis: 'y', // Restrict movement to the y-axis
+        cursor: 'move', // Change the cursor to indicate moving
+        stop: function(event, ui) {
+        	
+        	console.log('드래그 끝');
+            updateOrderInEditor(); // Function to update the order in Editor.js instance
+        }
+    });
+}
+
+function updateOrderInEditor() {
+    // DOM에서 블록 ID의 현재 순서를 검색
+    const orderedIds = $('#myEditor .ce-block').map(function () {
+        return $(this).attr('data-id');
+    }).get();
+	
+    console.log(orderedIds);
+    console.log(editor);
+
+    for (let i = 0; i < orderedIds.length; i++) {
+        const currentId = orderedIds[i];
+        // 현재 인덱스를 찾습니다.
+        const currentIndex = editor.blocks.getBlockIndex(currentId); // 수정 필요
+        if (currentIndex !== i) {
+            // 현재 인덱스에서 새 인덱스로 블록을 이동합니다.
+            editor.blocks.move(currentIndex, i);
+        }
+    }
+    
+    saveData();
+
 }
 
 </script>
