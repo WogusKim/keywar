@@ -463,7 +463,7 @@ body{
 /* 활성화된 탭의 스타일 */
 .tab.active {
     background-color: white; /* 활성 탭의 배경색 변경 */
-    color: blue; /* 활성 탭의 글자색 변경 */
+    color: gray; /* 활성 탭의 글자색 변경 */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
 }
 
