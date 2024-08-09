@@ -385,9 +385,10 @@ label {
 							</div>
 			    		</c:otherwise>
 			    	</c:choose>
-
 			        </div>
 				</div>
+				
+				
 				<div class="board_inner_inner">
 		    		<div class="card_top">
 					    <div class="title_and_link">
@@ -396,12 +397,43 @@ label {
 					    </div>					    
 			    	</div>
 			    	<hr>
-			    	<div class="memo_list">
-			    		<ul>
-			    			<c:forEach var="memo" items="${memoList}" begin="0" end="4">
-			    				<li>${memo.content} (${memo.createdate})</li>
-			    			</c:forEach>
-			    		</ul>
+			    	<div class="memo_list" style="padding: 0px; margin: 0px; ">
+			    		<!--  탭 버튼 영역 -->
+			    		<div style="background-color: #ffffff73; widows: 100%; display: flex; justify-content: space-between; border-radius: 10px;">
+			    			<div  id="myMemoButton" style="width: 50%; padding: 10px; text-align: center; cursor: pointer;" class="No-line-break"><b>나의 메모</b></div>
+			    			<div id="branchMemoButton" style="width: 50%; padding: 10px; text-align: center; cursor: pointer;" class="No-line-break"><b >부점 메모</b></div>
+			    		</div>
+			    		<!-- 탭 전환시 보여질 영역(1, 나의 메모) -->
+			    		<div id="myMemoArea" style="padding-top: 10px; padding-bottom: 10px;">
+			    			
+				    			<c:forEach var="memo" items="${memo1}" begin="0" end="4">
+				    				<div class="mainTodoContentOutline">
+								    	<div class="arrangeBox" style="width: 100%;">
+											<div style="text-align: left; vertical-align: middle; width: 100% ;  overflow: hidden; text-overflow: ellipsis; display: -webkit-box;
+   											 -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
+   											 ${memo.content}
+ 											</div>
+										</div>
+										<div style="color: gray; font-size: small;" class="No-line-break"> 메모 등록일자 : ${memo.createdate}</div>  
+								    </div>
+				    			</c:forEach>
+				    	
+			    		</div>
+			    		<!-- 탭 전환시 보여질 영역2, 부점 메모) -->
+			    		<div id="branchMemoArea" style="display: none; padding-top: 10px; padding-bottom: 10px;">
+				    		<c:forEach var="memo" items="${memo2}" begin="0" end="4">
+			    				<div class="mainTodoContentOutline">
+							    	<div class="arrangeBox" style="width: 100%;">
+										<div style="text-align: left; vertical-align: middle; width: 100% ;  overflow: hidden; text-overflow: ellipsis; display: -webkit-box;
+  											 -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
+  											 ${memo.content}
+											</div>
+									</div>
+									<div style="color: gray; font-size: small;" class="No-line-break"> 메모 등록일자 : ${memo.createdate}</div>  
+							    </div>
+				    		</c:forEach>
+			    		</div>
+			    
 			    	</div>
 				</div>
 	    	</div>
@@ -690,6 +722,16 @@ $(document).ready(function() {
     });
     $(".board_inner").disableSelection();
 });
+
+document.getElementById("myMemoButton").onclick = function() {
+    document.getElementById("myMemoArea").style.display = "block";
+    document.getElementById("branchMemoArea").style.display = "none";
+};
+
+document.getElementById("branchMemoButton").onclick = function() {
+    document.getElementById("myMemoArea").style.display = "none";
+    document.getElementById("branchMemoArea").style.display = "block";
+};
 </script>
 </body>
 </html>
