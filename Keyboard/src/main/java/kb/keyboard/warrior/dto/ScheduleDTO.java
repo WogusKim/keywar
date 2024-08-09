@@ -22,6 +22,8 @@ public class ScheduleDTO {
 	private String groupName; //
 	private String username; //
 	private String maxSharedepth3;
+	private String todocount;
+	private String duedate;
 
 	public ScheduleDTO() {
 	}
@@ -29,7 +31,7 @@ public class ScheduleDTO {
 	public ScheduleDTO(String scheduleid, String userno, String title, String content, String startDate, String endDate,
 			String sharedepth1, String deptname, String sharedepth2, String teamname, String sharedepth3, String customname, 
 			String customShare, String sharecolor, String shareto, String category, String status, String groupName, String username
-			, String maxSharedepth3) {
+			, String maxSharedepth3, String todocount, String duedate) {
 		this.scheduleid = scheduleid;
 		this.userno = userno;
 		this.title = title;
@@ -50,6 +52,9 @@ public class ScheduleDTO {
 		this.groupName = groupName;
 		this.username = username;
 		this.maxSharedepth3 = maxSharedepth3;
+		this.todocount = todocount;
+		this.duedate = duedate;
+		
 	}
 
 	// Getters and Setters
@@ -211,6 +216,22 @@ public class ScheduleDTO {
 
 	public void setMaxSharedepth3(String maxSharedepth3) {
 		this.maxSharedepth3 = maxSharedepth3;
+	}
+
+	public String getTodocount() {
+		return todocount;
+	}
+
+	public void setTodocount(String todocount) {
+		this.todocount = todocount;
+	}
+
+	public String getDuedate() {
+		return duedate;
+	}
+
+	public void setDuedate(String duedate) {
+		this.duedate = duedate;
 	}
 	
 	

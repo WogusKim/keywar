@@ -306,6 +306,73 @@ public class WikiController {
         return "redirect:menuSetting";
     }
     
+    //빠른메뉴추가
+    @RequestMapping("/fastAddItem")
+    public String fastAddItem(HttpServletRequest request, HttpSession session, Model model) {
+    	
+    	String userno = (String) session.getAttribute("userno");
+    	
+        // 선택된 정보들
+        String selectedId = request.getParameter("id");
+        String selectedType = request.getParameter("type");
+        String selectedDepth = request.getParameter("depth");
+        
+        // 추가할 정보들
+        String title = request.getParameter("title");
+        String sharedTitle = request.getParameter("sharedTitle");
+        String isOpen = request.getParameter("public");
+        
+        int isOpenInt = 0;
+        
+        if (isOpen.equals("no")) {
+            isOpenInt = 0;
+        } else {
+            isOpenInt = 1;
+        }
+        
+        
+        //이따 삭제하세요~
+        System.out.println("==================빠른메뉴추가 테스트중==================");
+        System.out.println("선택한 폴더 id: " + selectedId);
+        System.out.println("폴더타입 재확인: " + selectedType);
+        System.out.println("depth 재확인: " + selectedDepth);
+        
+        System.out.println("타이틀: " + title);
+        System.out.println("sharedTitle: " + sharedTitle);
+        System.out.println("공개여부 " + isOpen);
+        System.out.println("==================빠른메뉴추가 테스트중==================");
+        
+        WikiDao dao = sqlSession.getMapper(WikiDao.class);
+
+   	 	//부모의 최대 순번을 찾아야 한다.
+        int max_order = dao.getMaxOrderOfFather(selectedId);
+        max_order++;
+       
+        if(sharedTitle==null||sharedTitle=="") {
+        	sharedTitle = title;
+        }
+       
+	    System.out.println("폴더를 추가합니다. - 폴더 부모 조회");
+	    dao.insertMenuHaveParentsFolder(selectedId, title, sharedTitle, "item", max_order, userno, isOpenInt);
+	    
+	    int newId = dao.getNewCopyId(userno); //방금추가한 메뉴 ID
+        
+		LoginDao loginDao = sqlSession.getMapper(LoginDao.class);
+		
+		//메뉴데이터가 변경되므로 세션에 다시 담기
+		List<MenuDTO> menus = (List<MenuDTO>) session.getAttribute("menus");
+		menus = loginDao.getMenus(userno);
+		setMenuDepth(menus);
+		List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
+
+		session.setAttribute("menus", topLevelMenus); // �꽭�뀡�뿉 硫붾돱 �뜲�씠�꽣 ���옣
+
+		model.addAttribute("menus", topLevelMenus);
+    	
+    	return "redirect:wikiDetail?id="+newId;
+    }
+    
+    
     //메뉴 훔쳐오기
     @RequestMapping("/copyNote")
     public String copyMenu(HttpServletRequest request, HttpSession session, Model model, @RequestParam("copyId") int copyId) {

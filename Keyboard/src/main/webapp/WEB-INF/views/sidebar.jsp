@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>사이드바</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 .content_left{
@@ -26,8 +27,9 @@
 
 .menu_list {
 	display: flex;
-	align-item: center;
+	align-items: center;
 	vertical-align: center;
+	position: relative; /* 상대 위치 설정 */
 }
 
 .menu-tree ul {
@@ -110,7 +112,137 @@
     margin-right: 6px;
 }
 
+.folder-hover:hover {
+    background-color: #f0f0f0; /* 마우스를 올렸을 때 음영 효과 */
+    position: relative; /* 상대 위치 */
+}
 
+.folder-hover .add-icon {
+	width: 15px;
+	height: auto;
+    display: none; /* 기본적으로 숨김 */
+    position: absolute; /* 절대 위치 */
+    right: 10px; /* 오른쪽에 배치 */
+    top: 50%; /* 세로 중앙 정렬 */
+    transform: translateY(-50%); /* 세로 중앙 정렬 */
+}
+
+.folder-hover:hover .add-icon {
+    display: inline-block; /* 마우스를 올렸을 때 보임 */
+}
+
+.selected {
+    background-color: #007BFF; /* 선택된 아이템의 배경색 */
+    color: white; /* 선택된 아이템의 글자색 */
+    border-radius: 5px; /* 선택된 아이템의 테두리 둥글게 */
+    padding: 5px; /* 선택된 아이템의 안쪽 여백 */
+}
+
+
+
+/* 모달팝업관련 */
+
+.modal {
+    display: none; /* 기본적으로 숨겨져 있음 */
+    position: fixed; /* 고정 위치 */
+    z-index: 1; /* 콘텐츠 위에 표시 */
+    left: 0;
+    top: 0;
+    width: 100%; /* 전체 너비 */
+    height: 100%; /* 전체 높이 */
+    overflow: auto; /* 필요할 경우 스크롤 */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* 블랙 w/ opacity */
+}
+
+/* 모달 콘텐츠 */
+.modal-content2 {
+	border-radius: 10px;
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% 상단에서부터 자동 가운데 정렬 */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 500px; /* 대부분의 화면에서 적절한 폭 */
+    heigth: 400px;
+}
+
+.input_outer {
+	padding:10px;
+}
+
+.edit_field {
+	margin: 5px;
+	padding:10px;
+	display: flex;
+	
+}
+
+.label-fixed-width {
+    display: inline-block;
+    width: 120px; /* 레이블 너비 설정 */
+    margin-right: 10px; /* 인풋과의 간격 조절 */
+    margin_left: 20px;
+}
+
+.edit_input {
+	display: inline-block;
+	width: 250px;
+	height: 25px;
+}
+
+.submit_buttonArea {
+	margin: 20px;
+	text-align: center; /* 버튼을 중앙으로 정렬 */
+}
+
+.edit_submit {
+	width : 200px;
+	padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.label_modal {
+	width: 60px;
+}
+
+hr.modal_hr {
+    border: 0;
+    height: 1px;
+    background-color: #f0f0f0; /* 색상 변경 */
+    margin-top: 10px; /* 상단 여백 추가 */
+}
+
+/* 닫기 버튼 */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    margin-right: 10px;
+}
+
+input[type="text"], input[type="radio"] {
+    margin-right: 5px;
+}
+/* 모달팝업관련 */
 </style>
 </head>
 <body>
@@ -119,7 +251,7 @@
         <ul>
             <c:forEach var="menu" items="${menus}">
                 <li>
-                	<div class="menu_list">
+                	<div class="menu_list folder-hover">
 	                    <div class="icon ${menu.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${menu.menuType}" onclick="toggleFolder(this)"></div>
 			            <!-- menuType에 따라 다른 처리 -->
 			            <c:choose>
@@ -132,6 +264,7 @@
 			                <c:otherwise>
 			                    <!-- 기본적으로 title만 표시 -->
 			                    <span>${menu.title}</span>
+			                    <img src="${pageContext.request.contextPath}/resources/images/icons/plus_item.png" class="add-icon" alt="Add Item" onclick="addItem(${menu.id}, ${menu.depth})">
 			                </c:otherwise>
 			            </c:choose>
                     </div>
@@ -139,7 +272,7 @@
                         <ul>
                             <c:forEach var="child1" items="${menu.children}">
                                 <li>
-                                	<div class="menu_list">
+                                	<div class="menu_list folder-hover">
 	                                    <div class="icon ${child1.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child1.menuType}" onclick="toggleFolder(this)"></div>
 							            <!-- menuType에 따라 다른 처리 -->
 							            <c:choose>
@@ -152,6 +285,7 @@
 							                <c:otherwise>
 							                    <!-- 기본적으로 title만 표시 -->
 							                    <span>${child1.title}</span>
+							                    <img src="${pageContext.request.contextPath}/resources/images/icons/plus_item.png" class="add-icon" alt="Add Item" onclick="addItem(${child1.id}, ${child1.depth})">
 							                </c:otherwise>
 							            </c:choose>
                                     </div>
@@ -159,7 +293,7 @@
                                         <ul>
                                             <c:forEach var="child2" items="${child1.children}">
                                                 <li>
-                                                	<div class="menu_list">
+                                                	<div class="menu_list folder-hover">
 	                                                    <div class="icon ${child2.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child2.menuType}" onclick="toggleFolder(this)"></div>
 											            <!-- menuType에 따라 다른 처리 -->
 											            <c:choose>
@@ -172,13 +306,14 @@
 											                <c:otherwise>
 											                    <!-- 기본적으로 title만 표시 -->
 											                    <span>${child2.title}</span>
+											                    <img src="${pageContext.request.contextPath}/resources/images/icons/plus_item.png" class="add-icon" alt="Add Item" onclick="addItem(${child2.id}, ${child2.depth})">
 											                </c:otherwise>
 											            </c:choose>
                                                     </div>
                                                     <c:if test="${not empty child2.children}">
                                                         <ul>
                                                             <c:forEach var="child3" items="${child2.children}">
-                                                                <li><div class="menu_list">
+                                                                <li><div class="menu_list folder-hover">
 	                                                                    <div class="icon ${child3.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child3.menuType}" onclick="toggleFolder(this)"></div>
 															            <!-- menuType에 따라 다른 처리 -->
 															            <c:choose>
@@ -191,6 +326,7 @@
 															                <c:otherwise>
 															                    <!-- 기본적으로 title만 표시 -->
 															                    <span>${child3.title}</span>
+															                    <img src="${pageContext.request.contextPath}/resources/images/icons/plus_item.png" class="add-icon" alt="Add Item" onclick="addItem(${child3.id}, ${child3.depth})">
 															                </c:otherwise>
 															            </c:choose>
                                                                     </div>
@@ -198,7 +334,7 @@
                                                                         <ul>
                                                                             <c:forEach var="child4" items="${child3.children}">
                                                                                 <li>
-                                                                                	<div class="menu_list">
+                                                                                	<div class="menu_list folder-hover">
 	                                                                                    <div class="icon ${child4.menuType == 'folder' ? 'folder-icon' : 'file-icon'}" data-toggle="${child4.menuType}" onclick="toggleFolder(this)"></div>
 																			            <!-- menuType에 따라 다른 처리 -->
 																			            <c:choose>
@@ -211,6 +347,7 @@
 																			                <c:otherwise>
 																			                    <!-- 기본적으로 title만 표시 -->
 																			                    <span>${child4.title}</span>
+																			                    <img src="${pageContext.request.contextPath}/resources/images/icons/plus_item.png" class="add-icon" alt="Add Item" onclick="addItem(${child4.id}, ${child4.depth})">
 																			                </c:otherwise>
 																			            </c:choose>
                                                                                     </div>
@@ -243,6 +380,54 @@
 		<div class="icon-fold unfold-icon" style="display:none"></div>
 	</div>
 </div>
+
+
+<!-- 페이지 추가 모달 팝업 -->
+<div id="addModal" class="modal">
+    <div class="modal-content2">
+        <span class="close">&times;</span>
+        <h3>업무노트 추가</h3>
+        
+        <form id="addForm" action="${pageContext.request.contextPath}/fastAddItem" method="post">
+        	<hr class="modal_hr">
+        	<div class="input_outer">
+        	
+	            <input type="hidden" id="selectedId" name="id">
+		        <input type="hidden" id="selectedType" name="type">
+		        <input type="hidden" id="selectedDepth" name="depth">
+		        
+		        
+		        <div class="edit_field">
+		        	<label class="label-fixed-width">공개 여부:</label>
+		        	<input type="radio" name="public" value="yes">
+                    <label for="isOpenYes" class="label_modal">공개</label>
+                    <input type="radio" name="public" value="no">
+                    <label for="isOpenNo" class="label_modal">비공개</label>
+		        </div>
+		        
+	            <div class="edit_field">
+	                <label class="label-fixed-width">노트(폴더)제목:</label>
+	                <input type="text" id="addTitle" name="title" class="edit_input">
+	            </div>
+
+	            <div class="edit_field">
+	                <label class="label-fixed-width">공유용 제목:</label>
+	                <input type="text" name="sharedTitle" class="edit_input">
+	            </div>	            
+	            
+            </div>
+            
+            <hr class="modal_hr">
+            
+            <div class="submit_buttonArea">
+            	<button class="edit_submit" type="submit">확인</button>
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+
 <script>
 function toggleFolder(element) {
     var parentLi = element.closest('li'); // 가장 가까운 li 요소를 찾음
@@ -314,6 +499,34 @@ $(document).ready(function() {
 
 });
 
+// 아이템 추가 함수
+function addItem(folderId, depth) {
+    
+    //depth가 4인 경우 거절해야함.
+    if (depth >= 4) {
+    	alert('최대 허용 depth 를 초과하였습니다.');
+    } else {
+        // 모달을 띄우기 전에 폴더 ID와 depth 값을 설정합니다.
+        $('#selectedId').val(folderId);
+        $('#selectedDepth').val(depth);
+        $('#selectedType').val('item'); // 기본 타입을 설정합니다.
+        
+        // 모달을 띄웁니다.
+        $('#addModal').show();
+    }
+}
+
+// 모달을 닫는 함수
+$('.close').click(function() {
+    $('#addModal').hide();
+});
+
+$(window).click(function(event) {
+    if (event.target == $('#addModal')[0]) {
+        $('#addModal').hide();
+    }
+});
+
 </script>
 </body>
-</html>  
+</html>

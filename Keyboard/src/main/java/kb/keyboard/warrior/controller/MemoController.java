@@ -114,7 +114,7 @@ public class MemoController {
             response.put("exists", count > 0);
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace(); // �뒪�깮 �듃�젅�씠�뒪 異쒕젰
+            e.printStackTrace(); 
             response.put("error", "Error checking group name");
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -128,9 +128,9 @@ public class MemoController {
         System.out.println(searchUsername);
         System.out.println(userno);
         ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
-        System.out.println("dao �샇異�");
+        System.out.println("dao load");
         try {
-        	System.out.println("try 吏꾩엯");
+        	System.out.println("try in");
             List<Map<String, String>> searchUserList = dao.searchUser(searchUsername, userno);
             System.out.println("searchUserList: " + searchUserList);
             Map<String, List<Map<String, String>>> response = new HashMap<String, List<Map<String, String>>>();
@@ -163,6 +163,48 @@ public class MemoController {
         }
     }
     
+    @RequestMapping(value = "/getUserGroups", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public List<ScheduleDTO> getUserGroups(HttpSession session) {
+    	String userno = (String) session.getAttribute("userno");
+        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+        System.out.println("userno for userGroups: " + userno);
+        return dao.getUserGroups(userno);
+    }
+    
+    @RequestMapping(value = "/getUserGroupsForInvite", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public List<ScheduleDTO> getUserGroupsForInvite(HttpSession session) {
+    	String userno = (String) session.getAttribute("userno");
+        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+        System.out.println("userno for userGroups: " + userno);
+        return dao.getUserGroups(userno);
+    }
+    
+    @RequestMapping(value = "/searchUserForInvite", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<Map<String, List<Map<String, String>>>> searchUserForInvite(@RequestBody Map<String, String> request, HttpSession session) {
+        String searchUsername = (String) request.get("username");
+        String groupNum = (String) request.get("groupNum");
+        String userno = (String) session.getAttribute("userno");
+        System.out.println(searchUsername);
+        System.out.println(userno);
+        System.out.println(groupNum);
+        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+        System.out.println("dao load");
+        try {
+        	System.out.println("try in");
+            List<Map<String, String>> searchUserList = dao.searchUserForInvite(searchUsername, userno, groupNum);
+            System.out.println("searchUserList: " + searchUserList);
+            Map<String, List<Map<String, String>>> response = new HashMap<String, List<Map<String, String>>>();
+            response.put("users", searchUserList);
+            return new ResponseEntity<Map<String, List<Map<String, String>>>>(response, HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<Map<String, List<Map<String, String>>>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    
     @RequestMapping(value = "/customsharetoload", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public List<Map<String, String>> loadCustomShareto(HttpSession session) {
@@ -181,13 +223,13 @@ public class MemoController {
             return new ResponseEntity<String>("User not logged in", HttpStatus.UNAUTHORIZED);
         }
         dto.setUserno(userno);
-        System.out.println("Received DTO: " + dto);  // 濡쒓렇 異붽�
+        System.out.println("Received DTO: " + dto);  
         ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
         try {
             dao.scheduleNew(dto);
             return new ResponseEntity<String>("Event saved successfully", HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace(); // �뒪�깮 �듃�젅�씠�뒪 異쒕젰
+            e.printStackTrace(); 
             return new ResponseEntity<String>("Error saving event", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -227,6 +269,30 @@ public class MemoController {
         }
     }
 
+    @RequestMapping(value = "/countTodoList", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<ScheduleDTO> countTodoList(HttpSession session) {
+        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+        String userno = (String) session.getAttribute("userno");
+        return dao.countTodoList(userno);
+    }
+    
+//    public List<Map<String, Object>> countToDoList(HttpSession session) {
+//        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+//        String userno = (String) session.getAttribute("userno");
+//        List<ScheduleDTO> scheduleList = dao.countTodoList(userno);
+//        List<Map<String, Object>> countTodoList = new ArrayList<Map<String, Object>>();
+//        for (ScheduleDTO schedule : scheduleList) {
+//            Map<String, Object> countTodo  = new HashMap<String, Object>();
+//            countTodo.put("duedate", schedule.getDuedate());
+//            countTodo.put("todocount", schedule.getTodocount());
+//            countTodoList.add(countTodo );
+//        }
+//
+//        return countTodoList;
+//    }
+    
+    
     @RequestMapping("/todo")
     public String todoView(HttpSession session, Model model) {
         System.out.println("todoView()");
@@ -469,13 +535,13 @@ public class MemoController {
 		System.out.println(noticeDTO.getWidth());
 		System.out.println(noticeDTO.getHeight());
 
-		// MemoDao瑜� �넻�빐 SQL �떎�뻾
+		// MemoDao
 		MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
 
-		// 怨듭� �쐞移� 諛� �겕湲� �뾽�뜲�씠�듃
+		// update Notice Size
 		memoDao.updateNoticeSize(noticeDTO);
 
-		// JSON �삎�깭濡� �쓳�떟 諛섑솚
+		// JSON send
 		return "{\"status\":\"success\"}";
 	}
     
