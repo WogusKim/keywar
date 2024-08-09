@@ -400,8 +400,8 @@ label {
 			    	<div class="memo_list" style="padding: 0px; margin: 0px; ">
 			    		<!--  탭 버튼 영역 -->
 			    		<div style="background-color: #ffffff73; widows: 100%; display: flex; justify-content: space-between; border-radius: 10px;">
-			    			<div style="width: 50%; padding: 10px; text-align: center; cursor: pointer;" class="No-line-break"><b id="myMemoButton">나의 메모</b></div>
-			    			<div style="width: 50%; padding: 10px; text-align: center; cursor: pointer;" class="No-line-break"><b id="branchMemoButton">부점 메모</b></div>
+			    			<div  id="myMemoButton" style="width: 50%; padding: 10px; text-align: center; cursor: pointer;" class="No-line-break"><b>나의 메모</b></div>
+			    			<div id="branchMemoButton" style="width: 50%; padding: 10px; text-align: center; cursor: pointer;" class="No-line-break"><b >부점 메모</b></div>
 			    		</div>
 			    		<!-- 탭 전환시 보여질 영역(1, 나의 메모) -->
 			    		<div id="myMemoArea" style="padding-top: 10px; padding-bottom: 10px;">
