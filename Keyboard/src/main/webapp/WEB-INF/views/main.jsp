@@ -397,17 +397,17 @@ label {
 					    </div>					    
 			    	</div>
 			    	<hr>
-			    	<div class="memo_list" style="padding: 0px; margin: 0px; ">
 			    		<!--  탭 버튼 영역 -->
-			    		<div style="background-color: #ffffff73; widows: 100%; display: flex; justify-content: space-between; border-radius: 10px;">
+			    		<div style="background-color: #ffffff73; widows: 100%; display: flex; justify-content: space-between; border-radius: 10px; margin-bottom: 10px;">
 			    			<div  id="myMemoButton" style="width: 50%; padding: 10px; text-align: center; cursor: pointer;" class="No-line-break"><b>나의 메모</b></div>
 			    			<div id="branchMemoButton" style="width: 50%; padding: 10px; text-align: center; cursor: pointer;" class="No-line-break"><b >부점 메모</b></div>
 			    		</div>
+			    	<div class="memo_list" style="padding: 0px; margin: 0px; height: 65%; padding: 0px;">
 			    		<!-- 탭 전환시 보여질 영역(1, 나의 메모) -->
-			    		<div id="myMemoArea" style="padding-top: 10px; padding-bottom: 10px;">
+			    		<div id="myMemoArea" style="padding-bottom: 10px;">
 			    			
 				    			<c:forEach var="memo" items="${memo1}" begin="0" end="4">
-				    				<div class="mainTodoContentOutline">
+				    				<div class="mainTodoContentOutline" >
 								    	<div class="arrangeBox" style="width: 100%;">
 											<div style="text-align: left; vertical-align: middle; width: 100% ;  overflow: hidden; text-overflow: ellipsis; display: -webkit-box;
    											 -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
@@ -420,7 +420,7 @@ label {
 				    	
 			    		</div>
 			    		<!-- 탭 전환시 보여질 영역2, 부점 메모) -->
-			    		<div id="branchMemoArea" style="display: none; padding-top: 10px; padding-bottom: 10px;">
+			    		<div id="branchMemoArea" style="display: none; padding-bottom: 10px;">
 				    		<c:forEach var="memo" items="${memo2}" begin="0" end="4">
 			    				<div class="mainTodoContentOutline">
 							    	<div class="arrangeBox" style="width: 100%;">

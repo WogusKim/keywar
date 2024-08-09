@@ -37,22 +37,35 @@ width: 100%;
         const notifyButton1 = document.getElementById('notifyButton1');
         const notificationBox = document.getElementById('notificationBox');
 
-        notifyButton.addEventListener('click', () => {
+        notifyButton.addEventListener('click', (e) => {
             if (notificationBox.style.display === 'none' || notificationBox.style.display === '') {
+            	e.stopPropagation();
                 notificationBox.style.display = 'block'; // 박스 보이기
                 alarmOff();
             } else {
                 notificationBox.style.display = 'none'; // 박스 숨기기 
             }
         });
-        notifyButton1.addEventListener('click', () => {
+        notifyButton1.addEventListener('click', (e) => {
             if (notificationBox.style.display === 'none' || notificationBox.style.display === '') {
+            	e.stopPropagation();
                 notificationBox.style.display = 'block'; // 박스 보이기
                 alarmOff();
             } else {
                 notificationBox.style.display = 'none'; // 박스 숨기기
             }
         });
+        
+        // 알림창 외부를 클릭했을 때 알림창 닫기
+        document.addEventListener('click', () => {
+            if (notificationBox.style.display === 'block') {
+                notificationBox.style.display = 'none';
+            }
+        });
+        notificationBox.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+        
         
         // 세션에서 배경색 정보를 읽어옵니다.
         var bgColor = '${sessionScope.bgcolor}';

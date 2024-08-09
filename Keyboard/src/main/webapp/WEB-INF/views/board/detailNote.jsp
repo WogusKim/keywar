@@ -58,18 +58,8 @@
 
 <% 
    String userno = (String) session.getAttribute("userno");
-	String errormessage = (String) session.getAttribute("errormessage");
-	if (errormessage != null) {
 %>
-	<script>
-	alert("<%= errormessage %>");
-	</script>    	
-<%
-    // 세션에서 errormessage를 제거하여 다시 표시되지 않도록 함
-    session.removeAttribute("errormessage");
-	}
-%>    	
-    	
+
     
 </head>
 <style>
@@ -311,13 +301,11 @@
 				
 				
 				
-				<div style="position:relative; display:inline-block;">
-				    <a href="${pageContext.request.contextPath}/likeUp?id=<%= currentId %>" style="display:inline-block;">
-				        <div style="width:150px; height:150px; position:relative;">
+				<div style="position:relative; display:inline-block;" onclick="likeUp()">
+				        <div style="width:150px; height:150px; position:relative;"  >
 				            <iframe src="https://giphy.com/embed/05IRAGzP2Q6EY4E9eg" width="150" height="150" style="pointer-events:none;" frameBorder="0" allowFullScreen></iframe>
 				            <div style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>
 				        </div>
-				    </a>
 				</div>
 				
 <%-- 			<a href="${pageContext.request.contextPath}/likeUp?id=<%= currentId %>"><img src="${pageContext.request.contextPath}/resources/images/like.png"  id="likeUp" ></a> --%>
@@ -473,7 +461,9 @@
     </div>
     
     
-<script type="text/javascript"> 
+<script type="text/javascript">   
+ 
+  
 
 // 모달 열기/닫기 스크립트
 var modal = document.getElementById("myModal");
@@ -554,10 +544,6 @@ function test(){
 			if(result.result == "success"){
 				alert("댓글이 정상적으로 등록되었습니다.");
 				$("textarea#comment-input").val("");
-				window.location.href = window.location.href.split('#')[0] + '#footer'; // URL의 해시 부분을 설정
-	            setTimeout(function() {
-	                window.location.reload(); // 강제 새로 고침
-	            }, 100); // 해시 설정 후 잠시 대기
 			}else{
 				alert(result.result);
 				$("textarea#comment-input").val("");
@@ -574,6 +560,37 @@ function test(){
 }
 
 
+
+//수정하기 눌렀을 때 실행할 것.
+function likeUp(){
+	
+	const id = getQueryParameter('id');
+	fetch('${pageContext.request.contextPath}/likeUp', {   
+      	method: 'POST',
+    	headers: {
+        	'Content-Type': 'application/json'
+      	},
+    	body: JSON.stringify({
+	    		
+	      	targetid : id,
+	      	userno:  '<%= userno %>'
+      	})
+  	})
+  	.then(response => response.json())
+  	.then(data => {
+      	console.log('Success:', data);
+      	if(data.status == "success"){
+      		location.reload();
+      	}else if(data.status == "duplicate"){
+      		alert("이미 좋아하는 게시물입니다.");
+      	}else{
+      		
+      	}
+  	})
+  	.catch((error) => {
+      	console.error('Error:', error);
+  	});
+}
 
 
 let editor;
@@ -761,11 +778,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-/* function copyNote() {
-    const noteId = '${menuDto.id}'; // JSP에서 서버 측 변수를 사용
-    const redirectUrl = '${pageContext.request.contextPath}/copyNote?id=' + noteId; // 이 URL은 실제 애플리케이션의 로직에 맞게 조정되어야 함
-    window.location.href = redirectUrl;
-} */
+
+
+
 </script>
 </body>
 </html>

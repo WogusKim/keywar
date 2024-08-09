@@ -172,13 +172,13 @@ public class BoardController {
 		return "redirect:detailNote?id="+id;
 	}
 	
-	@RequestMapping("/likeUp")
-	public String likeUp(Model model, @RequestParam("id") int id, HttpSession session, LikeDTO dto) {
+	@RequestMapping(value ="/likeUp" , method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String likeUp(Model model, HttpSession session, @RequestBody LikeDTO dto) {
 		CommentDao dao = sqlSession.getMapper(CommentDao.class);
-		String userno = (String) session.getAttribute("userno");
-		dto.setTargetid(id+"");
-		dto.setUserno(userno);
-		System.out.println("userno : " + userno + "\n id : "+id);
+		System.out.println("넘겨 받은 userno : " +dto.getUserno());
+		System.out.println("넘겨 받은 targetId : " +dto.getTargetid());
+		
 		int result = 0;
 		result = dao.checkLike(dto);
 		if(result == 0) {
@@ -202,11 +202,10 @@ public class BoardController {
 	        System.out.println(bdto.getUsername() + "님에게  alert 추가.");
 			adao.addWikiAlert(adto);
 			
-			
 		}else {
-			session.setAttribute("errormessage", "이미 좋아하는 게시물입니다.");
+			return "{\"status\":\"duplicate\"}";
 		}
-		return "redirect:detailNote?id="+id;
+		 return "{\"status\":\"success\"}";
 	}
 	
 	
