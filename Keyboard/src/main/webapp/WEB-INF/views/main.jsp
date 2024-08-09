@@ -402,7 +402,7 @@ label {
 			    			<div  id="myMemoButton" style="width: 50%; padding: 10px; text-align: center; cursor: pointer;" class="No-line-break"><b>나의 메모</b></div>
 			    			<div id="branchMemoButton" style="width: 50%; padding: 10px; text-align: center; cursor: pointer;" class="No-line-break"><b >부점 메모</b></div>
 			    		</div>
-			    	<div class="memo_list" style="padding: 0px; margin: 0px; height: 65%; padding: 0px;">
+			    	<div class="memo_list" style="padding: 0px; margin: 0px; height: 65%; padding: 0px; padding-right: 5px;">
 			    		<!-- 탭 전환시 보여질 영역(1, 나의 메모) -->
 			    		<div id="myMemoArea" style="padding-bottom: 10px;">
 			    			<c:forEach var="memo" items="${memo1}" begin="0" end="4">
