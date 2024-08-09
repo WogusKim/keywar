@@ -501,7 +501,6 @@ label {
     
     // Modal2 열기 (삭제여부 묻는 창)
     function openDeleteModal2() {
-    	updateFormAction("${pageContext.request.contextPath}/deleteTodo");
         document.getElementById("deleteModal").style.display = "flex";
     }
 
