@@ -24,7 +24,6 @@
 	rel="stylesheet">
 
 
-
 <!-- Core  include only Paragraph block -->
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
 <!-- Header Plug-in-->
@@ -135,7 +134,7 @@
 			<!-- 버튼 영역 -->
 			<div class="editor-button-area">
 				<button onclick="saveData()">저장하기</button>
-				<button onclick="loadData()">내용 불러오기</button>
+				<!-- <button onclick="loadData()">내용 불러오기</button> -->
 			</div>
 
 		</div>
@@ -303,6 +302,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         // 도구 설정...
         tools: {
+
             // Header 설정
             header: {
                 class: Header,
