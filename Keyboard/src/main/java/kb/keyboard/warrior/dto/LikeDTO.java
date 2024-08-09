@@ -6,6 +6,7 @@ public class LikeDTO {
  private int likeid;    // 좋아요 id
  private String targetid;  // 대상 문서 id (wiki, document 등)
  private String userno;    // 사번
+ private String likeDate;    // 사번
 
  public LikeDTO() {
  }
@@ -40,4 +41,13 @@ public class LikeDTO {
  public void setUserno(String userno) {
      this.userno = userno;
  }
+
+public String getLikeDate() {
+	return likeDate;
+}
+
+public void setLikeDate(String likeDate) {
+	this.likeDate = likeDate;
+}
+ 
 }
