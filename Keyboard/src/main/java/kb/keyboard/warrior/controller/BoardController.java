@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kb.keyboard.warrior.dao.AlertDao;
 import kb.keyboard.warrior.dao.CommentDao;
+import kb.keyboard.warrior.dao.LoginDao;
 import kb.keyboard.warrior.dao.WikiDao;
+import kb.keyboard.warrior.dto.AlertDTO;
 import kb.keyboard.warrior.dto.BoardDTO;
 import kb.keyboard.warrior.dto.CommentDTO;
 import kb.keyboard.warrior.dto.LikeDTO;
@@ -130,6 +133,23 @@ public class BoardController {
 		if(dto.getUserno()!=null){
 			dao.addComment(dto);
 			rdto.setResult("success");
+			WikiDao wdao = sqlSession.getMapper(WikiDao.class); 
+			LoginDao ldao = sqlSession.getMapper(LoginDao.class); 
+			// 이 사람한테 알림이 가야함. (작성글 번호로 게시글 작성자 직원번호 찾기 !)
+			BoardDTO bdto = wdao.findWriterName(dto.getTargetid());
+			// 이 사람이 댓글 쓴 사람.
+			String commentWriter = ldao.isRightUserno(dto.getUserno()).getUsername();
+			
+			AlertDTO adto = new AlertDTO();
+			adto.setMessage(commentWriter+"님이 회원님의 게시글에 댓글을 남겼습니다.");	
+			adto.setUserno(bdto.getUserno());
+			adto.setDetail(dto.getTargetid());
+			
+	        AlertDao adao = sqlSession.getMapper(AlertDao.class);
+	        System.out.println(bdto.getUsername() + "님에게  alert 추가.");
+			adao.addWikiAlert(adto);
+
+			
 		}else {
 			rdto.setResult("fail - 댓글 등록 중 오류가 발생하였습니다.");
 		}
@@ -164,6 +184,25 @@ public class BoardController {
 		if(result == 0) {
 			System.out.println("좋아요 등록된 거 없지롱 ~");
 			dao.addLike(dto);
+			
+			// 알림기능 추가
+			WikiDao wdao = sqlSession.getMapper(WikiDao.class); 
+			LoginDao ldao = sqlSession.getMapper(LoginDao.class); 
+			// 이 사람한테 알림이 가야함. (작성글 번호로 게시글 작성자 직원번호 찾기 !)
+			BoardDTO bdto = wdao.findWriterName(dto.getTargetid());
+			// 이 사람이 좋아요 누른 사람 사람.
+			String commentWriter = ldao.isRightUserno(dto.getUserno()).getUsername();
+			
+			AlertDTO adto = new AlertDTO();
+			adto.setMessage(commentWriter+"님이 회원님의 게시글을 좋아합니다.");	
+			adto.setUserno(bdto.getUserno());
+			adto.setDetail(dto.getTargetid());
+			
+	        AlertDao adao = sqlSession.getMapper(AlertDao.class);
+	        System.out.println(bdto.getUsername() + "님에게  alert 추가.");
+			adao.addWikiAlert(adto);
+			
+			
 		}else {
 			session.setAttribute("errormessage", "이미 좋아하는 게시물입니다.");
 		}

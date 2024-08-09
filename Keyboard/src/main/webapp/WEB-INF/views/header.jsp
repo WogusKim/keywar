@@ -102,19 +102,18 @@ width: 100%;
 
                 // 알림 메시지 추가
                 data.forEach(function(item) {
-                	console.log(item);
                 	var alertNo = 'contentNo-'+item.alertid;
-                    $('#alertContentArea').append('<div id="'+ alertNo +'" class="alertContent" onclick="getDetail('+item.alertid+',\''+ item.category+'\')">  </div>');
+                    $('#alertContentArea').append('<div id="'+ alertNo +'" class="alertContent" onclick="getDetail('+item.alertid+',\''+ item.category+'\',\''+item.detail+'\')">  </div>');
                     $('#'+alertNo).append('<p>' + item.message + '</p>');
                     $('#'+alertNo).append('<p class="alertTimeStamp">' + item.senddate + '</div>');
                     $('#'+alertNo).append('<hr class="alerthr">');
-                    
                 });
 
 	            //console.log(data);
 	            alarmOn(); // 알림 표시 기능 호출
 	        } else {
-	            console.log("No new notifications");
+	        	//알림이 없을 때
+	            //console.log("No new notifications");
 	        }
 	    })
 	    .catch(error => {
@@ -122,6 +121,7 @@ width: 100%;
 	        console.error('Error:', error);
 	    });
 	        // 다음 체크 주기 설정 (예: 5초)  // 일단 1분으로 해놈~~ 자꾸 떠서
+	        // 다 한 다음에 다음 알림 예약~
 	        setTimeout(checkForNotifications, 5000000);
 	    }
 
@@ -142,8 +142,6 @@ width: 100%;
     //이동 url
     function getDetail(alertno1, category, detail){
     	
-    	
-    	alert("alert id : "+alertno1 + " / 분류 : "+ category);
     	var nextpage = '${pageContext.request.contextPath}/testUrl?alertid='+alertno1+ '&nextpage=';
     	if(category == 'calendar'){
     		nextpage = nextpage + 'calendar';
@@ -226,9 +224,9 @@ width: 100%;
     <div><a href="#;" class="deleteButton11" id="notifyButton1">X</a></div>
     <div id="alertContentArea" class="alertContentArea"> 
     	<div class="alertContent">
-        <p id="alertTitle">새로운 알림이 있습니다!</p>
-        <p id="alertTimeStamp" class="alertSendTime" >알림 등록 일시</p>
-        <hr class="alerthr">
+        <p id="alertTitle">새로운 알림이 없습니다!</p>
+<!--         <p id="alertTimeStamp" class="alertSendTime" > / </p>
+        <hr class="alerthr"> -->
         </div>
         
         
