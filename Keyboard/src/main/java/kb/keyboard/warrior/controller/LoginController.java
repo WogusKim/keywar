@@ -37,8 +37,12 @@ public class LoginController {
 	
 	// Regarding login
 	@RequestMapping("/login")
-	public String login(HttpServletRequest request, Model model) {		
+	public String login(HttpServletRequest request, Model model, HttpSession session) {		
 		System.out.println("로그인 창 입장");
+		if(session.getAttribute("userno")!=null) {
+			//이미 로그인 상태라면 메인으로 이동!
+			return "redirect:main";
+		}
 		return "login/login";
 	}
 	@RequestMapping("/logout")
@@ -48,26 +52,28 @@ public class LoginController {
 		System.out.println("로그아웃 실행");
 		return "redirect:login";
 	}
-	@RequestMapping("/loginAction")
-	public String loginAction(HttpServletRequest request, Model model, UserDTO dto, RedirectAttributes attributes) {
-		
+	
+//	@RequestMapping("/loginAction")
+	@RequestMapping(value ="/getLogin" , method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String loginAction(HttpServletRequest request, Model model,@RequestBody UserDTO dto, RedirectAttributes attributes, HttpSession session) {
+		System.out.println("로그인메소드 진입");
 		System.out.println("입력한 직원번호 : "+ dto.getUserno());
 		System.out.println("입력한 비밀번호 : "+ dto.getUserpw());
-		String encodedPassword  = PasswordEncoderUtil.encodePassword(dto.getUserpw());
 		
 		UserDTO fromDbDto = new UserDTO();
 		LoginDao dao = sqlSession.getMapper(LoginDao.class);
 		fromDbDto = dao.isRightUserno(dto.getUserno());
 		if(fromDbDto == null) {
 			System.out.println("잘못된 직원번호입니다.");
-			return "redirect:login";
+			return "{\"status\":\"usernoIncorrect\"}";
 		}else if(dto.getUserno().equals(fromDbDto.getUserpw())) {
 			System.out.println("비밀번호 초기 설정 상태 ! 비밀번호 변경이 필요합니다.");
 			attributes.addFlashAttribute("userno", fromDbDto);
-			return "redirect:/resetPassword";
+			return "{\"status\":\"firstLogin\"}";
+//			return "redirect:/resetPassword";
 		}else if(PasswordEncoderUtil.matches(dto.getUserpw(), fromDbDto.getUserpw())) {
 			System.out.println("로그인 성공");
-			HttpSession session = request.getSession();
 			session.setAttribute("userno", fromDbDto.getUserno()); // 세션에 정보 저장
 			session.setAttribute("deptno", fromDbDto.getDeptno()); // 세션에 정보 저장
       
@@ -78,10 +84,10 @@ public class LoginController {
 			}
 			session.setAttribute("bgcolor", bgcolor);
 
-			return "redirect:main";
+			return "{\"status\":\"success\", \"username\":\""+fromDbDto.getUsername()+"\"}";
 		}else {
-			System.out.println("직원번호는 있는데 비밀번호 오류");
-			return "redirect:login";
+			System.out.println("직원번호는 맞는데 비밀번호 오류");
+			return "{\"status\":\"userpwIncorrect\"}";
 		}
 	
 	}
@@ -117,8 +123,12 @@ public class LoginController {
 	}
 	
 	@RequestMapping("/resetPassword")
-	public String resetPW(HttpServletRequest request, Model model) {
+	public String resetPW(HttpServletRequest request, Model model, UserDTO userdto) {
 		System.out.println("비밀번호 재설정 화면 입장");
+		System.out.println(userdto.getUserno());
+		
+		
+		model.addAttribute("userdto", userdto);
 		return "login/resetPassword";
 	}
 	@RequestMapping("/resetPasswordAction")
