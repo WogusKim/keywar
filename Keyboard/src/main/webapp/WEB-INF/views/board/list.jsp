@@ -100,7 +100,38 @@ tr:last-child td {
 }
 
 .sort-buttons {
-	text-align: right; /* 버튼을 가운데 정렬 */
+	width: 100%;
+	overflow: auto; /* 컨텐츠가 넘치면 자동으로 처리 */
+}
+
+.sort-buttons form {
+	float: left; /* 검색 폼을 왼쪽으로 정렬 */
+	margin-right: 10px; /* 오른쪽 버튼과의 간격 */
+}
+
+.sort-buttons button {
+	float: right; /* 정렬 버튼들을 오른쪽으로 정렬 */
+	margin-left: 5px; /* 버튼 사이 간격 */
+}
+
+/* 필요하다면 추가적인 스타일링을 적용 */
+input[type="text"] {
+	padding: 5px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+button[type="submit"] {
+	padding: 5px 10px;
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+button[type="submit"]:hover {
+	background-color: #45a049;
 }
 
 .sort-button {
@@ -132,10 +163,16 @@ tr:last-child td {
 			<hr>
 			<div style="width: 100%; height: 85%;">
 				<div class="sort-buttons">
+					<form onsubmit="searchPosts(event)">
+						<input type="text" id="searchInput" placeholder="제목 검색..."
+							required>
+						<button type="submit">검색</button>
+					</form>
+
 					<button class="sort-button" onclick="sortPosts('likes');">좋아요순</button>
-					<button class="sort-button" onclick="sortPosts('views');">조회수순</button>
-					<button class="sort-button" onclick="sortPosts('recent');">최신순</button>
-					
+					<button class="sort-button" onclick="sortPosts('views');">조회수
+						순</button>
+
 				</div>
 
 
@@ -234,6 +271,41 @@ window.onload = function() {
 
 
 
+
+function searchPosts(e) {
+    e.preventDefault(); // 폼 제출 방지
+    const searchText = document.getElementById('searchInput').value.toLowerCase();
+
+    // dataList는 페이지 로딩 시 전체 데이터를 가지고 있어야 합니다.
+    const filteredData = dataList.filter(item => item.titleShare.toLowerCase().includes(searchText));
+    renderFilteredTable(filteredData);
+}
+
+function renderFilteredTable(data) {
+    let tableBody = document.getElementById("tableBody");
+    tableBody.innerHTML = ""; // 기존 테이블 내용을 비웁니다.
+
+    data.forEach(item => {
+        let row = `<tr>
+            <td>${item.management_number}</td>
+            <td class="title_td"><a href="${pageContext.request.contextPath}/detailNote?id=${item.id}" class="styled-link">${item.titleShare}</a></td>
+            <td>
+                <div class="writer_td">
+                    <img class="profile-pic" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${item.userno}" />
+                    ${item.nickname}
+                </div>
+            </td>
+            <td>${item.like_count}</td>
+            <td>${item.hits_count}</td>
+        </tr>`;
+        tableBody.innerHTML += row;
+    });
+
+    // 필터링된 데이터가 없을 경우 메시지 출력
+    if (data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="5">검색 결과가 없습니다.</td></tr>';
+    }
+}
 
 
 </script>
