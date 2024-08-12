@@ -363,7 +363,7 @@ label {
 						<div class="todo_list" style="height: 85%;">
 							<c:choose>
 								<c:when test="${empty todoList}">
-									<div class="mainTodoNotFountOutline">
+									<div class="mainTodoNotFountOutline" style="overflow-y : auto;">
 										<div
 											style="width: 50%; height: 0; padding-bottom: 50%; position: relative;">
 											<iframe src="https://giphy.com/embed/SkJRWt1Mo9CSlgrHcE"
@@ -560,8 +560,8 @@ label {
 				<div class="board_inner3">
 					<!-- 탭(선택영역) -->
 					<div class="tab_area">
-						<span class="tab" data-tab="tab1">랭킹</span> <span class="tab"
-							data-tab="tab2">댓글/좋아요</span>
+						<span class="tab No-line-break" data-tab="tab1">랭킹</span> <span class="tab No-line-break"
+							data-tab="tab2">댓글/좋아요</span> 
 					</div>
 					<!-- 선택된 영역에 따라 노출되는 컨텐츠 영역 -->
 					<!-- tab 1 -->
@@ -583,6 +583,7 @@ label {
 										class="link-icon">바로가기</a>
 								</div>
 								<hr>
+								<div style=" height: 80%; overflow-y: auto;">
 								<ul>
 									<c:forEach var="bestPost" items="${bestPost}">
 										<li><a class="aTag"
@@ -591,6 +592,7 @@ label {
 
 									</c:forEach>
 								</ul>
+								</div>
 							</div>
 						</div>
 					</div>

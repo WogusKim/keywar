@@ -135,7 +135,7 @@ width: 100%;
 	    });
 	        // 다음 체크 주기 설정 (예: 5초)  // 일단 1분으로 해놈~~ 자꾸 떠서
 	        // 다 한 다음에 다음 알림 예약~
-	        setTimeout(checkForNotifications, 5000000);
+	        setTimeout(checkForNotifications, 60000);
 	    }
 
     // 페이지 로드 시 알림 체크 시작
