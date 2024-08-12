@@ -18,11 +18,10 @@
     border-radius: 10px;
     background-color: white;
     padding: 20px 5px;
-    width: 17%;
+    width: 20%;
     height: 100%;
     margin-right: 15px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-
 }
 
 .menu_list {
@@ -30,6 +29,11 @@
 	align-items: center;
 	vertical-align: center;
 	position: relative; /* 상대 위치 설정 */
+}
+
+.menu-tree {
+    overflow-y: auto; /* 스크롤 가능하도록 설정 */
+    flex-grow: 1; /* 남은 공간 모두 사용 */
 }
 
 .menu-tree ul {
@@ -74,19 +78,22 @@
 }
 
 .menu_setting {
-    position: absolute; /* 절대 위치 사용 */
-    right: 10px; /* 우측으로부터 10px 떨어진 위치 */
-    bottom: 10px; /* 하단으로부터 10px 떨어진 위치 */
-    padding: 10px; /* 패딩 */
-    display: flex; /* Flexbox 사용 */
-    align-items: center; /* 세로 중앙 정렬 */
+    position: absolute; /* 절대 위치 */
+    bottom: 0; /* 하단에 고정 */
+    right: 5px; /* 우측에 고정 */
+    background-color: #ffffff00; /* 반투명 배경 */
+    width: 100%; /* 부모 컨테이너의 전체 너비 */
+    padding: 10px; /* 내부 여백 */
+    z-index: 2; /* 다른 요소 위에 오도록 설정 */
+    text-align: right;
 }
 
 .menu_onoff {
     position: absolute;
-    right: 5px; /* 우측에서 10px 떨어진 위치에 배치 */
+    right: 15px; /* 우측에서 10px 떨어진 위치에 배치 */
     top: 50%; /* 상단에서 50% 위치에 배치 */
     transform: translateY(-50%); /* Y축 기준 50%만큼 이동, 자신의 높이의 절반만큼 올림 */
+    z-index: 3; /* 'menu_setting'보다 위에 표시 */
 }
 
 .icon-fold {
@@ -96,8 +103,8 @@
     background-size: contain;
     background-repeat: no-repeat;
     margin-right: 6px;
+    cursor: pointer;
 }
-
 
 .hidden {
     visibility: hidden; /* 요소 숨김 */
@@ -145,7 +152,7 @@
 .modal {
     display: none; /* 기본적으로 숨겨져 있음 */
     position: fixed; /* 고정 위치 */
-    z-index: 1; /* 콘텐츠 위에 표시 */
+    z-index: 100; /* 콘텐츠 위에 표시 */
     left: 0;
     top: 0;
     width: 100%; /* 전체 너비 */
@@ -377,7 +384,7 @@ input[type="text"], input[type="radio"] {
 	</div>
 	<div class="menu_onoff">
 		<div class="icon-fold fold-icon"></div>
-		<div class="icon-fold unfold-icon" style="display:none"></div>
+		<div class="icon-fold unfold-icon" style="display:none;"></div>
 	</div>
 </div>
 
@@ -468,13 +475,13 @@ $(document).ready(function() {
     if (isCollapsed) {
         // 사이드바를 접은 상태로 설정
         $('.menu-tree, .menu_setting').hide();
-        $('.content_left').css('width', '50px');
+        $('.content_left').css('width', '75px');
         $('.fold-icon').hide();
         $('.unfold-icon').show();
     } else {
         // 사이드바를 펼친 상태로 설정
         $('.menu-tree, .menu_setting').show();
-        $('.content_left').css('width', '17%');
+        $('.content_left').css('width', '20%');
         $('.unfold-icon').hide();
         $('.fold-icon').show();
     }
@@ -482,7 +489,7 @@ $(document).ready(function() {
     // 접기 버튼 클릭 이벤트
     $('.menu_onoff .fold-icon').click(function() {
         $('.menu-tree, .menu_setting').slideUp(300);
-        $('.content_left').animate({ width: '50px' }, 300);
+        $('.content_left').animate({ width: '75px' }, 300);
         $('.fold-icon').hide();
         $('.unfold-icon').show();
         localStorage.setItem('isCollapsed', 'true'); // 상태 저장
@@ -491,7 +498,7 @@ $(document).ready(function() {
     // 펼치기 버튼 클릭 이벤트
     $('.menu_onoff .unfold-icon').click(function() {
         $('.menu-tree, .menu_setting').slideDown(300);
-        $('.content_left').animate({ width: '17%' }, 300);
+        $('.content_left').animate({ width: '20%' }, 300);
         $('.unfold-icon').hide();
         $('.fold-icon').show();
         localStorage.setItem('isCollapsed', 'false'); // 상태 저장

@@ -118,6 +118,29 @@
 	margin-right: 12px;
 }
 
+
+.ce-block {
+    position: relative;
+    /* Other styles */
+}
+
+.drag-handle {
+    display: none; /* 기본적으로 숨김 */
+    position: absolute;
+    top: 50%;
+    right: 20%;
+    transform: translateY(-50%);
+    cursor: move;
+    width: 25px;
+    height: 25spx;
+    background: url('${pageContext.request.contextPath}/resources/images/icons/dragIcon.png') no-repeat center center;
+    background-size: cover;
+}
+
+.ce-block:hover .drag-handle {
+    display: block; /* 호버 시에만 표시 */
+}
+
 </style>
 </head>
 
@@ -261,12 +284,19 @@ document.addEventListener('DOMContentLoaded', function () {
     editor = new EditorJS({
         holder: 'myEditor',
         data: editorData,
+        onChange: () => {
+            console.log("Changes detected");
+            // Debounce this function if necessary to avoid performance issues
+            setTimeout(() => {
+            	addDragHandles();
+            }, 300);
+        },
         onReady: function () { // 에디터 준비 완료 후 모든 이미지 블록에 대해 실행
         	addClickButtons(); //이미지에 정렬 버튼 붙이기
         	applyImageAlignment(editorData.blocks);
             
             updateFileIcons(); // 파일 아이콘 변경 로직        
-            
+            addDragHandles(); //드래그 아이콘 붙이기
             initializeSorting(); //드래그기능 관련
         
             const blocks = editorData.blocks; // 블록 데이터 접근
@@ -698,13 +728,29 @@ function updateFileIcons() {
 
 function initializeSorting() {
     $('#myEditor').sortable({
-        items: '.ce-block', // Specify the blocks you want to be sortable
-        axis: 'y', // Restrict movement to the y-axis
-        cursor: 'move', // Change the cursor to indicate moving
-        stop: function(event, ui) {
-        	
-        	console.log('드래그 끝');
-            updateOrderInEditor(); // Function to update the order in Editor.js instance
+        handle: '.drag-handle', // 드래그 핸들로 이동 제한
+        items: '.ce-block',     // 정렬 가능한 블록 지정
+        axis: 'y',              // y축으로만 이동 허용
+        cursor: 'move',         // 커서 스타일 변경
+        placeholder: 'sortable-placeholder',
+        forcePlaceholderSize: true,
+        update: function(event, ui) {
+            console.log('드래그 정렬 완료');
+            updateOrderInEditor();
+        }
+    });
+}
+
+function addDragHandles() {
+    const editorContent = document.getElementById('myEditor');
+    const blocks = editorContent.querySelectorAll('.ce-block');
+
+    blocks.forEach(block => {
+        // 드래그 핸들이 이미 있는지 확인
+        if (!block.querySelector('.drag-handle')) {
+            const handle = document.createElement('div');
+            handle.className = 'drag-handle';
+            block.appendChild(handle);
         }
     });
 }
