@@ -257,7 +257,7 @@ input[type="text"], input[type="radio"] {
 			            <c:choose>
 			                <c:when test="${menu.menuType == 'item'}">
 			                    <!-- menuType이 item일 경우, 링크 포함 -->
-			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${menu.id}">
+			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${menu.id}" class="aTag">
 			                        <span>${menu.title}</span>
 			                    </a>
 			                </c:when>
@@ -278,7 +278,7 @@ input[type="text"], input[type="radio"] {
 							            <c:choose>
 							                <c:when test="${child1.menuType == 'item'}">
 							                    <!-- menuType이 item일 경우, 링크 포함 -->
-							                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child1.id}">
+							                    <a class="aTag" href="${pageContext.request.contextPath}/wikiDetail?id=${child1.id}">
 							                        <span>${child1.title}</span>
 							                    </a>
 							                </c:when>
@@ -299,7 +299,7 @@ input[type="text"], input[type="radio"] {
 											            <c:choose>
 											                <c:when test="${child2.menuType == 'item'}">
 											                    <!-- menuType이 item일 경우, 링크 포함 -->
-											                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child2.id}">
+											                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child2.id}" class="aTag">
 											                        <span>${child2.title}</span>
 											                    </a>
 											                </c:when>
@@ -319,7 +319,7 @@ input[type="text"], input[type="radio"] {
 															            <c:choose>
 															                <c:when test="${child3.menuType == 'item'}">
 															                    <!-- menuType이 item일 경우, 링크 포함 -->
-															                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child3.id}">
+															                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child3.id}" class="aTag">
 															                        <span>${child3.title}</span>
 															                    </a>
 															                </c:when>
@@ -340,7 +340,7 @@ input[type="text"], input[type="radio"] {
 																			            <c:choose>
 																			                <c:when test="${child4.menuType == 'item'}">
 																			                    <!-- menuType이 item일 경우, 링크 포함 -->
-																			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child4.id}">
+																			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child4.id}" class="aTag">
 																			                        <span>${child4.title}</span>
 																			                    </a>
 																			                </c:when>
