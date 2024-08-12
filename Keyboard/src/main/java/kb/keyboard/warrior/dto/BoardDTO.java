@@ -11,6 +11,7 @@ public class BoardDTO {
 	private int isOpen;
 	private int like_count;
 	private int comment_count;
+	private int hits;
 	
 	//프로필사진을 위해서 급조함 20240806
 	private String userno;
@@ -94,6 +95,12 @@ public class BoardDTO {
 	}
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+	public int getHits() {
+		return hits;
+	}
+	public void setHits(int hits) {
+		this.hits = hits;
 	}
 	
 	
