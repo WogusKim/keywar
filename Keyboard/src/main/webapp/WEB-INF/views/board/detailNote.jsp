@@ -438,9 +438,9 @@
 				        <!-- 세션에서 로그인 사용자의 메뉴 리스트보여주기 -->
 	                </div>
 	                <div class="input_outer section2">
-	                    <input type="hidden" id="selectedId" name="id">
-	                    <input type="hidden" id="selectedType" name="type" value="item">
-	                    <input type="hidden" id="selectedDepth" name="depth">
+					<input type="hidden" id="selectedId2" name="selectedId">
+					<input type="hidden" id="selectedType2" name="selectedType">
+					<input type="hidden" id="selectedDepth2" name="selectedDepth">
 	
 	                    <div class="edit_field">
 	                        <label class="label-fixed-width">노트 제목:</label>
@@ -448,9 +448,24 @@
 	                    </div>
 	
 	                    <div class="edit_field">
-	                        <label class="label-fixed-width">공유용 제목:</label>
+	                        <label class="label-fixed-width">공유용 제목:</label> 
 	                        <input type="text" name="sharedTitle" class="edit_input">
 	                    </div>
+			                    
+		                <div class="edit_field">
+		                    <label class="label-fixed-width">카테고리:</label>
+		                    <select name="category" class="edit_input">
+		                        <option value="기타">기타</option>
+		                        <option value="수신">수신</option>
+		                        <option value="개인여신">개인여신</option>
+		                        <option value="기업여신">기업여신</option>
+		                        <option value="외환">외환</option>
+		                        <option value="신용카드">신용카드</option>
+		                        <option value="퇴직연금">퇴직연금</option>
+		                        <option value="WM">WM</option>
+		                    </select>
+		                </div>
+		                
 	                </div>
                 </div>
                 <div class="submit_buttonArea">
@@ -486,16 +501,18 @@ window.onclick = function(event) {
 
 function selectFolder(element, id, menuType, depth) {
 	
-	console.log('뎁스는 ', depth);
-	
 	if (depth >= 4) {
 		alert('해당 폴더에는 더 메뉴를 만들 수 없습니다.');
 	} else {
 		
 	    if (menuType === 'folder') {
-	        document.getElementById('selectedId').value = id;
-	        document.getElementById('selectedType').value = menuType;
-	        document.getElementById('selectedDepth').value = depth;
+	        document.getElementById('selectedId2').value = id;
+	        document.getElementById('selectedType2').value = menuType;
+	        document.getElementById('selectedDepth2').value = depth;
+	        
+	        console.log('선택한 id:', id);
+	        console.log('선택한 menuType:', menuType);
+	        console.log('선택한 depth:', depth);
 
 	        // 선택된 폴더 스타일 변경
 	        var selected = document.querySelectorAll('.selected');

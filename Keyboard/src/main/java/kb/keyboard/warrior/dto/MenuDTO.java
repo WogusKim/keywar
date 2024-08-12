@@ -15,7 +15,16 @@ public class MenuDTO {
     private int depth;
     private List<MenuDTO> children = new ArrayList<MenuDTO>(); // 자식 메뉴 목록 추가
     private int isOpen;
+    private String category;
 
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
 	// 기본 생성자
     public MenuDTO() {}

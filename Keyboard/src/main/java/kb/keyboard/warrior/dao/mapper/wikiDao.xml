@@ -22,7 +22,7 @@
 	<!-- 메뉴추가 메서드 4종류 -->
 	<insert id="insertMenuNoParentsItem">
 		INSERT INTO Menu (title, titleShare, link, menuType,
-		menu_order, userno, isOpen)
+		menu_order, userno, isOpen, category)
 		VALUES (
 		#{param1},
 		#{param2},
@@ -30,7 +30,8 @@
 		#{param4},
 		#{param5},
 		#{param6},
-		#{param7}
+		#{param7},
+		#{param8}
 		);
 	</insert>
 
@@ -49,7 +50,22 @@
 
 	<insert id="insertMenuHaveParentsItem">
 		INSERT INTO Menu (parent_id, title, titleShare, link,
-		menuType, menu_order, userno, isOpen)
+		menuType, menu_order, userno, isOpen, category)
+		VALUES (
+		#{param1},
+		#{param2},
+		#{param3},
+		#{param4},
+		#{param5},
+		#{param6},
+		#{param7},
+		#{param8},
+		#{param9}
+		);
+	</insert>
+
+	<insert id="insertMenuHaveParentsFolder">
+		INSERT INTO Menu (parent_id, title, titleShare, menuType, menu_order, userno, isOpen, category)
 		VALUES (
 		#{param1},
 		#{param2},
@@ -59,20 +75,6 @@
 		#{param6},
 		#{param7},
 		#{param8}
-		);
-	</insert>
-
-	<insert id="insertMenuHaveParentsFolder">
-		INSERT INTO Menu (parent_id, title, titleShare,
-		menuType, menu_order, userno, isOpen)
-		VALUES (
-		#{param1},
-		#{param2},
-		#{param3},
-		#{param4},
-		#{param5},
-		#{param6},
-		#{param7}
 		);
 	</insert>
 
@@ -98,15 +100,14 @@
 
 	<update id="changeMenuNoShare">
 		UPDATE Menu
-		SET title = #{param1}, titleShare = NULL
-		where id = #{param2}
+		SET title = #{param1}, titleShare = NULL, category = #{param2}
+		where id = #{param3}
 	</update>
 
 	<update id="changeMenuYesShare">
 		UPDATE Menu
-		SET title = #{param1}, titleShare =
-		#{param2}
-		where id = #{param3}
+		SET title = #{param1}, titleShare = #{param2}, category = #{param3}
+		where id = #{param4}
 	</update>
 
 	<update id="changeIsOpen">

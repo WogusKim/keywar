@@ -92,7 +92,6 @@ tr:last-child td {
     color: white; /* 활성화된 버튼의 텍스트 색상 */
 }
 
-
 </style>
 </head>
 <body>

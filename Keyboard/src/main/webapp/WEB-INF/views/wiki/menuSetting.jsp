@@ -60,6 +60,7 @@
 		        <span onclick="selectFolder(this, 0, 'root', -1, '나의 업무노트')">나의 업무노트</span>
 		    </div>
 		    <hr>
+		    <div class="scroll-menu">
 	        <ul>
 	            <c:forEach var="menu" items="${menus}">
 	                <li>
@@ -148,6 +149,7 @@
 	                </li>
 	            </c:forEach>
 	        </ul>
+	        </div>
 	    </div>
 		<div class="menu_back">
 		    <div class="icon-setting back-icon"></div>
@@ -255,9 +257,9 @@
 		        
 		        <div class="edit_field">
 		        	<label class="label-fixed-width">메뉴 타입:</label>
-		        	<input type="radio" name="menuType" value="folder">
+		        	<input type="radio" name="menuType" id="menuTypeFolder" value="folder" onclick="toggleCategory()" checked>
                     <label for="isOpenYes">폴더</label>
-                    <input type="radio" name="menuType" value="item">
+                    <input type="radio" name="menuType" id="menuTypeItem" value="item" onclick="toggleCategory()">
                     <label for="isOpenNo">업무노트</label>
 		        </div>
 		        
@@ -277,8 +279,21 @@
 	            <div class="edit_field">
 	                <label class="label-fixed-width">공유용 제목:</label>
 	                <input type="text" name="sharedTitle" class="edit_input">
-	            </div>	            
-	            
+	            </div>
+	            	            
+	            <div class="edit_field">
+                    <label class="label-fixed-width">카테고리:</label>
+                    <select name="category" id="categorySelect" class="edit_input">
+                        <option value="기타">기타</option>
+                        <option value="수신">수신</option>
+                        <option value="개인여신">개인여신</option>
+                        <option value="기업여신">기업여신</option>
+                        <option value="외환">외환</option>
+                        <option value="신용카드">신용카드</option>
+                        <option value="퇴직연금">퇴직연금</option>
+                        <option value="WM">WM</option>
+                    </select>
+                </div>
             </div>
             
             <hr class="modal_hr">
@@ -315,6 +330,19 @@
                     <label for="isOpenYes">공개</label>
                     <input type="radio" id="isOpenNo" name="isOpen" value="0">
                     <label for="isOpenNo">비공개</label>
+                </div>
+                <div class="edit_field">
+                    <label class="label-fixed-width">카테고리:</label>
+                    <select name="category" class="edit_input">
+                        <option value="기타">기타</option>
+                        <option value="수신">수신</option>
+                        <option value="개인여신">개인여신</option>
+                        <option value="기업여신">기업여신</option>
+                        <option value="외환">외환</option>
+                        <option value="신용카드">신용카드</option>
+                        <option value="퇴직연금">퇴직연금</option>
+                        <option value="WM">WM</option>
+                    </select>
                 </div>
             </div>
             <hr class="modal_hr">
@@ -410,6 +438,7 @@ function updateAddForm(folder) {
 
 
 function addNewItem() {
+		
     // '추가' 버튼 클릭 시에 선택된 폴더 정보를 사용해 폼 업데이트
     if (window.selectedFolder) {
         //updateAddForm(window.selectedFolder);
@@ -421,6 +450,8 @@ function addNewItem() {
         
         document.getElementById('addModal').style.display = 'block';
         //document.querySelector('.default').style.display = 'none';
+        
+        toggleCategory();
     } else {
         // 폴더가 선택되지 않은 경우, 사용자에게 알림
         alert("폴더를 선택해 주세요.");
@@ -450,6 +481,7 @@ function deleteSelectedItem() {
     }
 }
 
+//비동기 수정모달팝업 생성
 function showEditModal(id) {
     fetch(`${pageContext.request.contextPath}/editBoardDetails?id=` + id)
         .then(response => response.json())
@@ -457,12 +489,19 @@ function showEditModal(id) {
             document.getElementById('editId').value = data.id;
             document.getElementById('editTitle').value = data.title;
             document.getElementById('editShareTitle').value = data.titleShare;
+
             // 공개 여부 설정
             if (data.isOpen === 1) {
                 document.getElementById('isOpenYes').checked = true;
             } else {
                 document.getElementById('isOpenNo').checked = true;
-            }            
+            }
+
+            // 카테고리 설정
+            const categorySelect = document.querySelector('#editModal select[name="category"]');
+            if (categorySelect) {
+                categorySelect.value = data.category || '기타'; // 받은 카테고리 값으로 설정, 없으면 '기타'
+            }
 
             document.getElementById('editModal').style.display = 'block';
         })
@@ -476,6 +515,21 @@ document.querySelectorAll('.close').forEach(closeBtn => {
         document.getElementById('addModal').style.display = 'none';
     };
 });
+
+//폴더인지 아이템인지에 따라 카테고리 선택가능여부처리
+function toggleCategory() {
+    const categorySelect = document.getElementById('categorySelect');
+    const isFolder = document.getElementById('menuTypeFolder').checked;
+    
+    if (isFolder) {
+        categorySelect.disabled = true; // 폴더인 경우 비활성화
+        categorySelect.value = '기타'; // 기본값으로 '기타' 선택
+    } else {
+        categorySelect.disabled = false; // 아이템인 경우 활성화
+    }
+}
+
+document.getElementById('addForm').addEventListener('reset', toggleCategory);
 
 //폼 제출 (추가)
 document.getElementById('addForm').addEventListener('submit', function(event) {
@@ -517,6 +571,7 @@ document.addEventListener('click', function(event) {
 
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.default').style.display = 'block'; // 초기 화면 설정
+    toggleCategory();
 });
 
 
