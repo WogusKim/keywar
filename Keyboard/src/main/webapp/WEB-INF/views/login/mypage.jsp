@@ -218,7 +218,7 @@ min-width: 100px;
 					<td style="max-width:50%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><a href="${pageContext.request.contextPath}/detailNote?id=${post.id}" class="aTag">${post.titleShare} <span style="color: gray; font-size: small;">${post.title}</span></a></td> 
 					<td><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/heart16.png"><a href="${pageContext.request.contextPath}/detailNote?id=${post.id}#likeUp" class="aTag"> 좋아요 ${post.like_count}</a></td>
 					<td ><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/chat16.png"><a href="${pageContext.request.contextPath}/detailNote?id=${post.id}#commentArea1" class="aTag"> 댓글 ${post.comment_count}</a></td> <!-- 여기 한글 대신 DB에 저장된 다른 숫자 등 보이게 할 거임. -->
-					<td><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/eyes.png"><a href="${pageContext.request.contextPath}/detailNote?id=${post.id}"   > 조회수 ${post.hits_count}</a></td>
+					<td><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/eyes.png"><a href="${pageContext.request.contextPath}/detailNote?id=${post.id}" class="aTag"> 조회수 ${post.hits_count}</a></td>
 					<td style="text-align: center;"><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/edit.png"><a href="${pageContext.request.contextPath}/wikiDetail?id=${post.id}" class="aTag"> 수정</a></td>
 					<!-- 삭제기능 아직 안되어있음/ -->
 					<td style="text-align: center;"><img class="mini_icon" src="${pageContext.request.contextPath}/resources/images/delete.png"><a href="#" class="aTag"> 삭제</a></td>

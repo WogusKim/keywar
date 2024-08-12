@@ -17,6 +17,7 @@ public interface LoginDao {
 	public List<StockFavoriteDTO> getFavoriteStock(String userno);
 	public List<MenuDTO> getMenus(String userno);
 	public void changeNickname(String userno, String nickname);
+	public void defaultAlert(String userno);
 	
 	// 새로 추가된 메소드
     void updateUserProfilePicture(@Param("userno") String userno, @Param("picture") InputStream picture);

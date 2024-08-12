@@ -160,6 +160,10 @@ width: 100%;
     		nextpage = nextpage + 'calendar';
     	}else if(category == 'wiki'){
     		nextpage = nextpage+ 'detailNote?id=' + detail;
+    	}else if(category == 'like'){
+    		nextpage = nextpage+ 'detailNote?id=' + detail;
+    	}else if(category == 'comment'){
+    		nextpage = nextpage+ 'detailNote?id=' + detail;
     	}else if(category == 'notice'){
     		nextpage = nextpage + 'notice';
     	}

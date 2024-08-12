@@ -68,4 +68,7 @@
 	<select id="getAllDeptMember"  resultType="String">
 		select userno from user where deptno = #{param1}
 	</select>
+	<insert id="defaultAlert" >
+		insert into alertSetting (userno) values (#{param1})
+	</insert>
 </mapper>

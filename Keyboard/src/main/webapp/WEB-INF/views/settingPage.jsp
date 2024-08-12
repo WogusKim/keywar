@@ -8,6 +8,7 @@
 <title>김국민의 업무노트 : 전체 설정</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/setting.css">
+<% String userno = (String) session.getAttribute("userno"); %>
 </head>
 <style>
 .switch {
@@ -86,7 +87,7 @@ input:checked + .slider:before {
 		<%@ include file="/WEB-INF/views/sidebar.jsp"%>
 		<div class="content_right">
 			<!-- 주 콘텐츠 -->
-			<div style="display: flex; ">
+			<div style="display: flex; height: 100%;">
 			<div class="settingPage">
 				<div class="innerSetting">
 					<h2>색상설정</h2>
@@ -120,26 +121,26 @@ input:checked + .slider:before {
 		            </form>
 				</div>
 			</div>
-				<div class="settingPage" style="margin-left: 10px; height: 100%;">
+				<div class="settingPage" style="margin-left: 10px; height: 50%;">
 					<div class="innerSetting">
 						<h2>알림 설정</h2>
 						<hr>
 						<div style="padding: 10px;">
 							<div class="display-flex">
 								<div class="alertSetting"  style="justify-content: center;"><div style="margin: auto;">좋아요</div> </div>
-								<label class="switch"><input type="checkbox"><span class="slider round"></span></label>
+								<label class="switch"><input type="checkbox" ${alert.like == 1 ? 'checked' : ''} onclick="switchAlert('like', this.checked)"><span class="slider round"></span></label>
 							</div>
 							<div class="display-flex">
 								<span  class="alertSetting">댓글 </span>
-								<label class="switch"><input type="checkbox"><span class="slider round"></span></label>
+								<label class="switch"><input type="checkbox" ${alert.comment == 1 ? 'checked' : ''} onclick="switchAlert('comment', this.checked)"><span class="slider round"></span></label>
 							</div>
 							<div class="display-flex">
 								<span  class="alertSetting">공지사항 </span>
-								<label class="switch"><input type="checkbox"><span class="slider round"></span></label>
+								<label class="switch"><input type="checkbox" ${alert.notice == 1 ? 'checked' : ''} onclick="switchAlert('notice', this.checked)"><span class="slider round"></span></label>
 							</div>
 							<div class="display-flex">
 								<span  class="alertSetting">일정</span>
-								<label class="switch"><input type="checkbox"><span class="slider round"></span></label>
+								<label class="switch"><input type="checkbox" ${alert.calendar == 1 ? 'checked' : ''} onclick="switchAlert('calendar', this.checked)"><span class="slider round"></span></label>
 							</div>
 						</div>
 					</div>
@@ -160,6 +161,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+function switchAlert(alertCategory, isChecked) {
+    console.log("Todo ID:", alertCategory);
+    var isCheckedNum = isChecked ? 1 : 0;
+    console.log("상태확인", isChecked);
+    console.log("Is Done:", isCheckedNum);
+    
+/*      var checkbox = document.querySelector('input[data-todoid="' + todoid + '"]'); */
+/*     checkbox.dataset.done = isCheckedNum; */
+    
+    fetch('${pageContext.request.contextPath}/changeAlertStatus', {   
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+        	
+            userno: '<%= userno %>',
+            category : alertCategory,
+            checkStatus: isCheckedNum
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert("알림 설정 중 오류가 발생하였습니다.");
+    }); 
+}
+
 </script>
 </body>
 </html>

@@ -139,6 +139,7 @@ public class LoginController {
 		String encodedPassword  = PasswordEncoderUtil.encodePassword(dto.getUserpw());
 		
 		dao.UpdatePw(dto.getUserno(), encodedPassword);
+		dao.defaultAlert(dto.getUserno());
 		System.out.println("비밀번호 변경 완료 ~~");
 		return "redirect:login";
 	}
