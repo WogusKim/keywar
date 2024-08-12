@@ -594,7 +594,7 @@ label {
 							</div>
 						</div>
 					</div>
-
+					
 					<!-- tab 2 -->
 					<div id="tab2" class="tab_content">
 						<div class="reply_like">
@@ -605,7 +605,23 @@ label {
 								</div>
 							</div>
 							<hr>
-
+							<c:choose>
+								<c:when test="${empty comment}">
+									<div style="width: 100%; height: 80%; text-align: center;">
+										<div style="text-align: center;">
+											<iframe src="https://giphy.com/embed/3glE7zIDgW2JrPIr7l"
+												width="130px;" height="130px;"
+												style="pointer-events: none; margin: 0;" frameBorder="0"
+												class="giphy-embed" allowFullScreen></iframe>
+										</div>
+										<div style="color: #727272;">
+											등록된 댓글과 좋아요가 없습니다. <br>
+											나만의 업무노트를 작성해 더 많은 꿀팁을 공유해보세요 !
+										</div>
+									</div>
+								</c:when>
+								<c:otherwise>
+								
 							<div class="tab_table">
 								<c:forEach var="comment" items="${comment}">
 								<div class="mainTodoContentOutline" onclick="goToDeatil('${comment.detail}')">
@@ -618,43 +634,12 @@ label {
 										class="No-line-break">등록일자 : ${comment.senddate}</div>
 								</div>
 								</c:forEach>
-							
-								<%-- <c:forEach var="comment" items="${comment}">
-			    				${comment.message }	<br>
-									<span style="font-size: small; color: gray;">등록일시 :
-										${comment.senddate }</span>
-									<br>
-								</c:forEach>
- --%>
 							</div>
+							</c:otherwise>
+							</c:choose>
 						</div>
 					</div>
-					<!-- tab 3 -->
-					<%-- 			    <div id="tab3" class="tab_content">
-			    	<div class="reply_like">
-			    		<div class="card_top">
-						    <div class="title_and_link">
-						        <h3 class="card_title">울지점 공지</h3>
-						        <a href="${pageContext.request.contextPath}/notice" class="link-icon">바로가기</a>
-						    </div>
-				    	</div>
-			    		<hr>
-			    		<div class="tab_table">
-				    		<table style="width: 100%;">
-							    <colgroup>
-							        <col style="width: 30%;">  <!-- 첫 번째 열의 너비를 30%로 설정 -->
-							        <col style="width: 70%;">  <!-- 두 번째 열의 너비를 70%로 설정 -->
-							    </colgroup>
-							    <c:forEach var="notice" items="${noticeList}">
-								    <tr>
-								    	<td>${notice.createdate}</td>
-								    	<td>${notice.title}</td>
-								    </tr>
-							    </c:forEach>
-				    		</table>
-			    		</div>
-			    	</div>
-			    </div> --%>
+
 				</div>
 			</div>
 		</div>
