@@ -22,7 +22,25 @@ width: 100%;
 .alertContentArea{
 width: 100%;
 }
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* 다른 요소 위에 표시되도록 설정 */
+    visibility: hidden; /* 초기에는 숨겨진 상태 */
+}
 
+.custom-spinner {
+    width: 100px; /* 원하는 크기로 조정 */
+    height: 100px; /* 원하는 크기로 조정 */
+    animation: spin 2s linear infinite; /* 추가적인 애니메이션이 필요하다면 */
+}
 
 
 </style>
@@ -177,8 +195,22 @@ width: 100%;
     	window.location.href = "${pageContext.request.contextPath}/logout";
     }
     
-    
-    
+ /*    
+    function showSpinner() {
+        document.getElementById('loading-spinner').style.visibility = 'visible';
+    }
+
+    function hideSpinner() {
+        document.getElementById('loading-spinner').style.visibility = 'hidden';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        showSpinner(); // 페이지 로딩 시작 시 스피너 표시
+
+        window.onload = function() {
+            hideSpinner(); // 페이지의 모든 리소스가 로드되면 스피너 숨기기
+        };
+    }); */
     
     </script>
 
@@ -251,6 +283,7 @@ width: 100%;
     </div>
    
     </div>
+
 
 </body>
 </html>

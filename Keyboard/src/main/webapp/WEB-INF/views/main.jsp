@@ -350,7 +350,7 @@ label {
 
 
 			<div class="board_bottom">
-				<div class="board_inner2" style="width: 85%;">
+				<div class="board_inner2" style="width: 64%;">
 					<div class="board_inner_inner">
 						<div class="card_top">
 							<div class="title_and_link">
