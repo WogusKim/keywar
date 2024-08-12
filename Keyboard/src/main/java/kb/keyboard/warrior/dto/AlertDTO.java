@@ -10,6 +10,16 @@ public class AlertDTO {
  private String isread;    // 읽음 여부
  private String category;    // 분류
  private String detail;    // 상세
+ private String like;    // 알림 수신 여부
+ private String comment;    // 알림 수신 여부
+ private String notice;    // 알림 수신 여부
+ private String calendar;    // 알림 수신 여부
+ private String checkStatus;    //동의 여부
+ 
+ 
+ 
+ 
+ 
 
  public AlertDTO() {
  }
@@ -77,6 +87,46 @@ public String getDetail() {
 
 public void setDetail(String detail) {
 	this.detail = detail;
+}
+
+public String getLike() {
+	return like;
+}
+
+public void setLike(String like) {
+	this.like = like;
+}
+
+public String getComment() {
+	return comment;
+}
+
+public void setComment(String comment) {
+	this.comment = comment;
+}
+
+public String getNotice() {
+	return notice;
+}
+
+public void setNotice(String notice) {
+	this.notice = notice;
+}
+
+public String getCalendar() {
+	return calendar;
+}
+
+public void setCalendar(String calendar) {
+	this.calendar = calendar;
+}
+
+public String getCheckStatus() {
+	return checkStatus;
+}
+
+public void setCheckStatus(String checkStatus) {
+	this.checkStatus = checkStatus;
 }
  
 }

@@ -18,4 +18,12 @@
 		insert into alert (userno, message, category, detail)
 		values (#{userno}, #{message}, 'wiki', #{detail})
 	</insert>
+	<insert id="addCommentAlert" parameterType="kb.keyboard.warrior.dto.AlertDTO">
+		insert into alert (userno, message, category, detail)
+		values (#{userno}, #{message}, 'wiki', #{detail})
+	</insert>
+	<insert id="addLikeAlert" parameterType="kb.keyboard.warrior.dto.AlertDTO">
+		insert into alert (userno, message, category, detail)
+		values (#{userno}, #{message}, `like`, #{detail})
+	</insert>
 </mapper>
