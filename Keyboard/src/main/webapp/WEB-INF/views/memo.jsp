@@ -405,7 +405,7 @@
 									name="deptSearch" id="deptSearchInput"> <input
 									type="image"
 									src="${contextPath}/resources/images/icons/search.png" alt="검색"
-									id="searchButton">
+									id="searchDeptButton">
 							</div>
 
 							<div id="deptSearchResults"
