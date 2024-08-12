@@ -557,6 +557,22 @@ label {
 					<!--  탭3 끝 -->
 
 				</div>
+<style>
+.box {
+    width: 80px;
+    height: 80px; 
+    border-radius: 70%;
+    overflow: hidden;
+    margin: auto;
+}
+/* mypage profile image */
+.profile {  
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+</style>
+				
 				<div class="board_inner3">
 					<!-- 탭(선택영역) -->
 					<div class="tab_area">
@@ -570,11 +586,22 @@ label {
 							<div class="rankbox">
 								<h4 class="card_title">BEST 저자</h4>
 								<hr>
-								<ul>
-									<c:forEach var="bestWriter" items="${bestWriter}">
-										<li><a class="aTag" href="#"> ${bestWriter.nickname }</a></li>
-									</c:forEach>
-								</ul>
+									<!-- 1등 영역 -->
+									<div style="text-align: center;">
+									<div class="box" id="profilepicture">
+			            				<img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[0].userno}" alt="Profile Picture">
+			            			</div>1등 -  ${bestWriter[0].nickname} <br>
+			            			좋아요 ${bestWriter[0].like_count}개
+									</div>
+									<!-- 2, 3등 영역 -->
+									<div class="arrangeBox">
+									<div class="box" id="profilepicture">
+			            				<img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[1].userno}" alt="Profile Picture">
+			            			</div>
+									<div class="box" id="profilepicture">
+			            				<img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[2].userno}" alt="Profile Picture">
+			            			</div>
+									</div>
 							</div>
 							<div class="rankbox">
 								<div style="display: flex; justify-content: space-between;">
