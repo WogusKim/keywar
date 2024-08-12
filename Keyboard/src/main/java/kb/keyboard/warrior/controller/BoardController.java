@@ -44,17 +44,6 @@ public class BoardController {
 		
 		if(list !=null) {
 			
-			for (BoardDTO bDto : list) {
-				Integer hits = dao.getHitsById(bDto.getId());
-				if (hits != null) {
-					bDto.setHits_count(hits);
-				} else {
-					bDto.setHits_count(0);
-				}
-				
-				bDto.setUserno(dao.getMenuDetail(bDto.getId()).getUserno());
-				
-			}
 			
 			model.addAttribute("list", list);
 		}
