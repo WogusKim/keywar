@@ -73,16 +73,6 @@ public class SettingController {
     	SettingDao dao = sqlSession.getMapper(SettingDao.class);
     	dao.changeAlertStatus(dto);
 
-
-//        ToDoDao todoDao = sqlSession.getMapper(ToDoDao.class);
-//
-//        if (isDone.equals("1")) {
-//            // check yn
-//            todoDao.checkTodo(todoId);
-//        } else {
-//            todoDao.unCheckTodo(todoId);
-//        }
-
         return "{\"status\":\"success\"}";
     }
     

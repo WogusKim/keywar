@@ -147,7 +147,7 @@ public class BoardController {
 			
 	        AlertDao adao = sqlSession.getMapper(AlertDao.class);
 	        System.out.println(bdto.getUsername() + "´Ô¿¡°Ô  alert Ãß°¡.");
-			adao.addWikiAlert(adto);
+			adao.addCommentAlert(adto);
 
 			
 		}else {
@@ -200,7 +200,7 @@ public class BoardController {
 			
 	        AlertDao adao = sqlSession.getMapper(AlertDao.class);
 	        System.out.println(bdto.getUsername() + "´Ô¿¡°Ô  alert Ãß°¡.");
-			adao.addWikiAlert(adto);
+			adao.addLikeAlert(adto);
 			
 		}else {
 			return "{\"status\":\"duplicate\"}";

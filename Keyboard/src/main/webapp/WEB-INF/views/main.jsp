@@ -51,17 +51,17 @@ document.addEventListener('DOMContentLoaded', function() {
 	    	<div class="board_inner" id="currency">
 				<div class="card_top">
 				    <div class="title_and_link div_underline">
-				        <h2 class="card_title">환율</h2>
+				        <h2 class="card_title No-line-break">환율</h2>
 				        <a href="${pageContext.request.contextPath}/currency" class="link-icon">바로가기</a>
 				    </div>
 
 				    <div class="currency-body">
 						<div class="currency-row1">
 							<span>&nbsp;</span>
-							<span>국가</span>
-						    <span>매도</span>
-						    <span>매입</span>
-						    <span>기준환율</span>
+							<span class="No-line-break">국가</span>
+						    <span class="No-line-break">매도</span>
+						    <span class="No-line-break">매입</span>
+						    <span class="No-line-break">기준환율</span>
 						</div>
 					    <c:forEach var="rate" items="${ratesFavorite}">
 					        <div class="currency-row">
@@ -78,21 +78,21 @@ document.addEventListener('DOMContentLoaded', function() {
 	    	<div class="board_inner" id="stock">
 	    		<div class="card_top">
 				    <div class="title_and_link div_underline">
-				        <h2 class="card_title">증시</h2>
+				        <h2 class="card_title No-line-break" >증시</h2>
 				        <a href="${pageContext.request.contextPath}/stock"  class="link-icon">바로가기</a>
 				    </div>
 				    
 				    <div class="stock-body">
 				        <div class="stock-row1">
-				            <span>지수</span>
-				            <span>현재가</span>
-				            <span>변동수치</span>
-				            <span>변동폭</span>
+				            <span class="No-line-break">지수</span>
+				            <span class="No-line-break">현재가</span>
+				            <span class="No-line-break">변동수치</span>
+				            <span class="No-line-break">변동폭</span>
 				        </div>
 				        
 				        <c:forEach var="stockrate" items="${stockFavorite}">
 					        <div class='stock-row'>
-                            <span>${stockrate.indexName}</span>
+                            <span class="No-line-break">${stockrate.indexName}</span>
                             <span class="${stockrate.changePercentage >= 0 ? 'positive' : 'negative'}">
                                 <fmt:formatNumber value="${stockrate.currentPrice}" pattern="#,##0.00"/>
                             </span>
@@ -152,17 +152,17 @@ document.addEventListener('DOMContentLoaded', function() {
 	    	</div>
 	    	<div class="board_inner" id="interests">
 	    		<div class="card_top">
-				    <div class="title_and_link div_underline">
+				    <div class="title_and_link d iv_underline">
 				        <h2 class="card_title">금리</h2>
 				        <a href="${pageContext.request.contextPath}/interestRate" class="link-icon">바로가기</a>
 				    </div>
 					<div class="rates_box">				  
 						<!-- Toggle -->
-						<div class="rate-toggle-buttons">
-						    <button class="toggle-button" onclick="toggleRateTable('mor')">MOR</button>
-						    <button class="toggle-button" onclick="toggleRateTable('cofix')" >COFIX</button>
-						    <button id="kookmin-btn" class="toggle-button">국민수퍼정기예금</button>
-							<button id="kbstar-btn" class="toggle-button">KB STAR</button>
+						<div class="rate-toggle-buttons" style="display: flex; overflow: hidden; justify-content: space-between;">
+						    <button class="toggle-button No-line-break" onclick="toggleRateTable('mor')">MOR</button>
+						    <button class="toggle-button No-line-break" onclick="toggleRateTable('cofix')" >COFIX</button>
+						    <button id="kookmin-btn" class="toggle-button No-line-break">국민수퍼정기예금</button>
+							<button id="kbstar-btn" class="toggle-button No-line-break">KB STAR</button>
 						</div>
 						
 						<!-- Table -->
@@ -170,34 +170,34 @@ document.addEventListener('DOMContentLoaded', function() {
 						    <thead>
 						        <tr>
 						            <th class="rate-header"></th>
-						            <th class="rate-header">구분</th>
-						            <th class="rate-header">as-is</th>
-						            <th class="rate-header">to-be</th>
-						            <th class="rate-header">증감</th>
+						            <th class="rate-header No-line-break">구분</th>
+						            <th class="rate-header No-line-break">as-is</th>
+						            <th class="rate-header No-line-break">to-be</th>
+						            <th class="rate-header No-line-break">증감</th>
 						        </tr>
 						    </thead>
 						    <tbody id="morRates" class="rate-content">
 						        <tr>
-						            <th class="rate-header" rowspan="4">MOR</th>
-						            <td class="rate-cell">3개월</td>
+						            <th class="rate-header No-line-break" rowspan="4">MOR</th>
+						            <td class="rate-cell No-line-break">3개월</td>
 						            <td class="rate-cell">${mor[0].previousWeekRate}</td>
 						            <td class="rate-cell">${mor[0].currentWeekRate}</td>
 						            <td class="rate-cell">${mor[0].change}</td>
 						        </tr>
 						        <tr>
-						            <td class="rate-cell">6개월</td>
+						            <td class="rate-cell No-line-break">6개월</td>
 						            <td class="rate-cell">${mor[1].previousWeekRate}</td>
 						            <td class="rate-cell">${mor[1].currentWeekRate}</td>
 						            <td class="rate-cell">${mor[1].change}</td>
 						        </tr>
 						        <tr>
-						            <td class="rate-cell">12개월</td>
+						            <td class="rate-cell No-line-break">12개월</td>
 						            <td class="rate-cell">${mor[2].previousWeekRate}</td>
 						            <td class="rate-cell">${mor[2].currentWeekRate}</td>
 						            <td class="rate-cell">${mor[2].change}</td>
 						        </tr>
 						        <tr>
-						            <td class="rate-cell">60개월</td>
+						            <td class="rate-cell No-line-break">60개월</td>
 						            <td class="rate-cell">${mor[5].previousWeekRate}</td>
 						            <td class="rate-cell">${mor[5].currentWeekRate}</td>
 						            <td class="rate-cell">${mor[5].change}</td>
@@ -330,7 +330,7 @@ label {
 	    
 	    
 	    <div class="board_bottom">
-	    	<div class="board_inner2">
+	    	<div class="board_inner2" style="width: 85%;">
 				<div class="board_inner_inner">
 		    		<div class="card_top">
 					    <div class="title_and_link">
@@ -339,7 +339,7 @@ label {
 					    </div>
 			    	</div>
 			    	<hr>
-			    	<div class="todo_list" >
+			    	<div class="todo_list" style="height: 85%;">
 			    	 <c:choose>
 			    		<c:when test="${empty todoList}">
 			    			<div class="mainTodoNotFountOutline" >
@@ -354,7 +354,6 @@ label {
 								    </iframe>
 								    <div style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>
 								</div>
-			    				<!-- <div style="width:50%;height:0;padding-bottom:50%;position:relative;"><iframe src="https://giphy.com/embed/SkJRWt1Mo9CSlgrHcE" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div> -->
 				    			<%-- <img src="${pageContext.request.contextPath}/resources/images/not-found.png" /> --%>
 				    			<div style="color: #727272;">오늘이 마감일인  <br>
 				    			미완료 상태의 할 일이 없습니다.<br>
@@ -380,19 +379,16 @@ label {
 							    </c:forEach>
 							</div>
 								
-							<div class="todo_rate" style="padding: 0px; ">
-								    <span id="todo_rate" style="text-align: center; margin-right: 10px;">0 / ${todoList.size()}</span>
-							</div>
 			    		</c:otherwise>
 			    	</c:choose>
 			        </div>
 				</div>
 				
-				
+				<!-- 메모 영역 -->
 				<div class="board_inner_inner">
 		    		<div class="card_top">
 					    <div class="title_and_link">
-					        <h2 class="card_title">My Memo</h2>
+					        <h2 class="card_title No-line-break">My Memo</h2>
 					        <a href="${pageContext.request.contextPath}/memo" class="link-icon">바로가기</a>
 					    </div>					    
 			    	</div>
@@ -457,17 +453,74 @@ label {
 			    
 			    	</div>
 				</div>
+				
+				<!-- 공지 영역 시작 -->
+				<div class="board_inner_inner">
+		    		<div class="card_top">
+					    <div class="title_and_link">
+					        <h2 class="card_title No-line-break">Notice</h2>
+					        <a href="${pageContext.request.contextPath}/notice" class="link-icon">바로가기</a>
+					    </div>
+			    	</div>
+			    	<hr>
+			    	<div class="todo_list" >
+			    	 <c:choose>
+			    		<c:when test="${empty noticeList}">
+			    			<div class="mainTodoNotFountOutline" >
+			    				<div style="width:50%;height:0;padding-bottom:50%;position:relative;">
+								    <iframe src="https://giphy.com/embed/lmefcS3U29GrsmXu5D" 
+								            width="100%" 
+								            height="100%" 
+								            style="position:absolute;pointer-events:none;" 
+								            frameBorder="0" 
+								            class="giphy-embed" 
+								            allowFullScreen>
+								    </iframe>
+								    <div style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>
+								</div>
+			    				<!-- <div style="width:50%;height:0;padding-bottom:50%;position:relative;"><iframe src="https://giphy.com/embed/SkJRWt1Mo9CSlgrHcE" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div> -->
+				    			<%-- <img src="${pageContext.request.contextPath}/resources/images/not-found.png" /> --%>
+				    			<div style="color: #727272;">등록된 부점 공지가 없습니다.  <br>
+				    			필요한 공지를 등록하여<br>
+				    			부점 사람들과 소식을 <br> 
+				    			간편하게 공유해보세요. 
+				    			
+				    			</div>
+			    			</div>
+			    		</c:when>
+			    		<c:otherwise>
+					    	<div  class="mainTodoInnerBox" style="padding: 0px;">
+								<div style="padding: 5px; overflow-y: auto; height: 100%;">
+								    <c:forEach var="notice" items="${noticeList}">
+								    	<div class="mainTodoContentOutline">
+									    	<div class="arrangeBox" style="width: 100%;">
+												<div style="text-align: left; vertical-align: middle; width: 100% ;  overflow: hidden; text-overflow: ellipsis; display: -webkit-box;
+		  											 -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
+		  											 ${notice.title}
+													</div>
+											</div>
+											<div style="color: gray; font-size: small;" class="No-line-break"> 공지 등록일자 : ${notice.createdate}</div>  
+									    </div>
+								    </c:forEach>
+					    		</div>
+							</div>
+								
+							
+			    		</c:otherwise>
+			    	</c:choose>
+			        </div>
+				</div>
+				<!--  탭3 끝 -->
+				
 	    	</div>
 	    	<div class="board_inner3">
 	    		<!-- 탭(선택영역) -->
 			    <div class="tab_area">
 			        <span class="tab" data-tab="tab1">랭킹</span>
 			        <span class="tab" data-tab="tab2">댓글/좋아요</span>
-			        <span class="tab" data-tab="tab3">울지점 공지</span>
 			    </div>
 			    
 			    <!-- 선택된 영역에 따라 노출되는 컨텐츠 영역 -->
-			    
 			    <!-- tab 1 -->
 			    <div id="tab1" class="tab_content active">
 				    <div class="tab_rank">
@@ -541,7 +594,7 @@ label {
 			    	</div>
 			    </div>
 			    <!-- tab 3 -->
-			    <div id="tab3" class="tab_content">
+<%-- 			    <div id="tab3" class="tab_content">
 			    	<div class="reply_like">
 			    		<div class="card_top">
 						    <div class="title_and_link">
@@ -565,7 +618,7 @@ label {
 				    		</table>
 			    		</div>
 			    	</div>
-			    </div>
+			    </div> --%>
 	    	</div>
 	    </div>
 	</div> 
