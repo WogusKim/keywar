@@ -327,7 +327,17 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- 여기에 그룹 목록이 동적으로 추가됩니다 -->
+                <!-- 그룹 선택 -->
+                <div class="form-group">
+                    <label for="groupSelectForExit">그룹 선택:</label>
+                    <select class="form-control" id="groupSelectForExit"></select>
+                </div>
+                <!-- 검색 결과 -->
+                <div id="inviteSearchResults"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="leaveButton">그룹 나가기</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
             </div>
         </div>
     </div>
@@ -1087,8 +1097,10 @@
      
      
     
-     
+	let inviteSelectedUsers = [];
      $(document).ready(function() {
+    	 
+    	 
    	    // 사용자 설정 그룹 만들기 버튼 클릭 시
    	    $('#createGroupBtn').on('click', function() {
    	        $('#settingsOptionsModal').modal('hide');
@@ -1097,6 +1109,7 @@
 
    	    // 기존 그룹에 사용자 초대하기 버튼 클릭 시
    	    $('#inviteGroupBtn').on('click', function() {
+   	    	inviteSelectedUsers = [];
    	        $('#settingsOptionsModal').modal('hide');
    	        loadUserGroupsForInvite();
    	    });
@@ -1106,6 +1119,12 @@
     	        searchUsersForInvite();
     	    });
     	    
+    	    // 사용자 선택 이벤트 리스너 추가
+    	    $('#inviteSearchResults').on('change', 'input[name="userSelect"]', handleUserSelection);
+
+    	    // 사용자 제거 이벤트 리스너 추가
+    	    $('#inviteSelectedUsers').on('click', '.remove-user', removeSelectedUser);
+    	    
     	    // 초대하기 버튼 클릭 이벤트
     	    $('#inviteUsersButton').on('click', function() {
     	        inviteUsersToGroup();
@@ -1114,174 +1133,88 @@
    		// 기존 사용자 설정 그룹 나가기 버튼 클릭 시
    	    $('#leaveGroupBtn').on('click', function() {
    	        $('#settingsOptionsModal').modal('hide');
-   	        loadUserGroups();
+   	     	loadUserGroupsForExit();
+   	        
+   	    });
+   		
+   		// 모달에서 그룹 선택후 나가기 클릭시
+   	    $('#leaveButton').on('click', function() {
+   	        $('#leaveGroupModal').modal('hide');
+   	     	leaveGroup();
    	    });
    	});
-    
-     /* 
-     
-  // 기존 그룹에 사용자 초대하기         
-     $(document).ready(function() {
-         let selectedUsers = [];
-
-         // 사용자 검색
- 		$('#inviteSearchUserButton').on('click', function() {
- 			const userName = $('#userSearch').val();
- 		    $.ajax({
- 		        url: '${pageContext.request.contextPath}/searchUserForInvite',
- 		        method: 'POST',
- 		        data: JSON.stringify({ 
- 		        	username: userName,
- 		        	groupName: $('#groupSelect').val()
- 		        	}),
- 		        contentType: 'application/json',
- 		        success: function(response) {
- 		            const resultsContainer = $('#searchResults');
- 		            resultsContainer.empty();
- 		
- 		            console.log('Server response:', response); // 디버깅을 위한 로그
- 		
- 		            if (response.users && Array.isArray(response.users) && response.users.length > 0) {
- 		                response.users.forEach(user => {
- 		                    const userno = user.userno || '';
- 		                    const name = user.name || '';
- 		                    const deptname = user.deptname || '';
- 		                    const teamname = user.teamname || '';
- 		
- 		                    console.log('test userno:', userno); // 디버깅을 위한 로그
- 		                    console.log('test name:', name); // 디버깅을 위한 로그
- 		                    console.log('test deptname:', deptname); // 디버깅을 위한 로그
- 		                    console.log('test teamname:', teamname); // 디버깅을 위한 로그
- 		
- 		                    const isSelected = selectedUsers.some(u => u.userno === user.userno);
- 		                    console.log('isSelected:', isSelected); // isSelected 값을 확인하기 위한 로그
- 		                    
- 		                    const userHtml = 
- 		                        '<div class="search-result ' + (isSelected ? 'selected' : '') + '">' +
- 		                        '<input type="checkbox" name="userSelect" value="' + userno + '" ' + (isSelected ? 'checked disabled' : '') + '>' +
- 		                        '<span>' + name + ' (' + userno + ') - ' + deptname + ' / ' + teamname + '</span>' +
- 		                        '</div>';
- 		                    console.log('userHtml:', userHtml); // userHtml 값을 확인하기 위한 로그
- 		
- 		                    resultsContainer.append(userHtml);
- 		                });
- 		            } else {
- 		                resultsContainer.append('<p>검색 결과가 없습니다.</p>');
- 		            }
- 		        },
- 		        error: function(xhr, status, error) {
- 		            console.error('사용자 검색 중 오류가 발생했습니다:', error);
- 		            alert('사용자 검색 중 오류가 발생했습니다. 다시 시도해주세요.');
- 		        }
- 		    });
- 		});
-
-         // 사용자 선택
-         $('#searchResults').on('change', 'input[name="userSelect"]', function() {
-             const $this = $(this);
-         	const userno = $(this).val();
-             const userSpan = $(this).next('span');
-             const userName = userSpan.text().split('(')[0].trim();
-             const deptName = userSpan.text().split('-')[1].split('/')[0].trim();
-             const teamName = userSpan.text().split('/')[1].trim();
-             console.log('choose userno:', userno); // 디버깅을 위한 로그
-             console.log('choose userName:', name); // 디버깅을 위한 로그
-             console.log('choose deptName:', deptName); // 디버깅을 위한 로그
-             console.log('choose teamName:', teamName); // 디버깅을 위한 로그
-
-             if ($this.is(':checked')) {
-                 // 사용자 선택
-                 if (selectedUsers.some(user => user.userno === userno)) {
-                     alert('이미 선택된 사용자입니다.');
-                     $this.prop('checked', false);
-                     return;
-                 }
-                 
-                 selectedUsers.push({
-                     userno: userno,
-                     name: userName,
-                     deptname: deptName,
-                     teamname: teamName
-                 });
-                 
-                 const selectedUserHtml = 
-                     '<div class="selected-user" data-userno="' + userno + '">' +
-                     '<span>' + userName + ' (' + userno + ') - ' + deptName + ' / ' + teamName + '</span>' +
-                     '<button type="button" class="btn btn-danger btn-sm remove-user">x</button>' +
-                     '</div>';
-                 
-                 $('#selectedUsers').append(selectedUserHtml);
-                 
-                 $this.closest('.search-result').addClass('selected');
-             } else {
-                 // 사용자 선택 해제
-                 selectedUsers = selectedUsers.filter(user => user.userno !== userno);
-                 $('#selectedUsers').find(`.selected-user[data-userno="${userno}"]`).remove();
-                 $this.closest('.search-result').removeClass('selected');
-             }
-
-         });
-
-         // 사용자 제거
-         $('#selectedUsers').on('click', '.remove-user', function() {
-             const userno = $(this).closest('.selected-user').data('userno');
-             selectedUsers = selectedUsers.filter(user => user.userno !== userno);
-             $(this).closest('.selected-user').remove();
-             
-             // 검색 결과에서 해당 사용자의 체크박스 체크 해제 및 'selected' 클래스 제거
-             $('#searchResults').find(`input[name="userSelect"][value="${userno}"]`)
-                 .prop('checked', false)
-                 .closest('.search-result')
-                 .removeClass('selected');
-         });
-
-         // 그룹 저장
-         $('#saveGroupButton').on('click', function() {
-             const groupName = $('#groupName').val();
-             const sharecolor = $('#colorPicker').val();
-             if (!groupName) {
-                 alert('그룹명을 입력해주세요.');
-                 return;
-             }
-             
-             const groupData = selectedUsers.map(user => ({
-                 userno: user.userno,
-                 customname: groupName,
-                 sharecolor: sharecolor
-             }));
-             
-             $.ajax({
-                 url: '${pageContext.request.contextPath}/saveGroup',
-                 method: 'POST',
-                 data: JSON.stringify(groupData),
-                 contentType: 'application/json',
-                 success: function(response) {
-                     alert('그룹이 성공적으로 생성되었습니다.');
-                     $('#customGroupModal').modal('hide');
-                 },
-                 error: function(xhr, status, error) {
-                     console.error('그룹 저장 중 오류가 발생했습니다:', error);
-                     alert('그룹 저장 중 오류가 발생했습니다. 다시 시도해주세요.');
-                 }
-             });
-         });
-     }); */
-     
-     
-     
-     
      
 	// 사용자가 속한 그룹 로드
-	function loadUserGroups() {
+	function loadUserGroupsForExit() {
 	    $.ajax({
-	        url: '${pageContext.request.contextPath}/getUserGroups',
+	        url: '${pageContext.request.contextPath}/getUserGroupsForExit',
 	        method: 'POST',
+	        // contentType: 'application/json',
 	        success: function(response) {
 	            showLeaveGroupModal(response);
+	   	     	// $('#leaveGroupModal').modal('show');
+	            setTimeout(function() {
+	                $('#leaveGroupModal').modal('show');
+	            }, 100);
 	        },
 	        error: function(xhr, status, error) {
 	            console.error('그룹 로드 중 오류 발생:', error);
 	            alert('그룹 정보를 불러오는 데 실패했습니다.');
+	        }
+	    });
+	}
+	
+	// 그룹 선택 옵션 채우기
+	function showLeaveGroupModal(groups) {
+	    const $select = $('#groupSelectForExit');
+	    console.log('showLeaveGroupModal 진입');
+	    $select.empty();
+	    
+	    if (!Array.isArray(groups)) {
+	        console.error('groups is not an array:', groups);
+	        return;
+	    }
+	    
+	    groups.forEach(function(group) {
+	        
+	        $select.append($('<option>', {
+	            value: group.sharedepth3,
+	            text: group.customname
+	        }));
+	        
+	        // 방금 추가된 option 요소의 내용을 확인
+	        const $lastOption = $select.find('option:last');
+	    });
+	
+	}
+	
+	function leaveGroup(groups) {
+	    const groupId = $('#groupSelectForExit').val();
+	    const groupName = $('#groupSelectForExit option:selected').text();
+	    console.log('groupName:', groupName);
+	    console.log('groupId:', groupId);
+
+	    if (groupName.length === 0) {
+	        alert('그룹을 선택해야 합니다.');
+	        return;
+	    }
+
+	    $.ajax({
+	        url: '${pageContext.request.contextPath}/leaveGroup',
+	        method: 'POST',
+	        data: JSON.stringify({
+	            groupId: groupId
+	        }),
+	        contentType: 'application/json',
+	        success: function(response) {
+	            alert(groupName + ' 그룹에서 나갔습니다.');
+	            $('#leaveGroupModal').modal('hide');
+	            // 선택된 사용자 목록 초기화
+	          	calendar.refetchEvents();
+	        },
+	        error: function(xhr, status, error) {
+	            console.error('그룹 나가기 중 에러 발생:', error);
+	            alert('그룹 나가기 중 오류가 발생했습니다. 다시 시도해주세요.');
 	        }
 	    });
 	}
@@ -1304,6 +1237,7 @@
 	}
     
 	function searchUsersForInvite() {
+
 	    const userName = $('#inviteUserSearch').val();
 	    const groupNum = $('#groupSelect').val();
 	    
@@ -1311,7 +1245,7 @@
 	    console.log('groupNum:', groupNum);
 
 	    $.ajax({
-	        url: '${pageContext.request.contextPath}/searchUserForInvite',
+	        url: '${pageContext.request.contextPath}/searchUsersForInvite',
 	        method: 'POST',
 	        data: JSON.stringify({ username: userName, groupNum: groupNum }),
 	        contentType: 'application/json',
@@ -1319,7 +1253,11 @@
 	        	displayInviteSearchResults(response);
 	        },
 	        error: function(xhr, status, error) {
-	            console.error('사용자 검색 중 오류가 발생했습니다:', error);
+	            console.error('AJAX 요청 실패');
+	            console.error('Status:', status);
+	            console.error('Error:', error);
+	            console.error('Response Text:', xhr.responseText);
+	            console.error('Status Code:', xhr.status);
 	            alert('사용자 검색 중 오류가 발생했습니다. 다시 시도해주세요.');
 	        }
 	    });
@@ -1334,13 +1272,14 @@
 	            value: group.sharedepth3,
 	            text: group.customname
 	        }));
+	        console.log(group.sharedepth3);
+	        console.log(group.customname);
 	    });
 	}
 	
 	function displayInviteSearchResults(response) {
-	    const resultsContainer = $('#searchResults');
+	    const resultsContainer = $('#inviteSearchResults');
 	    resultsContainer.empty();
-
 	    console.log('Server response:', response);
 
 	    if (response.users && Array.isArray(response.users) && response.users.length > 0) {
@@ -1355,7 +1294,7 @@
 	            console.log('test deptname:', deptname);
 	            console.log('test teamname:', teamname);
 
-	            const isSelected = selectedUsers.some(u => u.userno === user.userno);
+	            const isSelected = inviteSelectedUsers.some(u => u.userno === user.userno);
 	            console.log('isSelected:', isSelected);
 
 	            const userHtml = 
@@ -1372,9 +1311,63 @@
 	    }
 	}
 	
+
+	function handleUserSelection() {
+	    const $this = $(this);
+	    const userno = $this.val();
+	    const userSpan = $this.next('span');
+	    const userName = userSpan.text().split('(')[0].trim();
+	    const deptName = userSpan.text().split('-')[1].split('/')[0].trim();
+	    const teamName = userSpan.text().split('/')[1].trim();
+
+	    if ($this.is(':checked')) {
+	        // 사용자 선택
+	        if (inviteSelectedUsers.some(user => user.userno === userno)) {
+	            alert('이미 선택된 사용자입니다.');
+	            $this.prop('checked', false);
+	            return;
+	        }
+	        
+	        inviteSelectedUsers.push({
+	            userno: userno,
+	            name: userName,
+	            deptname: deptName,
+	            teamname: teamName
+	        });
+	        
+	        const selectedUserHtml = 
+	            '<div class="selected-user" data-userno="' + userno + '">' +
+	            '<span>' + userName + ' (' + userno + ') - ' + deptName + ' / ' + teamName + '</span>' +
+	            '<button type="button" class="btn btn-danger btn-sm remove-user">x</button>' +
+	            '</div>';
+	        
+	        $('#inviteSelectedUsers').append(selectedUserHtml);
+	        
+	        $this.closest('.search-result').addClass('selected');
+	    } else {
+	        // 사용자 선택 해제
+	        removeUserFromSelection(userno);
+	    }
+	}
+
+	function removeSelectedUser() {
+	    const userno = $(this).closest('.selected-user').data('userno');
+	    removeUserFromSelection(userno);
+	}
+
+	function removeUserFromSelection(userno) {
+	    inviteSelectedUsers = inviteSelectedUsers.filter(user => user.userno !== userno);
+	    $('#inviteSelectedUsers').find(`.selected-user[data-userno="${userno}"]`).remove();
+	    $('#inviteSearchResults').find(`input[name="userSelect"][value="${userno}"]`)
+	        .prop('checked', false)
+	        .closest('.search-result')
+	        .removeClass('selected');
+	}
+	
 	// 선택된 사용자들을 그룹에 초대
 	function inviteUsersToGroup() {
 	    const groupId = $('#groupSelect').val();
+	    const groupName = $('#groupSelect option:selected').text();
 	    const selectedUsers = [];
 	    $('#inviteSearchResults input:checked').each(function() {
 	        selectedUsers.push($(this).val());
@@ -1390,12 +1383,18 @@
 	        method: 'POST',
 	        data: JSON.stringify({
 	            groupId: groupId,
+	            groupName: groupName,
 	            userIds: selectedUsers
 	        }),
 	        contentType: 'application/json',
 	        success: function(response) {
-	            alert('선택한 사용자들을 그룹에 성공적으로 초대했습니다.');
+	            alert('선택한 사용자(들)을 그룹에 성공적으로 초대했습니다.');
 	            $('#inviteGroupModal').modal('hide');
+	            // 선택된 사용자 목록 초기화
+	            inviteSelectedUsers = [];
+	            $('#inviteSelectedUsers').empty();
+	            $('#inviteSearchResults').empty();
+	            location.reload(); // 페이지 새로고침
 	        },
 	        error: function(xhr, status, error) {
 	            console.error('사용자 초대 중 오류 발생:', error);

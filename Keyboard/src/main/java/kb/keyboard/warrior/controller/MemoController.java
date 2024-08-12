@@ -163,12 +163,12 @@ public class MemoController {
         }
     }
     
-    @RequestMapping(value = "/getUserGroups", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/getUserGroupsForExit", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public List<ScheduleDTO> getUserGroups(HttpSession session) {
+    public List<ScheduleDTO> getUserGroupsForExit(HttpSession session) {
     	String userno = (String) session.getAttribute("userno");
         ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
-        System.out.println("userno for userGroups: " + userno);
+        System.out.println("exit_userno for userGroups: " + userno);
         return dao.getUserGroups(userno);
     }
     
@@ -177,13 +177,28 @@ public class MemoController {
     public List<ScheduleDTO> getUserGroupsForInvite(HttpSession session) {
     	String userno = (String) session.getAttribute("userno");
         ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
-        System.out.println("userno for userGroups: " + userno);
+        System.out.println("invite_userno for userGroups: " + userno);
         return dao.getUserGroups(userno);
     }
     
-    @RequestMapping(value = "/searchUserForInvite", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping("/leaveGroup")
+    public ResponseEntity<String> leaveGroup(@RequestBody Map<String, Object> request, HttpSession session) {
+        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+        String groupId = (String) request.get("groupId");
+        String userno = (String) session.getAttribute("userno");
+        System.out.println("groupId: " + groupId);
+        try {
+            dao.leaveGroup(groupId, userno);
+            return new ResponseEntity<String>("Users invited to group successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>("Error invited users to group ", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @RequestMapping(value = "/searchUsersForInvite", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseEntity<Map<String, List<Map<String, String>>>> searchUserForInvite(@RequestBody Map<String, String> request, HttpSession session) {
+    public ResponseEntity<Map<String, List<Map<String, String>>>> searchUsersForInvite(@RequestBody Map<String, String> request, HttpSession session) {
         String searchUsername = (String) request.get("username");
         String groupNum = (String) request.get("groupNum");
         String userno = (String) session.getAttribute("userno");
@@ -194,16 +209,46 @@ public class MemoController {
         System.out.println("dao load");
         try {
         	System.out.println("try in");
-            List<Map<String, String>> searchUserList = dao.searchUserForInvite(searchUsername, userno, groupNum);
+            List<Map<String, String>> searchUserList = dao.searchUsersForInvite(searchUsername, userno, groupNum);
             System.out.println("searchUserList: " + searchUserList);
             Map<String, List<Map<String, String>>> response = new HashMap<String, List<Map<String, String>>>();
             response.put("users", searchUserList);
             return new ResponseEntity<Map<String, List<Map<String, String>>>>(response, HttpStatus.OK);
         } catch(Exception e) {
+        	System.out.println("error in searchUsersForInvite");
+            e.printStackTrace(); // 이 줄을 추가하세요
             return new ResponseEntity<Map<String, List<Map<String, String>>>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     
+    @RequestMapping("/inviteUsersToGroup")
+    public ResponseEntity<String> inviteUsersToGroup(@RequestBody Map<String, Object> request, HttpSession session) {
+        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
+        String groupId = (String) request.get("groupId");
+        String groupName = (String) request.get("groupName");
+        List<String> userIds = (List<String>) request.get("userIds");
+        String inviteNo = (String) session.getAttribute("userno");
+        try {
+            List<Map<String, Object>> paramsList = new ArrayList<Map<String, Object>>();
+
+        	for (String userId : userIds) {
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("userno", userId);
+                params.put("sharedepth3", groupId);
+                params.put("customname", groupName);
+                params.put("inviteNo", inviteNo);
+                paramsList.add(params);
+            }
+            dao.inviteUsersToGroup(paramsList);
+            dao.alertInsertCalendarForInvite(paramsList);
+
+            return new ResponseEntity<String>("Users invited to group successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>("Error invited users to group ", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     
     @RequestMapping(value = "/customsharetoload", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
@@ -276,6 +321,7 @@ public class MemoController {
         String userno = (String) session.getAttribute("userno");
         return dao.countTodoList(userno);
     }
+    
     
 //    public List<Map<String, Object>> countToDoList(HttpSession session) {
 //        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
