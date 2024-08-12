@@ -170,24 +170,24 @@ public class WikiDetailController {
 	            File dest = new File(basePath, newFilename);
 	            file.transferTo(dest); // 파일 저장
 
-	            HashMap<String, Object> response = new HashMap<>();
+	            HashMap<String, Object> response = new HashMap<String, Object>();
 	            response.put("success", 1);
-	            HashMap<String, String> fileDetails = new HashMap<>();
+	            HashMap<String, String> fileDetails = new HashMap<String, String>();
 	            fileDetails.put("url", request.getContextPath() + "/resources/upload/" + wikiId + "/" + newFilename);
 	            response.put("file", fileDetails);
 
-	            return new ResponseEntity<>(response, HttpStatus.OK);
+	            return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
 	        } catch (Exception e) {
-	            HashMap<String, Object> error = new HashMap<>();
+	            HashMap<String, Object> error = new HashMap<String, Object>();
 	            error.put("success", 0);
 	            error.put("message", "File upload failed: " + e.getMessage());
-	            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+	            return new ResponseEntity<HashMap<String, Object>>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	        }
 	    } else {
-	        HashMap<String, Object> error = new HashMap<>();
+	        HashMap<String, Object> error = new HashMap<String, Object>();
 	        error.put("success", 0);
 	        error.put("message", "No file uploaded");
-	        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	        return new ResponseEntity<HashMap<String, Object>>(error, HttpStatus.BAD_REQUEST);
 	    }
 	}
 }
