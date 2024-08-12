@@ -148,6 +148,7 @@ button[type="submit"]:hover {
 	background-color: #007BFF; /* 호버 또는 활성화 시 배경색 */
 	color: white; /* 호버 또는 활성화 시 텍스트 색상 */
 }
+
 </style>
 </head>
 <body>

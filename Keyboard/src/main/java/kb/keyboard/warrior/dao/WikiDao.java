@@ -18,13 +18,13 @@ public interface WikiDao {
 	int getMaxOrderOfnoParents();
 	
 	//최상위 아이템 추가
-	void insertMenuNoParentsItem(String title, String sharedTitle, String link, String menuType, int max_order, String userno, int isOpenInt);
+	void insertMenuNoParentsItem(String title, String sharedTitle, String link, String menuType, int max_order, String userno, int isOpenInt, String category);
 	//최상위 폴더 추가
 	void insertMenuNoParentsFolder(String title, String sharedTitle, String menuType, int max_order, String userno, int isOpenInt);
-	//중간 아이템 추가
-	void insertMenuHaveParentsItem(String selectedId, String title, String sharedTitle, String link, String menuType, int max_order, String userno, int isOpenInt);
-	//중간 폴더 추가
-	void insertMenuHaveParentsFolder(String selectedId, String title, String sharedTitle, String menuType, int max_order, String userno, int isOpenInt);
+	//중간 아이템과 같이 추가
+	void insertMenuHaveParentsItem(String selectedId, String title, String sharedTitle, String link, String menuType, int max_order, String userno, int isOpenInt, String category);
+	//중간 폴더에 추가
+	void insertMenuHaveParentsFolder(String selectedId, String title, String sharedTitle, String menuType, int max_order, String userno, int isOpenInt, String category);
 	
 	//삭제 - item
 	void deleteItem(String selectedId, String userno);
@@ -37,8 +37,8 @@ public interface WikiDao {
 	MenuDTO getMenuDetail(int id);
 
 	//쉐어타이틀 유무에 따라 분기하여 update
-	void changeMenuNoShare(String title, String id);
-	void changeMenuYesShare(String title, String titleShare, String id);
+	void changeMenuNoShare(String title, String category, String id);
+	void changeMenuYesShare(String title, String titleShare, String category, String id);
 	
 	//공개여부 변경 메서드
 	void changeIsOpen(String isOpen, String id);
