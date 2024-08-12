@@ -7,18 +7,22 @@ public class MyMemoDTO {
  private String userno;    // 사번
  private String content;   // 내용
  private String createdate;  // 생성일
+ private String color;  
 
  public MyMemoDTO() {
  }
 
- public MyMemoDTO(String memoid, String userno, String content, String createdate) {
-     this.memoid = memoid;
-     this.userno = userno;
-     this.content = content;
-     this.createdate = createdate;
- }
+ public MyMemoDTO(String memoid, String userno, String content, String createdate, String color) {
+	super();
+	this.memoid = memoid;
+	this.userno = userno;
+	this.content = content;
+	this.createdate = createdate;
+	this.color = color;
+}
 
- // Getters and Setters
+
+// Getters and Setters
  public String getMemoid() {
      return memoid;
  }
@@ -50,4 +54,14 @@ public class MyMemoDTO {
  public void setCreatedate(String createdate) {
      this.createdate = createdate;
  }
+
+public String getColor() {
+	return color;
+}
+
+public void setColor(String color) {
+	this.color = color;
+}
+
+ 
 }

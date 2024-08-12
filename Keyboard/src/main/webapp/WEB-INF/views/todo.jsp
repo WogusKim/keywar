@@ -501,7 +501,6 @@ label {
     
     // Modal2 열기 (삭제여부 묻는 창)
     function openDeleteModal2() {
-    	updateFormAction("${pageContext.request.contextPath}/deleteTodo");
         document.getElementById("deleteModal").style.display = "flex";
     }
 
@@ -578,8 +577,6 @@ function checkTodo(todoid, isChecked) {
         document.getElementById('todoDuedate-add').value = formattedDate;
     }
 
-    // 페이지 로드 시 현재 날짜를 설정합니다.
-    // window.onload = setTodayDate;
 </script>
 </body>
 </html>

@@ -23,20 +23,18 @@ body {
 <script>
 const info =  document.getElementById('info');
 
-div.addEventListener('mouseover', (event) => {
+/* div.addEventListener('mouseover', (event) => {
 	  result.innerHTML+= '<div>mouseover</div>';
 	});
 div.addEventListener('mouseout', (event) => {
 	  result.innerHTML+= '<div>mouseout</div>';
-	});
+	}); */
 
 
 
 function submitForm() {
-    document.getElementById('loginForm').submit();
+   // document.getElementById('loginForm').submit();
 }
-
-
 
 </script>
 </head>
@@ -47,8 +45,50 @@ document.onkeydown = function(event) {
     // 엔터 키 코드 확인
     if (event.key === 'Enter') {
         event.preventDefault(); // 기본 동작 방지 (폼 제출 방지)
-        submitForm();
+        getLogin();
     }
+}
+
+
+function getLogin(){
+	var userno = $("input#userno").val();
+	var userpw = $("input#userpw").val();
+
+	
+    fetch('${pageContext.request.contextPath}/getLogin', {   
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+        	userno : userno,
+            userpw : userpw
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        if(data.status == "success"){
+        	alert(data.username + "님 환영합니다.");
+        	window.location.href =  "${pageContext.request.contextPath}/main";
+        }else if(data.status == "userpwIncorrect"){
+        	alert("잘못된 비밀번호입니다.");
+        	$("input#userpw").val("");
+        	$("input#userpw").focus();
+        }else if(data.status == "firstLogin"){
+        	alert("비밀번호 초기 설정 상태입니다. 비밀번호 변경이 필요합니다.");
+        	$("#loginForm").submit();
+        } else if(data.status == "usernoIncorrect"){
+        	alert("잘못된 직원번호입니다.");
+        } 
+        	
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+    
+
+    
 }
 </script>
 <%@ include file="/WEB-INF/views/header.jsp" %>
@@ -63,10 +103,10 @@ document.onkeydown = function(event) {
 <br>
 
 
-	<form action="./loginAction" method="post" id="loginForm">
+	<form action="${pageContext.request.contextPath}/resetPassword" method="post" id="loginForm">
 		<span class="input_text">직원번호</span> <input type="text" class="inputText" placeholder="직원번호를 입력하세요" name="userno" id="userno" />  <br> 
 		<span class="input_text">비밀번호</span>  <input type="password" class="inputText"  placeholder="비밀번호를 입력하세요" name="userpw" id="userpw"/> <br>
-		<input type="button" value="로그인" class="loginButton" onclick="submitForm()">
+		<input type="button" value="로그인" class="loginButton" onclick="getLogin()">
 	</form>
 
 

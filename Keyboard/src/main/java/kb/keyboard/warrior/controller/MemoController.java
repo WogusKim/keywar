@@ -1,5 +1,8 @@
 package kb.keyboard.warrior.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +26,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kb.keyboard.warrior.dao.MemoDao;
 import kb.keyboard.warrior.dao.ScheduleDao;
 import kb.keyboard.warrior.dao.ToDoDao;
+import kb.keyboard.warrior.dto.DeptMemoDTO;
+import kb.keyboard.warrior.dto.MyMemoDTO;
 import kb.keyboard.warrior.dto.NoticeDTO;
 import kb.keyboard.warrior.dto.ScheduleDTO;
 import kb.keyboard.warrior.dto.TodoListDTO;
@@ -46,8 +53,7 @@ import kb.keyboard.warrior.util.Constant;
 @Controller
 public class MemoController {
 
-
-    MemoCommand command = null;
+ MemoCommand command = null;
     private SqlSession sqlSession;
 
     @Autowired
@@ -323,21 +329,6 @@ public class MemoController {
     }
     
     
-//    public List<Map<String, Object>> countToDoList(HttpSession session) {
-//        ScheduleDao dao = sqlSession.getMapper(ScheduleDao.class);
-//        String userno = (String) session.getAttribute("userno");
-//        List<ScheduleDTO> scheduleList = dao.countTodoList(userno);
-//        List<Map<String, Object>> countTodoList = new ArrayList<Map<String, Object>>();
-//        for (ScheduleDTO schedule : scheduleList) {
-//            Map<String, Object> countTodo  = new HashMap<String, Object>();
-//            countTodo.put("duedate", schedule.getDuedate());
-//            countTodo.put("todocount", schedule.getTodocount());
-//            countTodoList.add(countTodo );
-//        }
-//
-//        return countTodoList;
-//    }
-    
     
     @RequestMapping("/todo")
     public String todoView(HttpSession session, Model model) {
@@ -489,6 +480,110 @@ public class MemoController {
         return "redirect:memo";
     }
 
+    
+	@RequestMapping(value = "/searchMyMemo", method = RequestMethod.GET)
+	public void searchMyMemo(HttpSession session, 
+	                         @RequestParam(value = "keyword") String keyword, 
+	                         HttpServletResponse response) {
+	    
+	    String userno = (String) session.getAttribute("userno");
+	    System.out.println("직원번호누구야? " + userno);
+	    System.out.println("검색어는뭐야? " + keyword);
+	    
+	    try {
+	        // URL 인코딩된 키워드를 디코딩
+	        keyword = URLDecoder.decode(keyword, "UTF-8").trim();
+	        System.out.println("디코딩된 검색어: " + keyword);
+	        
+	        // SQL 쿼리 로그 출력
+	        logger.info("Executing SQL: SELECT * FROM mymemo WHERE userno = " + userno + " AND content LIKE '%" + keyword + "%'");
+
+	        MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
+	        List<MyMemoDTO> memos = memoDao.searchMyMemo(userno, keyword);
+	        
+	        // memos 리스트의 각 항목을 출력
+	        for (MyMemoDTO memo : memos) {
+	            System.out.println("Memo Content: " + memo.getContent());
+	            System.out.println("Memo Color: " + memo.getColor());
+	            System.out.println("Memo Createdate: " + memo.getCreatedate());
+	        }
+	        
+	        // JSON 응답 작성
+	        response.setContentType("application/json");
+	        response.setCharacterEncoding("UTF-8");
+	        PrintWriter out = response.getWriter();
+	        
+	        ObjectMapper mapper = new ObjectMapper();
+	        Map<String, Object> responseMap = new HashMap<String, Object>();
+	        responseMap.put("memos", memos);
+	        
+	        // JSON 데이터 출력
+	        mapper.writeValue(out, responseMap);
+	        
+	        out.flush();
+	        
+	    } catch (Exception e) {
+	        logger.error("Error during searchMyMemo", e);
+	        try {
+	            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "검색 중 오류가 발생했습니다.");
+	        } catch (IOException ioException) {
+	            ioException.printStackTrace();
+	        }
+	    }
+	}
+	
+	
+	@RequestMapping(value = "/searchDeptMemo", method = RequestMethod.GET)
+	public void searchDeptMemo(HttpSession session, 
+	                           @RequestParam(value = "keyword") String keyword, 
+	                           HttpServletResponse response) {
+
+	    String deptno = (String) session.getAttribute("deptno");
+	    System.out.println("부점번호는 누구야? " + deptno);
+	    System.out.println("검색어는 뭐야? " + keyword);
+
+	    try {
+	        // URL 인코딩된 키워드를 디코딩
+	        keyword = URLDecoder.decode(keyword, "UTF-8").trim();
+	        System.out.println("디코딩된 검색어: " + keyword);
+
+	        // SQL 쿼리 로그 출력
+	        logger.info("Executing SQL: SELECT * FROM deptmemo WHERE deptno = " + deptno + " AND content LIKE '%" + keyword + "%'");
+
+	        MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
+	        List<DeptMemoDTO> memos = memoDao.searchDeptMemo(deptno, keyword);
+	        
+	        // memos 리스트의 각 항목을 출력
+	        for (DeptMemoDTO memo : memos) {
+	            System.out.println("Memo Content: " + memo.getContent());
+	            System.out.println("Memo Color: " + memo.getColor());
+	            System.out.println("Memo Createdate: " + memo.getCreatedate());
+	        }
+
+	        // JSON 응답 작성
+	        response.setContentType("application/json");
+	        response.setCharacterEncoding("UTF-8");
+	        PrintWriter out = response.getWriter();
+
+	        ObjectMapper mapper = new ObjectMapper();
+	        Map<String, Object> responseMap = new HashMap<String, Object>();
+	        responseMap.put("memos", memos);
+
+	        // JSON 데이터 출력
+	        mapper.writeValue(out, responseMap);
+
+	        out.flush();
+
+	    } catch (Exception e) {
+	        logger.error("Error during searchDeptMemo", e);
+	        try {
+	            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "검색 중 오류가 발생했습니다.");
+	        } catch (IOException ioException) {
+	            ioException.printStackTrace();
+	        }
+	    }
+	}
+
     @RequestMapping("/mymemoDelete")
     public String mymemoDelete(HttpSession session, HttpServletRequest request, Model model) {
         System.out.println("mymemoDelete()");
@@ -573,7 +668,7 @@ public class MemoController {
         // JSON send
         return "{\"status\":\"success\"}";
     }
-    
+  
 	@RequestMapping(value = "/updateNoticeSize", method = RequestMethod.POST)
 	@ResponseBody
 	public String updateNoticeSize(@RequestBody NoticeDTO noticeDTO) {
@@ -590,31 +685,32 @@ public class MemoController {
 		// JSON send
 		return "{\"status\":\"success\"}";
 	}
-    
-    @RequestMapping(value = "/getMaxZindex", method = RequestMethod.GET)
-    public void getMaxZindex(HttpServletResponse response) {
-        try {
-            int maxZindex = sqlSession.getMapper(MemoDao.class).getMaxZindex();
-            response.setContentType("application/json");
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write(String.valueOf(maxZindex));
-        } catch (Exception e) {
-            logger.error("Error retrieving max z-index", e);
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
-    }
+
+	@RequestMapping(value = "/getMaxZindex", method = RequestMethod.GET)
+	public void getMaxZindex(HttpServletResponse response) {
+		try {
+			int maxZindex = sqlSession.getMapper(MemoDao.class).getMaxZindex();
+			response.setContentType("application/json");
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.getWriter().write(String.valueOf(maxZindex));
+		} catch (Exception e) {
+			logger.error("Error retrieving max z-index", e);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+	}
 
 //    투두리스트 관련 추가(성은)
 	@RequestMapping(value = "/editTodo", method = RequestMethod.POST)
 	@ResponseBody
 	public String editTodo(@RequestBody TodoListDTO dto) {
 		System.out.println("TODOLIST 수정창 진입");
-		
+
 		ToDoDao dao = sqlSession.getMapper(ToDoDao.class);
 		dao.editTodo(dto);
-		
+
 		return "{\"status\":\"success\"}";
 	}
+
 	@RequestMapping(value = "/addTodo", method = RequestMethod.POST)
 	@ResponseBody
 	public String addTodo(@RequestBody TodoListDTO dto) {
@@ -622,19 +718,19 @@ public class MemoController {
 
 		ToDoDao dao = sqlSession.getMapper(ToDoDao.class);
 		dao.addTodo(dto);
-		
+
 		return "{\"status\":\"success\"}";
 	}
+
 	@RequestMapping(value = "/deleteTodo", method = RequestMethod.POST)
 	@ResponseBody
 	public String deleteTodo(@RequestBody TodoListDTO dto) {
 		System.out.println("TODOLIST 수정창 진입");
-		
+
 		System.out.println("넘겨받은 todo id : " + dto.getTodoid());
 		sqlSession.getMapper(ToDoDao.class).deleteTodo(dto.getTodoid());
-		
+
 		return "{\"status\":\"success\"}";
 	}
-    
-    
+
 }

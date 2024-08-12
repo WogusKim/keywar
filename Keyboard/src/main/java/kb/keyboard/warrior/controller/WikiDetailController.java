@@ -145,9 +145,49 @@ public class WikiDetailController {
 	    }
 	}
 	
+	
+	//파일업로드용
+	@RequestMapping(value = "/uploadFile2", method = RequestMethod.POST)
+	public ResponseEntity<HashMap<String, Object>> uploadFile2(
+	    @RequestParam("file") MultipartFile file,
+	    HttpServletRequest request,
+	    HttpSession session) {
+		
+		System.out.println("서버 테스트");
 
+	    Integer wikiId = (Integer) session.getAttribute("WikiId"); // 이 부분은 위키 ID에 따라 변경 가능
+	    
+	    if (!file.isEmpty()) {
+	        try {
+	            String basePath = request.getSession().getServletContext().getRealPath("/resources/upload") + "/" + wikiId;
+	            File dir = new File(basePath);
+	            if (!dir.exists()) dir.mkdirs(); // 폴더가 없다면 생성
 
+	            String originalFilename = file.getOriginalFilename();
+	            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+	            String newFilename = UUID.randomUUID().toString() + fileExtension;
 
+	            File dest = new File(basePath, newFilename);
+	            file.transferTo(dest); // 파일 저장
 
+	            HashMap<String, Object> response = new HashMap<String, Object>();
+	            response.put("success", 1);
+	            HashMap<String, String> fileDetails = new HashMap<String, String>();
+	            fileDetails.put("url", request.getContextPath() + "/resources/upload/" + wikiId + "/" + newFilename);
+	            response.put("file", fileDetails);
 
+	            return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+	        } catch (Exception e) {
+	            HashMap<String, Object> error = new HashMap<String, Object>();
+	            error.put("success", 0);
+	            error.put("message", "File upload failed: " + e.getMessage());
+	            return new ResponseEntity<HashMap<String, Object>>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    } else {
+	        HashMap<String, Object> error = new HashMap<String, Object>();
+	        error.put("success", 0);
+	        error.put("message", "No file uploaded");
+	        return new ResponseEntity<HashMap<String, Object>>(error, HttpStatus.BAD_REQUEST);
+	    }
+	}
 }

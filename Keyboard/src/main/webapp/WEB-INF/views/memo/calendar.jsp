@@ -73,7 +73,6 @@
         <div id="calendar"></div> <!-- 일정 캘린더가 표시될 부분 -->
     </div> 
 </div>
-
 <!-- 일정 추가 모달 -->
 <div class="modal fade" id="addScheduleModal" tabindex="-1" role="dialog" aria-labelledby="addScheduleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -343,7 +342,9 @@
     </div>
 </div>
 
-
+<div id="loading-spinner" class="spinner-overlay">
+    <iframe src="https://giphy.com/embed/yWzaP4UGjYVzFXjlyw" width="150" height="150" style="pointer-events: none;"  frameBorder="0" class="giphy-embed" allowFullScreen class="custom-spinner"></iframe>
+</div> 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
@@ -1431,12 +1432,14 @@
 	// Initialize everything
     function initializeCalendar() {
         document.addEventListener('DOMContentLoaded', function() {
+        	
             var calendarEl = document.getElementById('calendar');
             /* loadCalendarData(calendarEl);
             loadCountTodoList(); */
             loadTodoCountData()
             .then(() => {
                 loadCalendarData(calendarEl);
+                
             }) 
             .catch(error => {
                 console.error("Failed to load Todo count data:", error);
@@ -1451,11 +1454,26 @@
         $('#deleteEventButton').on('click', handleDeleteEventClick);
         $('#addScheduleForm').on('submit', handleAddScheduleSubmit);
         $('#editEventForm').on('submit', handleEditEventSubmit);
+
     }
+    
+   //로딩 이미지 테스트
+    function showSpinner() {
+        document.getElementById('loading-spinner').style.visibility = 'visible';
+    }
+
+    function hideSpinner() {
+        document.getElementById('loading-spinner').style.visibility = 'hidden';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+            hideSpinner(); 
+        
+    });  
     
     initializeCalendar();
     setupEventListeners();
-        
+      
 </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

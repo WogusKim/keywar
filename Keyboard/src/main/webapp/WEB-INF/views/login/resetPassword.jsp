@@ -57,7 +57,7 @@ function submitForm() {
 	</table>
 		 <br>
 		<input type="button" value="비밀번호 설정" class="loginButton" onclick="checkPw()">
-		<input type="hidden" value="${userno.userno}" name="userno" id="userno"/>
+		<input type="hidden" value="${userdto.userno}" name="userno" id="userno"/>
 	</form>
 		</div>
 	</div>

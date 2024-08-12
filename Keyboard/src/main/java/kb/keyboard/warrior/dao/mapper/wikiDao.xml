@@ -168,7 +168,8 @@
 		ROW_NUMBER() OVER (order by like_count desc, comment_count desc) AS
 		management_number,
 		e.id, m.title,m.titleShare, m.userno , u.nickname,
-		u.username, e.data, m.isOpen,
+		u.username, e.data, m.isOpen, 
+        COALESCE(wh.hits, 0) AS hits_count,
 		COALESCE(l.like_count, 0) AS like_count,
 		COALESCE(c.comment_count, 0) AS comment_count
 		from
@@ -176,6 +177,7 @@
 		join Menu m on e.id = m.id
 		join user u on m.userno =
 		u.userno
+        join WikiHits wh on m.id = wh.wikiId
 		left outer join ( SELECT targetid, COUNT(*) AS like_count
 		FROM
 		liketable
@@ -190,7 +192,7 @@
 		on c.targetid = e.id
 		where m.isOpen = 1
 		order by like_count desc,
-		comment_count desc
+		comment_count desc;
 	</select>
 
 	<select id="getMyPost"
@@ -280,21 +282,29 @@
 	</select>
 	<select id="getBestWriter"
 		resultType="kb.keyboard.warrior.dto.BoardDTO">
-		SELECT
-		sum(like_count) as like_count, u.nickname
-		FROM EditorData e
-		JOIN Menu m ON e.id = m.id
-		JOIN user u ON m.userno = u.userno
-		LEFT OUTER JOIN (
-		SELECT targetid, COUNT(*) AS like_count
-		FROM liketable
-		GROUP BY targetid
-		) l ON e.id = l.targetid
-		WHERE m.isOpen = 1
-		group by
-		u.nickname
-		order by like_count desc
-		LIMIT 5;
+		SELECT 
+		    t.like_count,
+		    t.userno,
+		    u.username,
+		    u.nickname
+		FROM (
+		    SELECT 
+		        SUM(l.like_count) AS like_count, 
+		        u.userno
+		    FROM EditorData e
+		    JOIN Menu m ON e.id = m.id
+		    JOIN user u ON m.userno = u.userno
+		    LEFT OUTER JOIN (
+		        SELECT targetid, COUNT(*) AS like_count
+		        FROM liketable
+		        GROUP BY targetid
+		    ) l ON e.id = l.targetid
+		    WHERE m.isOpen = 1
+		    GROUP BY u.userno
+		    ORDER BY like_count DESC
+		    LIMIT 3
+		) t
+		JOIN user u ON t.userno = u.userno;
 	</select>
 
 	
@@ -313,5 +323,12 @@
 	<insert id="insertHits">
 		INSERT INTO WikiHits VALUES (#{param}, 1)	
 	</insert>
+	<select id="findWriterName" resultType="kb.keyboard.warrior.dto.BoardDTO" > 
+		select m.*, u.username 
+		from Menu m
+		join user u
+		on m.userno = u.userno
+		where isopen ='1' and m.id=#{param1} 
+	</select>
 
 </mapper>

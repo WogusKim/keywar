@@ -1,6 +1,9 @@
 package kb.keyboard.warrior.dao;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 
 import kb.keyboard.warrior.dto.DeptMemoDTO;
 import kb.keyboard.warrior.dto.MyMemoDTO;
@@ -18,8 +21,8 @@ public interface MemoDao {
 	public void noticeWrite(String title, String content, String color, String userno, String deptno);
 	public void noticeDelete(String noticeid);
 	
-	public void mymemoWrite(String userno, String mymemocontent);
-	public void deptmemoWrite(String deptno, String userno, String deptmemocontent);
+	public void mymemoWrite(String userno, String mymemocontent, String memocolor);
+	public void deptmemoWrite(String deptno, String userno, String deptmemocontent, String memocolor);
 	
 	public void mymemoDelete(String memoid);
 	public void deptmemoDelete(String memoid);
@@ -32,6 +35,12 @@ public interface MemoDao {
 	
 	// 최대 z-index 값을 조회
 	public int getMaxZindex();
+	
+	public List<MyMemoDTO> searchMyMemo(@Param("userno") String userno, @Param("keyword") String keyword);
+	public List<DeptMemoDTO> searchDeptMemo(@Param("deptno") String deptno, @Param("keyword") String keyword);
+
+
+
 
 
 
