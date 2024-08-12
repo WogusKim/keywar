@@ -1468,10 +1468,10 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        showSpinner(); // 페이지 로딩 시작 시 스피너 표시
-        setTimeout(function() {
+      //  showSpinner(); // 페이지 로딩 시작 시 스피너 표시
+        //setTimeout(function() {
             hideSpinner(); // 2초 후에 스피너 숨기기
-        }, 2000); // 2000밀리초 = 2초
+     //   }, 2000); // 2000밀리초 = 2초
         
     });  
     

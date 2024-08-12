@@ -33,7 +33,7 @@ width: 100%;
     justify-content: center;
     align-items: center;
     z-index: 9999; /* 다른 요소 위에 표시되도록 설정 */
-    visibility: hidden; /* 초기에는 숨겨진 상태 */
+    visibility: visible; /* 초기에는 숨겨진 상태 */
 }
 
 .custom-spinner {
