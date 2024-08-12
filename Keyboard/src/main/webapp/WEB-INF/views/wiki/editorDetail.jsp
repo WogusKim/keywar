@@ -132,7 +132,7 @@
     transform: translateY(-50%);
     cursor: move;
     width: 25px;
-    height: 25spx;
+    height: 25px;
     background: url('${pageContext.request.contextPath}/resources/images/icons/dragIcon.png') no-repeat center center;
     background-size: cover;
 }
