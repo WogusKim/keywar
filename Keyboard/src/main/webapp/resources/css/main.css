@@ -349,6 +349,7 @@ body{
     text-indent: 100%;
     white-space: nowrap;
     overflow: hidden;
+    background-repeat: no-repeat;
 }
 
 .fullContent{
