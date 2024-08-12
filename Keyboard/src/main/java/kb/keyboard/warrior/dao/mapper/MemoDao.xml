@@ -7,15 +7,21 @@
 
 	<select id="todoView"
 		resultType="kb.keyboard.warrior.dto.TodoListDTO">
-		SELECT todoid, userno, task, IFNULL(detail, '투두리스트에 대한 상세한 설명을 넣어놓는 곳입니다.') AS detail,  
-		startdate, isdone, status, importance, progress, category, SUBSTRING(duedate, 1, 10) AS duedate
-		, CASE 
-			WHEN DATE(duedate) &lt; CURDATE() THEN 0
-			WHEN DATE(duedate) = CURDATE() THEN 1 
-	        WHEN DATE(duedate) &gt; CURDATE() THEN 2 
-		END AS checkstatus	
-		FROM todolist
-		WHERE userno = #{param1} AND 
+		SELECT todoid, userno, task, IFNULL(detail, '투두리스트에 대한 상세한
+		설명을 넣어놓는 곳입니다.') AS detail,
+		startdate, isdone, status, importance,
+		progress, category, SUBSTRING(duedate, 1,
+		10) AS duedate
+		, CASE
+		WHEN
+		DATE(duedate) &lt; CURDATE() THEN 0
+		WHEN DATE(duedate) = CURDATE() THEN
+		1
+		WHEN DATE(duedate) &gt; CURDATE() THEN 2
+		END AS checkstatus
+		FROM
+		todolist
+		WHERE userno = #{param1} AND
 		status = 1
 		ORDER BY duedate
 	</select>
@@ -53,14 +59,44 @@
 	</delete>
 
 	<insert id="mymemoWrite">
-		INSERT INTO mymemo (userno, content) values
-		(#{param1}, #{param2})
+		INSERT INTO mymemo (userno, content, color) values
+		(#{param1}, #{param2}, #{param3})
 	</insert>
 
 	<insert id="deptmemoWrite">
-		INSERT INTO deptmemo (deptno, userno, content) values
-		(#{param1}, #{param2}, #{param3})
+		INSERT INTO deptmemo (deptno, userno, content, color)
+		values
+		(#{param1}, #{param2}, #{param3}, #{param4})
 	</insert>
+
+	<resultMap id="MyMemoMap"
+		type="kb.keyboard.warrior.dto.MyMemoDTO">
+		<result property="memoid" column="memoid" />
+		<result property="userno" column="userno" />
+		<result property="content" column="content" />
+		<result property="color" column="color" />
+		<result property="createdate" column="createdate" />
+	</resultMap>
+
+	<select id="searchMyMemo" resultMap="MyMemoMap">
+		SELECT * FROM mymemo
+		WHERE
+		userno = #{userno} AND content LIKE CONCAT('%', #{keyword}, '%')
+	</select>
+
+	<select id="searchDeptMemo"
+		resultType="kb.keyboard.warrior.dto.DeptMemoDTO">
+		SELECT * FROM deptmemo
+		WHERE deptno = #{deptno} AND content LIKE CONCAT('%', #{keyword}, '%')
+	</select>
+
+
+
+
+
+
+
+
 
 	<delete id="mymemoDelete">
 		DELETE FROM mymemo WHERE memoid = #{param1}
@@ -84,7 +120,8 @@
 	<update id="updateNoticePosition">
 		UPDATE notice
 		SET positionX = #{positionX},
-		positionY = #{positionY},
+		positionY =
+		#{positionY},
 		zindex = #{zindex}
 		WHERE noticeid = #{noticeid}
 	</update>
