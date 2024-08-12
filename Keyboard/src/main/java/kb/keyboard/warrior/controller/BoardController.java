@@ -43,8 +43,6 @@ public class BoardController {
 		List<BoardDTO> list = dao.getAllPost();
 		
 		if(list !=null) {
-			
-			
 			model.addAttribute("list", list);
 		}
 		
@@ -56,8 +54,14 @@ public class BoardController {
 	@RequestMapping("/detailNote")
 	public String Detail(Model model, @RequestParam("id") int id, HttpSession session) {
 		WikiDao dao = sqlSession.getMapper(WikiDao.class);
-		String wikiData = dao.getData(id);
 		System.out.println("위키디테일진입 : " + id);
+		Integer isopen = 0;
+		isopen = dao.checkItIsopen(id+"");
+		if(isopen==null||isopen==0) {
+			System.out.println("잘못된 접근입니다.");
+			return "redirect:hotNote";
+		}
+		String wikiData = dao.getData(id);
 		session.setAttribute("WikiId", id);
 
 		if (wikiData == null) {
