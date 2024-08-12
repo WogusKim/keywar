@@ -24,6 +24,7 @@ import kb.keyboard.warrior.CoffixRateCrawler;
 import kb.keyboard.warrior.CurrencyRateCrawler;
 import kb.keyboard.warrior.MorRateCrawler;
 import kb.keyboard.warrior.StockCrawler;
+import kb.keyboard.warrior.dao.AlertDao;
 import kb.keyboard.warrior.dao.DisplayDao;
 import kb.keyboard.warrior.dao.ExchangeRateDao;
 import kb.keyboard.warrior.dao.LoginDao;
@@ -237,6 +238,9 @@ public class HomeController {
 		long duration = endTime - startTime; // 
 		System.out.println("mainpage loading time: " + duration + "milisecond");
 		
+		//comment & Like
+		AlertDao alertdao = sqlSession.getMapper(AlertDao.class);
+		model.addAttribute("comment", alertdao.getRecentlyAlert(userno));
 		
 		
 		//순서배열을 위한 임시 데이터

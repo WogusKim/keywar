@@ -544,6 +544,7 @@ function test(){
 			if(result.result == "success"){
 				alert("댓글이 정상적으로 등록되었습니다.");
 				$("textarea#comment-input").val("");
+				location.reload();
 			}else{
 				alert(result.result);
 				$("textarea#comment-input").val("");

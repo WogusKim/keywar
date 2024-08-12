@@ -256,7 +256,7 @@ body{
 .board_inner_inner {	
     border-radius: 10px;
     background-color: white;
-    width: 33%;                    /* 각 내부 요소의 너비를 30%로 설정 */
+    width: 32%;                    /* 각 내부 요소의 너비를 30%로 설정 */
     height: 100%;                  /* 높이를 부모와 같게 설정 */
     padding: 10px;
 	background-color: var(--main-bgcolor);

@@ -24,6 +24,10 @@
 	</insert>
 	<insert id="addLikeAlert" parameterType="kb.keyboard.warrior.dto.AlertDTO">
 		insert into alert (userno, message, category, detail)
-		values (#{userno}, #{message}, `like`, #{detail})
+		values (#{userno}, #{message}, 'like', #{detail})
 	</insert>
+	<select id="getRecentlyAlert" resultType="kb.keyboard.warrior.dto.AlertDTO">
+		select * from alert where userno=#{param} and (category = 'comment' or category='like'or category='wiki') 
+		order by senddate desc limit 10;
+	</select>
 </mapper>
