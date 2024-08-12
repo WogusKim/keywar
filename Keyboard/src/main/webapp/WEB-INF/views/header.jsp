@@ -37,22 +37,35 @@ width: 100%;
         const notifyButton1 = document.getElementById('notifyButton1');
         const notificationBox = document.getElementById('notificationBox');
 
-        notifyButton.addEventListener('click', () => {
+        notifyButton.addEventListener('click', (e) => {
             if (notificationBox.style.display === 'none' || notificationBox.style.display === '') {
+            	e.stopPropagation();
                 notificationBox.style.display = 'block'; // 박스 보이기
                 alarmOff();
             } else {
                 notificationBox.style.display = 'none'; // 박스 숨기기 
             }
         });
-        notifyButton1.addEventListener('click', () => {
+        notifyButton1.addEventListener('click', (e) => {
             if (notificationBox.style.display === 'none' || notificationBox.style.display === '') {
+            	e.stopPropagation();
                 notificationBox.style.display = 'block'; // 박스 보이기
                 alarmOff();
             } else {
                 notificationBox.style.display = 'none'; // 박스 숨기기
             }
         });
+        
+        // 알림창 외부를 클릭했을 때 알림창 닫기
+        document.addEventListener('click', () => {
+            if (notificationBox.style.display === 'block') {
+                notificationBox.style.display = 'none';
+            }
+        });
+        notificationBox.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+        
         
         // 세션에서 배경색 정보를 읽어옵니다.
         var bgColor = '${sessionScope.bgcolor}';
@@ -102,19 +115,18 @@ width: 100%;
 
                 // 알림 메시지 추가
                 data.forEach(function(item) {
-                	console.log(item);
                 	var alertNo = 'contentNo-'+item.alertid;
-                    $('#alertContentArea').append('<div id="'+ alertNo +'" class="alertContent" onclick="getDetail('+item.alertid+',\''+ item.category+'\')">  </div>');
+                    $('#alertContentArea').append('<div id="'+ alertNo +'" class="alertContent" onclick="getDetail('+item.alertid+',\''+ item.category+'\',\''+item.detail+'\')">  </div>');
                     $('#'+alertNo).append('<p>' + item.message + '</p>');
                     $('#'+alertNo).append('<p class="alertTimeStamp">' + item.senddate + '</div>');
                     $('#'+alertNo).append('<hr class="alerthr">');
-                    
                 });
 
 	            //console.log(data);
 	            alarmOn(); // 알림 표시 기능 호출
 	        } else {
-	            console.log("No new notifications");
+	        	//알림이 없을 때
+	            //console.log("No new notifications");
 	        }
 	    })
 	    .catch(error => {
@@ -122,6 +134,7 @@ width: 100%;
 	        console.error('Error:', error);
 	    });
 	        // 다음 체크 주기 설정 (예: 5초)  // 일단 1분으로 해놈~~ 자꾸 떠서
+	        // 다 한 다음에 다음 알림 예약~
 	        setTimeout(checkForNotifications, 5000000);
 	    }
 
@@ -142,12 +155,14 @@ width: 100%;
     //이동 url
     function getDetail(alertno1, category, detail){
     	
-    	
-    	alert("alert id : "+alertno1 + " / 분류 : "+ category);
     	var nextpage = '${pageContext.request.contextPath}/testUrl?alertid='+alertno1+ '&nextpage=';
     	if(category == 'calendar'){
     		nextpage = nextpage + 'calendar';
     	}else if(category == 'wiki'){
+    		nextpage = nextpage+ 'detailNote?id=' + detail;
+    	}else if(category == 'like'){
+    		nextpage = nextpage+ 'detailNote?id=' + detail;
+    	}else if(category == 'comment'){
     		nextpage = nextpage+ 'detailNote?id=' + detail;
     	}else if(category == 'notice'){
     		nextpage = nextpage + 'notice';
@@ -222,13 +237,14 @@ width: 100%;
  </div>
 </div>
 </header>
-    <div id="notificationBox" class="notification-box1">
+    <div id="notificationBox" class="notification-box1" style="width: 320px;">
     <div><a href="#;" class="deleteButton11" id="notifyButton1">X</a></div>
-    <div id="alertContentArea" class="alertContentArea"> 
+    <div id="alertContentArea" class="alertContentArea" > 
     	<div class="alertContent">
-        <p id="alertTitle">새로운 알림이 있습니다!</p>
-        <p id="alertTimeStamp" class="alertSendTime" >알림 등록 일시</p>
-        <hr class="alerthr">
+	    	<div style="margin-top: 50px; text-align: center;">
+			<iframe src="https://giphy.com/embed/EDgXbeWptb15W9Ed3j" width="150" height="150" style="pointer-events: none;"  frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+	        <p id="alertTitle">새로운 알림이 없습니다!</p>
+			</div>
         </div>
         
         

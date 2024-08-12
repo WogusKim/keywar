@@ -11,5 +11,25 @@
 	<insert id="insertColor">
 		INSERT INTO userDisplayColor VALUES (#{param2}, #{param1})
 	</insert>
+	<select id="getAlertStauts" resultType="kb.keyboard.warrior.dto.AlertDTO">
+		select * from alertSetting where userno = #{param1}
+	</select>
+	<update id="changeAlertStatus" parameterType="kb.keyboard.warrior.dto.AlertDTO">
+		UPDATE alertSetting SET `${category}` = #{checkStatus} WHERE userno = #{userno}
+	</update>
+	<!-- 그냥 SQL인젝션의 위험 감수하기로 함. -->
+<!-- 	<update id="changeLikeStatus" parameterType="kb.keyboard.warrior.dto.AlertDTO">
+		UPDATE alertSetting SET `like` = #{checkStatus} WHERE userno = #{userno}
+	</update>
+	<update id="changeCommentStatus" parameterType="kb.keyboard.warrior.dto.AlertDTO">
+		UPDATE alertSetting SET comment = #{checkStatus} WHERE userno = #{userno}
+	</update>
+	<update id="changeNoticeStatus" parameterType="kb.keyboard.warrior.dto.AlertDTO">
+		UPDATE alertSetting SET notice = #{checkStatus} WHERE userno = #{userno}
+	</update>
+	<update id="changeCalendarStatus" parameterType="kb.keyboard.warrior.dto.AlertDTO">
+		UPDATE alertSetting SET calendar = #{checkStatus} WHERE userno = #{userno}
+	</update> -->
+
 	
 </mapper>

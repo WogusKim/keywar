@@ -63,9 +63,9 @@
 	        FROM user
 	        WHERE userno = #{inviteNo}
 	    </selectKey>	
-	    INSERT IGNORE INTO alert (userno, message)
+	    INSERT IGNORE INTO alert (userno, category, message)
 	    VALUES (
-	        #{userno}, 
+	        #{userno}, 'calendar', 
             CONCAT('일정: ', #{inviteName}, ' 님의 초대로 ', #{customname}, ' 그룹의 일원이 되셨습니다.')
         )
 	</insert>
@@ -195,5 +195,39 @@
 		and sharedepth3 = #{sharedepth3}
 		and userid = #{userid};
     </update>
+    
+    <select id="countTodoList" parameterType="String" resultType="kb.keyboard.warrior.dto.ScheduleDTO">
+		select count(*) as todocount, duedate 
+		from (select date_format(duedate, '%Y-%m-%d') as duedate, userno from todolist
+		where userno = #{userno}
+		and isdone = '0') a
+		group by duedate
+		;
+    </select>
+    
+    <select id="getUserGroups" parameterType="String" resultType="kb.keyboard.warrior.dto.ScheduleDTO">
+		select sharedepth3, customname, sharecolor from scheduleshare
+		where userno = #{userno}
+		and status = '1'
+		and sharedepth1 = '0000'
+		and sharedepth2 = '0000'
+		and sharedepth3 != '0000'
+		;
+    </select>
+    	
+	<select id="searchUserForInvite" parameterType="map" resultType="map">
+	    SELECT userno, username as name, deptname, teamname 
+		FROM user u left join department d
+		on u.deptno = d.deptno
+		and u.teamno = d.teamno
+        left join 
+        (select distinct userno, '1' as ssyn
+        from scheduleshare 
+        where sharedepth1 = '0000' and sharedepth2 = '0000' and   
+        sharedepth3 = #{groupNum} and status = '1') ss
+        on ss.userno = u.userno
+		WHERE username like CONCAT('%', #{searchUsername}, '%') and userno != #{userno}
+        and ss.ssyn is null
+	</select>	
     
 </mapper>

@@ -24,7 +24,6 @@
 	rel="stylesheet">
 
 
-
 <!-- Core  include only Paragraph block -->
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
 <!-- Header Plug-in-->
@@ -81,28 +80,66 @@
 	src="https://cdn.jsdelivr.net/npm/@calumk/editorjs-codeflask@latest"></script>
 
 <style>
-.custom-button {
-	background-size: contain;
-	border: none;
-	width: 25px;
-	height: 25px;
-	cursor: pointer;
-	outline: none; /* 버튼 선택 시 외곽선 제거 */
-	display: inline-block; /* 버튼을 인라인 블록으로 표시 */
-}
-
-.custom-button:hover, .custom-button:focus, .custom-button:active {
-	background-color: transparent; /* 호버, 포커스, 액티브 상태에서 배경색 제거 */
-	outline: none; /* 포커스 시 외곽선 제거 */
-	box-shadow: none; /* 호버 시 그림자 제거 */
+.image-tool__image {
+    position: relative; /* 상대적 위치 설정 */
 }
 
 .button-container {
-	display: flex; /* 버튼을 나란히 배치 */
-	gap: 10px; /* 버튼 사이 간격 조정 */
-	/* margin-top: 10px */ /* 이미지와 버튼 사이 간격 조정 */
+    background-color: #a3a3a33d;
+    border-radius: 10px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+    width: 110px;
+    height: 30px;
+    padding: 5px;
+    display: flex; /* 플렉스 컨테이너 설정 */
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: space-around; /* 버튼 사이의 간격 균등 배분 */
 }
 
+.custom-button {
+    width: 20px; /* 버튼 크기 */
+    height: 20px; /* 버튼 높이 */
+    background-size: cover; /* 배경 이미지 크기 조정 */
+}
+
+
+.image-tool__caption {
+    width: 100%; /* 캡션 폭을 이미지 영역과 동일하게 설정 */
+    padding: 8px; /* 패딩으로 내부 여백 추가 */
+    box-sizing: border-box; /* 패딩을 너비에 포함 */
+}
+
+.wiki_fileIcon {
+	width: 30px;
+	height: 30px;
+	margin-right: 12px;
+}
+
+
+.ce-block {
+    position: relative;
+    /* Other styles */
+}
+
+.drag-handle {
+    display: none; /* 기본적으로 숨김 */
+    position: absolute;
+    top: 50%;
+    right: 20%;
+    transform: translateY(-50%);
+    cursor: move;
+    width: 25px;
+    height: 25spx;
+    background: url('${pageContext.request.contextPath}/resources/images/icons/dragIcon.png') no-repeat center center;
+    background-size: cover;
+}
+
+.ce-block:hover .drag-handle {
+    display: block; /* 호버 시에만 표시 */
+}
 
 </style>
 </head>
@@ -135,7 +172,7 @@
 			<!-- 버튼 영역 -->
 			<div class="editor-button-area">
 				<button onclick="saveData()">저장하기</button>
-				<button onclick="loadData()">내용 불러오기</button>
+				<!-- <button onclick="loadData()">내용 불러오기</button> -->
 			</div>
 
 		</div>
@@ -247,10 +284,20 @@ document.addEventListener('DOMContentLoaded', function () {
     editor = new EditorJS({
         holder: 'myEditor',
         data: editorData,
+        onChange: () => {
+            console.log("Changes detected");
+            // Debounce this function if necessary to avoid performance issues
+            setTimeout(() => {
+            	addDragHandles();
+            }, 300);
+        },
         onReady: function () { // 에디터 준비 완료 후 모든 이미지 블록에 대해 실행
         	addClickButtons(); //이미지에 정렬 버튼 붙이기
         	applyImageAlignment(editorData.blocks);
-        
+            
+            updateFileIcons(); // 파일 아이콘 변경 로직        
+            addDragHandles(); //드래그 아이콘 붙이기
+            initializeSorting(); //드래그기능 관련
         
             const blocks = editorData.blocks; // 블록 데이터 접근
             console.log("블록확인",blocks);
@@ -303,6 +350,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         // 도구 설정...
         tools: {
+
             // Header 설정
             header: {
                 class: Header,
@@ -471,31 +519,45 @@ document.addEventListener('DOMContentLoaded', function () {
             attaches: {
                 class: AttachesTool,
                 config: {
-                    /**
-                     * Custom uploader
-                     */
                     uploader: {
-                        /**
-                         * Upload file to the server and return an uploaded image data
-                         * @param {File} file - file selected from the device or pasted by drag-n-drop
-                         * @return {Promise.<{success, file: {url}}>}
-                         */
                         uploadByFile(file) {
-                            // your own uploading logic here
-                            return MyAjax.upload(file).then((response) => {
-                                return {
-                                    success: 1,
-                                    file: {
-                                        url: response.fileurl,
-                                        // any data you want
-                                        // for example: name, size, title
+                            console.log('Attempting to upload file...');
+                            return new Promise((resolve, reject) => {
+                                const formData = new FormData();
+                                formData.append('file', file);
+                                fetch('${pageContext.request.contextPath}/uploadFile2', {
+                                    method: 'POST',
+                                    body: formData
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        console.log('File uploaded:', data.file.url);
+                                        resolve({
+	                                        success: 1,
+	                                        file: {
+	                                            url: data.file.url,
+	                                        }
+                                        });
+                                        setTimeout(() => {
+                                            updateFileIcons();
+                                        }, 100);
+
+                                        
+                                    } else {
+                                        reject(new Error('File upload failed: ' + data.message));
                                     }
-                                };
+                                })
+                                .catch(error => {
+                                    console.error('Error uploading file:', error);
+                                    reject(error);
+                                });
                             });
-                        },
+                        }
                     }
                 }
             },
+            
             marker: {
                 class: Marker,
                 shortcut: 'CMD+SHIFT+M',
@@ -632,6 +694,88 @@ function setAlignment(wrapper, align) {
         wrapper.style.marginLeft = 'auto';
         wrapper.style.marginRight = '0';
     }
+}
+
+function updateFileIcons() {
+    const fileBlocks = document.querySelectorAll('.cdx-attaches');
+
+    fileBlocks.forEach(function(block) {
+    	
+    	const downloadButton = block.querySelector('a.cdx-attaches__download-button');
+
+        if (downloadButton) {
+        	
+            const href = downloadButton.getAttribute('href');
+            const fileExtension = href.split('.').pop().toLowerCase(); // Get the file extension from URL
+            
+            console.log(fileExtension);
+
+            const fileIconContainer = block.querySelector('.cdx-attaches__file-icon');
+			
+            if (fileExtension === 'pdf') {
+            	fileIconContainer.innerHTML = '';
+                fileIconContainer.innerHTML = '<img src="/resources/images/icons/wiki_file/pdf.png" class="wiki_fileIcon" alt="PDF Icon" style="width: 24px; height: 24px;">';
+            } else if (fileExtension === 'ppt' || fileExtension === 'pptx') {
+            	fileIconContainer.innerHTML = '';
+                fileIconContainer.innerHTML = '<img src="/resources/images/icons/wiki_file/ppt.png" class="wiki_fileIcon" alt="PPT Icon" style="width: 24px; height: 24px;">';
+            } else if (fileExtension === 'doc' || fileExtension === 'docx') {
+            	fileIconContainer.innerHTML = '';
+                fileIconContainer.innerHTML = '<img src="/resources/images/icons/wiki_file/doc.png" class="wiki_fileIcon" alt="DOC Icon" style="width: 24px; height: 24px;">';
+            }
+        }
+    });
+}
+
+function initializeSorting() {
+    $('#myEditor').sortable({
+        handle: '.drag-handle', // 드래그 핸들로 이동 제한
+        items: '.ce-block',     // 정렬 가능한 블록 지정
+        axis: 'y',              // y축으로만 이동 허용
+        cursor: 'move',         // 커서 스타일 변경
+        placeholder: 'sortable-placeholder',
+        forcePlaceholderSize: true,
+        update: function(event, ui) {
+            console.log('드래그 정렬 완료');
+            updateOrderInEditor();
+        }
+    });
+}
+
+function addDragHandles() {
+    const editorContent = document.getElementById('myEditor');
+    const blocks = editorContent.querySelectorAll('.ce-block');
+
+    blocks.forEach(block => {
+        // 드래그 핸들이 이미 있는지 확인
+        if (!block.querySelector('.drag-handle')) {
+            const handle = document.createElement('div');
+            handle.className = 'drag-handle';
+            block.appendChild(handle);
+        }
+    });
+}
+
+function updateOrderInEditor() {
+    // DOM에서 블록 ID의 현재 순서를 검색
+    const orderedIds = $('#myEditor .ce-block').map(function () {
+        return $(this).attr('data-id');
+    }).get();
+	
+    console.log(orderedIds);
+    console.log(editor);
+
+    for (let i = 0; i < orderedIds.length; i++) {
+        const currentId = orderedIds[i];
+        // 현재 인덱스를 찾습니다.
+        const currentIndex = editor.blocks.getBlockIndex(currentId); // 수정 필요
+        if (currentIndex !== i) {
+            // 현재 인덱스에서 새 인덱스로 블록을 이동합니다.
+            editor.blocks.move(currentIndex, i);
+        }
+    }
+    
+    saveData();
+
 }
 
 </script>

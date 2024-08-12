@@ -575,6 +575,7 @@ public class MemoController {
 		return "{\"status\":\"success\"}";
 	}
 
+
 	@RequestMapping(value = "/updateNoticeSize", method = RequestMethod.POST)
 	@ResponseBody
 	public String updateNoticeSize(@RequestBody NoticeDTO noticeDTO) {
@@ -582,13 +583,13 @@ public class MemoController {
 		System.out.println(noticeDTO.getWidth());
 		System.out.println(noticeDTO.getHeight());
 
-		// MemoDao瑜� �넻�빐 SQL �떎�뻾
+		// MemoDao
 		MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
 
-		// 怨듭� �쐞移� 諛� �겕湲� �뾽�뜲�씠�듃
+		// update Notice Size
 		memoDao.updateNoticeSize(noticeDTO);
 
-		// JSON �삎�깭濡� �쓳�떟 諛섑솚
+		// JSON send
 		return "{\"status\":\"success\"}";
 	}
 

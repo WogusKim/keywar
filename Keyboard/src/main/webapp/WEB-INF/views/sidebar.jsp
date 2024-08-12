@@ -18,11 +18,10 @@
     border-radius: 10px;
     background-color: white;
     padding: 20px 5px;
-    width: 17%;
+    width: 20%;
     height: 100%;
     margin-right: 15px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-
 }
 
 .menu_list {
@@ -30,6 +29,11 @@
 	align-items: center;
 	vertical-align: center;
 	position: relative; /* 상대 위치 설정 */
+}
+
+.menu-tree {
+    overflow-y: auto; /* 스크롤 가능하도록 설정 */
+    flex-grow: 1; /* 남은 공간 모두 사용 */
 }
 
 .menu-tree ul {
@@ -74,19 +78,22 @@
 }
 
 .menu_setting {
-    position: absolute; /* 절대 위치 사용 */
-    right: 10px; /* 우측으로부터 10px 떨어진 위치 */
-    bottom: 10px; /* 하단으로부터 10px 떨어진 위치 */
-    padding: 10px; /* 패딩 */
-    display: flex; /* Flexbox 사용 */
-    align-items: center; /* 세로 중앙 정렬 */
+    position: absolute; /* 절대 위치 */
+    bottom: 0; /* 하단에 고정 */
+    right: 5px; /* 우측에 고정 */
+    background-color: #ffffff00; /* 반투명 배경 */
+    width: 100%; /* 부모 컨테이너의 전체 너비 */
+    padding: 10px; /* 내부 여백 */
+    z-index: 2; /* 다른 요소 위에 오도록 설정 */
+    text-align: right;
 }
 
 .menu_onoff {
     position: absolute;
-    right: 5px; /* 우측에서 10px 떨어진 위치에 배치 */
+    right: 15px; /* 우측에서 10px 떨어진 위치에 배치 */
     top: 50%; /* 상단에서 50% 위치에 배치 */
     transform: translateY(-50%); /* Y축 기준 50%만큼 이동, 자신의 높이의 절반만큼 올림 */
+    z-index: 3; /* 'menu_setting'보다 위에 표시 */
 }
 
 .icon-fold {
@@ -96,8 +103,8 @@
     background-size: contain;
     background-repeat: no-repeat;
     margin-right: 6px;
+    cursor: pointer;
 }
-
 
 .hidden {
     visibility: hidden; /* 요소 숨김 */
@@ -145,7 +152,7 @@
 .modal {
     display: none; /* 기본적으로 숨겨져 있음 */
     position: fixed; /* 고정 위치 */
-    z-index: 1; /* 콘텐츠 위에 표시 */
+    z-index: 100; /* 콘텐츠 위에 표시 */
     left: 0;
     top: 0;
     width: 100%; /* 전체 너비 */
@@ -156,13 +163,14 @@
 }
 
 /* 모달 콘텐츠 */
-.modal-content {
+.modal-content2 {
 	border-radius: 10px;
     background-color: #fefefe;
     margin: 15% auto; /* 15% 상단에서부터 자동 가운데 정렬 */
     padding: 20px;
     border: 1px solid #888;
     width: 500px; /* 대부분의 화면에서 적절한 폭 */
+    heigth: 400px;
 }
 
 .input_outer {
@@ -172,6 +180,8 @@
 .edit_field {
 	margin: 5px;
 	padding:10px;
+	display: flex;
+	
 }
 
 .label-fixed-width {
@@ -194,6 +204,16 @@
 
 .edit_submit {
 	width : 200px;
+	padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.label_modal {
+	width: 60px;
 }
 
 hr.modal_hr {
@@ -217,6 +237,18 @@ hr.modal_hr {
     text-decoration: none;
     cursor: pointer;
 }
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    margin-right: 10px;
+}
+
+input[type="text"], input[type="radio"] {
+    margin-right: 5px;
+}
 /* 모달팝업관련 */
 </style>
 </head>
@@ -232,7 +264,7 @@ hr.modal_hr {
 			            <c:choose>
 			                <c:when test="${menu.menuType == 'item'}">
 			                    <!-- menuType이 item일 경우, 링크 포함 -->
-			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${menu.id}">
+			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${menu.id}" class="aTag">
 			                        <span>${menu.title}</span>
 			                    </a>
 			                </c:when>
@@ -253,7 +285,7 @@ hr.modal_hr {
 							            <c:choose>
 							                <c:when test="${child1.menuType == 'item'}">
 							                    <!-- menuType이 item일 경우, 링크 포함 -->
-							                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child1.id}">
+							                    <a class="aTag" href="${pageContext.request.contextPath}/wikiDetail?id=${child1.id}">
 							                        <span>${child1.title}</span>
 							                    </a>
 							                </c:when>
@@ -274,7 +306,7 @@ hr.modal_hr {
 											            <c:choose>
 											                <c:when test="${child2.menuType == 'item'}">
 											                    <!-- menuType이 item일 경우, 링크 포함 -->
-											                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child2.id}">
+											                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child2.id}" class="aTag">
 											                        <span>${child2.title}</span>
 											                    </a>
 											                </c:when>
@@ -294,7 +326,7 @@ hr.modal_hr {
 															            <c:choose>
 															                <c:when test="${child3.menuType == 'item'}">
 															                    <!-- menuType이 item일 경우, 링크 포함 -->
-															                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child3.id}">
+															                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child3.id}" class="aTag">
 															                        <span>${child3.title}</span>
 															                    </a>
 															                </c:when>
@@ -315,7 +347,7 @@ hr.modal_hr {
 																			            <c:choose>
 																			                <c:when test="${child4.menuType == 'item'}">
 																			                    <!-- menuType이 item일 경우, 링크 포함 -->
-																			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child4.id}">
+																			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child4.id}" class="aTag">
 																			                        <span>${child4.title}</span>
 																			                    </a>
 																			                </c:when>
@@ -345,6 +377,21 @@ hr.modal_hr {
                 </li>
             </c:forEach>
         </ul>
+		<c:if test="${empty menus}">	
+		<div>
+			<div style="text-align: center;margin-top: 55%;">
+				<iframe src="https://giphy.com/embed/3YJHfSeY06qRFAxE8p" width="170px;" height="170px;" style="pointer-events: none; margin: 0;"  frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+			</div>
+			<div style="text-align: center; color: gray;">
+			나의 메뉴 초기 상태입니다!<br>
+			원하는 대로 메뉴를 커스텀 하세요!<br><br>
+			<div style="text-align: center; font-size: large;">
+				<a href="${pageContext.request.contextPath}/hotNote" class="aTag">⭐인기 노트 둘러보기⭐</a><br>
+				<a href="${pageContext.request.contextPath}/menuSetting" class="aTag">⚙️사이드바 설정하기⚙️</a>
+			</div>
+			</div>
+		</div>
+		</c:if>
     </div>
 	<div class="menu_setting">
 	    <div class="icon-setting menu-icon"></div>
@@ -352,16 +399,16 @@ hr.modal_hr {
 	</div>
 	<div class="menu_onoff">
 		<div class="icon-fold fold-icon"></div>
-		<div class="icon-fold unfold-icon" style="display:none"></div>
+		<div class="icon-fold unfold-icon" style="display:none;"></div>
 	</div>
 </div>
 
 
 <!-- 페이지 추가 모달 팝업 -->
 <div id="addModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content2">
         <span class="close">&times;</span>
-        <h3>노트(폴더) 추가</h3>
+        <h3>업무노트 추가</h3>
         
         <form id="addForm" action="${pageContext.request.contextPath}/fastAddItem" method="post">
         	<hr class="modal_hr">
@@ -371,20 +418,13 @@ hr.modal_hr {
 		        <input type="hidden" id="selectedType" name="type">
 		        <input type="hidden" id="selectedDepth" name="depth">
 		        
-		        <div class="edit_field">
-		        	<label class="label-fixed-width">메뉴 타입:</label>
-		        	<input type="radio" name="menuType" value="folder">
-                    <label for="isOpenYes">폴더</label>
-                    <input type="radio" name="menuType" value="item">
-                    <label for="isOpenNo">업무노트</label>
-		        </div>
 		        
 		        <div class="edit_field">
 		        	<label class="label-fixed-width">공개 여부:</label>
 		        	<input type="radio" name="public" value="yes">
-                    <label for="isOpenYes">공개</label>
+                    <label for="isOpenYes" class="label_modal">공개</label>
                     <input type="radio" name="public" value="no">
-                    <label for="isOpenNo">비공개</label>
+                    <label for="isOpenNo" class="label_modal">비공개</label>
 		        </div>
 		        
 	            <div class="edit_field">
@@ -450,13 +490,13 @@ $(document).ready(function() {
     if (isCollapsed) {
         // 사이드바를 접은 상태로 설정
         $('.menu-tree, .menu_setting').hide();
-        $('.content_left').css('width', '50px');
+        $('.content_left').css('width', '75px');
         $('.fold-icon').hide();
         $('.unfold-icon').show();
     } else {
         // 사이드바를 펼친 상태로 설정
         $('.menu-tree, .menu_setting').show();
-        $('.content_left').css('width', '17%');
+        $('.content_left').css('width', '20%');
         $('.unfold-icon').hide();
         $('.fold-icon').show();
     }
@@ -464,7 +504,7 @@ $(document).ready(function() {
     // 접기 버튼 클릭 이벤트
     $('.menu_onoff .fold-icon').click(function() {
         $('.menu-tree, .menu_setting').slideUp(300);
-        $('.content_left').animate({ width: '50px' }, 300);
+        $('.content_left').animate({ width: '75px' }, 300);
         $('.fold-icon').hide();
         $('.unfold-icon').show();
         localStorage.setItem('isCollapsed', 'true'); // 상태 저장
@@ -473,7 +513,7 @@ $(document).ready(function() {
     // 펼치기 버튼 클릭 이벤트
     $('.menu_onoff .unfold-icon').click(function() {
         $('.menu-tree, .menu_setting').slideDown(300);
-        $('.content_left').animate({ width: '17%' }, 300);
+        $('.content_left').animate({ width: '20%' }, 300);
         $('.unfold-icon').hide();
         $('.fold-icon').show();
         localStorage.setItem('isCollapsed', 'false'); // 상태 저장
@@ -484,15 +524,30 @@ $(document).ready(function() {
 // 아이템 추가 함수
 function addItem(folderId, depth) {
     
-    // 여기서 folderId를 사용하여 새 아이템 추가 로직을 구현합니다.
-    
     //depth가 4인 경우 거절해야함.
     if (depth >= 4) {
     	alert('최대 허용 depth 를 초과하였습니다.');
     } else {
-    	alert('폴더 ID: ' + folderId + '에 (뎁스:' + depth + ') 새 아이템을 추가합니다.');
+        // 모달을 띄우기 전에 폴더 ID와 depth 값을 설정합니다.
+        $('#selectedId').val(folderId);
+        $('#selectedDepth').val(depth);
+        $('#selectedType').val('item'); // 기본 타입을 설정합니다.
+        
+        // 모달을 띄웁니다.
+        $('#addModal').show();
     }
 }
+
+// 모달을 닫는 함수
+$('.close').click(function() {
+    $('#addModal').hide();
+});
+
+$(window).click(function(event) {
+    if (event.target == $('#addModal')[0]) {
+        $('#addModal').hide();
+    }
+});
 
 </script>
 </body>

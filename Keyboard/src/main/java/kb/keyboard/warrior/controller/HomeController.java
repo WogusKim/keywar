@@ -31,6 +31,7 @@ import kb.keyboard.warrior.dao.MemoDao;
 import kb.keyboard.warrior.dao.ToDoDao;
 import kb.keyboard.warrior.dao.WikiDao;
 import kb.keyboard.warrior.dto.BoardDTO;
+import kb.keyboard.warrior.dto.DeptMemoDTO;
 import kb.keyboard.warrior.dto.ExchangeFavoriteDTO;
 import kb.keyboard.warrior.dto.ExchangeRateDTO;
 import kb.keyboard.warrior.dto.MenuDTO;
@@ -193,9 +194,6 @@ public class HomeController {
 		}
 
 		// MOR
-
-//        MorRateCrawler morCrawler = new MorRateCrawler();
-//        List<MorCoffixDTO> morRates = morCrawler.fetchMorRates();
 		ExchangeRateDao dao = sqlSession.getMapper(ExchangeRateDao.class);
 		List<MorCoffixDTO> morRates = dao.getAllMor();
 		if (!morRates.isEmpty()) {
@@ -203,8 +201,6 @@ public class HomeController {
 		}
 
 		// COFIX
-//        CoffixRateCrawler coffixCrawler = new CoffixRateCrawler();
-//        List<MorCoffixDTO> coffixRates = coffixCrawler.fetchMorRates();
 		List<MorCoffixDTO> coffixRates = dao.getAllCofix();
 		if (!coffixRates.isEmpty()) {
 			model.addAttribute("cofix", coffixRates);
@@ -227,12 +223,14 @@ public class HomeController {
 		model.addAttribute("todoList", todoList);
 
 		// Memo Data
-		MemoDao memoDao = sqlSession.getMapper(MemoDao.class);
-		List<MyMemoDTO> memoList = memoDao.memoView1(userno);
-		model.addAttribute("memoList", memoList);
-
+		MemoDao mdao = sqlSession.getMapper(MemoDao.class);
+        ArrayList<MyMemoDTO> listMyMemo = mdao.memoView1(userno);
+        ArrayList<DeptMemoDTO> listDeptMemo = mdao.memoView2(deptno);
+        model.addAttribute("memo1", listMyMemo);
+        model.addAttribute("memo2", listDeptMemo);
+		
 		// Notice Data
-		List<NoticeDTO> noticeList = memoDao.noticeView(deptno);
+		List<NoticeDTO> noticeList = mdao.noticeView(deptno);
 		model.addAttribute("noticeList", noticeList);
 
 		long endTime = System.currentTimeMillis(); // 
