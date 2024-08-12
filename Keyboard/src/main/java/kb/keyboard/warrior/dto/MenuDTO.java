@@ -1,9 +1,13 @@
 package kb.keyboard.warrior.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuDTO {
+public class MenuDTO implements Serializable {
+	
+    private static final long serialVersionUID = 1L;
+
     private int id;
     private Integer parent_id;
     private String title;

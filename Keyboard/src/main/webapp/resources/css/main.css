@@ -235,7 +235,7 @@ body{
 	justify-content: space-between;
     border-radius: 10px;
     background-color: white;
-    width: 49%;                    /* 媛� �궡遺� �슂�냼�쓽 �꼫鍮꾨�� 30%濡� �꽕�젙 */
+    width: 64%;                    /* 媛� �궡遺� �슂�냼�쓽 �꼫鍮꾨�� 30%濡� �꽕�젙 */
     height: 100%;  
     gap: 15px;                /* �넂�씠瑜� 遺�紐⑥� 媛숆쾶 �꽕�젙 */
     padding: 15px;
@@ -260,7 +260,7 @@ body{
 .board_inner_inner {	
     border-radius: 10px;
     background-color: white;
-    width: 33%;                    /* 각 내부 요소의 너비를 30%로 설정 */
+    width: 32%;                    /* 각 내부 요소의 너비를 30%로 설정 */
     height: 100%;                  /* 높이를 부모와 같게 설정 */
     padding: 10px;
 	background-color: var(--main-bgcolor);
@@ -270,7 +270,7 @@ body{
 .board_inner3 {	
     border-radius: 10px;
     background-color: white;
-    width: 49%;                    /* 각 내부 요소의 너비를 30%로 설정 */
+    width: 35%;                    /* 각 내부 요소의 너비를 30%로 설정 */
     height: 100%;                  /* 높이를 부모와 같게 설정 */
     padding: 10px;
     
@@ -353,6 +353,7 @@ body{
     text-indent: 100%;
     white-space: nowrap;
     overflow: hidden;
+    background-repeat: no-repeat;
 }
 
 .fullContent{

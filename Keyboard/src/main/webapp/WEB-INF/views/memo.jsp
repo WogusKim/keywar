@@ -369,7 +369,7 @@
 							<hr>
 							<!-- 검색바 추가 -->
 							<div class="search-container">
-								<input type="text" placeholder="검색어를 입력해주세요." name="search"
+								<input type="text" placeholder="나의 메모 검색어를 입력해주세요." name="search"
 									id="searchInput"> <input type="image"
 									src="${contextPath}/resources/images/icons/search.png" alt="검색"
 									id="searchButton">

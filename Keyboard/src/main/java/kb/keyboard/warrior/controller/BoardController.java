@@ -44,17 +44,6 @@ public class BoardController {
 		
 		if(list !=null) {
 			
-			for (BoardDTO bDto : list) {
-				Integer hits = dao.getHitsById(bDto.getId());
-				if (hits != null) {
-					bDto.setHits_count(hits);
-				} else {
-					bDto.setHits_count(0);
-				}
-				
-				bDto.setUserno(dao.getMenuDetail(bDto.getId()).getUserno());
-				
-			}
 			
 			model.addAttribute("list", list);
 		}
@@ -137,6 +126,11 @@ public class BoardController {
 			LoginDao ldao = sqlSession.getMapper(LoginDao.class); 
 			// 이 사람한테 알림이 가야함. (작성글 번호로 게시글 작성자 직원번호 찾기 !)
 			BoardDTO bdto = wdao.findWriterName(dto.getTargetid());
+			// 작성자와 글 작성자가 같다면 알람 X
+			if(bdto.getUserno().equals(dto.getUserno())) {
+				return mapper.writeValueAsString(rdto);
+			};
+			
 			// 이 사람이 댓글 쓴 사람.
 			String commentWriter = ldao.isRightUserno(dto.getUserno()).getUsername();
 			
@@ -190,6 +184,11 @@ public class BoardController {
 			LoginDao ldao = sqlSession.getMapper(LoginDao.class); 
 			// 이 사람한테 알림이 가야함. (작성글 번호로 게시글 작성자 직원번호 찾기 !)
 			BoardDTO bdto = wdao.findWriterName(dto.getTargetid());
+			// 작성자와 글 작성자가 같다면 알람 X
+			if(bdto.getUserno().equals(dto.getUserno())) {
+				 return "{\"status\":\"success\"}";
+			};
+			
 			// 이 사람이 좋아요 누른 사람 사람.
 			String commentWriter = ldao.isRightUserno(dto.getUserno()).getUsername();
 			

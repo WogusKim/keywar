@@ -5,7 +5,19 @@
 <mapper namespace="kb.keyboard.warrior.dao.AlertDao">
 
 	<select id="getAlert" resultType="kb.keyboard.warrior.dto.AlertDTO">
-		select * from alert where userno = #{param1} and isread = 0;
+		SELECT * 
+		FROM alert a
+		JOIN alertSetting s 
+		ON a.userno = s.userno
+		WHERE a.userno = #{param1} and isread = '0'
+		AND (
+		    (a.category = 'like' AND s.like = '1') OR
+		    (a.category = 'comment' AND s.comment = '1') OR
+		    (a.category = 'notice' AND s.notice = '1') OR
+		    (a.category = 'calendar' AND s.calendar = '1')
+		);
+		
+<!-- 		select * from alert where userno = #{param1} and isread = 0; -->
 	</select>
 	<update id="updateIsread" >
 		UPDATE alert SET isread = 1 WHERE alertid = #{param1};
@@ -24,6 +36,10 @@
 	</insert>
 	<insert id="addLikeAlert" parameterType="kb.keyboard.warrior.dto.AlertDTO">
 		insert into alert (userno, message, category, detail)
-		values (#{userno}, #{message}, `like`, #{detail})
+		values (#{userno}, #{message}, 'like', #{detail})
 	</insert>
+	<select id="getRecentlyAlert" resultType="kb.keyboard.warrior.dto.AlertDTO">
+		select * from alert where userno=#{param} and (category = 'comment' or category='like'or category='wiki') 
+		order by senddate desc limit 10;
+	</select>
 </mapper>

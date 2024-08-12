@@ -356,7 +356,7 @@ input[type="text"], input[type="radio"] {
 			            <c:choose>
 			                <c:when test="${menu.menuType == 'item'}">
 			                    <!-- menuType이 item일 경우, 링크 포함 -->
-			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${menu.id}" class="aTag">
+			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${menu.id}" class="aTag No-line-break">
 			                        <span class="item-title">${menu.title}</span>
 			                    </a>
 			                </c:when>
@@ -377,7 +377,7 @@ input[type="text"], input[type="radio"] {
 							            <c:choose>
 							                <c:when test="${child1.menuType == 'item'}">
 							                    <!-- menuType이 item일 경우, 링크 포함 -->
-							                    <a class="aTag" href="${pageContext.request.contextPath}/wikiDetail?id=${child1.id}">
+							                    <a class="aTag No-line-break" href="${pageContext.request.contextPath}/wikiDetail?id=${child1.id}">
 							                        <span class="item-title">${child1.title}</span>
 							                    </a>
 							                </c:when>
@@ -398,7 +398,7 @@ input[type="text"], input[type="radio"] {
 											            <c:choose>
 											                <c:when test="${child2.menuType == 'item'}">
 											                    <!-- menuType이 item일 경우, 링크 포함 -->
-											                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child2.id}" class="aTag">
+											                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child2.id}" class="aTag No-line-break">
 											                        <span class="item-title">${child2.title}</span>
 											                    </a>
 											                </c:when>
@@ -418,7 +418,7 @@ input[type="text"], input[type="radio"] {
 															            <c:choose>
 															                <c:when test="${child3.menuType == 'item'}">
 															                    <!-- menuType이 item일 경우, 링크 포함 -->
-															                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child3.id}" class="aTag">
+															                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child3.id}" class="aTag No-line-break">
 															                        <span class="item-title">${child3.title}</span>
 															                    </a>
 															                </c:when>
@@ -439,7 +439,7 @@ input[type="text"], input[type="radio"] {
 																			            <c:choose>
 																			                <c:when test="${child4.menuType == 'item'}">
 																			                    <!-- menuType이 item일 경우, 링크 포함 -->
-																			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child4.id}" class="aTag">
+																			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child4.id}" class="aTag No-line-break">
 																			                        <span class="item-title">${child4.title}</span>
 																			                    </a>
 																			                </c:when>
@@ -478,8 +478,8 @@ input[type="text"], input[type="radio"] {
 			나의 메뉴 초기 상태입니다!<br>
 			원하는 대로 메뉴를 커스텀 하세요!<br><br>
 			<div style="text-align: center; font-size: large;">
-				<a href="${pageContext.request.contextPath}/hotNote" class="aTag">⭐인기 노트 둘러보기⭐</a><br>
-				<a href="${pageContext.request.contextPath}/menuSetting" class="aTag">⚙️사이드바 설정하기⚙️</a>
+				<a href="${pageContext.request.contextPath}/hotNote" class="aTag No-line-break">⭐인기 노트 둘러보기⭐</a><br>
+				<a href="${pageContext.request.contextPath}/menuSetting" class="aTag No-line-break">⚙️사이드바 설정하기⚙️</a>
 			</div>
 			</div>
 		</div>

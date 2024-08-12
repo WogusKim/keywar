@@ -22,7 +22,25 @@ width: 100%;
 .alertContentArea{
 width: 100%;
 }
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* 다른 요소 위에 표시되도록 설정 */
+    visibility: visible; /* 초기에는 숨겨진 상태 */
+}
 
+.custom-spinner {
+    width: 100px; /* 원하는 크기로 조정 */
+    height: 100px; /* 원하는 크기로 조정 */
+    animation: spin 2s linear infinite; /* 추가적인 애니메이션이 필요하다면 */
+}
 
 
 </style>
@@ -135,7 +153,7 @@ width: 100%;
 	    });
 	        // 다음 체크 주기 설정 (예: 5초)  // 일단 1분으로 해놈~~ 자꾸 떠서
 	        // 다 한 다음에 다음 알림 예약~
-	        setTimeout(checkForNotifications, 5000000);
+	        setTimeout(checkForNotifications, 60000);
 	    }
 
     // 페이지 로드 시 알림 체크 시작
@@ -177,8 +195,7 @@ width: 100%;
     	window.location.href = "${pageContext.request.contextPath}/logout";
     }
     
-    
-    
+
     
     </script>
 
@@ -247,10 +264,9 @@ width: 100%;
 			</div>
         </div>
         
-        
     </div>
-   
     </div>
+
 
 </body>
 </html>

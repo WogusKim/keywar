@@ -596,7 +596,7 @@ $(document).ready(function() {
 function addClickButtons() {
     const contextPath = '${pageContext.request.contextPath}';
 
-    $('#myEditor .image-tool__image').each(function () {
+    $('#myEditor .image-tool__image, #myEditor .cdx-simple-image__picture').each(function () {
         if (!$(this).next('.button-container').length) {
             var buttonContainer = $('<div/>', {
                 class: 'button-container'
