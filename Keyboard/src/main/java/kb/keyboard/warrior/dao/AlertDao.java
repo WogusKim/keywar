@@ -11,4 +11,5 @@ public interface AlertDao {
 	public void addWikiAlert(AlertDTO dto);
 	public void addCommentAlert(AlertDTO dto);
 	public void addLikeAlert(AlertDTO dto);
+	public List<AlertDTO> getRecentlyAlert(String userno);
 }
