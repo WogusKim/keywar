@@ -195,22 +195,7 @@ width: 100%;
     	window.location.href = "${pageContext.request.contextPath}/logout";
     }
     
- /*    
-    function showSpinner() {
-        document.getElementById('loading-spinner').style.visibility = 'visible';
-    }
 
-    function hideSpinner() {
-        document.getElementById('loading-spinner').style.visibility = 'hidden';
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        showSpinner(); // 페이지 로딩 시작 시 스피너 표시
-
-        window.onload = function() {
-            hideSpinner(); // 페이지의 모든 리소스가 로드되면 스피너 숨기기
-        };
-    }); */
     
     </script>
 
@@ -279,9 +264,7 @@ width: 100%;
 			</div>
         </div>
         
-        
     </div>
-   
     </div>
 
 

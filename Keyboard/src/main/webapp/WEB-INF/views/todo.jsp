@@ -577,8 +577,6 @@ function checkTodo(todoid, isChecked) {
         document.getElementById('todoDuedate-add').value = formattedDate;
     }
 
-    // 페이지 로드 시 현재 날짜를 설정합니다.
-    // window.onload = setTodayDate;
 </script>
 </body>
 </html>
