@@ -116,7 +116,7 @@
 	</update>
 
 	
-	<select id="getNewCopyId" resultType="Integer">
+	<select id="getNewCopyId" resultType="String">
 		SELECT MAX(id) FROM Menu WHERE userno = #{param} 
 	</select>
 
@@ -124,6 +124,10 @@
 	<select id="getData" resultType="String">
 		SELECT data from EditorData
 		where id = #{param}
+	</select>
+	<!-- 위키 공개여부 체크 -->
+	<select id="checkItIsopen" resultType="Integer">
+		select isopen from Menu where id= #{param1}
 	</select>
 
 	<!-- 위키디테일저장 -->

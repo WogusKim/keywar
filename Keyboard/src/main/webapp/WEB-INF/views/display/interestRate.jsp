@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>메인 페이지</title>
+<title>김국민의 업무노트 : 금리 상세 조회</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/display.css">
 <style>
@@ -66,10 +66,10 @@
         <%@ include file="/WEB-INF/views/sidebar.jsp"%>        
         <div class="content_right">
             <div class="board_currency">
-                <div class="board_currency_inner">
+                <div class="board_currency_inner" style="">
                     <h2 class="card_title">금리 조회</h2>
                     <hr>
-					<div class="interestRates" style="margin-top: 10px;">
+					<div class="interestRates" style="margin-top: 10px; ">
 						<div class="half_box" >
 							<h3>대출금리</h3>
 							<hr>
@@ -187,6 +187,7 @@
 							</table>
 							</div>
 						</div>
+						
 					</div>
                 </div>
             </div>

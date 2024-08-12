@@ -595,14 +595,14 @@ label {
 									</div>
 									<!-- 2, 3등 영역 -->
 									<div class="arrangeBox">
-									<div style="text-align: center;">
+									<div style="text-align: center; margin-left: 10px;">
 									<div class="box" id="profilepicture">
 			            				<img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[1].userno}" alt="Profile Picture">
 			            			</div>
 			            			2등 - ${bestWriter[1].nickname} <br>
 			            			좋아요 ${bestWriter[1].like_count}개
 			            			</div>
-			            			<div style="text-align: center;">
+			            			<div style="text-align: center; margin-right: 10px;">
 									<div class="box" id="profilepicture">
 			            				<img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[2].userno}" alt="Profile Picture">
 			            			</div>

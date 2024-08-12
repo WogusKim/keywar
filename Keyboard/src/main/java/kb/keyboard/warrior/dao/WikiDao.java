@@ -45,6 +45,7 @@ public interface WikiDao {
 	
 	//방금 추가한 메뉴 id 찾기
 	int getNewCopyId(String userno);
+	public Integer checkItIsopen(String idMenu);
 
 	//--------------------------------메뉴관련--------------------------------//
 	
