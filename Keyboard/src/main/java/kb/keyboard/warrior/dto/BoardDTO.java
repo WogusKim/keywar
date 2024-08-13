@@ -13,6 +13,7 @@ public class BoardDTO {
 	private int isOpen;
 	private int like_count;
 	private int comment_count;
+	private int note_count;
 	//프로필사진을 위해서 급조함 20240806
 	private String userno;
 	//조회수 관련 추가 20240806
@@ -107,6 +108,12 @@ public class BoardDTO {
 	}
 	public void setPicture(String picture) {
 		this.picture = picture;
+	}
+	public int getNote_count() {
+		return note_count;
+	}
+	public void setNote_count(int note_count) {
+		this.note_count = note_count;
 	}
 
 	

@@ -73,7 +73,7 @@ body{
     padding: 15px;
     height: 90%;
     border-radius: 10px;
-    background-color: var(--main-bgcolor);
+    background-color: #f0f0f0;
 }
 
 .half_box h3 { 

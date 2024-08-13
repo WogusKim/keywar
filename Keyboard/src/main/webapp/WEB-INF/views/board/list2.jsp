@@ -119,6 +119,20 @@ tr:last-child td {
 	background-color: #007BFF; /* 호버 또는 활성화 시 배경색 */
 	color: white; /* 호버 또는 활성화 시 텍스트 색상 */
 }
+.profilebox {
+    width: 130px;
+    height: 130px; 
+    border-radius: 70%;
+    overflow: hidden;
+}
+.profile-image {  
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.mini-icons{
+		margin-left: 15px;
+		}
 </style>
 </head>
 <body>
@@ -128,8 +142,30 @@ tr:last-child td {
 	<div class="content_outline">
 		<jsp:include page="/WEB-INF/views/sidebar.jsp" />
 		<div class="content_right">
+		<!-- 상단에 글 보는 사람 이름이랑 이런 거 뜨는 영역 -->
+		<div style="text-align: left; padding: 15px; display: flex;">
+		<!-- 사진 영역 -->
+		<div class="profilebox" style="background: #BDBDBD; margin-bottom: 20px; ">
+			<img class="profile-image" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${writer.profile}" alt="Profile Picture">
+		</div>
+		<!--  이름이랑 게시글 등을 보는 영역 -->
+		<div style="margin-left: 20px;">
+		<h1 style="margin-bottom: 5px;">${writer.nickname}</h1>
+		<span style="color: gray; font-size: small; margin: 0px; margin-left: 5px;">${writer.username}(${writer.userno})</span>
+	
+		<div style ="display: flex; margin-top: 10px; margin-left: 5px;" >
+		작성한 게시글 ${redord.note_count}개 
+		<img class="mini-icons" src="${pageContext.request.contextPath}/resources/images/heart16.png"> 좋아요 ${redord.like_count} 
+		<img class="mini-icons" src="${pageContext.request.contextPath}/resources/images/chat16.png"> 댓글 ${redord.comment_count} 
+		<img class="mini-icons" src="${pageContext.request.contextPath}/resources/images/eyes.png"> 조회수 ${redord.hits_count} 
+		
+		</div>
+		</div>
+		</div>
+		
+		
 			<div style="width: 100%; text-align: left;">
-				<b style="font-size: 25px;">Cool Tip 게시판</b>
+		
 			</div>
 			<hr>
 			<div style="width: 100%; height: 85%;">

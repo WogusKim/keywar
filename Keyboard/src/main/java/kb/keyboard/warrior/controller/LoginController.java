@@ -182,16 +182,7 @@ public class LoginController {
 			model.addAttribute("comment", list);
 		WikiDao wdao = sqlSession.getMapper(WikiDao.class);
 		List<BoardDTO> mypost = wdao.getMyPost(userno);
-		
-		//mypost에 조회수 데이터 넣어주기
-		for (BoardDTO bDto : mypost) {
-			Integer hits = wdao.getHitsById(bDto.getId());
-			if (hits != null) {
-				bDto.setHits_count(hits);
-			} else {
-				bDto.setHits_count(0);
-			}
-		}
+
 		
 		List<BoardDTO> likedpost = wdao.getLikedPost(userno);
 		int myLikeCount = 0;
