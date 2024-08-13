@@ -5,7 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>김국민의 업무노트 : 인기 노트</title>
+<title>김국민의 업무노트 : ${dto.username } 노트 모아보기</title>
+</head>
+<body>
 <link rel="icon"
 	href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
 <link rel="apple-touch-icon"
@@ -165,78 +167,5 @@ tr:last-child td {
 
 		</div>
 	</div>
-
-	<script>
-var dataList = [
-    <c:forEach var="item" items="${list}" varStatus="status">
-    {
-        management_number: "${item.management_number}",
-        id: ${item.id},
-        titleShare: "${item.titleShare}",
-        nickname: "${item.nickname}",
-        userno: "${item.userno}",
-        like_count: ${item.like_count},
-        hits_count: ${item.hits_count},
-        picture: "${item.picture}"
-    }${not status.last ? ',' : ''}
-    </c:forEach>
-];
-
-console.log(dataList);
-
-let currentPage = 1;
-const recordsPerPage = 10;
-
-function renderTable(page) {
-	
-	currentPage = page; // 현재 페이지 업데이트
-	
-    console.log(`Rendering page: ${page}`); // 현재 렌더링하는 페이지 번호를 로그로 확인
-    const start = (page - 1) * recordsPerPage;
-    const end = start + recordsPerPage;
-    const paginatedItems = dataList.slice(start, end);
-    console.log(`Items from ${start} to ${end}:`, paginatedItems); // 페이지에 표시될 아이템 범위 로그
-
-    let tableBody = document.getElementById("tableBody");
-    tableBody.innerHTML = ""; // Clear existing table rows.
-
-    paginatedItems.forEach(item => {
-        let row = `<tr>
-            <td>\${item.management_number}</td>
-            <td class="title_td"><a href="${pageContext.request.contextPath}/detailNote?id=\${item.id}" class="styled-link">\${item.titleShare}</a></td>
-            <td>
-                <div class="writer_td">
-                    <img class="profile-pic" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=\${item.picture}" />
-                    \${item.nickname} 
-                </div>
-            </td>
-            <td>\${item.like_count}</td>
-            <td>\${item.hits_count}</td>
-        </tr>`;
-        tableBody.innerHTML += row;
-    });
-    
-    setupPagination();
-}
-
-function setupPagination() {
-    const pageCount = Math.ceil(dataList.length / recordsPerPage);
-    let paginationHTML = '';
-    for (let i = 1; i <= pageCount; i++) {
-        paginationHTML += `<button class="\${i === currentPage ? 'active2' : ''}" onclick="renderTable(\${i})">\${i}</button>`;
-    }
-    document.getElementById('pagination').innerHTML = paginationHTML;
-}
-
-window.onload = function() {
-    renderTable(1);  // Render the first page
-    setupPagination();  // Setup pagination buttons
-};
-
-
-
-
-
-</script>
 </body>
 </html>

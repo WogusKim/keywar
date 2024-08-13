@@ -2,19 +2,20 @@ package kb.keyboard.warrior.dto;
 
 // UserDTO.java
 public class UserDTO {
-    private String userno;    // »ç¿ëÀÚ ¹øÈ£
-    private String username;  // ÀÌ¸§
-    private String userpw;    // ºñ¹Ğ¹øÈ£
-    private String deptno;    // ºÎ¼­ ¹øÈ£
-    private String teamno;    // ÆÀ ¹øÈ£
-    private String phoneno;   // ÀüÈ­ ¹øÈ£
-    private String mail;      // ÀÌ¸ŞÀÏ
-    private String hiredate;  // ÀÔ»çÀÏ
-    private String gender;    // ¼ºº°
-    private String birthdate; // »ı³â¿ùÀÏ
-    private String regdate;   // µî·ÏÀÏ
-    private String nickname;  // ´Ğ³×ÀÓ
-    private byte[] picture; //»çÁø
+    private String userno;    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£
+    private String username;  // ï¿½Ì¸ï¿½
+    private String userpw;    // ï¿½ï¿½Ğ¹ï¿½È£
+    private String deptno;    // ï¿½Î¼ï¿½ ï¿½ï¿½È£
+    private String teamno;    // ï¿½ï¿½ ï¿½ï¿½È£
+    private String phoneno;   // ï¿½ï¿½È­ ï¿½ï¿½È£
+    private String mail;      // ï¿½Ì¸ï¿½ï¿½ï¿½
+    private String hiredate;  // ï¿½Ô»ï¿½ï¿½ï¿½
+    private String gender;    // ï¿½ï¿½ï¿½ï¿½
+    private String birthdate; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private String regdate;   // ï¿½ï¿½ï¿½ï¿½ï¿½
+    private String nickname;  // ï¿½Ğ³ï¿½ï¿½ï¿½
+    private String profile;  // ë§ˆì´í˜ì´ì§€ í”„ë¡œí•„ ì‚¬ì§„ìš© ì¼ë‹¨ ëŒ€ì¶© ì¶”ê°€í–ˆìŒ
+    private byte[] picture; //ï¿½ï¿½ï¿½ï¿½
     
     public UserDTO() {
     }
@@ -143,6 +144,13 @@ public class UserDTO {
 
 	public void setPicture(byte[] picture) {
 		this.picture = picture;
+	}
+	public String getProfile() {
+		return profile;
+	}
+
+	public void setProfile(String profile) {
+		this.profile = profile;
 	}
     
     
