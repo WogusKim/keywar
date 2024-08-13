@@ -169,10 +169,10 @@ button[type="submit"]:hover {
 							required>
 						<button type="submit">검색</button>
 					</form>
-
-					<button class="sort-button" onclick="sortPosts('likes');">좋아요순</button>
-					<button class="sort-button" onclick="sortPosts('views');">조회수
-						순</button>
+					
+					<button class="sort-button" onclick="sortPosts('hits_count');">조회수 순</button>
+					<button class="sort-button" onclick="sortPosts('like_count');">좋아요 순</button>
+					<!-- css의 .sort-buttons button {float: right;} 때문에 버튼이 오른쪽부터 정렬됨 -->
 
 				</div>
 
@@ -203,8 +203,12 @@ button[type="submit"]:hover {
 
 		</div>
 	</div>
+	
+<script>
+    var contextPath = "${pageContext.request.contextPath}";
+</script>
 
-	<script>
+<script>
 var dataList = [
     <c:forEach var="item" items="${list}" varStatus="status">
     {
@@ -220,10 +224,20 @@ var dataList = [
     </c:forEach>
 ];
 
+console.log('datalist: ');
 console.log(dataList);
 
 let currentPage = 1;
 const recordsPerPage = 10;
+
+
+
+//페이지 로드 시 초기 테이블 렌더링
+document.addEventListener('DOMContentLoaded', function() {
+    renderTable(1);
+});
+
+
 
 function renderTable(page) {
 	
@@ -288,18 +302,20 @@ function renderFilteredTable(data) {
     tableBody.innerHTML = ""; // 기존 테이블 내용을 비웁니다.
 
     data.forEach(item => {
-        let row = `<tr>
-            <td>${item.management_number}</td>
-            <td class="title_td"><a href="${pageContext.request.contextPath}/detailNote?id=${item.id}" class="styled-link">${item.titleShare}</a></td>
-            <td>
-                <div class="writer_td">
-                    <img class="profile-pic" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${item.userno}" />
-                    ${item.nickname}
-                </div>
-            </td>
-            <td>${item.like_count}</td>
-            <td>${item.hits_count}</td>
-        </tr>`;
+
+        let row = '<tr>' +
+        '<td>' + (item.management_number || '') + '</td>' +
+        '<td class="title_td"><a href="' + (contextPath || '') + '/detailNote?id=' + (item.id || '') + '" class="styled-link">' + (item.titleShare || '') + '</a></td>' +
+        '<td>' +
+            '<div class="writer_td">' +
+                '<img class="profile-pic" src="' + (contextPath || '') + '/getUserProfilePicture2?userno=' + (item.userno || '') + '" />' +
+                (item.nickname || '') +
+            '</div>' +
+        '</td>' +
+        '<td>' + (item.like_count || 0) + '</td>' +
+        '<td>' + (item.hits_count || 0) + '</td>' +
+    	'</tr>';
+
         tableBody.innerHTML += row;
     });
 
@@ -309,6 +325,16 @@ function renderFilteredTable(data) {
     }
 }
 
+
+
+function sortPosts(criteria) {
+    if (criteria === 'hits_count') {
+        dataList.sort((a, b) => b.hits_count - a.hits_count);
+    } else if (criteria === 'like_count') {
+        dataList.sort((a, b) => b.like_count - a.like_count);
+    }
+    renderTable(1); // 정렬 후 첫 페이지를 보여줍니다.
+}
 
 </script>
 </body>
