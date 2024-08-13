@@ -307,10 +307,10 @@ function renderFilteredTable(data) {
         '<td>' + (item.management_number || '') + '</td>' +
         '<td class="title_td"><a href="' + (contextPath || '') + '/detailNote?id=' + (item.id || '') + '" class="styled-link">' + (item.titleShare || '') + '</a></td>' +
         '<td>' +
-            '<div class="writer_td">' +
-                '<a href="${pageContext.request.contextPath}/profile?userno=\${item.userno}" class="styled-link"><img class="profile-pic" src="' + (contextPath || '') + '/getUserProfilePicture2?userno=' + (item.userno || '') + '" /></a>' +
-                <a href="${pageContext.request.contextPath}/profile?userno=\${item.userno}" class="styled-link">(item.nickname || '') +
-            '</a></div>' +
+            '<div class="writer_td" onclick="goToProfile(\${item.userno})">' +
+                '<img class="profile-pic" src="' + (contextPath || '') + '/getUserProfilePicture2?userno=' + (item.userno || '') + '" />' +
+             '<a href="${pageContext.request.contextPath}/profile?userno=\${item.userno}" class="styled-link">'+ (item.nickname || '') +'</a>'+
+            '</div>' +
         '</td>' +
         '<td>' + (item.like_count || 0) + '</td>' +
         '<td>' + (item.hits_count || 0) + '</td>' +
@@ -335,7 +335,10 @@ function sortPosts(criteria) {
     }
     renderTable(1); // 정렬 후 첫 페이지를 보여줍니다.
 }
-
+function goToProfile(userno){
+	
+	
+}
 </script>
 </body>
 </html>
