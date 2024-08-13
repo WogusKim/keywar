@@ -44,6 +44,58 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<style>
+.best-posts-list ul {
+	list-style-type: none; /* 리스트 스타일 없음 */
+	padding-left: 5px; /* 왼쪽 패딩 */
+	padding-right: 5px; /* 왼쪽 패딩 */
+	margin-left: 0; /* 왼쪽 마진 없음 */
+}
+
+.best-posts-list li {
+    margin-bottom: 10px; /* 각 아이템 하단에 여백 추가 */
+    padding: 15px 15px 20px 15px; /* 위쪽 패딩을 줄이고, 아래쪽 패딩을 더해 제목을 위로 */
+    background-color: #ffffff; /* 배경색 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    /* 전환 효과 */
+    color: #333; /* 텍스트 색상 */
+    text-decoration: none; /* 밑줄 제거 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 박스 그림자 두껍게 */
+}
+
+.best-posts-list li:hover {
+    background-color: #f1f1f1; /* 마우스 오버 시 li 배경색 */
+    transform: translateY(-2px); /* 마우스 오버 시 살짝 위로 이동 */
+}
+
+.best-post-item a {
+    display: block; /* 블록 디스플레이로 전체 클릭 가능 */
+    height: 100%; /* li의 높이에 맞게 a 요소가 전체를 채우도록 */
+    color: inherit; /* 부모 요소의 텍스트 색상 상속 */
+    text-decoration: none; /* a 요소의 밑줄 제거 */
+}
+
+
+.best-post-item a:active {
+    background-color: #e9e9e9; /* 클릭 시 배경색 */
+    transform: translateY(0); /* 클릭 시 원래 위치로 */
+}
+
+.post-title {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 3px; /* 제목과 닉네임 사이에 여백 추가 */
+}
+
+.post-nickname {
+    float: right; /* 닉네임을 오른쪽으로 붙이기 */
+    font-size: small; /* 글씨 크기 작게 */
+    color: #888888; /* 글씨 색상 회색 */
+    vertical-align: middle; /* 텍스트 수직 정렬 */
+}
+
+</style>
 </head>
 <body>
 
@@ -584,62 +636,79 @@ label {
 					<div id="tab1" class="tab_content active">
 						<div class="tab_rank">
 							<div class="rankbox">
-								<h4 class="card_title">BEST 작성자</h4>
+								<h4 class="card_title">‍⭐BEST 작성자⭐</h4>
 								<hr>
 								<!-- 새로운 영역 시작 -->
-								<div style="background-image: url('${pageContext.request.contextPath}/resources/images/leaderboard.png'); background-size: cover; background-position: center top; padding: 10px; margin-top: 10px; height: 80%">
+								<div id="outt"
+									style="position: relative; background-image: url('${pageContext.request.contextPath}/resources/images/leaderboard.png'); background-size: cover; background-position: center top; width: 100%; height: 80%;">
+									<div id="crown"
+										style="position: absolute; top: -1%; left: 42%; text-align: center; width: 45px; height: 45px; background-image: url('${pageContext.request.contextPath}/resources/images/crown.png'); background-size: cover; background-position: center top; z-index: 999;"></div>
+
 
 									<!-- 1등 영역 -->
-									<div id="first" style="text-align: center;">
+									<div id="first"
+										style="position: absolute; top: 15%; left: 30%; text-align: center;">
 										<div class="box" id="profilepicture">
 											<img class="profile"
 												src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[0].userno}"
 												alt="Profile Picture">
 										</div>
-										${bestWriter[0].nickname} <br> <%-- 좋아요
+										<span style="font-weight: bold;">${bestWriter[0].nickname}</span>
+										<br>
+										<%-- 좋아요
 										${bestWriter[0].like_count}개 --%>
 									</div>
 									<!-- 2, 3등 영역 -->
 									<div class="arrangeBox">
-										<div id="second" style="text-align: center;">
+										<div id="second"
+											style="position: absolute; top: 25%; left: 10%; text-align: center;">
 											<div class="box" id="profilepicture">
 												<img class="profile"
 													src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[1].userno}"
 													alt="Profile Picture">
 											</div>
-											${bestWriter[1].nickname} <br><%--  좋아요
+											<span style="font-weight: bold;">${bestWriter[1].nickname}</span>
+											<br>
+											<%--  좋아요
 											${bestWriter[1].like_count}개 --%>
 										</div>
-										<div id="third" style="text-align: center;">
+										<div id="third"
+											style="position: absolute; top: 35%; left: 71%; text-align: center;">
 											<div class="box" id="profilepicture">
 												<img class="profile"
 													src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[2].userno}"
 													alt="Profile Picture">
 											</div>
-											${bestWriter[2].nickname} <br><%--  좋아요
+											<span style="font-weight: bold;">${bestWriter[2].nickname}</span>
+											<br>
+											<%--  좋아요
 											${bestWriter[2].like_count}개 --%>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="rankbox">
+							<div class="rankbox best-posts">
 								<div style="display: flex; justify-content: space-between;">
-									<h4 class="card_title">BEST 게시글</h4>
+									<h4 class="card_title">⭐BEST 게시글⭐</h4>
 									<a href="${pageContext.request.contextPath}/hotNote"
 										class="link-icon">바로가기</a>
 								</div>
 								<hr>
-								<div style="height: 80%; overflow-y: auto;">
-									<ul>
+								<div class="best-posts-list"
+									style="height: 80%; overflow-y: auto;">
+									<ul
+										style="list-style-type: none; padding-left: 10px; margin-left: 0;">
 										<c:forEach var="bestPost" items="${bestPost}">
-											<li><a class="aTag"
-												href="${pageContext.request.contextPath}/detailNote?id=${bestPost.id}">${bestPost.titleShare }
-													- ${bestPost.nickname }</a></li>
-
+											<li class="best-post-item"><a class="aTag"
+												href="${pageContext.request.contextPath}/detailNote?id=${bestPost.id}">
+													<span class="post-title">${bestPost.titleShare}</span><br/> <span
+													class="post-nickname">${bestPost.nickname}</span>
+											</a></li>
 										</c:forEach>
 									</ul>
 								</div>
 							</div>
+
 						</div>
 					</div>
 
