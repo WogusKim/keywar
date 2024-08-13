@@ -308,9 +308,9 @@ function renderFilteredTable(data) {
         '<td class="title_td"><a href="' + (contextPath || '') + '/detailNote?id=' + (item.id || '') + '" class="styled-link">' + (item.titleShare || '') + '</a></td>' +
         '<td>' +
             '<div class="writer_td">' +
-                '<img class="profile-pic" src="' + (contextPath || '') + '/getUserProfilePicture2?userno=' + (item.userno || '') + '" />' +
-                (item.nickname || '') +
-            '</div>' +
+                '<a href="${pageContext.request.contextPath}/profile?userno=\${item.userno}" class="styled-link"><img class="profile-pic" src="' + (contextPath || '') + '/getUserProfilePicture2?userno=' + (item.userno || '') + '" /></a>' +
+                <a href="${pageContext.request.contextPath}/profile?userno=\${item.userno}" class="styled-link">(item.nickname || '') +
+            '</a></div>' +
         '</td>' +
         '<td>' + (item.like_count || 0) + '</td>' +
         '<td>' + (item.hits_count || 0) + '</td>' +
