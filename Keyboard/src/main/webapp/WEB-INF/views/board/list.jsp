@@ -224,9 +224,6 @@ var dataList = [
     </c:forEach>
 ];
 
-console.log('datalist: ');
-console.log(dataList);
-
 let currentPage = 1;
 const recordsPerPage = 10;
 
