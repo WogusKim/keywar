@@ -83,8 +83,8 @@
 
 .menu_setting {
     position: absolute; /* 절대 위치 */
-    bottom: 10px; /* 하단에 고정 */
-    right: 10px; /* 우측에 고정 */
+    bottom: 20px; /* 하단에 고정 */
+    right: 15px; /* 우측에 고정 */
     background-color: #97838330; /* 반투명 배경 */
     border-radius: 5px;
     width: 75px; /* 부모 컨테이너의 전체 너비 */
