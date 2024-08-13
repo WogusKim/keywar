@@ -22,14 +22,14 @@ table {
 }
 
 td {
-	height: 50px;
+	height: 40px;
 	padding: 7px 15px; /* 셀 패딩 */
 	text-align: center; /* 텍스트 왼쪽 정렬 */
 	border-bottom: 1px solid #ddd; /* 하단 경계선 */
 }
 
 th {
-	height: 50px;
+	height: 40px;
 	padding: 7px 15px; /* 셀 패딩 */
 	text-align: center; /* 텍스트 중앙 정렬 */
 	border-bottom: 1px solid #ddd; /* 하단 경계선 */
@@ -66,8 +66,8 @@ tr:last-child td {
 }
 
 .profile-pic {
-	width: 40px; /* 이미지 너비 설정 */
-	height: 40px; /* 이미지 높이 설정 */
+	width: 30px; /* 이미지 너비 설정 */
+	height: 30px; /* 이미지 높이 설정 */
 	border-radius: 50%; /* 이미지를 원형으로 만들기 */
 	object-fit: cover; /* 이미지 비율 유지하면서 요소에 맞추기 */
 	border: 2px solid #f4f4f4; /* 이미지 주변에 테두리 추가 */
@@ -168,7 +168,7 @@ tr:last-child td {
 		
 			</div>
 			<hr>
-			<div style="width: 100%; height: 85%;">
+			<div style="width: 100%; height: 65%;">
 				<div class="sort-buttons">
 					<button class="sort-button" onclick="sortPosts('likes');">좋아요순</button>
 					<button class="sort-button" onclick="sortPosts('views');">조회수순</button>
@@ -203,5 +203,138 @@ tr:last-child td {
 
 		</div>
 	</div>
+<script>
+    var contextPath = "${pageContext.request.contextPath}";
+</script>
+
+<script>
+var dataList = [
+    <c:forEach var="item" items="${list}" varStatus="status">
+    {
+        management_number: "${item.management_number}",
+        id: ${item.id},
+        titleShare: "${item.titleShare}",
+        nickname: "${item.nickname}",
+        userno: "${item.userno}",
+        like_count: ${item.like_count},
+        hits_count: ${item.hits_count},
+        picture: "${item.picture}"
+    }${not status.last ? ',' : ''}
+    </c:forEach>
+];
+
+console.log('datalist: ');
+console.log(dataList);
+
+let currentPage = 1;
+const recordsPerPage = 10;
+
+
+
+//페이지 로드 시 초기 테이블 렌더링
+document.addEventListener('DOMContentLoaded', function() {
+    renderTable(1);
+});
+
+
+
+function renderTable(page) {
+	
+	currentPage = page; // 현재 페이지 업데이트
+	
+    console.log(`Rendering page: ${page}`); // 현재 렌더링하는 페이지 번호를 로그로 확인
+    const start = (page - 1) * recordsPerPage;
+    const end = start + recordsPerPage;
+    const paginatedItems = dataList.slice(start, end);
+    console.log(`Items from ${start} to ${end}:`, paginatedItems); // 페이지에 표시될 아이템 범위 로그
+
+    let tableBody = document.getElementById("tableBody");
+    tableBody.innerHTML = ""; // Clear existing table rows.
+
+    paginatedItems.forEach(item => {
+        let row = `<tr>
+            <td>\${item.management_number}</td>
+            <td class="title_td"><a href="${pageContext.request.contextPath}/detailNote?id=\${item.id}" class="styled-link">\${item.titleShare}</a></td>
+            <td>
+                <div class="writer_td">
+                    <img class="profile-pic" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=\${item.picture}" />
+                    \${item.nickname} 
+                </div>
+            </td>
+            <td>\${item.like_count}</td>
+            <td>\${item.hits_count}</td>
+        </tr>`;
+        tableBody.innerHTML += row;
+    });
+    
+    setupPagination();
+}
+
+function setupPagination() {
+    const pageCount = Math.ceil(dataList.length / recordsPerPage);
+    let paginationHTML = '';
+    for (let i = 1; i <= pageCount; i++) {
+        paginationHTML += `<button class="\${i === currentPage ? 'active2' : ''}" onclick="renderTable(\${i})">\${i}</button>`;
+    }
+    document.getElementById('pagination').innerHTML = paginationHTML;
+}
+
+window.onload = function() {
+    renderTable(1);  // Render the first page
+    setupPagination();  // Setup pagination buttons
+};
+
+
+
+
+function searchPosts(e) {
+    e.preventDefault(); // 폼 제출 방지
+    const searchText = document.getElementById('searchInput').value.toLowerCase();
+
+    // dataList는 페이지 로딩 시 전체 데이터를 가지고 있어야 합니다.
+    const filteredData = dataList.filter(item => item.titleShare.toLowerCase().includes(searchText));
+    renderFilteredTable(filteredData);
+}
+
+function renderFilteredTable(data) {
+    let tableBody = document.getElementById("tableBody");
+    tableBody.innerHTML = ""; // 기존 테이블 내용을 비웁니다.
+
+    data.forEach(item => {
+
+        let row = '<tr>' +
+        '<td>' + (item.management_number || '') + '</td>' +
+        '<td class="title_td"><a href="' + (contextPath || '') + '/detailNote?id=' + (item.id || '') + '" class="styled-link">' + (item.titleShare || '') + '</a></td>' +
+        '<td>' +
+            '<div class="writer_td">' +
+                '<img class="profile-pic" src="' + (contextPath || '') + '/getUserProfilePicture2?userno=' + (item.userno || '') + '" />' +
+                (item.nickname || '') +
+            '</div>' +
+        '</td>' +
+        '<td>' + (item.like_count || 0) + '</td>' +
+        '<td>' + (item.hits_count || 0) + '</td>' +
+    	'</tr>';
+
+        tableBody.innerHTML += row;
+    });
+
+    // 필터링된 데이터가 없을 경우 메시지 출력
+    if (data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="5">검색 결과가 없습니다.</td></tr>';
+    }
+}
+
+
+
+function sortPosts(criteria) {
+    if (criteria === 'hits_count') {
+        dataList.sort((a, b) => b.hits_count - a.hits_count);
+    } else if (criteria === 'like_count') {
+        dataList.sort((a, b) => b.like_count - a.like_count);
+    }
+    renderTable(1); // 정렬 후 첫 페이지를 보여줍니다.
+}
+
+</script>
 </body>
 </html>
