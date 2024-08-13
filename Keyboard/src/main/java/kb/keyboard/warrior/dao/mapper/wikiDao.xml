@@ -188,11 +188,8 @@
 		resultType="kb.keyboard.warrior.dto.BoardDTO">
 
   SELECT
-    ROW_NUMBER() OVER (
-              ORDER BY like_count DESC,
-              comment_count DESC
-    ) AS management_number, -- 관리번호
-		e.id, -- 테이블상 실제글번호
+    ROW_NUMBER() OVER (ORDER BY like_count DESC, comment_count DESC) AS management_number, -- 관리번호
+    e.id, -- 테이블상 실제글번호
     m.title, -- 개인 메뉴리스트용 글제목
     m.titleShare, -- 다른사람들이 공유하는 제목
     m.userno, -- 작성자 사번
@@ -206,55 +203,32 @@
         ELSE '1234567'
 		END AS picture, -- null이면 기본사진
     COALESCE(wh.hits, 0) AS hits_count, -- 조회수
-		COALESCE(l.like_count, 0) AS like_count, -- 좋아요수
-		COALESCE(c.comment_count, 0) AS comment_count -- 댓글수
+	COALESCE(l.like_count, 0) AS like_count, -- 좋아요수
+	COALESCE(c.comment_count, 0) AS comment_count -- 댓글수
   from
 		EditorData e
-		join Menu m 
+  join Menu m 
       on e.id = m.id
-		join user u 
+  join user u 
       on m.userno = u.userno
-    join WikiHits wh 
+  join WikiHits wh 
       on m.id = wh.wikiId
-		left outer join ( 
-      SELECT 
-        targetid, COUNT(*) AS like_count
-		  FROM
-			EditorData e
-		JOIN Menu m 
-			ON e.id = m.id
-		JOIN user u 
-			ON m.userno = u.userno
-		JOIN WikiHits wh 
-			ON m.id = wh.wikiId
-		LEFT OUTER JOIN (
-			SELECT
-				targetid,
-				COUNT(*) AS like_count
-			FROM
-				liketable
-			GROUP BY
-				targetid
-				) l
-			ON e.id = l.targetid
-		LEFT OUTER JOIN (
-			SELECT
-				targetid,
-				count(*) AS
-				comment_count
-			FROM
-				comment
-			WHERE
-				commentstatus = 1
-			GROUP BY
-				targetid
-				) c
-			ON c.targetid = e.id
-		WHERE
-			m.isOpen = 1
-		ORDER BY
-			like_count DESC,
-			comment_count DESC;
+  left outer join ( 
+      SELECT targetid, COUNT(*) AS like_count
+			FROM liketable
+			GROUP BY targetid ) l
+		ON e.id = l.targetid
+	  LEFT OUTER JOIN (
+			SELECT targetid, count(*) AS comment_count
+			FROM comment
+			WHERE commentstatus = 1
+			GROUP BY targetid ) c
+		ON c.targetid = e.id
+	  WHERE
+		m.isOpen = 1
+	  ORDER BY
+		like_count DESC,
+		comment_count DESC;
 	</select>
 
 	<select id="getMyPost"
