@@ -165,34 +165,60 @@
 	<select id="getAllPost"
 		resultType="kb.keyboard.warrior.dto.BoardDTO">
 		SELECT
-		ROW_NUMBER() OVER (order by like_count desc, comment_count desc) AS
-		management_number,
-		e.id, m.title,m.titleShare, m.userno , u.nickname,
-		u.username, e.data, m.isOpen, 
-        COALESCE(wh.hits, 0) AS hits_count,
-		COALESCE(l.like_count, 0) AS like_count,
-		COALESCE(c.comment_count, 0) AS comment_count
-		from
-		EditorData e
-		join Menu m on e.id = m.id
-		join user u on m.userno =
-		u.userno
-        join WikiHits wh on m.id = wh.wikiId
-		left outer join ( SELECT targetid, COUNT(*) AS like_count
+				ROW_NUMBER() OVER (
+					ORDER BY like_count DESC,
+					comment_count DESC) AS 
+			management_number, -- 관리번호
+			e.id, -- 테이블상 실제글번호
+			m.title, -- 개인 메뉴리스트용 글제목
+			m.titleShare, -- 다른사람들이 공유하는 제목
+			m.userno, -- 작성자 사번
+			u.nickname, -- 작성자 닉네임
+			u.username, -- 작성자 이름
+			e.data, -- 글내용
+			m.isOpen, -- 공개여부 (어차피 1로 필터링해서 없어도됨) 
+				COALESCE(wh.hits, 0) AS 
+			hits_count, -- 조회수
+				COALESCE(l.like_count, 0) AS 
+			like_count, -- 좋아요수
+				COALESCE(c.comment_count, 0) AS 
+			comment_count -- 댓글수
 		FROM
-		liketable
-		GROUP BY targetid
-		) l
-		on e.id = l.targetid
-		left outer join (select targetid, count(*) as
-		comment_count
-		from comment
-		where commentstatus = 1
-		group by targetid) c
-		on c.targetid = e.id
-		where m.isOpen = 1
-		order by like_count desc,
-		comment_count desc;
+			EditorData e
+		JOIN Menu m 
+			ON e.id = m.id
+		JOIN user u 
+			ON m.userno = u.userno
+		JOIN WikiHits wh 
+			ON m.id = wh.wikiId
+		LEFT OUTER JOIN (
+			SELECT
+				targetid,
+				COUNT(*) AS like_count
+			FROM
+				liketable
+			GROUP BY
+				targetid
+				) l
+			ON e.id = l.targetid
+		LEFT OUTER JOIN (
+			SELECT
+				targetid,
+				count(*) AS
+				comment_count
+			FROM
+				comment
+			WHERE
+				commentstatus = 1
+			GROUP BY
+				targetid
+				) c
+			ON c.targetid = e.id
+		WHERE
+			m.isOpen = 1
+		ORDER BY
+			like_count DESC,
+			comment_count DESC;
 	</select>
 
 	<select id="getMyPost"
