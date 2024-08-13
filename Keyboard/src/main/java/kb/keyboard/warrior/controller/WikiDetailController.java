@@ -42,8 +42,9 @@ public class WikiDetailController {
 	public String wikiDetail(Model model, @RequestParam("id") int id, HttpSession session) {
 
 		WikiDao dao = sqlSession.getMapper(WikiDao.class);
-		
-		if(!dao.getMenuDetail(id).getUserno().equals(id+"")) {
+		System.out.println("선택한 메뉴트리 작성자 유저넘버"+dao.getMenuDetail(id).getUserno());
+		String userno = (String)session.getAttribute("userno");
+		if(!dao.getMenuDetail(id).getUserno().equals(userno)) {
 			System.out.println("작성자가 아닌 잘못된 접근입니다.");
 			return "redirect:main";
 		}

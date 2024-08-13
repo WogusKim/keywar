@@ -7,6 +7,7 @@ public class BoardDTO {
 	private String titleShare;
 	private String username;
 	private String nickname;
+	private String category;
 	private int id;
 	private int isOpen;
 	private int like_count;
@@ -93,6 +94,12 @@ public class BoardDTO {
 	}
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	
