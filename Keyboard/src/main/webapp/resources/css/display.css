@@ -1,5 +1,5 @@
 :root {
-    --main-bgcolor: #BDE2CE; /* º¯¼ö ¼±¾ð */
+    --main-bgcolor: #BDE2CE; /* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 }
 
 @font-face {
@@ -21,14 +21,14 @@ body{
     margin: 0; 
 }
 
-/* È¯À² */
+/* È¯ï¿½ï¿½ */
 .board_currency {
     border-radius: 10px;
     background-color: var(--main-bgcolor);
     display: flex;
-    flex-direction: column;         /* ¼¼·Î ¹æÇâ Á¤·Ä ¼³Á¤ */
-    justify-content: flex-start;    /* Ç×¸ñµéÀ» »ó´ÜÀÇ ½ÃÀÛÁ¡¿¡ Á¤·Ä */
-    align-items: center;            /* Ç×¸ñµéÀ» ¼öÆò Áß¾Ó¿¡ Á¤·Ä */
+    flex-direction: column;         /* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+    justify-content: flex-start;    /* ï¿½×¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+    align-items: center;            /* ï¿½×¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß¾Ó¿ï¿½ ï¿½ï¿½ï¿½ï¿½ */
     width: 100%;
     height:  100%;
     padding: 18px;
@@ -58,77 +58,77 @@ body{
     text-align: center; /* Center align text within each cell */
     border-bottom: 1px solid #f0f0f0; /* Light grey border for subtle lines */
 }
-/* ±Ý¸® */
+/* ï¿½Ý¸ï¿½ */
 
-/* ÁÖ½Ä */
+/* ï¿½Ö½ï¿½ */
 .interestRates {
     display: flex;
-    justify-content: space-between; /* Ç×¸ñµéÀ» ¾çÂÊ ³¡¿¡ Á¤·Ä */
+    justify-content: space-between; /* ï¿½×¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
     height: 100%;
 }
 
 .half_box {
-    flex: 1; /* °¢ ¹Ú½º°¡ µ¿ÀÏÇÑ ºñÀ²·Î °ø°£À» Â÷ÁöÇÏµµ·Ï ¼³Á¤ */
-    margin: 0 10px; /* °¢ ¹Ú½º »çÀÌÀÇ ¿©¹é */
+    flex: 1; /* ï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+    margin: 0 10px; /* ï¿½ï¿½ ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
     padding: 15px;
     height: 90%;
     border-radius: 10px;
-    background-color: #f0f0f0;
+    background-color: var(--main-bgcolor);
 }
 
 .half_box h3 { 
-    font-size: 20px; /* ±Û¾¾ Å©±â: Á¦¸ñ Å©±â */
-    color: gray; /* ±Û¾¾ »ö»ó: È¸»ö */
+    font-size: 20px; /* ï¿½Û¾ï¿½ Å©ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ */
+    color: gray; /* ï¿½Û¾ï¿½ ï¿½ï¿½ï¿½ï¿½: È¸ï¿½ï¿½ */
     margin-top: 5px;
-    margin-bottom: 10px; /* ±Û¾¾ ¿©¹é: Á¦¸ñ À§¾Æ·¡ */
+    margin-bottom: 10px; /* ï¿½Û¾ï¿½ ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Æ·ï¿½ */
 }
 
 
-/* ÁÖ½Ä */
+/* ï¿½Ö½ï¿½ */
 
-/* °¢ ÅÇÀÇ ¹è°æ»ö°ú Á¤·Ä ¼³Á¤ */
+/* ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 .stock_tab_area {
     display: flex;
     justify-content: space-between;
-    background-color: var(--main-bgcolor); /* ¿¬ÇÑ È¸»ö ¹è°æ */
+    background-color: var(--main-bgcolor); /* ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ */
     padding: 10px 80px 10px 80px;
     border-radius: 10px;
 }
 
-/* ÁÖ½Ä °¢ ÅÇÀÇ ¹è°æ »ö»ó */
+/* ï¿½Ö½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 .stock_tab {
     cursor: pointer;
     padding: 10px;
     font-weight: bold;
-    background-color: var(--main-bgcolor); /* ÁÖ½Ä ÅÇ ¹è°æ»ö */
-    border-radius: 5px; /* ÁÖ½Ä ÅÇ ¸ð¼­¸® µÕ±Û°Ô */
-    margin-right: 5px; /* °¢ ÅÇ »çÀÌÀÇ ¿©¹é */
-    transition: background-color 0.3s ease; /* ¹è°æ»ö ÀüÈ¯ ¾Ö´Ï¸ÞÀÌ¼Ç */
+    background-color: var(--main-bgcolor); /* ï¿½Ö½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+    border-radius: 5px; /* ï¿½Ö½ï¿½ ï¿½ï¿½ ï¿½ð¼­¸ï¿½ ï¿½Õ±Û°ï¿½ */
+    margin-right: 5px; /* ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+    transition: background-color 0.3s ease; /* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ */
 }
 
 
-/* ¸¶Áö¸· ÅÇÀÇ ¿©¹é Á¦°Å */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 .stock_tab:last-child {
     margin-right: 0;
 }
 
-/* È°¼ºÈ­µÈ ÁÖ½Ä ÅÇ ¹è°æ »ö»ó */
+/* È°ï¿½ï¿½È­ï¿½ï¿½ ï¿½Ö½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 .stock_tab.active {
-    background-color: white; /* È°¼ºÈ­µÈ ÅÇ ¹è°æ»ö */
-    color: blue; /* È°¼ºÈ­µÈ ÅÇ ±Û¾¾ »ö»ó */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* ±×¸²ÀÚ È¿°ú */
+    background-color: white; /* È°ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+    color: blue; /* È°ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ ï¿½Û¾ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* ï¿½×¸ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ */
 }
 
-/* ÁÖ½Ä ÅÇ ³»¿ë ¼û±â±â */
+/* ï¿½Ö½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ */
 .stock_tab_content {
-    display: none; /* ³»¿ë ¼û±â±â */
+    display: none; /* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ */
     background-color: white;
     height: 84%;
     padding: 10px 0px 10px 0px;
     border-radius: 0 0 10px 10px;
 }
 
-/* È°¼ºÈ­µÈ ÁÖ½Ä ÅÇ ³»¿ë Ç¥½Ã */
+/* È°ï¿½ï¿½È­ï¿½ï¿½ ï¿½Ö½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ */
 .active {
     display: block;
 }

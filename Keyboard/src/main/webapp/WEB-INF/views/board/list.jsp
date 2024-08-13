@@ -148,6 +148,7 @@ button[type="submit"]:hover {
 	background-color: #007BFF; /* 호버 또는 활성화 시 배경색 */
 	color: white; /* 호버 또는 활성화 시 텍스트 색상 */
 }
+
 </style>
 </head>
 <body>
@@ -217,7 +218,8 @@ var dataList = [
         nickname: "${item.nickname}",
         userno: "${item.userno}",
         like_count: ${item.like_count},
-        hits_count: ${item.hits_count}
+        hits_count: ${item.hits_count},
+        picture: "${item.picture}"
     }${not status.last ? ',' : ''}
     </c:forEach>
 ];
@@ -256,8 +258,8 @@ function renderTable(page) {
             <td class="title_td"><a href="${pageContext.request.contextPath}/detailNote?id=\${item.id}" class="styled-link">\${item.titleShare}</a></td>
             <td>
                 <div class="writer_td">
-                    <img class="profile-pic" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=\${item.userno}" />
-                    \${item.nickname}
+                    <img class="profile-pic" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=\${item.picture}" />
+                    \${item.nickname} 
                 </div>
             </td>
             <td>\${item.like_count}</td>
@@ -335,7 +337,5 @@ function sortPosts(criteria) {
 }
 
 </script>
-
-
 </body>
 </html>

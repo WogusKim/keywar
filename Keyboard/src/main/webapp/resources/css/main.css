@@ -44,6 +44,10 @@ body{
     margin: 0; 
 }
 
+.mgt-5 {
+	margin-top: 5px;
+}
+
 .header_outline{
     background-color : white;
     border-radius: 10px;
@@ -94,7 +98,7 @@ body{
     border-radius: 10px;
     background-color: white;
     padding: 20px 5px;
-    width: 30%;
+    width: 25%;
     height: 100%;
     margin-right: 15px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);

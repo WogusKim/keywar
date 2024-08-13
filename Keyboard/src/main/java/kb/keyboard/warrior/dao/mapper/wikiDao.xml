@@ -22,7 +22,7 @@
 	<!-- 메뉴추가 메서드 4종류 -->
 	<insert id="insertMenuNoParentsItem">
 		INSERT INTO Menu (title, titleShare, link, menuType,
-		menu_order, userno, isOpen)
+		menu_order, userno, isOpen, category)
 		VALUES (
 		#{param1},
 		#{param2},
@@ -30,7 +30,8 @@
 		#{param4},
 		#{param5},
 		#{param6},
-		#{param7}
+		#{param7},
+		#{param8}
 		);
 	</insert>
 
@@ -49,7 +50,22 @@
 
 	<insert id="insertMenuHaveParentsItem">
 		INSERT INTO Menu (parent_id, title, titleShare, link,
-		menuType, menu_order, userno, isOpen)
+		menuType, menu_order, userno, isOpen, category)
+		VALUES (
+		#{param1},
+		#{param2},
+		#{param3},
+		#{param4},
+		#{param5},
+		#{param6},
+		#{param7},
+		#{param8},
+		#{param9}
+		);
+	</insert>
+
+	<insert id="insertMenuHaveParentsFolder">
+		INSERT INTO Menu (parent_id, title, titleShare, menuType, menu_order, userno, isOpen, category)
 		VALUES (
 		#{param1},
 		#{param2},
@@ -59,20 +75,6 @@
 		#{param6},
 		#{param7},
 		#{param8}
-		);
-	</insert>
-
-	<insert id="insertMenuHaveParentsFolder">
-		INSERT INTO Menu (parent_id, title, titleShare,
-		menuType, menu_order, userno, isOpen)
-		VALUES (
-		#{param1},
-		#{param2},
-		#{param3},
-		#{param4},
-		#{param5},
-		#{param6},
-		#{param7}
 		);
 	</insert>
 
@@ -98,15 +100,14 @@
 
 	<update id="changeMenuNoShare">
 		UPDATE Menu
-		SET title = #{param1}, titleShare = NULL
-		where id = #{param2}
+		SET title = #{param1}, titleShare = NULL, category = #{param2}
+		where id = #{param3}
 	</update>
 
 	<update id="changeMenuYesShare">
 		UPDATE Menu
-		SET title = #{param1}, titleShare =
-		#{param2}
-		where id = #{param3}
+		SET title = #{param1}, titleShare = #{param2}, category = #{param3}
+		where id = #{param4}
 	</update>
 
 	<update id="changeIsOpen">
@@ -115,7 +116,7 @@
 	</update>
 
 	
-	<select id="getNewCopyId" resultType="Integer">
+	<select id="getNewCopyId" resultType="String">
 		SELECT MAX(id) FROM Menu WHERE userno = #{param} 
 	</select>
 
@@ -123,6 +124,10 @@
 	<select id="getData" resultType="String">
 		SELECT data from EditorData
 		where id = #{param}
+	</select>
+	<!-- 위키 공개여부 체크 -->
+	<select id="checkItIsopen" resultType="Integer">
+		select isopen from Menu where id= #{param1}
 	</select>
 
 	<!-- 위키디테일저장 -->
@@ -164,26 +169,40 @@
 	<!-- 게시글 관련 메소드들 -->
 	<select id="getAllPost"
 		resultType="kb.keyboard.warrior.dto.BoardDTO">
-		SELECT
-				ROW_NUMBER() OVER (
-					ORDER BY like_count DESC,
-					comment_count DESC) AS 
-			management_number, -- 관리번호
-			e.id, -- 테이블상 실제글번호
-			m.title, -- 개인 메뉴리스트용 글제목
-			m.titleShare, -- 다른사람들이 공유하는 제목
-			m.userno, -- 작성자 사번
-			u.nickname, -- 작성자 닉네임
-			u.username, -- 작성자 이름
-			e.data, -- 글내용
-			m.isOpen, -- 공개여부 (어차피 1로 필터링해서 없어도됨) 
-				COALESCE(wh.hits, 0) AS 
-			hits_count, -- 조회수
-				COALESCE(l.like_count, 0) AS 
-			like_count, -- 좋아요수
-				COALESCE(c.comment_count, 0) AS 
-			comment_count -- 댓글수
-		FROM
+
+  SELECT
+    ROW_NUMBER() OVER (
+              ORDER BY like_count DESC,
+              comment_count DESC
+    ) AS management_number, -- 관리번호
+		e.id, -- 테이블상 실제글번호
+    m.title, -- 개인 메뉴리스트용 글제목
+    m.titleShare, -- 다른사람들이 공유하는 제목
+    m.userno, -- 작성자 사번
+    u.nickname, -- 작성자 닉네임
+    m.category, -- 카테고리
+    u.username, -- 작성자 이름
+    e.data, -- 글내용
+    m.isOpen, -- 공개여부 (어차피 1로 필터링해서 없어도됨) 
+    CASE 
+        WHEN u.picture IS NOT NULL THEN u.userno 
+        ELSE '1234567'
+		END AS picture, -- null이면 기본사진
+    COALESCE(wh.hits, 0) AS hits_count, -- 조회수
+		COALESCE(l.like_count, 0) AS like_count, -- 좋아요수
+		COALESCE(c.comment_count, 0) AS comment_count -- 댓글수
+  from
+		EditorData e
+		join Menu m 
+      on e.id = m.id
+		join user u 
+      on m.userno = u.userno
+    join WikiHits wh 
+      on m.id = wh.wikiId
+		left outer join ( 
+      SELECT 
+        targetid, COUNT(*) AS like_count
+		  FROM
 			EditorData e
 		JOIN Menu m 
 			ON e.id = m.id

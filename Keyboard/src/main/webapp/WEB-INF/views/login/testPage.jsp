@@ -17,17 +17,7 @@
 <div class="content_outline">
 	<%@ include file="/WEB-INF/views/sidebar.jsp" %>
 	<div class="content_right">
-		
- <h1>Real-time Notifications</h1>
-
-
-    <script>
-    
-
-   
-    
-    
-    </script>
+ 
 	</div>
 </div>   
 </body>

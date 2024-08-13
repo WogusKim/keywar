@@ -363,7 +363,7 @@ label {
 						<div class="todo_list" style="height: 85%;">
 							<c:choose>
 								<c:when test="${empty todoList}">
-									<div class="mainTodoNotFountOutline" style="overflow-y : auto;">
+									<div class="mainTodoNotFountOutline" style="overflow-y: auto;">
 										<div
 											style="width: 50%; height: 0; padding-bottom: 50%; position: relative;">
 											<iframe src="https://giphy.com/embed/SkJRWt1Mo9CSlgrHcE"
@@ -416,7 +416,7 @@ label {
 					<div class="board_inner_inner">
 						<div class="card_top">
 							<div class="title_and_link">
-								<h2 class="card_title No-line-break">My Memo</h2>
+								<h2 class="card_title No-line-break">Memo</h2>
 								<a href="${pageContext.request.contextPath}/memo"
 									class="link-icon">바로가기</a>
 							</div>
@@ -557,59 +557,70 @@ label {
 					<!--  탭3 끝 -->
 
 				</div>
-<style>
+				<style>
 .box {
-    width: 60px;
-    height: 60px; 
-    border-radius: 70%;
-    overflow: hidden;
-    margin: auto;
+	width: 45px;
+	height: 45px;
+	border-radius: 70%;
+	overflow: hidden;
+	margin: auto;
 }
 /* mypage profile image */
-.profile {  
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.profile {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 </style>
-				
+
 				<div class="board_inner3">
 					<!-- 탭(선택영역) -->
 					<div class="tab_area">
-						<span class="tab No-line-break" data-tab="tab1">랭킹</span> <span class="tab No-line-break"
-							data-tab="tab2">댓글/좋아요</span> 
+						<span class="tab No-line-break" data-tab="tab1">랭킹</span> <span
+							class="tab No-line-break" data-tab="tab2">댓글/좋아요</span>
 					</div>
 					<!-- 선택된 영역에 따라 노출되는 컨텐츠 영역 -->
 					<!-- tab 1 -->
 					<div id="tab1" class="tab_content active">
 						<div class="tab_rank">
 							<div class="rankbox">
-								<h4 class="card_title">BEST 저자</h4>
+								<h4 class="card_title">BEST 작성자</h4>
 								<hr>
+								<!-- 새로운 영역 시작 -->
+								<div style="background-image: url('${pageContext.request.contextPath}/resources/images/leaderboard.png'); background-size: cover; background-position: center top; padding: 10px; margin-top: 10px; height: 80%">
+
 									<!-- 1등 영역 -->
-									<div style="text-align: center;">
-									<div class="box" id="profilepicture">
-			            				<img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[0].userno}" alt="Profile Picture">
-			            			</div>1등 -  ${bestWriter[0].nickname} <br>
-			            			좋아요 ${bestWriter[0].like_count}개
+									<div id="first" style="text-align: center;">
+										<div class="box" id="profilepicture">
+											<img class="profile"
+												src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[0].userno}"
+												alt="Profile Picture">
+										</div>
+										${bestWriter[0].nickname} <br> <%-- 좋아요
+										${bestWriter[0].like_count}개 --%>
 									</div>
 									<!-- 2, 3등 영역 -->
 									<div class="arrangeBox">
-									<div style="text-align: center;">
-									<div class="box" id="profilepicture">
-			            				<img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[1].userno}" alt="Profile Picture">
-			            			</div>
-			            			2등 - ${bestWriter[1].nickname} <br>
-			            			좋아요 ${bestWriter[1].like_count}개
-			            			</div>
-			            			<div style="text-align: center;">
-									<div class="box" id="profilepicture">
-			            				<img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[2].userno}" alt="Profile Picture">
-			            			</div>
-			            			3등 - ${bestWriter[2].nickname} <br>
-			            			좋아요 ${bestWriter[2].like_count}개
-			            			</div>
+										<div id="second" style="text-align: center;">
+											<div class="box" id="profilepicture">
+												<img class="profile"
+													src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[1].userno}"
+													alt="Profile Picture">
+											</div>
+											${bestWriter[1].nickname} <br><%--  좋아요
+											${bestWriter[1].like_count}개 --%>
+										</div>
+										<div id="third" style="text-align: center;">
+											<div class="box" id="profilepicture">
+												<img class="profile"
+													src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[2].userno}"
+													alt="Profile Picture">
+											</div>
+											${bestWriter[2].nickname} <br><%--  좋아요
+											${bestWriter[2].like_count}개 --%>
+										</div>
 									</div>
+								</div>
 							</div>
 							<div class="rankbox">
 								<div style="display: flex; justify-content: space-between;">
@@ -618,20 +629,20 @@ label {
 										class="link-icon">바로가기</a>
 								</div>
 								<hr>
-								<div style=" height: 80%; overflow-y: auto;">
-								<ul>
-									<c:forEach var="bestPost" items="${bestPost}">
-										<li><a class="aTag"
-											href="${pageContext.request.contextPath}/detailNote?id=${bestPost.id}">${bestPost.titleShare }
-												- ${bestPost.nickname }</a></li>
+								<div style="height: 80%; overflow-y: auto;">
+									<ul>
+										<c:forEach var="bestPost" items="${bestPost}">
+											<li><a class="aTag"
+												href="${pageContext.request.contextPath}/detailNote?id=${bestPost.id}">${bestPost.titleShare }
+													- ${bestPost.nickname }</a></li>
 
-									</c:forEach>
-								</ul>
+										</c:forEach>
+									</ul>
 								</div>
 							</div>
 						</div>
 					</div>
-					
+
 					<!-- tab 2 -->
 					<div id="tab2" class="tab_content">
 						<div class="reply_like">
@@ -652,27 +663,27 @@ label {
 												class="giphy-embed" allowFullScreen></iframe>
 										</div>
 										<div style="color: #727272;">
-											등록된 댓글과 좋아요가 없습니다. <br>
-											나만의 업무노트를 작성해 더 많은 꿀팁을 공유해보세요 !
+											등록된 댓글과 좋아요가 없습니다. <br> 나만의 업무노트를 작성해 더 많은 꿀팁을 공유해보세요 !
 										</div>
 									</div>
 								</c:when>
 								<c:otherwise>
-								
-							<div class="tab_table">
-								<c:forEach var="comment" items="${comment}">
-								<div class="mainTodoContentOutline" onclick="goToDeatil('${comment.detail}')">
-									<div class="arrangeBox" style="width: 100%;">
-										<div
-											style="text-align: left; vertical-align: middle; width: 100%; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
-											${comment.message}</div>
+
+									<div class="tab_table">
+										<c:forEach var="comment" items="${comment}">
+											<div class="mainTodoContentOutline"
+												onclick="goToDeatil('${comment.detail}')">
+												<div class="arrangeBox" style="width: 100%;">
+													<div
+														style="text-align: left; vertical-align: middle; width: 100%; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
+														${comment.message}</div>
+												</div>
+												<div style="color: gray; font-size: small;"
+													class="No-line-break">등록일자 : ${comment.senddate}</div>
+											</div>
+										</c:forEach>
 									</div>
-									<div style="color: gray; font-size: small;"
-										class="No-line-break">등록일자 : ${comment.senddate}</div>
-								</div>
-								</c:forEach>
-							</div>
-							</c:otherwise>
+								</c:otherwise>
 							</c:choose>
 						</div>
 					</div>

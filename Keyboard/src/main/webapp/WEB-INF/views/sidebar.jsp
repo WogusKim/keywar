@@ -70,6 +70,10 @@
 	background-image: url('${pageContext.request.contextPath}/resources/images/icons/menu_setting.png');
 }
 
+.search-icon {
+	background-image: url('${pageContext.request.contextPath}/resources/images/icons/menu_search.png');
+}
+
 .fold-icon {
 	background-image: url('${pageContext.request.contextPath}/resources/images/icons/menu_fold.png');
 }
@@ -79,11 +83,12 @@
 
 .menu_setting {
     position: absolute; /* 절대 위치 */
-    bottom: 0; /* 하단에 고정 */
-    right: 5px; /* 우측에 고정 */
-    background-color: #ffffff00; /* 반투명 배경 */
-    width: 100%; /* 부모 컨테이너의 전체 너비 */
-    padding: 10px; /* 내부 여백 */
+    bottom: 10px; /* 하단에 고정 */
+    right: 10px; /* 우측에 고정 */
+    background-color: #97838330; /* 반투명 배경 */
+    border-radius: 5px;
+    width: 75px; /* 부모 컨테이너의 전체 너비 */
+    padding: 6px; /* 내부 여백 */
     z-index: 2; /* 다른 요소 위에 오도록 설정 */
     text-align: right;
 }
@@ -249,7 +254,95 @@ hr.modal_hr {
 input[type="text"], input[type="radio"] {
     margin-right: 5px;
 }
+
 /* 모달팝업관련 */
+
+
+/* 검색용모달 */
+
+.modal-search {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content-search {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    border-radius: 10px;
+}
+
+.close-search {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-search:hover,
+.close-search:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.item-title {
+    color: #5f5f79; /* 아이템 타이틀에 강조 효과 */
+}
+/* 검색용모달 */
+/* 검색 결과 항목 스타일 */
+.search-result-item {
+    padding: 10px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease;
+}
+
+/* 검색 결과 항목 링크 스타일 */
+.search-result-item a {
+    text-decoration: none;
+    color: #007BFF;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* 검색 결과 항목 호버 시 스타일 */
+.search-result-item:hover {
+    background-color: #e2e6ea;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 검색 결과 영역에 약간의 여백 추가 */
+#searchResults {
+    margin-top: 20px;
+}
+
+/* 검색 결과가 없을 때의 스타일 */
+#searchResults p {
+    color: #999;
+    text-align: center;
+}
+
 </style>
 </head>
 <body>
@@ -265,7 +358,7 @@ input[type="text"], input[type="radio"] {
 			                <c:when test="${menu.menuType == 'item'}">
 			                    <!-- menuType이 item일 경우, 링크 포함 -->
 			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${menu.id}" class="aTag No-line-break">
-			                        <span>${menu.title}</span>
+			                        <span class="item-title">${menu.title}</span>
 			                    </a>
 			                </c:when>
 			                <c:otherwise>
@@ -286,7 +379,7 @@ input[type="text"], input[type="radio"] {
 							                <c:when test="${child1.menuType == 'item'}">
 							                    <!-- menuType이 item일 경우, 링크 포함 -->
 							                    <a class="aTag No-line-break" href="${pageContext.request.contextPath}/wikiDetail?id=${child1.id}">
-							                        <span>${child1.title}</span>
+							                        <span class="item-title">${child1.title}</span>
 							                    </a>
 							                </c:when>
 							                <c:otherwise>
@@ -307,7 +400,7 @@ input[type="text"], input[type="radio"] {
 											                <c:when test="${child2.menuType == 'item'}">
 											                    <!-- menuType이 item일 경우, 링크 포함 -->
 											                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child2.id}" class="aTag No-line-break">
-											                        <span>${child2.title}</span>
+											                        <span class="item-title">${child2.title}</span>
 											                    </a>
 											                </c:when>
 											                <c:otherwise>
@@ -327,7 +420,7 @@ input[type="text"], input[type="radio"] {
 															                <c:when test="${child3.menuType == 'item'}">
 															                    <!-- menuType이 item일 경우, 링크 포함 -->
 															                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child3.id}" class="aTag No-line-break">
-															                        <span>${child3.title}</span>
+															                        <span class="item-title">${child3.title}</span>
 															                    </a>
 															                </c:when>
 															                <c:otherwise>
@@ -348,7 +441,7 @@ input[type="text"], input[type="radio"] {
 																			                <c:when test="${child4.menuType == 'item'}">
 																			                    <!-- menuType이 item일 경우, 링크 포함 -->
 																			                    <a href="${pageContext.request.contextPath}/wikiDetail?id=${child4.id}" class="aTag No-line-break">
-																			                        <span>${child4.title}</span>
+																			                        <span class="item-title">${child4.title}</span>
 																			                    </a>
 																			                </c:when>
 																			                <c:otherwise>
@@ -394,13 +487,26 @@ input[type="text"], input[type="radio"] {
 		</c:if>
     </div>
 	<div class="menu_setting">
+		<div class="icon-setting search-icon"></div>
+	    <a href="#" class="aTag searchTag" style="margin-right: 5px;">검색</a><br>
 	    <div class="icon-setting menu-icon"></div>
-	    <a href="${pageContext.request.contextPath}/menuSetting">메뉴 설정</a>
+	    <a href="${pageContext.request.contextPath}/menuSetting" class="aTag" style="margin-right: 5px;">설정</a>
 	</div>
 	<div class="menu_onoff">
-		<div class="icon-fold fold-icon"></div>
+		<div class="icon-fold fold-icon mgt-5"></div>
 		<div class="icon-fold unfold-icon" style="display:none;"></div>
 	</div>
+</div>
+<!-- 검색 모달 -->
+<div id="searchModal" class="modal-search">
+    <div class="modal-content-search">
+        <span class="close-search">&times;</span>
+        <h3>노트 검색</h3>
+        <input type="text" id="searchInput" placeholder="검색어를 입력하세요..." onkeyup="searchMenu()">
+        <div id="searchResults">
+            <!-- 검색 결과가 여기에 표시됩니다 -->
+        </div>
+    </div>
 </div>
 
 
@@ -428,15 +534,28 @@ input[type="text"], input[type="radio"] {
 		        </div>
 		        
 	            <div class="edit_field">
-	                <label class="label-fixed-width">노트(폴더)제목:</label>
+	                <label class="label-fixed-width">노트 제목:</label>
 	                <input type="text" id="addTitle" name="title" class="edit_input">
 	            </div>
 
 	            <div class="edit_field">
 	                <label class="label-fixed-width">공유용 제목:</label>
 	                <input type="text" name="sharedTitle" class="edit_input">
-	            </div>	            
-	            
+	            </div>	   
+	                     
+                <div class="edit_field">
+                    <label class="label-fixed-width">카테고리:</label>
+                    <select name="category" class="edit_input">
+                        <option value="기타">기타</option>
+                        <option value="수신">수신</option>
+                        <option value="개인여신">개인여신</option>
+                        <option value="기업여신">기업여신</option>
+                        <option value="외환">외환</option>
+                        <option value="신용카드">신용카드</option>
+                        <option value="퇴직연금">퇴직연금</option>
+                        <option value="WM">WM</option>
+                    </select>
+                </div>
             </div>
             
             <hr class="modal_hr">
@@ -451,6 +570,65 @@ input[type="text"], input[type="radio"] {
 
 
 <script>
+
+document.querySelector('.searchTag').addEventListener('click', function() {
+    document.getElementById('searchModal').style.display = 'block';
+});
+
+document.querySelector('.close-search').addEventListener('click', function() {
+    document.getElementById('searchModal').style.display = 'none';
+});
+
+window.onclick = function(event) {
+    if (event.target == document.getElementById('searchModal')) {
+        document.getElementById('searchModal').style.display = 'none';
+    }
+}
+
+function searchMenu() {
+    // 검색어를 가져옵니다.
+    var searchQuery = document.getElementById('searchInput').value.toLowerCase();
+    
+    // 아이템 타이틀에 해당하는 모든 메뉴의 제목을 가져옵니다.
+    var menuItems = document.querySelectorAll('.item-title');
+    var searchResultsContainer = document.getElementById('searchResults');
+
+    // 검색 결과를 초기화합니다.
+    searchResultsContainer.innerHTML = '';
+
+    // 검색어와 일치하는 메뉴를 결과 영역에 추가합니다.
+    menuItems.forEach(function(item) {
+        var title = item.textContent.toLowerCase();
+        
+        if (title.includes(searchQuery)) {
+            // 검색어가 포함된 항목을 복사하여 결과 컨테이너에 추가
+            var resultItem = document.createElement('div');
+            resultItem.classList.add('search-result-item');
+            
+            // 검색된 항목을 클릭했을 때 이동할 수 있도록 기존 링크를 복사
+            var parentLi = item.closest('li');
+            var link = parentLi.querySelector('a');
+            
+            if (link) {
+                var resultLink = document.createElement('a');
+                resultLink.href = link.href;
+                resultLink.textContent = item.textContent;
+                resultItem.appendChild(resultLink);
+            } else {
+                resultItem.textContent = item.textContent;
+            }
+            
+            searchResultsContainer.appendChild(resultItem);
+        }
+    });
+
+    // 검색 결과가 없을 경우의 처리
+    if (searchResultsContainer.innerHTML === '') {
+        searchResultsContainer.innerHTML = '<p>검색 결과가 없습니다.</p>';
+    }
+}
+
+
 function toggleFolder(element) {
     var parentLi = element.closest('li'); // 가장 가까운 li 요소를 찾음
     var nextUl = parentLi.querySelector('ul'); // 해당 li 내부의 첫 번째 ul을 찾음

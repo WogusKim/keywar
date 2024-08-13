@@ -133,21 +133,21 @@ min-width: 100px;
 				<div class="outlineBox">
 					<div style="float: left;"><h2 class="card_title">마이페이지</h2></div><div style="float: right;">
 						<%-- <a href="${pageContext.request.contextPath}/editProfile"> <img class="header_icon" style="margin-top: 5px;" src="${pageContext.request.contextPath}/resources/images/setting.png"> </a> --%>
-					</div>
+					</div>s
 				</div>
 				<hr>
 				<div class="outlineBox" style="height: 40%">
 				<div class="white_Box" style="width: 25%; text-align: center;"> 
 				<div class="box" style="background: #BDBDBD; margin-bottom: 20px; ">
-    				 <img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture?userno=${dto.userno}" alt="Profile Picture">
+    				 <img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${dto.profile}" alt="Profile Picture">
 				</div>
 				<b class="stress_Text" style="" >${dto.username } ( ${dto.nickname } )</b>
 				<a href="${pageContext.request.contextPath}/editProfile"><img  src="${pageContext.request.contextPath}/resources/images/icons/edit.png" style="width: 16px; height: 16px; vertical-align: middle; cursor: pointer;"></a>
 				
 				<!-- 좋아요 + 팔로우 표시 -->
-				<div class="profileArea" style="margin-top: 20px;">
+				<div class="profileArea" style="margin-top: 20px; width: 30%;">
 					<img src="${pageContext.request.contextPath}/resources/images/heart16.png" > <span>${myLikeCount}</span> 
-					<img src="${pageContext.request.contextPath}/resources/images/follow16.png" > <span>74</span>
+					<%-- <img src="${pageContext.request.contextPath}/resources/images/follow16.png" > <span>74</span> --%> <!-- 팔로우 이제 안하기로 함 -->
 				</div>
 				
 				<div> </div>

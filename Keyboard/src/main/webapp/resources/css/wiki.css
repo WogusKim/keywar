@@ -6,7 +6,16 @@
 	padding: 10px 20px;
 	height: 100%;
 }
+
+.scroll-menu {
+	overflow-y: auto; /* 스크롤 가능하도록 설정 */
+    flex-grow: 1; /* 남은 공간 모두 사용 */
+    padding: 5px;
+	height: 87%;
+}
+
 .menu_list {
+	height: 3%;
 	display: flex;
 	align-item: center;
 	vertical-align: center;
@@ -46,7 +55,7 @@
 
 .menu_plus {
     position: absolute; /* 절대 위치 사용 */
-    right: 70px; /* 우측으로부터 10px 떨어진 위치 */
+    right: 85px; /* 우측으로부터 10px 떨어진 위치 */
     bottom: 10px; /* 하단으로부터 10px 떨어진 위치 */
     padding: 10px; /* 패딩 */
     display: flex; /* Flexbox 사용 */
@@ -56,7 +65,7 @@
 
 .menu_minus {
     position: absolute; /* 절대 위치 사용 */
-    right: 10px; /* 우측으로부터 10px 떨어진 위치 */
+    right: 25px; /* 우측으로부터 10px 떨어진 위치 */
     bottom: 10px; /* 하단으로부터 10px 떨어진 위치 */
     padding: 10px; /* 패딩 */
     display: flex; /* Flexbox 사용 */

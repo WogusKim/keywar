@@ -7,6 +7,8 @@ public class BoardDTO {
 	private String titleShare;
 	private String username;
 	private String nickname;
+	private String category;
+	private String picture;
 	private int id;
 	private int isOpen;
 	private int like_count;
@@ -94,7 +96,20 @@ public class BoardDTO {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public String getPicture() {
+		return picture;
+	}
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
 
+	
 	
 	
 	

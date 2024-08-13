@@ -8,6 +8,7 @@
 <title>메인 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/wiki.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 .folder-icon {
     background-image: url('${pageContext.request.contextPath}/resources/images/icons/folder_open2.png');
@@ -60,6 +61,7 @@
 		        <span onclick="selectFolder(this, 0, 'root', -1, '나의 업무노트')">나의 업무노트</span>
 		    </div>
 		    <hr>
+		    <div class="scroll-menu">
 	        <ul>
 	            <c:forEach var="menu" items="${menus}">
 	                <li>
@@ -71,7 +73,7 @@
 							      data-menu-type="${menu.menuType}" 
 							      data-depth="${menu.depth}">
 							    ${menu.title}
-							    <font color="red">(${menu.id})</font>
+							    <%-- <font color="red">(${menu.id})</font> --%>
 							</span>
 	                    </div>
 	                    <c:if test="${not empty menu.children}">
@@ -85,7 +87,7 @@
 											      data-menu-type="${child1.menuType}" 
 											      data-depth="${child1.depth}">
 											    ${child1.title}
-											    <font color="red">(${child1.id})</font>
+											    <%-- <font color="red">(${child1.id})</font> --%>
 											</span>
 	                                    </div>
 	                                    <c:if test="${not empty child1.children}">
@@ -99,7 +101,7 @@
 															      data-menu-type="${child2.menuType}" 
 															      data-depth="${child2.depth}">
 															    ${child2.title}
-															    <font color="red">(${child2.id})</font>
+															    <%-- <font color="red">(${child2.id})</font> --%>
 															</span>
 	                                                    </div>
 	                                                    <c:if test="${not empty child2.children}">
@@ -112,7 +114,7 @@
 																		      data-menu-type="${child3.menuType}" 
 																		      data-depth="${child3.depth}">
 																		    ${child3.title}
-																		    <font color="red">(${child3.id})</font>
+																		    <%-- <font color="red">(${child3.id})</font> --%>
 																		</span>
 	                                                                    </div>
 	                                                                    <c:if test="${not empty child3.children}">
@@ -126,7 +128,7 @@
 																							      data-menu-type="${child4.menuType}" 
 																							      data-depth="${child4.depth}">
 																							    ${child4.title}
-																							    <font color="red">(${child4.id})</font>
+																							    <%-- <font color="red">(${child4.id})</font> --%>
 																							</span>
 	                                                                                    </div>
 	                                                                                </li>
@@ -148,6 +150,7 @@
 	                </li>
 	            </c:forEach>
 	        </ul>
+	        </div>
 	    </div>
 		<div class="menu_back">
 		    <div class="icon-setting back-icon"></div>
@@ -255,9 +258,9 @@
 		        
 		        <div class="edit_field">
 		        	<label class="label-fixed-width">메뉴 타입:</label>
-		        	<input type="radio" name="menuType" value="folder">
+		        	<input type="radio" name="menuType" id="menuTypeFolder" value="folder" onclick="toggleCategory()" checked>
                     <label for="isOpenYes">폴더</label>
-                    <input type="radio" name="menuType" value="item">
+                    <input type="radio" name="menuType" id="menuTypeItem" value="item" onclick="toggleCategory()">
                     <label for="isOpenNo">업무노트</label>
 		        </div>
 		        
@@ -277,8 +280,21 @@
 	            <div class="edit_field">
 	                <label class="label-fixed-width">공유용 제목:</label>
 	                <input type="text" name="sharedTitle" class="edit_input">
-	            </div>	            
-	            
+	            </div>
+	            	            
+	            <div class="edit_field">
+                    <label class="label-fixed-width">카테고리:</label>
+                    <select name="category" id="categorySelect" class="edit_input">
+                        <option value="기타">기타</option>
+                        <option value="수신">수신</option>
+                        <option value="개인여신">개인여신</option>
+                        <option value="기업여신">기업여신</option>
+                        <option value="외환">외환</option>
+                        <option value="신용카드">신용카드</option>
+                        <option value="퇴직연금">퇴직연금</option>
+                        <option value="WM">WM</option>
+                    </select>
+                </div>
             </div>
             
             <hr class="modal_hr">
@@ -316,6 +332,19 @@
                     <input type="radio" id="isOpenNo" name="isOpen" value="0">
                     <label for="isOpenNo">비공개</label>
                 </div>
+                <div class="edit_field">
+                    <label class="label-fixed-width">카테고리:</label>
+                    <select name="category" class="edit_input">
+                        <option value="기타">기타</option>
+                        <option value="수신">수신</option>
+                        <option value="개인여신">개인여신</option>
+                        <option value="기업여신">기업여신</option>
+                        <option value="외환">외환</option>
+                        <option value="신용카드">신용카드</option>
+                        <option value="퇴직연금">퇴직연금</option>
+                        <option value="WM">WM</option>
+                    </select>
+                </div>
             </div>
             <hr class="modal_hr">
             <div class="submit_buttonArea">
@@ -343,12 +372,12 @@ function toggleFolder(element) {
         }
 
         // ul 요소가 존재하는 경우의 기존 로직 실행
-        if (nextUl.style.display === 'none' || !nextUl.style.display) {
-            nextUl.style.display = 'block';
-            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder_open2.png")';
-        } else {
-            nextUl.style.display = 'none';
+        if ($(nextUl).is(':visible')) {
+            $(nextUl).slideUp(300); // 부드럽게 접히도록 슬라이드 업 애니메이션
             element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder2.png")';
+        } else {
+            $(nextUl).slideDown(300); // 부드럽게 펼치도록 슬라이드 다운 애니메이션
+            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder_open2.png")';
         }
     }
 }
@@ -410,6 +439,7 @@ function updateAddForm(folder) {
 
 
 function addNewItem() {
+		
     // '추가' 버튼 클릭 시에 선택된 폴더 정보를 사용해 폼 업데이트
     if (window.selectedFolder) {
         //updateAddForm(window.selectedFolder);
@@ -421,6 +451,8 @@ function addNewItem() {
         
         document.getElementById('addModal').style.display = 'block';
         //document.querySelector('.default').style.display = 'none';
+        
+        toggleCategory();
     } else {
         // 폴더가 선택되지 않은 경우, 사용자에게 알림
         alert("폴더를 선택해 주세요.");
@@ -450,6 +482,7 @@ function deleteSelectedItem() {
     }
 }
 
+//비동기 수정모달팝업 생성
 function showEditModal(id) {
     fetch(`${pageContext.request.contextPath}/editBoardDetails?id=` + id)
         .then(response => response.json())
@@ -457,12 +490,19 @@ function showEditModal(id) {
             document.getElementById('editId').value = data.id;
             document.getElementById('editTitle').value = data.title;
             document.getElementById('editShareTitle').value = data.titleShare;
+
             // 공개 여부 설정
             if (data.isOpen === 1) {
                 document.getElementById('isOpenYes').checked = true;
             } else {
                 document.getElementById('isOpenNo').checked = true;
-            }            
+            }
+
+            // 카테고리 설정
+            const categorySelect = document.querySelector('#editModal select[name="category"]');
+            if (categorySelect) {
+                categorySelect.value = data.category || '기타'; // 받은 카테고리 값으로 설정, 없으면 '기타'
+            }
 
             document.getElementById('editModal').style.display = 'block';
         })
@@ -476,6 +516,21 @@ document.querySelectorAll('.close').forEach(closeBtn => {
         document.getElementById('addModal').style.display = 'none';
     };
 });
+
+//폴더인지 아이템인지에 따라 카테고리 선택가능여부처리
+function toggleCategory() {
+    const categorySelect = document.getElementById('categorySelect');
+    const isFolder = document.getElementById('menuTypeFolder').checked;
+    
+    if (isFolder) {
+        categorySelect.disabled = true; // 폴더인 경우 비활성화
+        categorySelect.value = '기타'; // 기본값으로 '기타' 선택
+    } else {
+        categorySelect.disabled = false; // 아이템인 경우 활성화
+    }
+}
+
+document.getElementById('addForm').addEventListener('reset', toggleCategory);
 
 //폼 제출 (추가)
 document.getElementById('addForm').addEventListener('submit', function(event) {
@@ -517,6 +572,7 @@ document.addEventListener('click', function(event) {
 
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.default').style.display = 'block'; // 초기 화면 설정
+    toggleCategory();
 });
 
 
