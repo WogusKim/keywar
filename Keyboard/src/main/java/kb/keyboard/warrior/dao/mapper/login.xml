@@ -8,7 +8,13 @@
        select * from user where userno = #{param1} and userpw = #{param2}
     </select>
   	<select id="isRightUserno" resultType="kb.keyboard.warrior.dto.UserDTO">
-       select * from user where userno = #{param1}
+    	select u.*, 
+		CASE 
+		WHEN u.picture IS NOT NULL THEN u.userno 
+		ELSE '1234567' 
+		END AS profile
+		from user u
+		where userno = #{param1}
     </select>
   	<select id="findPw" parameterType="kb.keyboard.warrior.dto.UserDTO"
   	resultType="kb.keyboard.warrior.dto.UserDTO">

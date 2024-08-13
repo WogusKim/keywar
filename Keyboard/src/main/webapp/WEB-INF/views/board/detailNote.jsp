@@ -279,9 +279,9 @@
         	<!-- 제목 -->
 			<div class="others_wikiTitle">
 				<div class="otherWikiTitle">
-				    <img class="writer_profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${menuDto.userno}" alt="Writer's Profile Picture">
+				    <img class="writer_profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${writer.profile}" alt="Writer's Profile Picture">
 				    <div>
-				        <h2>${writerNickName}님의 메뉴얼</h2>
+				        <h2>${writer.nickname}님의 메뉴얼</h2>
 				        <h1>${menuDto.titleShare}</h1>
 				        <div>
 				            <img class="mini_icon" src="/resources/images/heart16.png" alt="likes"> 좋아요 ${like}&nbsp;&nbsp;
