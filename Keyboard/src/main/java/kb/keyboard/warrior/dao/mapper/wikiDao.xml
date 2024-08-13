@@ -22,7 +22,7 @@
 	<!-- 메뉴추가 메서드 4종류 -->
 	<insert id="insertMenuNoParentsItem">
 		INSERT INTO Menu (title, titleShare, link, menuType,
-		menu_order, userno, isOpen)
+		menu_order, userno, isOpen, category)
 		VALUES (
 		#{param1},
 		#{param2},
@@ -30,7 +30,8 @@
 		#{param4},
 		#{param5},
 		#{param6},
-		#{param7}
+		#{param7},
+		#{param8}
 		);
 	</insert>
 
@@ -49,7 +50,22 @@
 
 	<insert id="insertMenuHaveParentsItem">
 		INSERT INTO Menu (parent_id, title, titleShare, link,
-		menuType, menu_order, userno, isOpen)
+		menuType, menu_order, userno, isOpen, category)
+		VALUES (
+		#{param1},
+		#{param2},
+		#{param3},
+		#{param4},
+		#{param5},
+		#{param6},
+		#{param7},
+		#{param8},
+		#{param9}
+		);
+	</insert>
+
+	<insert id="insertMenuHaveParentsFolder">
+		INSERT INTO Menu (parent_id, title, titleShare, menuType, menu_order, userno, isOpen, category)
 		VALUES (
 		#{param1},
 		#{param2},
@@ -59,20 +75,6 @@
 		#{param6},
 		#{param7},
 		#{param8}
-		);
-	</insert>
-
-	<insert id="insertMenuHaveParentsFolder">
-		INSERT INTO Menu (parent_id, title, titleShare,
-		menuType, menu_order, userno, isOpen)
-		VALUES (
-		#{param1},
-		#{param2},
-		#{param3},
-		#{param4},
-		#{param5},
-		#{param6},
-		#{param7}
 		);
 	</insert>
 
@@ -98,15 +100,14 @@
 
 	<update id="changeMenuNoShare">
 		UPDATE Menu
-		SET title = #{param1}, titleShare = NULL
-		where id = #{param2}
+		SET title = #{param1}, titleShare = NULL, category = #{param2}
+		where id = #{param3}
 	</update>
 
 	<update id="changeMenuYesShare">
 		UPDATE Menu
-		SET title = #{param1}, titleShare =
-		#{param2}
-		where id = #{param3}
+		SET title = #{param1}, titleShare = #{param2}, category = #{param3}
+		where id = #{param4}
 	</update>
 
 	<update id="changeIsOpen">
@@ -115,7 +116,7 @@
 	</update>
 
 	
-	<select id="getNewCopyId" resultType="Integer">
+	<select id="getNewCopyId" resultType="String">
 		SELECT MAX(id) FROM Menu WHERE userno = #{param} 
 	</select>
 
@@ -123,6 +124,10 @@
 	<select id="getData" resultType="String">
 		SELECT data from EditorData
 		where id = #{param}
+	</select>
+	<!-- 위키 공개여부 체크 -->
+	<select id="checkItIsopen" resultType="Integer">
+		select isopen from Menu where id= #{param1}
 	</select>
 
 	<!-- 위키디테일저장 -->
@@ -167,8 +172,8 @@
 		SELECT
 		ROW_NUMBER() OVER (order by like_count desc, comment_count desc) AS
 		management_number,
-		e.id, m.title,m.titleShare, m.userno , u.nickname,
-		u.username, e.data, m.isOpen, 
+		e.id, m.title,m.titleShare, m.userno , u.nickname, 
+		u.username, e.data, m.isOpen, m.category,
         COALESCE(wh.hits, 0) AS hits_count,
 		COALESCE(l.like_count, 0) AS like_count,
 		COALESCE(c.comment_count, 0) AS comment_count

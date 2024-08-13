@@ -72,6 +72,7 @@ public class WikiController {
         String title = request.getParameter("title");
         String sharedTitle = request.getParameter("sharedTitle");
         String isOpen = request.getParameter("public");
+        String category = request.getParameter("category");
         
         System.out.println("받은 id: " + selectedId);
         System.out.println("받은 type: " + selectedType);
@@ -82,6 +83,10 @@ public class WikiController {
         System.out.println("추가할 공유title: " + sharedTitle);
         System.out.println("공유여부: " + isOpen);
 
+        
+        if (category == null || category == "") {
+        	category = "기타";
+        }
         
         // 현재 날짜와 시간을 'yyyyMMdd_HHmmss' 형식으로 포맷
         LocalDateTime now = LocalDateTime.now();
@@ -117,7 +122,7 @@ public class WikiController {
             if (menuType.equals("item")) {
                 //루트에 아이템 추가
                 System.out.println("루트 아이템을 추가합니다.");
-                dao.insertMenuNoParentsItem(title, sharedTitle, link, menuType, max_order, userno, isOpenInt);
+                dao.insertMenuNoParentsItem(title, sharedTitle, link, menuType, max_order, userno, isOpenInt,category);
             } else {
                 //루트에 폴더 추가 (링크는 null 으로 설정)
                 System.out.println("루트 폴더를 추가합니다.");
@@ -137,9 +142,9 @@ public class WikiController {
                 
                 System.out.println("아이템을 추가합니다. - 아이템 부모 조회");
                 //dao.insertMenuHaveParentsItem(#부모아이디, #타이틀, #공유타이틀, #링크, #메뉴타입, #최대순번, #유저번호)
-                dao.insertMenuHaveParentsItem(parentId, title, sharedTitle, link, menuType, max_order, userno, isOpenInt);
+                dao.insertMenuHaveParentsItem(parentId, title, sharedTitle, link, menuType, max_order, userno, isOpenInt, category);
             } else {
-                //폴더추가
+                //선택한 부모가 폴더인 경우
                 
                 //부모가 있는데, depth가 4이상이면 추가할 수 없다. (0이 루트, 따라서 5이상이면 추가 불가)
                 int selectedDepthInt = Integer.parseInt(selectedDepth); 
@@ -159,7 +164,7 @@ public class WikiController {
                     sharedTitle = title;
                 
                 System.out.println("폴더를 추가합니다. - 폴더 부모 조회");
-                dao.insertMenuHaveParentsFolder(selectedId, title, sharedTitle, menuType, max_order, userno, isOpenInt);
+                dao.insertMenuHaveParentsFolder(selectedId, title, sharedTitle, menuType, max_order, userno, isOpenInt, category);
             }
         }
 
@@ -253,6 +258,7 @@ public class WikiController {
             System.out.println("title: " + dto.getTitle());
             System.out.println("titleShare: " + dto.getTitleShare());
             System.out.println("type: " + dto.getMenuType());
+            System.out.println("category: " + dto.getCategory());
 
             if (dto.getTitleShare() == null) {
                 dto.setTitleShare("");
@@ -280,6 +286,7 @@ public class WikiController {
         String title = request.getParameter("title");
         String titleShare = request.getParameter("titleShare");
         String isOpen = request.getParameter("isOpen");
+        String category = request.getParameter("category");
         
         System.out.println("======== 수정 입력 ========");
         System.out.println(id);
@@ -293,10 +300,10 @@ public class WikiController {
         //공유처리
         if (titleShare.length() == 0) {
             System.out.println("공유할 제목이 없음. null 로 처리합니다.");
-            dao.changeMenuNoShare(title, id);
+            dao.changeMenuNoShare(title, category, id);
         } else {
             System.out.println("공유할 제목 있음.");
-            dao.changeMenuYesShare(title,titleShare, id);
+            dao.changeMenuYesShare(title,titleShare, category, id);
         }
         
         //공유여부 상태처리
@@ -321,6 +328,7 @@ public class WikiController {
         String title = request.getParameter("title");
         String sharedTitle = request.getParameter("sharedTitle");
         String isOpen = request.getParameter("public");
+        String category = request.getParameter("category");
         
         int isOpenInt = 0;
         
@@ -353,7 +361,9 @@ public class WikiController {
         }
        
 	    System.out.println("폴더를 추가합니다. - 폴더 부모 조회");
-	    dao.insertMenuHaveParentsFolder(selectedId, title, sharedTitle, "item", max_order, userno, isOpenInt);
+	    //dao.insertMenuHaveParentsFolder(selectedId, title, sharedTitle, "item", max_order, userno, isOpenInt);
+	    //void insertMenuHaveParentsItem(String selectedId, String title, String sharedTitle, String link, String menuType, int max_order, String userno, int isOpenInt, String category);
+	    dao.insertMenuHaveParentsItem(selectedId, title, sharedTitle, "link", "item", max_order, userno, isOpenInt, category);
 	    
 	    int newId = dao.getNewCopyId(userno); //방금추가한 메뉴 ID
         
@@ -385,12 +395,18 @@ public class WikiController {
         // 추가할 정보들
         String title = request.getParameter("title");
         String sharedTitle = request.getParameter("sharedTitle");
+        String category = request.getParameter("category");
         System.out.println("새로 붙여줄 이름1 : " + title);
         System.out.println("새로 붙여줄 이름2 : " + sharedTitle);
         
         // 추가할 부모 폴더
-        String selectedId = request.getParameter("id");
+        String selectedId = request.getParameter("selectedId");
+        String selectedType = request.getParameter("selectedType");
+        String selectedDepth = request.getParameter("selectedDepth");
+        
         System.out.println("복사할 위치 (부모폴더) : " + selectedId);
+        System.out.println("복사할 타입 (부모폴더) : " + selectedType);
+        System.out.println("복사할 위치 (부모폴더) : " + selectedDepth);
         
         
         WikiDao dao = sqlSession.getMapper(WikiDao.class);
@@ -399,7 +415,8 @@ public class WikiController {
         max_order++;
         
         //dao.insertMenuHaveParentsItem(#부모아이디, #타이틀, #공유타이틀, #링크, #메뉴타입, #최대순번, #유저번호)
-        dao.insertMenuHaveParentsItem(selectedId, title, sharedTitle, "", "item", max_order, userno, 1);
+        //void insertMenuHaveParentsFolder(String selectedId, String title, String sharedTitle, String menuType, int max_order, String userno, int isOpenInt, String category);
+        dao.insertMenuHaveParentsFolder(selectedId, title, sharedTitle, "item", max_order, userno, 1, category);
         
         int newId = dao.getNewCopyId(userno); //방금추가한 메뉴 ID
         

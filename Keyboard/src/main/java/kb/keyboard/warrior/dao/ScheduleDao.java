@@ -20,10 +20,13 @@ public interface ScheduleDao {
 	void saveGroup(List<Map<String, String>> groupData);
 //	void saveSelf(String userno);
 	void saveSelf(@Param("userno") String userno);
-	void groupExit(String sharedepth3, String userno);
+	void leaveGroup(@Param("groupId") String groupId, @Param("userno") String userno);
 	void alertInsertCalendar(Map<String, Object> params);
 	List<ScheduleDTO> countTodoList(@Param("userno") String userno);
 	List<ScheduleDTO> getUserGroups(@Param("userno") String userno);
-	List<Map<String, String>> searchUserForInvite(@Param("searchUsername") String searchUsername, @Param("userno") String userno, @Param("groupNum") String groupNum);
+	List<Map<String, String>> searchUsersForInvite(@Param("searchUsername") String searchUsername, @Param("userno") String userno, @Param("groupNum") String groupNum);
+    void inviteUsersToGroup(List<Map<String, Object>> paramsList);
+    void alertInsertCalendarForInvite(List<Map<String, Object>> paramsList);
+    
 
 }

@@ -145,9 +145,9 @@ min-width: 100px;
 				<a href="${pageContext.request.contextPath}/editProfile"><img  src="${pageContext.request.contextPath}/resources/images/icons/edit.png" style="width: 16px; height: 16px; vertical-align: middle; cursor: pointer;"></a>
 				
 				<!-- 좋아요 + 팔로우 표시 -->
-				<div class="profileArea" style="margin-top: 20px;">
+				<div class="profileArea" style="margin-top: 20px; width: 30%;">
 					<img src="${pageContext.request.contextPath}/resources/images/heart16.png" > <span>${myLikeCount}</span> 
-					<img src="${pageContext.request.contextPath}/resources/images/follow16.png" > <span>74</span>
+					<%-- <img src="${pageContext.request.contextPath}/resources/images/follow16.png" > <span>74</span> --%> <!-- 팔로우 이제 안하기로 함 -->
 				</div>
 				
 				<div> </div>

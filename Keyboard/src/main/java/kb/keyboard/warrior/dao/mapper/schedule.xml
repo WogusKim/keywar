@@ -69,6 +69,25 @@
             CONCAT('일정: ', #{inviteName}, ' 님의 초대로 ', #{customname}, ' 그룹의 일원이 되셨습니다.')
         )
 	</insert>
+	
+	
+	<insert id="alertInsertCalendarForInvite" parameterType="list">
+	    <selectKey keyProperty="inviteName" resultType="string" order="BEFORE">
+	        SELECT username AS inviteName
+	        FROM user
+	        WHERE userno = #{list[0].inviteNo}
+	    </selectKey>	
+	    INSERT IGNORE INTO alert (userno, category, message)
+	    VALUES 
+   	    <foreach collection="list" item="item" separator=",">
+        (
+            #{item.userno}, 'calendar',  
+            CONCAT('일정: ', #{inviteName}, ' 님의 초대로 ', #{item.customname}, ' 그룹의 일원이 되셨습니다.')
+        )
+		</foreach>
+	</insert>
+
+
 
     <insert id="scheduleNew" parameterType="kb.keyboard.warrior.dto.ScheduleDTO">
 	    INSERT INTO schedule (userno, title, content, startDate, endDate, sharedepth1, sharedepth2, sharedepth3)
@@ -185,15 +204,14 @@
 		WHERE scheduleid = #{scheduleid};
     </update>
         
-    <update id="groupExit" parameterType="map">
-<!--         DELETE FROM schedule WHERE scheduleid = #{scheduleid} -->
+    <update id="leaveGroup" parameterType="map">
         UPDATE scheduleshare  
 		SET status = '0' 
 		WHERE sharedepth1 = '0000'
 		and sharedepth2 = '0000'
 		and sharedepth3 != '0000'
-		and sharedepth3 = #{sharedepth3}
-		and userid = #{userid};
+		and sharedepth3 = #{groupId}
+		and userno = #{userno};
     </update>
     
     <select id="countTodoList" parameterType="String" resultType="kb.keyboard.warrior.dto.ScheduleDTO">
@@ -215,19 +233,33 @@
 		;
     </select>
     	
-	<select id="searchUserForInvite" parameterType="map" resultType="map">
-	    SELECT userno, username as name, deptname, teamname 
+	<select id="searchUsersForInvite" parameterType="map" resultType="map">
+		SELECT u.userno, u.username as name, d.deptname, d.teamname , ss.ssyn
 		FROM user u left join department d
-		on u.deptno = d.deptno
-		and u.teamno = d.teamno
-        left join 
-        (select distinct userno, '1' as ssyn
-        from scheduleshare 
-        where sharedepth1 = '0000' and sharedepth2 = '0000' and   
-        sharedepth3 = #{groupNum} and status = '1') ss
-        on ss.userno = u.userno
-		WHERE username like CONCAT('%', #{searchUsername}, '%') and userno != #{userno}
-        and ss.ssyn is null
+			on u.deptno = d.deptno
+			and u.teamno = d.teamno
+		left join 
+			(select distinct userno, '1' as ssyn
+			from scheduleshare 
+			where sharedepth1 = '0000' and sharedepth2 = '0000' and   
+			sharedepth3 = #{groupNum} and status = '1') ss
+		  	  on ss.userno = u.userno
+		WHERE u.username like CONCAT('%', #{searchUsername}, '%') and u.userno != #{userno}
+		    and ss.ssyn is null
 	</select>	
+	
+	<insert id="inviteUsersToGroup" parameterType="list">
+        INSERT INTO scheduleshare (userno, sharedepth1, sharedepth2, sharedepth3, customname)
+	    VALUES
+	    <foreach collection="list" item="item" separator=",">
+	        (
+	            #{item.userno}, 
+	            '0000', 
+	            '0000', 
+	            #{item.sharedepth3},
+	            #{item.customname}
+	        )
+  		</foreach>
+	</insert>
     
 </mapper>
