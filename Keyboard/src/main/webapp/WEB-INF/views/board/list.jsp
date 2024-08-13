@@ -40,6 +40,7 @@ th {
 	display: flex;
 	align-items: center;
 	justify-content: flex-start; /* 왼쪽 정렬 */
+	cursor: pointer;
 }
 
 .title_td {
@@ -254,7 +255,7 @@ function renderTable(page) {
             <td>\${item.management_number}</td>
             <td class="title_td"><a href="${pageContext.request.contextPath}/detailNote?id=\${item.id}" class="styled-link">\${item.titleShare}</a></td>
             <td>
-                <div class="writer_td">
+                <div class="writer_td" onclick="goToProfile('\${item.userno}')">
                     <img class="profile-pic" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=\${item.picture}" />
                     \${item.nickname} 
                 </div>
@@ -304,8 +305,8 @@ function renderFilteredTable(data) {
         '<td>' + (item.management_number || '') + '</td>' +
         '<td class="title_td"><a href="' + (contextPath || '') + '/detailNote?id=' + (item.id || '') + '" class="styled-link">' + (item.titleShare || '') + '</a></td>' +
         '<td>' +
-            '<div class="writer_td" onclick="goToProfile(\${item.userno})">' +
-                '<img class="profile-pic" src="' + (contextPath || '') + '/getUserProfilePicture2?userno=' + (item.userno || '') + '" />' +
+            '<div class="writer_td" onclick="goToProfile(${item.userno})">' +
+                '<img class="profile-pic" src="' + (contextPath || '') + '/getUserProfilePicture2?userno=' + (item.picture || '') + '" />' +
              '<a href="${pageContext.request.contextPath}/profile?userno=\${item.userno}" class="styled-link">'+ (item.nickname || '') +'</a>'+
             '</div>' +
         '</td>' +
@@ -333,7 +334,7 @@ function sortPosts(criteria) {
     renderTable(1); // 정렬 후 첫 페이지를 보여줍니다.
 }
 function goToProfile(userno){
-	
+	window.location.href = '${pageContext.request.contextPath}/profile?userno='+userno;
 	
 }
 </script>
