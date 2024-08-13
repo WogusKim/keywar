@@ -83,11 +83,12 @@
 
 .menu_setting {
     position: absolute; /* 절대 위치 */
-    bottom: 0; /* 하단에 고정 */
-    right: 5px; /* 우측에 고정 */
-    background-color: #ffffff00; /* 반투명 배경 */
-    width: 110px; /* 부모 컨테이너의 전체 너비 */
-    padding: 10px; /* 내부 여백 */
+    bottom: 10px; /* 하단에 고정 */
+    right: 10px; /* 우측에 고정 */
+    background-color: #97838330; /* 반투명 배경 */
+    border-radius: 5px;
+    width: 75px; /* 부모 컨테이너의 전체 너비 */
+    padding: 6px; /* 내부 여백 */
     z-index: 2; /* 다른 요소 위에 오도록 설정 */
     text-align: right;
 }
@@ -487,9 +488,9 @@ input[type="text"], input[type="radio"] {
     </div>
 	<div class="menu_setting">
 		<div class="icon-setting search-icon"></div>
-	    <a href="#" class="aTag searchTag">노트 검색</a><br>
+	    <a href="#" class="aTag searchTag" style="margin-right: 5px;">검색</a><br>
 	    <div class="icon-setting menu-icon"></div>
-	    <a href="${pageContext.request.contextPath}/menuSetting" class="aTag">메뉴 설정</a>
+	    <a href="${pageContext.request.contextPath}/menuSetting" class="aTag" style="margin-right: 5px;">설정</a>
 	</div>
 	<div class="menu_onoff">
 		<div class="icon-fold fold-icon mgt-5"></div>
