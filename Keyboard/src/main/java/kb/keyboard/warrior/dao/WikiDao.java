@@ -46,6 +46,13 @@ public interface WikiDao {
 	//방금 추가한 메뉴 id 찾기
 	int getNewCopyId(String userno);
 	public Integer checkItIsopen(String idMenu);
+	
+	//부모id 기준 형제들을 순서대로 찾아줘야함
+	List<MenuDTO> findByParentIdOrderByMenuOrder(int parentId, String userno);
+	List<MenuDTO> findNoParentOrderByMenuOrder(String userno); //얜 부모가 없을 때
+	
+	//순서를 섞어버림!!
+	void updateMenuOrder(int id, int menuOrder);
 
 	//--------------------------------메뉴관련--------------------------------//
 	
@@ -96,6 +103,12 @@ public interface WikiDao {
 	//조회수 처리
 	void updateHits(int id);
 	void insertHits(int id);
+
+	
+
+	
+
+	
 
 
 

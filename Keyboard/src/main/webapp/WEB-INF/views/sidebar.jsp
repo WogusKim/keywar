@@ -121,7 +121,8 @@
     height: 16px;
     background-size: contain;
     background-repeat: no-repeat;
-    margin-right: 6px;
+    margin-right: 4px;
+    vertical-align: middle;
 }
 
 .folder-hover:hover {
@@ -488,9 +489,9 @@ input[type="text"], input[type="radio"] {
     </div>
 	<div class="menu_setting">
 		<div class="icon-setting search-icon"></div>
-	    <a href="#" class="aTag searchTag" style="margin-right: 5px;">검색</a><br>
+	    <a href="#" class="aTag searchTag" style="margin-right: 5px; vertical-align: middle;">검색</a><br>
 	    <div class="icon-setting menu-icon"></div>
-	    <a href="${pageContext.request.contextPath}/menuSetting" class="aTag" style="margin-right: 5px;">설정</a>
+	    <a href="${pageContext.request.contextPath}/menuSetting" class="aTag" style="margin-right: 5px; vertical-align: middle;">설정</a>
 	</div>
 	<div class="menu_onoff">
 		<div class="icon-fold fold-icon mgt-5"></div>

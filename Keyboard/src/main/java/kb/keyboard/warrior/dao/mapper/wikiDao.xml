@@ -9,6 +9,19 @@
 		SELECT parent_id from Menu
 		where id = #{param}
 	</select>
+	
+	<!-- 부모기준으로 형제들을 순서대로 찾기 -->
+	<select id="findByParentIdOrderByMenuOrder" resultType="kb.keyboard.warrior.dto.MenuDTO">
+		SELECT * FROM Menu
+		WHERE parent_id = #{param1} AND userno = #{param2}
+		ORDER BY menu_order ASC
+	</select>
+	<select id="findNoParentOrderByMenuOrder" resultType="kb.keyboard.warrior.dto.MenuDTO">
+		SELECT * FROM Menu
+		WHERE parent_id IS NULL AND userno = #{param}
+		ORDER BY menu_order ASC
+	</select>
+	
 	<!-- 일반 max order 찾기 -->
 	<select id="getMaxOrderOfFather" resultType="Integer">
 		SELECT COALESCE(MAX(menu_order), 0) FROM Menu WHERE parent_id = #{param}
@@ -114,7 +127,11 @@
 		UPDATE Menu SET isOpen = #{param1} where id =
 		#{param2}
 	</update>
-
+	
+	<!-- 순서변경 -->
+	<update id="updateMenuOrder">
+		UPDATE Menu SET menu_order = #{param2} WHERE id = #{param1}
+	</update>
 	
 	<select id="getNewCopyId" resultType="String">
 		SELECT MAX(id) FROM Menu WHERE userno = #{param} 

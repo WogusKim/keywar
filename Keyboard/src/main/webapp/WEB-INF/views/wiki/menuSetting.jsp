@@ -389,9 +389,21 @@ function selectFolder(element, id, menuType, depth, title) {
     const previouslySelected = document.querySelectorAll('.selected');
     previouslySelected.forEach(span => {
         span.classList.remove('selected');
-        const editIcon = span.parentNode.querySelector('.edit-icon'); // span의 부모 요소에서 수정 아이콘 찾기
+
+        //수정아이콘 지우기
+        const editIcon = span.parentNode.querySelector('.edit-icon'); 
         if (editIcon) {
             editIcon.remove(); // 수정 아이콘 제거
+        }
+        // 새로 추가된 up-arrow-icon 제거 로직
+        const upArrowIcon = document.querySelector('.up-arrow-icon');
+        if (upArrowIcon) {
+            upArrowIcon.remove();
+        }
+        // 새로 추가된 down-arrow-icon 제거 로직
+        const downArrowIcon = document.querySelector('.down-arrow-icon');
+        if (downArrowIcon) {
+            downArrowIcon.remove();
         }
     });
 
@@ -411,6 +423,31 @@ function selectFolder(element, id, menuType, depth, title) {
         element.parentNode.appendChild(editIcon);
     }
 
+    // 선택된 메뉴 항목에 화살표 아이콘 추가
+    if (!element.parentNode.querySelector('.up-arrow-icon')) {
+        const upArrow = document.createElement('img');
+        upArrow.className = 'up-arrow-icon';
+        upArrow.src = "${pageContext.request.contextPath}/resources/images/icons/arrow_up.png";
+        upArrow.style.cssText = "width: 16px; height: 16px; margin-left: 5px; vertical-align: middle; cursor: pointer;";
+        upArrow.onclick = function(event) {
+            changeItemOrder(id, 'up');
+            event.stopPropagation(); // 이벤트 버블링 방지
+        };
+        element.parentNode.appendChild(upArrow);
+    }
+
+    if (!element.parentNode.querySelector('.down-arrow-icon')) {
+        const downArrow = document.createElement('img');
+        downArrow.className = 'down-arrow-icon';
+        downArrow.src = "${pageContext.request.contextPath}/resources/images/icons/arrow_down.png";
+        downArrow.style.cssText = "width: 16px; height: 16px; margin-left: 5px; vertical-align: middle; cursor: pointer;";
+        downArrow.onclick = function(event) {
+            changeItemOrder(id, 'down');
+            event.stopPropagation(); // 이벤트 버블링 방지
+        };
+        element.parentNode.appendChild(downArrow);
+    }
+    
     // 선택된 폴더의 정보를 전역 변수로 저장
     window.selectedFolder = {
         id: id,
@@ -553,6 +590,30 @@ document.getElementById('editForm').addEventListener('submit', function(event) {
 });
 
 
+//메뉴 순서를 변경해주는 로직
+function changeItemOrder(itemId, direction) {
+    $.ajax({
+        url: '${pageContext.request.contextPath}/changeMenuOrder', // 서버의 순서 변경 엔드포인트
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ itemId: itemId, direction: direction }), // 데이터를 JSON으로 직렬화
+        success: function(response) {
+            if (response.success) {
+                // 서버에서 성공적으로 순서가 변경되면 페이지를 새로고침
+                window.location.reload();
+            } else {
+                // 서버에서 응답이 실패로 온 경우
+                alert(response.message);
+            }
+        },
+        error: function(error) {
+            console.error('Error changing menu order:', error);
+            alert('순서 변경 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+
 document.addEventListener('click', function(event) {
     // 클릭된 요소가 menu-tree 내부에 있지만, onclick 이벤트가 있는 요소가 아닐 때만 선택 해제
     if (event.target.closest('.menu-tree2') && !event.target.closest('[onclick]')) {
@@ -563,10 +624,24 @@ document.addEventListener('click', function(event) {
         //document.querySelector('.default').style.display = 'block';
         window.selectedFolder = null; // 선택된 폴더 정보 초기화
         
+        //수정 아이콘 삭제
         const editIcon = document.querySelector('.edit-icon');
         if (editIcon) {
             editIcon.remove();
         }
+
+        // 새로 추가된 up-arrow-icon 제거 로직
+        const upArrowIcon = document.querySelector('.up-arrow-icon');
+        if (upArrowIcon) {
+            upArrowIcon.remove();
+        }
+
+        // 새로 추가된 down-arrow-icon 제거 로직
+        const downArrowIcon = document.querySelector('.down-arrow-icon');
+        if (downArrowIcon) {
+            downArrowIcon.remove();
+        }
+        
     }
 });
 

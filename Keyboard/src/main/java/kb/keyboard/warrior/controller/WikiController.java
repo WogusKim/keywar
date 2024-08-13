@@ -31,6 +31,7 @@ import kb.keyboard.warrior.dao.LoginDao;
 import kb.keyboard.warrior.dao.ScheduleDao;
 import kb.keyboard.warrior.dao.WikiDao;
 import kb.keyboard.warrior.dto.MenuDTO;
+import kb.keyboard.warrior.dto.MenuOrderChangeRequest;
 import kb.keyboard.warrior.dto.ScheduleDTO;
 
 @Controller
@@ -312,6 +313,96 @@ public class WikiController {
         
         return "redirect:menuSetting";
     }
+    
+    
+    //메뉴 순서 변경
+    @RequestMapping(value = "/changeMenuOrder", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity<?> changeMenuOrder(@RequestBody MenuOrderChangeRequest request, HttpSession session) {
+    	
+    	String userno = (String) session.getAttribute("userno");
+    	
+    	String wikiId = request.getItemId();
+    	String direction = request.getDirection();
+    	
+    	System.out.println("순서변경할 id : " + wikiId);
+    	System.out.println("방향 : " + direction);
+    	
+        boolean success = false;
+        //success 로직 처리!!!! 개어려워
+        
+        WikiDao dao = sqlSession.getMapper(WikiDao.class);
+        
+        Integer parentId = dao.getParentid(wikiId);
+        
+        List<MenuDTO> menuList = new ArrayList<MenuDTO>(); //형제들의 모든 리스트를 담아옴
+        
+        //Root격인 경우
+        if (parentId == null) {
+        	menuList = dao.findNoParentOrderByMenuOrder(userno);
+        } else {
+        	//부모가 존재하는 경우
+        	menuList = dao.findByParentIdOrderByMenuOrder(parentId, userno);
+        }
+        
+//        for (MenuDTO mdto : menuList) {
+//        	System.out.println(mdto.getTitle());
+//        }
+        
+        //형제중 본인의 서열 쳌
+        int currentIndex = -1;
+        for (int i = 0; i < menuList.size(); i++) {
+            if (menuList.get(i).getId() == Integer.parseInt(wikiId)) {
+                currentIndex = i;
+                break;
+            }
+        }
+        
+        if (direction.equals("up") && currentIndex > 0) {
+            swapItems(menuList, currentIndex, currentIndex - 1);
+            success = true;
+        } else if (direction.equals("down") && currentIndex < menuList.size() - 1) {
+            swapItems(menuList, currentIndex, currentIndex + 1);
+            success = true;
+        } else {
+            success = false;
+        }
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        if (success) {
+            response.put("success", true);
+        } else {
+            response.put("success", false);
+            response.put("message", "더 이상 순서를 변경할 수 없습니다.");
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    private void swapItems(List<MenuDTO> items, int index1, int index2) {
+        // 메뉴 순서 값을 직접 교환
+        int tempOrder = items.get(index1).getMenuOrder();
+        items.get(index1).setMenuOrder(items.get(index2).getMenuOrder());
+        items.get(index2).setMenuOrder(tempOrder);
+
+        // 리스트 내의 위치를 교환
+        MenuDTO temp = items.get(index1);
+        items.set(index1, items.get(index2));
+        items.set(index2, temp);
+        
+        WikiDao dao = sqlSession.getMapper(WikiDao.class);
+
+        System.out.println("변경메서드!!!!!!!!!!!!!!!!");
+        System.out.println("변경할 ID: " + items.get(index1).getId() + ", 새로운 Order: " + items.get(index1).getMenuOrder());
+        System.out.println("변경할 ID: " + items.get(index2).getId() + ", 새로운 Order: " + items.get(index2).getMenuOrder());
+        System.out.println("변경메서드!!!!!!!!!!!!!!!!");
+
+        // 교환된 후의 ID와 순서를 각각의 아이템에 대해 올바르게 매핑하여 업데이트
+        dao.updateMenuOrder(items.get(index1).getId(), items.get(index1).getMenuOrder());
+        dao.updateMenuOrder(items.get(index2).getId(), items.get(index2).getMenuOrder());
+    }
+
     
     //빠른메뉴추가
     @RequestMapping("/fastAddItem")
