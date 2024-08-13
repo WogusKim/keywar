@@ -8,6 +8,7 @@
 <title>메인 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/wiki.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 .folder-icon {
     background-image: url('${pageContext.request.contextPath}/resources/images/icons/folder_open2.png');
@@ -72,7 +73,7 @@
 							      data-menu-type="${menu.menuType}" 
 							      data-depth="${menu.depth}">
 							    ${menu.title}
-							    <font color="red">(${menu.id})</font>
+							    <%-- <font color="red">(${menu.id})</font> --%>
 							</span>
 	                    </div>
 	                    <c:if test="${not empty menu.children}">
@@ -86,7 +87,7 @@
 											      data-menu-type="${child1.menuType}" 
 											      data-depth="${child1.depth}">
 											    ${child1.title}
-											    <font color="red">(${child1.id})</font>
+											    <%-- <font color="red">(${child1.id})</font> --%>
 											</span>
 	                                    </div>
 	                                    <c:if test="${not empty child1.children}">
@@ -100,7 +101,7 @@
 															      data-menu-type="${child2.menuType}" 
 															      data-depth="${child2.depth}">
 															    ${child2.title}
-															    <font color="red">(${child2.id})</font>
+															    <%-- <font color="red">(${child2.id})</font> --%>
 															</span>
 	                                                    </div>
 	                                                    <c:if test="${not empty child2.children}">
@@ -113,7 +114,7 @@
 																		      data-menu-type="${child3.menuType}" 
 																		      data-depth="${child3.depth}">
 																		    ${child3.title}
-																		    <font color="red">(${child3.id})</font>
+																		    <%-- <font color="red">(${child3.id})</font> --%>
 																		</span>
 	                                                                    </div>
 	                                                                    <c:if test="${not empty child3.children}">
@@ -127,7 +128,7 @@
 																							      data-menu-type="${child4.menuType}" 
 																							      data-depth="${child4.depth}">
 																							    ${child4.title}
-																							    <font color="red">(${child4.id})</font>
+																							    <%-- <font color="red">(${child4.id})</font> --%>
 																							</span>
 	                                                                                    </div>
 	                                                                                </li>
@@ -371,12 +372,12 @@ function toggleFolder(element) {
         }
 
         // ul 요소가 존재하는 경우의 기존 로직 실행
-        if (nextUl.style.display === 'none' || !nextUl.style.display) {
-            nextUl.style.display = 'block';
-            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder_open2.png")';
-        } else {
-            nextUl.style.display = 'none';
+        if ($(nextUl).is(':visible')) {
+            $(nextUl).slideUp(300); // 부드럽게 접히도록 슬라이드 업 애니메이션
             element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder2.png")';
+        } else {
+            $(nextUl).slideDown(300); // 부드럽게 펼치도록 슬라이드 다운 애니메이션
+            element.style.backgroundImage = 'url("${pageContext.request.contextPath}/resources/images/icons/folder_open2.png")';
         }
     }
 }
