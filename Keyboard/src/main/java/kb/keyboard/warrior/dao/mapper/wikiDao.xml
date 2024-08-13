@@ -243,19 +243,26 @@
 	<select id="getMyPost"
 		resultType="kb.keyboard.warrior.dto.BoardDTO">
 		SELECT
-		ROW_NUMBER() OVER (ORDER BY e.id ASC) AS management_number,
-		e.id,
-		m.title,m.titleShare, m.userno , u.username, e.data, m.isOpen,
+		ROW_NUMBER() OVER (ORDER BY e.id ASC) AS
+		management_number,
+		e.id, m.title,m.titleShare, m.userno , u.nickname, m.category,
+		u.username, e.data, m.isOpen,
+        CASE 
+        WHEN u.picture IS NOT NULL THEN u.userno 
+        ELSE '1234567' 
+		END AS picture,
+        COALESCE(wh.hits, 0) AS hits_count,
 		COALESCE(l.like_count, 0) AS like_count,
-		COALESCE(c.comment_count, 0)
-		AS comment_count
-		from EditorData e
+		COALESCE(c.comment_count, 0) AS comment_count
+		from
+		EditorData e
 		join Menu m on e.id = m.id
-		join user u
-		on m.userno = u.userno
-		left outer join ( SELECT targetid, COUNT(*) AS
-		like_count
-		FROM liketable
+		join user u on m.userno =
+		u.userno
+        join WikiHits wh on m.id = wh.wikiId
+		left outer join ( SELECT targetid, COUNT(*) AS like_count
+		FROM
+		liketable
 		GROUP BY targetid
 		) l
 		on e.id = l.targetid
@@ -266,6 +273,8 @@
 		group by targetid) c
 		on c.targetid = e.id
 		where m.isOpen = 1 and m.userno = #{param}
+		order by management_number;
+
 	</select>
 	<select id="myTotalLike" resultType="java.lang.Integer">
 		SELECT
@@ -375,5 +384,28 @@
 		on m.userno = u.userno
 		where isopen ='1' and m.id=#{param1} 
 	</select>
-
+	<select id="getOnesRecord" resultType="kb.keyboard.warrior.dto.BoardDTO" >
+		SELECT
+		u.userno, sum(hits) as hits_count, sum(l.like_count) as like_count,  sum(c.comment_count) as comment_count, count(e.id) as note_count
+		from
+		EditorData e
+		join Menu m on e.id = m.id
+		join user u on m.userno =
+		u.userno
+        join WikiHits wh on m.id = wh.wikiId
+		left outer join ( SELECT targetid, COUNT(*) AS like_count
+		FROM
+		liketable
+		GROUP BY targetid
+		) l
+		on e.id = l.targetid
+		left outer join (select targetid, count(*) as
+		comment_count
+		from comment
+		where commentstatus = 1
+		group by targetid) c
+		on c.targetid = e.id
+		where m.isOpen = 1 and u.userno = '3331796'
+		group by u.userno;
+	</select>
 </mapper>

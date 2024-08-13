@@ -49,6 +49,26 @@ public class BoardController {
 		
 		return "board/list";
 	}
+	
+	@RequestMapping("/profile")
+	public String profile(Model model, HttpSession session, @RequestParam("userno") String userno) {
+		System.out.println(userno+"의 profile창 진입");
+		WikiDao dao = sqlSession.getMapper(WikiDao.class);
+		LoginDao ldao = sqlSession.getMapper(LoginDao.class);
+		List<BoardDTO> list = dao.getMyPost(userno);
+		UserDTO ldto = ldao.isRightUserno(userno);
+		BoardDTO redord = dao.getOnesRecord(userno);
+		
+		if(list !=null) {
+			model.addAttribute("list", list);
+		}
+		if(ldto!=null)
+			model.addAttribute("writer", ldto);
+		if(redord!=null)
+			model.addAttribute("redord", redord);
+		
+		return "board/list2";
+	}
 
 
 	@RequestMapping("/detailNote")
