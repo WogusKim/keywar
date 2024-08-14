@@ -12,7 +12,10 @@ public interface AlertDao {
 	public void addCommentAlert(AlertDTO dto);
 	public void addLikeAlert(AlertDTO dto);
 	public void addSubscribeAlert(AlertDTO dto);
+	public void addFollowAlert(AlertDTO dto);
 	public List<AlertDTO> getRecentlyAlert(String userno);
+	
+	
 	
 	
 	// 팔로우 기능을 위해 추가 !

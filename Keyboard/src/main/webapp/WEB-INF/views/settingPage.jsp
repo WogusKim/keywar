@@ -87,10 +87,10 @@ input:checked + .slider:before {
 		<%@ include file="/WEB-INF/views/sidebar.jsp"%>
 		<div class="content_right">
 			<!-- 주 콘텐츠 -->
-			<div style="display: flex; height: 100%;">
-			<div class="settingPage">
+			<div style="display: flex; height: 100%; ">
+			<div class="settingPage" style=" height: 53%;">
 				<div class="innerSetting">
-					<h2>색상설정</h2>
+					<h2>색상설정</h2> 
 					<hr>
 		            <form class="color-selection" action="${pageContext.request.contextPath}/submitColor" method="post">
 		                <label>
@@ -118,11 +118,11 @@ input:checked + .slider:before {
 		                    <div class="color-circle" id="purple" style="background-color: #d862eb4f;"></div>
 		                </label>
 		                <button type="submit">저장</button>
-		            </form>
+		            </form> 
 				</div>
-			</div>
-				<div class="settingPage" style="margin-left: 10px; height: 50%;">
-					<div class="innerSetting">
+			</div>  
+				<div class="settingPage" style="margin-left: 10px; height: 53%;">
+					<div class="innerSetting" style="padding-bottom: 20px;">
 						<h2>알림 설정</h2>
 						<hr>
 						<div style="padding: 10px;">
@@ -145,6 +145,10 @@ input:checked + .slider:before {
 							<div class="display-flex">
 								<span  class="alertSetting">구독</span>
 								<label class="switch"><input type="checkbox" ${alert.subscribe == 1 ? 'checked' : ''} onclick="switchAlert('subscribe', this.checked)"><span class="slider round"></span></label>
+							</div>
+							<div class="display-flex">
+								<span  class="alertSetting">팔로우</span>
+								<label class="switch"><input type="checkbox" ${alert.follow == 1 ? 'checked' : ''} onclick="switchAlert('follow', this.checked)"><span class="slider round"></span></label>
 							</div>
 						</div>
 					</div>

@@ -157,7 +157,7 @@ min-width: 100px;
 				<div class="white_Box" style="width: 73%"> 
 					<div class="outlineBox" ><h3 class="stress_Text" >나의 활동</h3> 
 					<div>
-					<button class="mypageButton pushedButton">내가 남긴 댓글</button><button class="mypageButton" >좋아하는 게시물</button><button class="mypageButton">구독하는 사용자</button>
+					<button class="mypageButton pushedButton">내가 남긴 댓글</button><button class="mypageButton" >좋아하는 게시물</button><button class="mypageButton">팔로잉</button>
 					</div>
 					</div>
 					<div class="switchBox" id="switchBox1" style="display: block;">

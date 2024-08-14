@@ -16,6 +16,7 @@ public class AlertDTO {
  private String calendar;    // 알림 수신 여부
  private String checkStatus;    //동의 여부
  private String subscribe;    //동의 여부
+ private String follow;    //동의 여부
  
  
  
@@ -28,6 +29,10 @@ public class AlertDTO {
      this.userno = userno;
      this.message = message;
      this.detail = detail;
+ }
+ public AlertDTO(String userno, String message) {
+	 this.userno = userno;
+	 this.message = message;
  }
 
  public AlertDTO(String alertid, String userno, String message, String senddate, String isread) {
@@ -141,6 +146,12 @@ public String getSubscribe() {
 
 public void setSubscribe(String subscribe) {
 	this.subscribe = subscribe;
+}
+public String getFollow() {
+	return follow;
+}
+public void setFollow(String follow) {
+	this.follow = follow;
 }
  
 }

@@ -253,6 +253,7 @@ public class BoardController {
 	@ResponseBody
 	public String followUp(Model model, HttpSession session, @RequestBody FollowDTO dto) {
 		AlertDao dao = sqlSession.getMapper(AlertDao.class);
+		LoginDao ldao = sqlSession.getMapper(LoginDao.class);
 		System.out.println("넘겨 받은 userno : " +dto.getUserno());
 		System.out.println("넘겨 받은 getTargetUserno : " +dto.getTargetUserno());
 		System.out.println("넘겨 받은 status : " +dto.getStatus());
@@ -260,6 +261,12 @@ public class BoardController {
 		FollowDTO dbDTO = dao.checkFollow(dto);
 		if(dbDTO == null) {
 			dao.addFollow(dto);
+			
+			String message = ldao.isRightUserno(dto.getUserno()).getNickname() + "님이 회원님을 구독하였습니다.";
+			System.out.println("알림 등록될 메세지 : " + message);
+			AlertDTO adto = new AlertDTO(dto.getTargetUserno(), message);
+			dao.addFollowAlert(adto);
+			
 			return "{\"status\":\"success\"}";
 		}else {
 			if(dbDTO.getStatus().equals("1")) {
@@ -271,6 +278,12 @@ public class BoardController {
 				dbDTO.setStatus("1");
 				System.out.println("팔로우함.");
 				dao.changeFollowStatus(dbDTO);
+				//팔로우 하면 알림도 가야함.
+				String message = ldao.isRightUserno(dto.getUserno()).getNickname() + "님이 회원님을 구독하였습니다.";
+				System.out.println("알림 등록될 메세지 : " + message);
+				AlertDTO adto = new AlertDTO(dto.getTargetUserno(), message);
+				dao.addFollowAlert(adto);
+				
 				 return "{\"status\":\"success\"}";
 			}
 		}
