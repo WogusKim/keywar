@@ -379,7 +379,11 @@
 	</select>
 	<select id="getOnesRecord" resultType="kb.keyboard.warrior.dto.BoardDTO" >
 		SELECT
-		u.userno, sum(hits) as hits_count, sum(l.like_count) as like_count, sum(c.comment_count) as comment_count, count(e.id) as note_count
+		u.userno, 
+    	COALESCE(SUM(wh.hits), 0) AS hits_count, 
+    	COALESCE(SUM(l.like_count), 0) AS like_count, 
+    	COALESCE(SUM(c.comment_count), 0) AS comment_count, 
+    	COALESCE(COUNT(DISTINCT e.id), 0) AS note_count
 		from
 		EditorData e
 		join Menu m on e.id = m.id

@@ -24,6 +24,7 @@ public interface AlertDao {
 	public void changeFollowStatus(FollowDTO dto);
 	public int checkMyFollowers(String userno);
 	public List<UserDTO> checkMyFollowing(String userno);
+	public List<UserDTO> checkMyFollower(String userno);
 	// 알림 보낼 유저들 (나의 팔로워) 가져오기
 	public List<String> sortMyFollower(String userno);
 	

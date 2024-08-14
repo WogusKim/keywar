@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/display.css">
 <link rel="icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
 <link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
-
+<% String userno = (String) session.getAttribute("userno"); %>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 
@@ -89,6 +89,7 @@ min-width: 100px;
         var box1 = document.getElementById('switchBox1');
         var box2 = document.getElementById('switchBox2');
         var box3 = document.getElementById('switchBox3');
+        var box4 = document.getElementById('switchBox4');
         var buttons = document.querySelectorAll('.mypageButton');
 
         function updateButtonStyles(activeButton) {
@@ -101,23 +102,34 @@ min-width: 100px;
             box1.style.display = 'block';
             box2.style.display = 'none';
             box3.style.display = 'none';
+            box4.style.display = 'none';
             updateButtonStyles(this);
         }
         function btn2() {
             box1.style.display = 'none';
             box2.style.display = 'block';
             box3.style.display = 'none';
+            box4.style.display = 'none';
             updateButtonStyles(this);
         }
         function btn3() {
             box1.style.display = 'none';
             box2.style.display = 'none';
+            box4.style.display = 'none';
             box3.style.display = 'block';
+            updateButtonStyles(this);
+        }
+        function btn4() {
+            box1.style.display = 'none';
+            box2.style.display = 'none';
+            box3.style.display = 'none';
+            box4.style.display = 'block';
             updateButtonStyles(this);
         }
         document.querySelector('.mypageButton:nth-child(1)').addEventListener('click', btn1);
         document.querySelector('.mypageButton:nth-child(2)').addEventListener('click', btn2);
         document.querySelector('.mypageButton:nth-child(3)').addEventListener('click', btn3);
+        document.querySelector('.mypageButton:nth-child(4)').addEventListener('click', btn4);
     });
 </script>
 
@@ -157,7 +169,7 @@ min-width: 100px;
 				<div class="white_Box" style="width: 73%"> 
 					<div class="outlineBox" ><h3 class="stress_Text" >나의 활동</h3> 
 					<div>
-					<button class="mypageButton pushedButton">내가 남긴 댓글</button><button class="mypageButton" >좋아하는 게시물</button><button class="mypageButton">팔로잉</button>
+					<button class="mypageButton pushedButton">내가 남긴 댓글</button><button class="mypageButton" >좋아하는 게시물</button><button class="mypageButton">팔로잉</button><button class="mypageButton">팔로워</button>
 					</div>
 					</div>
 					<div class="switchBox" id="switchBox1" style="display: block;">
@@ -188,22 +200,108 @@ min-width: 100px;
 						</tr>
 						</c:forEach>
 						</table>
-				
-					 
+
 					 
 					 </div>
+					 
+					 
+<style>
+.writer_td {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start; /* 왼쪽 정렬 */
+}
+
+.profile-pic {
+	width: 50px; /* 이미지 너비 설정 */
+	height: 50px; /* 이미지 높이 설정 */
+	border-radius: 50%; /* 이미지를 원형으로 만들기 */
+	object-fit: cover; /* 이미지 비율 유지하면서 요소에 맞추기 */
+	border: 2px solid #f4f4f4; /* 이미지 주변에 테두리 추가 */
+	margin-right: 10px;
+}
+.styled-button {
+    background-color: #6200ea;
+    color: white;
+	padding : 10px;
+    font-size: 12px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+}
+
+.styled-button:hover {
+    background-color: #3700b3;
+    transform: scale(1.05);
+}
+
+.styled-button:active {
+    background-color: #1a00e6;
+    transform: scale(1);
+}
+
+.styled-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(98, 0, 234, 0.5);
+}
+</style>
+					 
 					 <!-- 팔로우 영역 잡아놈 -->
 					<div class="switchBox" id="switchBox3" style="display: none;">
-						<table style="width: 100%; table-layout: fixed; padding: 5px;">
+				
 						<c:forEach var="myFollowing" items="${myFollowing}">
-						<tr>
-							<td><a class="aTag" href="${pageContext.request.contextPath}/profile?userno=${myFollowing.userno}">${myFollowing.nickname} <span style="color: gray; font-size: small;"> (${myFollowing.username})</span></a></td>
-						</tr>
+						 <div class="writer_td" style="display: flex; justify-content: space-between;">
+                    		<div style="display: flex; " onclick="goToProfile(${myFollowing.userno})">
+	                    		<div>
+	                    			<img class="profile-pic" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${myFollowing.userno}" />
+	                    		</div>
+	                    		<div style="margin-top: 5px; margin-left: 5px;">
+	                    		${myFollowing.nickname} <br>
+	                    		<span style="color: gray; font-size: small; margin-left: 2px;"> ${myFollowing.username} </span>
+	                    		</div>
+                    		</div>
+                    		<!-- 팔로우, 언팔로우 영역123 -->
+                    		<div>
+                    		<button class="styled-button" onclick="followUp('${myFollowing.userno}')">구독취소</button>
+                    		</div>
+                    	
+               	 		</div>
 						</c:forEach>
-						</table>
+						<c:if test="${ empty myFollowing}">
+							<div style="text-align: center">
+								<iframe src="https://giphy.com/embed/lmefcS3U29GrsmXu5D" width="130px;" height="130px;" style="pointer-events: none; margin: 0;" frameBorder="0"
+									class="giphy-embed" allowFullScreen></iframe>
+							</div>
+							<div style="color:gray; text-align: center">
+							구독한 사용자가 없습니다. <br>사람들을 구독하고 게시물 등록 알림을 받아보세요 !
+							</div>
+						</c:if>
+					</div>
+					<div class="switchBox" id="switchBox4" style="display: none;">
+					
+					<c:forEach var="myFollower" items="${myFollower}">
+						 <div class="writer_td" style="display: flex; justify-content: space-between;">
+                    		<div style="display: flex; " onclick="goToProfile(${myFollower.userno})">
+	                    		<div>
+	                    			<img class="profile-pic" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${myFollower.userno}" />
+	                    		</div>
+	                    		<div style="margin-top: 5px; margin-left: 5px;">
+	                    		${myFollower.nickname} <br>
+	                    		<span style="color: gray; font-size: small; margin-left: 2px;"> ${myFollower.username} </span>
+	                    		</div>
+                    		</div>
+                    		<!-- 팔로우, 언팔로우 영역123 -->
+                    		<div>
+                    	
+                    		</div>
+                    	
+               	 		</div>
+						</c:forEach>
 					
 					</div>
-				
 				</div>
 				</div>
 				
@@ -213,12 +311,12 @@ min-width: 100px;
 				<div style="overflow-y: auto; height: 85%; margin-top: 20px; width: 100%; padding: 5px;">
 				<table style="width: 100%; padding: 5px;">
 				<colgroup>
-       	 			<col style="width: 60%;">
-       	 			<col style="width: 8%;">
-       	 			<col style="width: 8%;">
-       	 			<col style="width: 8%;">
-       	 			<col style="width: 8%;">
-       	 			<col style="width: 8%;">
+       	 			<col style="width: 56%;">
+       	 			<col style="width: 10%;">
+       	 			<col style="width: 10%;">
+       	 			<col style="width: 10%;">
+       	 			<col style="width: 7%;">
+       	 			<col style="width: 7%;">
     			</colgroup>
     			<tbody>
     			<c:forEach var="post" items="${mypost}">
@@ -245,6 +343,51 @@ min-width: 100px;
 
 	</div>
 </div>
+<script>
+//팔로우
+function followUp(userno1){
+	
+	var userno = '<%= userno %>';
+	console.log(userno);
+	
+	if(userno == userno1){
+		alert("자기 자신은 구독할 수 없습니다.");
+		return;
+	}
+	
+    fetch('${pageContext.request.contextPath}/followUp', {   
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+        	targetUserno : userno1,
+            userno: userno,
+            status : '1'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        if(data.status == 'success'){
+        	alert("정상적으로 구독하였습니다.");
+        	location.reload();
+        }else if(data.status == 'unFollow'){
+        	alert("구독이 취소되었습니다.");
+        	location.reload();
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert("작업 중 오류가 발생하였습니다.");
+    }); 
+	
+}
+// 여기로 이동 ! (프로필 상세 페이지)
+function goToProfile(userno){
+	window.location.href = '${pageContext.request.contextPath}/profile?userno='+userno;
+}
 
+</script>
 </body>
 </html>

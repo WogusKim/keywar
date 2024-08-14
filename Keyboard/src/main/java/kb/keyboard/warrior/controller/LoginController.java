@@ -186,6 +186,7 @@ public class LoginController {
 		List<BoardDTO> mypost = wdao.getMyPost(userno);
 		List<BoardDTO> likedpost = wdao.getLikedPost(userno);
 		List<UserDTO> myFollowing = ldao.checkMyFollowing(userno);
+		List<UserDTO> myFollower = ldao.checkMyFollower(userno);
 		
 		int myLikeCount = 0;
 		myLikeCount = wdao.myTotalLike(userno);
@@ -198,6 +199,8 @@ public class LoginController {
 			model.addAttribute("likedpost", likedpost);
 		if(myFollowing!=null)
 			model.addAttribute("myFollowing", myFollowing);
+		if(myFollower!=null)
+			model.addAttribute("myFollower", myFollower);
 		
 		model.addAttribute("myLikeCount", myLikeCount);
 		model.addAttribute("myFollowCount", myFollowCount);
