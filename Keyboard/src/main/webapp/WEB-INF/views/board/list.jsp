@@ -40,6 +40,7 @@ th {
 	display: flex;
 	align-items: center;
 	justify-content: flex-start; /* 왼쪽 정렬 */
+	cursor: pointer;
 }
 
 .title_td {
@@ -347,8 +348,8 @@ function renderFilteredTable(data) {
         '<td>' + (item.category || '') + '</td>' +
         '<td class="title_td"><a href="' + (contextPath || '') + '/detailNote?id=' + (item.id || '') + '" class="styled-link">' + (item.titleShare || '') + '</a></td>' +
         '<td>' +
-            '<div class="writer_td" onclick="goToProfile(\${item.userno})">' +
-                '<img class="profile-pic" src="' + (contextPath || '') + '/getUserProfilePicture2?userno=' + (item.userno || '') + '" />' +
+            '<div class="writer_td" onclick="goToProfile(${item.userno})">' +
+                '<img class="profile-pic" src="' + (contextPath || '') + '/getUserProfilePicture2?userno=' + (item.picture || '') + '" />' +
              '<a href="${pageContext.request.contextPath}/profile?userno=\${item.userno}" class="styled-link">'+ (item.nickname || '') +'</a>'+
             '</div>' +
         '</td>' +
@@ -386,7 +387,7 @@ function sortPosts(criteria) {
 }
 
 function goToProfile(userno){
-	
+	window.location.href = '${pageContext.request.contextPath}/profile?userno='+userno;
 	
 }
 </script>

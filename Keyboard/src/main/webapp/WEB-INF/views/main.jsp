@@ -623,6 +623,40 @@ label {
 	height: 100%;
 	object-fit: cover;
 }
+#crown {
+	position: absolute;
+	top: calc(7% - 22.5px);
+	left: calc(50% - 22.5px);
+	text-align: center;
+	width: 45px;
+	height: 45px;
+	background-image: url('${pageContext.request.contextPath}/resources/images/crown.png');
+	background-size: cover;
+	background-position: center top;
+	z-index: 999;"
+}
+
+#first {
+    position: absolute;
+    top: calc(25% - 33px); /* top 위치를 비율 + 고정 값으로 계산 */
+    /* left: calc(50% - 43.69px); /* left 위치를 비율 + 고정 값으로 계산 */ */
+    text-align: center;
+}
+
+#second {
+    position: absolute;
+    top: calc(30% - 33px);
+    left: calc(20% - 22.885px);
+    text-align: center;
+}
+
+#third {
+    position: absolute;
+    top: calc(37% - 33px);
+    left: calc(80% - 22.5px);
+    text-align: center;
+}
+
 </style>
 
 				<div class="board_inner3">
@@ -640,46 +674,44 @@ label {
 								<hr>
 								<!-- 새로운 영역 시작 -->
 								<div id="outt"
-									style="position: relative; background-image: url('${pageContext.request.contextPath}/resources/images/leaderboard.png'); background-size: cover; background-position: center top; width: 100%; height: 80%;">
-									<div id="crown"
-										style="position: absolute; top: -1%; left: 42%; text-align: center; width: 45px; height: 45px; background-image: url('${pageContext.request.contextPath}/resources/images/crown.png'); background-size: cover; background-position: center top; z-index: 999;"></div>
+									style="position: relative; background-image: url('${pageContext.request.contextPath}/resources/images/leaderboard.png'); background-size: cover; background-repeat: no-repeat; background-position: center; width: auto; height: 95%;">
+									<div id="crown"></div>
 
 
 									<!-- 1등 영역 -->
-									<div id="first"
-										style="position: absolute; top: 15%; left: 30%; text-align: center;">
+									<div id="first">
 										<div class="box" id="profilepicture">
 											<img class="profile"
 												src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[0].userno}"
 												alt="Profile Picture">
 										</div>
-										<span style="font-weight: bold;">${bestWriter[0].nickname}</span>
+										<span id="first_nickName" style="font-size: small; font-weight: bold;">${bestWriter[0].nickname}</span>
 										<br>
 										<%-- 좋아요
+										0.
+										
 										${bestWriter[0].like_count}개 --%>
 									</div>
 									<!-- 2, 3등 영역 -->
 									<div class="arrangeBox">
-										<div id="second"
-											style="position: absolute; top: 25%; left: 10%; text-align: center;">
+										<div id="second">
 											<div class="box" id="profilepicture">
 												<img class="profile"
 													src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[1].userno}"
 													alt="Profile Picture">
 											</div>
-											<span style="font-weight: bold;">${bestWriter[1].nickname}</span>
+											<span style="font-size: small; font-weight: bold;">${bestWriter[1].nickname}</span>
 											<br>
 											<%--  좋아요
 											${bestWriter[1].like_count}개 --%>
 										</div>
-										<div id="third"
-											style="position: absolute; top: 35%; left: 71%; text-align: center;">
+										<div id="third">
 											<div class="box" id="profilepicture">
 												<img class="profile"
 													src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[2].userno}"
 													alt="Profile Picture">
 											</div>
-											<span style="font-weight: bold;">${bestWriter[2].nickname}</span>
+											<span style="font-size: small; font-weight: bold;">${bestWriter[2].nickname}</span>
 											<br>
 											<%--  좋아요
 											${bestWriter[2].like_count}개 --%>
@@ -839,6 +871,24 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 완료 현황 업데이트
   //  updateTodoCount();
+    
+    var firstElement = document.getElementById('first_nickName');
+	console.log(firstElement);
+	
+    var nicknameWidth = firstElement.offsetWidth;
+
+    console.log("Nickname Width:", nicknameWidth); // 닉네임의 폭 확인
+
+    var halfWidth = nicknameWidth / 2; // 닉네임 폭의 절반 계산
+    var leftValue = `calc(50% - \${halfWidth}px)`;
+
+    console.log("halfWidth:", halfWidth); // 계산된 left 값을 확인
+    console.log("Calculated Left Value:", leftValue); // 계산된 left 값을 확인
+
+    var parent_div = document.getElementById('first');
+    parent_div.style.left = leftValue;
+    
+    
 });
 
 
@@ -948,6 +998,16 @@ document.getElementById("branchMemoButton").onclick = function() {
     document.getElementById("myMemoArea").style.display = "none";
     document.getElementById("branchMemoArea").style.display = "block";
 };
+
+
+
+
+
+
+
+
+
+
 </script>
 </body>
 </html>

@@ -396,7 +396,7 @@
 		where commentstatus = 1
 		group by targetid) c
 		on c.targetid = e.id
-		where m.isOpen = 1 and u.userno = '3331796'
+		where m.isOpen = 1 and u.userno = #{param}
 		group by u.userno;
 	</select>
 </mapper>
