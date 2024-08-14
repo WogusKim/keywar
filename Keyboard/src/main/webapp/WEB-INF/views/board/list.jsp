@@ -130,12 +130,7 @@ tr:last-child td {
     margin-left: 5px;
 }
 
-/* 
-.sort-buttons button {
-	float: right; 
-	margin-left: 5px; 
-}
- */
+
 /* 필요하다면 추가적인 스타일링을 적용 */
 input[type="text"] {
 	padding: 5px;
@@ -267,33 +262,7 @@ var dataList = [
 var filteredDataList = null; // 새로운 전역 변수
 var originalDataList = [...dataList]; // 원본 데이터 복사본 저장
 
-function likeUp(){
-	
-	
-	fetch('${pageContext.request.contextPath}/likeUp', {   
-      	method: 'POST',
-    	headers: {
-        	'Content-Type': 'application/json'
-      	},
-    	body: JSON.stringify({
-	      	targetid : id,
-      	})
-  	})
-  	.then(response => response.json())
-  	.then(data => {
-      	console.log('Success:', data);
-      	if(data.status == "success"){
-      		location.reload();
-      	}else if(data.status == "duplicate"){
-      		alert("이미 좋아하는 게시물입니다.");
-      	}else{
-      		
-      	}
-  	})
-  	.catch((error) => {
-      	console.error('Error:', error);
-  	});
-}
+
 
 function filterByCategory() {
     var category = document.getElementById("categoryCool").value;
@@ -312,7 +281,6 @@ function renderTable(page) {
 	
 	currentPage = page; // 현재 페이지 업데이트
     const dataToUse = filteredDataList || dataList; // 필터링된 데이터가 있으면 사용, 없으면 전체 데이터 사용
-
 	
     console.log(`Rendering page: ${page}`); // 현재 렌더링하는 페이지 번호를 로그로 확인
     const start = (page - 1) * recordsPerPage;
@@ -328,7 +296,6 @@ function renderTable(page) {
     paginatedItems.forEach(item => {
         let row = `<tr>
             <td>\${item.management_number}</td>
-
             <td>\${item.category}</td>
             <td class="title_td"><a href="${pageContext.request.contextPath}/detailNote?id=\${item.id}" class="styled-link">\${item.titleShare}
             <span class="comment-area">[\${item.comment_count}]</span></a></td>
@@ -366,26 +333,13 @@ window.onload = function() {
     loginCheck();
 };
 
-/* function searchPosts(e) {
-    e.preventDefault(); // 폼 제출 방지
-    const searchText = document.getElementById('searchInput').value.toLowerCase();
-
-    // dataList는 페이지 로딩 시 전체 데이터를 가지고 있어야 합니다.
-    const filteredData = dataList.filter(item => item.titleShare.toLowerCase().includes(searchText));
-    
-    currentPage = 1; // 검색 후 첫 페이지로 리셋
-    renderFilteredTable(filteredData);
-} */
 
 function searchPostsCool(e) {
     e.preventDefault(); // 폼 제출 방지
     console.log('form submitted');
-    const searchInputCool = document.getElementById('searchInputCool');
-    console.log(searchInputCool); // searchInput 요소 확인
     const searchTextCool = document.getElementById('searchInputCool').value.toLowerCase();
 	console.log(searchTextCool);
     // 전역 변수로 필터링된 데이터를 저장
-    //window.filteredDataList = dataList.filter(item => item.titleShare.toLowerCase().includes(searchTextCool));
     filteredDataList = originalDataList.filter(item => item.titleShare.toLowerCase().includes(searchTextCool));
 
     console.log(window.filteredDataList);
@@ -423,14 +377,6 @@ function renderFilteredTable(data) {
     }
 }
 
-/* function sortPosts(criteria) {
-    if (criteria === 'hits_count') {
-        dataList.sort((a, b) => b.hits_count - a.hits_count);
-    } else if (criteria === 'like_count') {
-        dataList.sort((a, b) => b.like_count - a.like_count);
-    }
-    renderTable(1); // 정렬 후 첫 페이지를 보여줍니다.
-} */
 
 function sortPosts(criteria) {
     const dataToSort = window.filteredDataList || dataList;

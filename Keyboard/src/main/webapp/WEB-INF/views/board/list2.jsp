@@ -102,10 +102,42 @@ tr:last-child td {
 	color: black; /* 활성화된 버튼의 텍스트 색상 */
 	text-decoration: underline; /* 버튼에 언더라인 추가 */
 }
+ 
+/* .sort-buttons {
+	text-align: right; 
+} */
+
 
 .sort-buttons {
-	text-align: right; /* 버튼을 가운데 정렬 */
+	width: 100%;
+	overflow: auto; /* 컨텐츠가 넘치면 자동으로 처리 */
 }
+
+.sort-buttons form {
+	float: left; /* 검색 폼을 왼쪽으로 정렬 */
+	margin-right: 10px; /* 오른쪽 버튼과의 간격 */
+	    /* 아래 속성 추가 */
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.sort-buttons form input[type="text"] {
+    /* 검색창의 너비 조정 */
+    width: 200px; /* 또는 적절한 값 */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.sort-buttons form button[type="submit"] {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.sort-buttons button.sort-button {
+    float: right;
+    margin-left: 5px;
+}
+
 
 .sort-button {
 	padding: 5px 10px; /* 내부 패딩 */
@@ -183,6 +215,11 @@ tr:last-child td {
 			<hr>
 			<div style="width: 100%; height: 65%;">
 				<div class="sort-buttons">
+					<form onsubmit="searchPostsProfile(event)">
+						<input type="text" id="searchInputProfile" placeholder="제목 검색...">
+						<button type="submit">검색</button>
+					</form>
+				
 					<button class="sort-button" onclick="sortPosts('hits_count');">조회수 순</button>
 					<button class="sort-button" onclick="sortPosts('like_count');">좋아요 순</button>
 					<button class="sort-button" onclick="sortPosts('management_number');">최신순</button>
@@ -193,14 +230,16 @@ tr:last-child td {
 				<table>
 					<colgroup>
 						<col style="width: 10%;">
-						<col style="width: 50%;">
-						<col style="width: 20%;">
+						<col style="width: 10%;">
+						<col style="width: 45%;">
+						<col style="width: 15%;">
 						<col style="width: 10%;">
 						<col style="width: 10%;">
 					</colgroup>
 					<thead style="font-size: large;">
 						<tr>
 							<th scope="col">관리번호</th>
+							<th scope="col">카테고리</th>							
 							<th scope="col" style="text-align: left;">제목</th>
 							<th scope="col" style="text-align: left;">작성자</th>
 							<th scope="col">좋아요</th>
@@ -225,6 +264,7 @@ var dataList = [
     <c:forEach var="item" items="${list}" varStatus="status">
     {
         management_number: "${item.management_number}",
+        category: "${item.category}",
         id: ${item.id},
         titleShare: "${item.titleShare}",
         nickname: "${item.nickname}",
@@ -240,10 +280,18 @@ var dataList = [
 console.log('datalist: ');
 console.log(dataList);
 
+var filteredDataList = null; // 새로운 전역 변수
+var originalDataList = [...dataList]; // 원본 데이터 복사본 저장
+
+
+function filterByCategory() {
+    var category = document.getElementById("categoryCool").value;
+    window.location.href = "hotNote?category=" + encodeURIComponent(category);
+}
+
+
 let currentPage = 1;
 const recordsPerPage = 10;
-
-
 
 //페이지 로드 시 초기 테이블 렌더링
 document.addEventListener('DOMContentLoaded', function() {
@@ -255,11 +303,13 @@ document.addEventListener('DOMContentLoaded', function() {
 function renderTable(page) {
 	
 	currentPage = page; // 현재 페이지 업데이트
-	
+    const dataToUse = filteredDataList || dataList; // 필터링된 데이터가 있으면 사용, 없으면 전체 데이터 사용
+
     console.log(`Rendering page: ${page}`); // 현재 렌더링하는 페이지 번호를 로그로 확인
     const start = (page - 1) * recordsPerPage;
     const end = start + recordsPerPage;
-    const paginatedItems = dataList.slice(start, end);
+//    const paginatedItems = dataList.slice(start, end);
+    const paginatedItems = dataToUse.slice(start, end);
     console.log(`Items from ${start} to ${end}:`, paginatedItems); // 페이지에 표시될 아이템 범위 로그
 
     let tableBody = document.getElementById("tableBody");
@@ -268,6 +318,7 @@ function renderTable(page) {
     paginatedItems.forEach(item => {
         let row = `<tr>
             <td>\${item.management_number}</td>
+            <td>\${item.category}</td>
             <td class="title_td"><a href="${pageContext.request.contextPath}/detailNote?id=\${item.id}" class="styled-link">\${item.titleShare}
             <span class="comment-area">[\${item.comment_count}]</span></a></td>
             <td>
@@ -282,11 +333,13 @@ function renderTable(page) {
         tableBody.innerHTML += row;
     });
     
-    setupPagination();
+//    setupPagination();
+    setupPagination(dataToUse.length);
+
 }
 
-function setupPagination() {
-    const pageCount = Math.ceil(dataList.length / recordsPerPage);
+function setupPagination(totalItems) {
+    const pageCount = Math.ceil(totalItems / recordsPerPage);
     let paginationHTML = '';
     for (let i = 1; i <= pageCount; i++) {
         paginationHTML += `<button class="\${i === currentPage ? 'active2' : ''}" onclick="renderTable(\${i})">\${i}</button>`;
@@ -294,22 +347,32 @@ function setupPagination() {
     document.getElementById('pagination').innerHTML = paginationHTML;
 }
 
-window.onload = function() {
+/* window.onload = function() {
     renderTable(1);  // Render the first page
     setupPagination();  // Setup pagination buttons
+    loginCheck();
+}; */
+window.onload = function() {
+    originalDataList = [...dataList]; // 원본 데이터 복사본 저장
+
+    renderTable(1);  // Render the first page
+    //setupPagination();  // Setup pagination buttons
     loginCheck();
 };
 
 
 
 
-function searchPosts(e) {
+function searchPostsProfile(e) {
     e.preventDefault(); // 폼 제출 방지
-    const searchText = document.getElementById('searchInput').value.toLowerCase();
-
+    const searchTextProfile = document.getElementById('searchInputProfile').value.toLowerCase();
     // dataList는 페이지 로딩 시 전체 데이터를 가지고 있어야 합니다.
-    const filteredData = dataList.filter(item => item.titleShare.toLowerCase().includes(searchText));
-    renderFilteredTable(filteredData);
+    filteredDataList = originalDataList.filter(item => item.titleShare.toLowerCase().includes(searchTextProfile));
+//    const filteredData = dataList.filter(item => item.titleShare.toLowerCase().includes(searchText));
+//    renderFilteredTable(filteredData);
+    currentPage = 1; // 검색 후 첫 페이지로 리셋
+    renderTable(1); // 기존의 renderTable 함수를 사용
+
 }
 
 function renderFilteredTable(data) {
@@ -320,6 +383,7 @@ function renderFilteredTable(data) {
 
         let row = '<tr>' +
         '<td>' + (item.management_number || '') + '</td>' +
+        '<td>' + (item.category || '') + '</td>' +
         '<td class="title_td"><a href="' + (contextPath || '') + '/detailNote?id=' + (item.id || '') + '" class="styled-link">' + (item.titleShare || '') + '</a></td>' +
         '<td>' +
             '<div class="writer_td">' +
@@ -342,7 +406,7 @@ function renderFilteredTable(data) {
 
 
 
-function sortPosts(criteria) {
+/* function sortPosts(criteria) {
     if (criteria === 'hits_count') {
         dataList.sort((a, b) => b.hits_count - a.hits_count);
     } else if (criteria === 'like_count') {
@@ -351,7 +415,22 @@ function sortPosts(criteria) {
         dataList.sort((a, b) => b.management_number - a.management_number);
     }
     renderTable(1); // 정렬 후 첫 페이지를 보여줍니다.
+} */
+
+function sortPosts(criteria) {
+    const dataToSort = window.filteredDataList || dataList;
+    if (criteria === 'hits_count') {
+        dataToSort.sort((a, b) => b.hits_count - a.hits_count);
+    } else if (criteria === 'like_count') {
+        dataToSort.sort((a, b) => b.like_count - a.like_count);
+    }
+    
+//    window.filteredDataList = dataToSort;
+    filteredDataList = dataToSort;
+
+    renderTable(1); // 정렬 후 첫 페이지를 보여줍니다.
 }
+
 function getQueryParameter(name) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
