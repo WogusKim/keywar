@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kb.keyboard.warrior.dao.AlertDao;
 import kb.keyboard.warrior.dao.CommentDao;
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.fasterxml.jackson.databind.SerializationFeature;
@@ -181,18 +182,25 @@ public class LoginController {
 		if(list!=null)
 			model.addAttribute("comment", list);
 		WikiDao wdao = sqlSession.getMapper(WikiDao.class);
+		AlertDao ldao = sqlSession.getMapper(AlertDao.class);
 		List<BoardDTO> mypost = wdao.getMyPost(userno);
-
-		
 		List<BoardDTO> likedpost = wdao.getLikedPost(userno);
+		List<UserDTO> myFollowing = ldao.checkMyFollowing(userno);
+		
 		int myLikeCount = 0;
 		myLikeCount = wdao.myTotalLike(userno);
+		
+		int myFollowCount = 0;
+		myFollowCount = ldao.checkMyFollowers(userno);
 		if(mypost!=null)
 			model.addAttribute("mypost", mypost);
 		if(likedpost!=null)
 			model.addAttribute("likedpost", likedpost);
+		if(myFollowing!=null)
+			model.addAttribute("myFollowing", myFollowing);
 		
 		model.addAttribute("myLikeCount", myLikeCount);
+		model.addAttribute("myFollowCount", myFollowCount);
 		
 		return "login/mypage";
 	}

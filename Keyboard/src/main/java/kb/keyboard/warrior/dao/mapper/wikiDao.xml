@@ -285,11 +285,13 @@
 
 	<select id="getLikedPost"
 		resultType="kb.keyboard.warrior.dto.BoardDTO">
-		select l.targetid as id, l.userno, m.titleShare
+		select l.targetid as id, l.userno, m.titleShare, u.nickname
 		from
 		liketable l
 		join Menu m
 		on l.targetid = m.id
+		join user u
+		on m.userno = u.userno
 		where l.userno = #{param1}
 	</select>
 	<select id="getBestPost"

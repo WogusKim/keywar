@@ -18,6 +18,7 @@ public interface AlertDao {
 	public FollowDTO checkFollow(FollowDTO dto);
 	public void addFollow(FollowDTO dto);
 	public void changeFollowStatus(FollowDTO dto);
-	
-	
+	public int checkMyFollowers(String userno);
+	public List<UserDTO> checkMyFollowing(String userno);
 }
+

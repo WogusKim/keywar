@@ -133,7 +133,7 @@ min-width: 100px;
 				<div class="outlineBox">
 					<div style="float: left;"><h2 class="card_title">마이페이지</h2></div><div style="float: right;">
 						<%-- <a href="${pageContext.request.contextPath}/editProfile"> <img class="header_icon" style="margin-top: 5px;" src="${pageContext.request.contextPath}/resources/images/setting.png"> </a> --%>
-					</div>s
+					</div>
 				</div>
 				<hr>
 				<div class="outlineBox" style="height: 40%">
@@ -145,9 +145,9 @@ min-width: 100px;
 				<a href="${pageContext.request.contextPath}/editProfile"><img  src="${pageContext.request.contextPath}/resources/images/icons/edit.png" style="width: 16px; height: 16px; vertical-align: middle; cursor: pointer;"></a>
 				
 				<!-- 좋아요 + 팔로우 표시 -->
-				<div class="profileArea" style="margin-top: 20px; width: 30%;">
+				<div class="profileArea" style="margin-top: 20px;">
 					<img src="${pageContext.request.contextPath}/resources/images/heart16.png" > <span>${myLikeCount}</span> 
-					<%-- <img src="${pageContext.request.contextPath}/resources/images/follow16.png" > <span>74</span> --%> <!-- 팔로우 이제 안하기로 함 -->
+					<img src="${pageContext.request.contextPath}/resources/images/follow16.png" > <span>${myFollowCount}</span>
 				</div>
 				
 				<div> </div>
@@ -157,7 +157,7 @@ min-width: 100px;
 				<div class="white_Box" style="width: 73%"> 
 					<div class="outlineBox" ><h3 class="stress_Text" >나의 활동</h3> 
 					<div>
-					<button class="mypageButton pushedButton">내가 남긴 댓글</button><button class="mypageButton" >좋아하는 게시물</button><button class="mypageButton">팔로우</button>
+					<button class="mypageButton pushedButton">내가 남긴 댓글</button><button class="mypageButton" >좋아하는 게시물</button><button class="mypageButton">구독하는 사용자</button>
 					</div>
 					</div>
 					<div class="switchBox" id="switchBox1" style="display: block;">
@@ -184,7 +184,7 @@ min-width: 100px;
 						<table style="width: 100%; table-layout: fixed; padding: 5px;">
 						<c:forEach var="likedpost" items="${likedpost}">
 						<tr>
-							<td><a class="aTag" href="${pageContext.request.contextPath}/detailNote?id=${likedpost.id}">${likedpost.titleShare}</a></td>
+							<td><a class="aTag" href="${pageContext.request.contextPath}/detailNote?id=${likedpost.id}">${likedpost.titleShare} <span style="color: gray; font-size: small; margin-left: 10px;"> ${likedpost.nickname}</span></a></td>
 						</tr>
 						</c:forEach>
 						</table>
@@ -193,7 +193,16 @@ min-width: 100px;
 					 
 					 </div>
 					 <!-- 일단 팔로우 영역 잡아놈 -->
-					<div class="switchBox" id="switchBox3" style="display: none;"> 3 3 3 3 3 3 3 3 3 3 </div>
+					<div class="switchBox" id="switchBox3" style="display: none;">
+						<table style="width: 100%; table-layout: fixed; padding: 5px;">
+						<c:forEach var="myFollowing" items="${myFollowing}">
+						<tr>
+							<td><a class="aTag" href="${pageContext.request.contextPath}/profile?userno=${myFollowing.userno}">${myFollowing.nickname} <span style="color: gray; font-size: small;"> (${myFollowing.username})</span></a></td>
+						</tr>
+						</c:forEach>
+						</table>
+					
+					</div>
 				
 				</div>
 				</div>
