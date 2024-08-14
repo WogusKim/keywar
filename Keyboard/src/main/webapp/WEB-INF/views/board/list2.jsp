@@ -5,13 +5,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>김국민의 업무노트 : ${dto.username } 노트 모아보기</title>
-</head>
-<body>
+<title>김국민의 업무노트 : ${writer.nickname} 노트 모아보기</title>
+<% String userno = (String) session.getAttribute("userno"); %>
 <link rel="icon"
 	href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
 <link rel="apple-touch-icon"
 	href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
+</head>
+<body>
+	
 <style>
 table {
 	width: 100%; /* 테이블 너비 */
@@ -131,8 +133,12 @@ tr:last-child td {
     object-fit: cover;
 }
 .mini-icons{
-		margin-left: 15px;
-		}
+	margin-left: 15px;
+}
+.comment-area{
+	font-size: small;
+	color: red;
+}
 </style>
 </head>
 <body>
@@ -143,7 +149,9 @@ tr:last-child td {
 		<jsp:include page="/WEB-INF/views/sidebar.jsp" />
 		<div class="content_right">
 		<!-- 상단에 글 보는 사람 이름이랑 이런 거 뜨는 영역 -->
-		<div style="text-align: left; padding: 15px; display: flex;">
+		
+		<div style="text-align: left; padding: 15px; display: flex; justify-content: space-between;" id="profieArea">
+		<div style="display: flex;">
 		<!-- 사진 영역 -->
 		<div class="profilebox" style="background: #BDBDBD; margin-bottom: 20px; ">
 			<img class="profile-image" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${writer.profile}" alt="Profile Picture">
@@ -162,7 +170,12 @@ tr:last-child td {
 		</div>
 		</div>
 		</div>
-		
+		<!-- 구독버튼 구역 -->
+		<div>
+		<div style="width: 100%; height: 35%;"></div><!-- 영역 잡아놓는 용임 --> 
+		<button class="sort-button" style="width: 80px; "onclick="followUp('${writer.userno}')"><c:if test="${writer.isFollow == 0}">+ 구독</c:if> <c:if test="${writer.isFollow == 1}">구독취소</c:if></button>
+		</div>
+		</div>
 		
 			<div style="width: 100%; text-align: left;">
 		
@@ -170,9 +183,9 @@ tr:last-child td {
 			<hr>
 			<div style="width: 100%; height: 65%;">
 				<div class="sort-buttons">
-					<button class="sort-button" onclick="sortPosts('likes');">좋아요순</button>
-					<button class="sort-button" onclick="sortPosts('views');">조회수순</button>
-					<button class="sort-button" onclick="sortPosts('recent');">최신순</button>
+					<button class="sort-button" onclick="sortPosts('hits_count');">조회수 순</button>
+					<button class="sort-button" onclick="sortPosts('like_count');">좋아요 순</button>
+					<button class="sort-button" onclick="sortPosts('management_number');">최신순</button>
 					
 				</div>
 
@@ -218,6 +231,7 @@ var dataList = [
         userno: "${item.userno}",
         like_count: ${item.like_count},
         hits_count: ${item.hits_count},
+        comment_count: ${item.comment_count},
         picture: "${item.picture}"
     }${not status.last ? ',' : ''}
     </c:forEach>
@@ -254,7 +268,8 @@ function renderTable(page) {
     paginatedItems.forEach(item => {
         let row = `<tr>
             <td>\${item.management_number}</td>
-            <td class="title_td"><a href="${pageContext.request.contextPath}/detailNote?id=\${item.id}" class="styled-link">\${item.titleShare}</a></td>
+            <td class="title_td"><a href="${pageContext.request.contextPath}/detailNote?id=\${item.id}" class="styled-link">\${item.titleShare}
+            <span class="comment-area">[\${item.comment_count}]</span></a></td>
             <td>
                 <div class="writer_td">
                     <img class="profile-pic" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=\${item.picture}" />
@@ -331,8 +346,54 @@ function sortPosts(criteria) {
         dataList.sort((a, b) => b.hits_count - a.hits_count);
     } else if (criteria === 'like_count') {
         dataList.sort((a, b) => b.like_count - a.like_count);
+    } else if (criteria === 'management_number') {
+        dataList.sort((a, b) => b.management_number - a.management_number);
     }
     renderTable(1); // 정렬 후 첫 페이지를 보여줍니다.
+}
+function getQueryParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+// 팔로우
+function followUp(userno){
+	
+	const targetUserno = getQueryParameter('userno');
+	var userno = '<%= userno %>';
+	console.log(userno);
+	
+	if(userno == targetUserno){
+		alert("자기 자신은 구독할 수 없습니다.");
+		return;
+	}
+	
+    fetch('${pageContext.request.contextPath}/followUp', {   
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+        	targetUserno : targetUserno,
+            userno: userno,
+            status : '1'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        if(data.status == 'success'){
+        	alert("정상적으로 구독하였습니다.");
+        	location.reload();
+        }else if(data.status == 'unFollow'){
+        	alert("구독이 취소되었습니다.");
+        	location.reload();
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert("작업 중 오류가 발생하였습니다.");
+    }); 
+	
 }
 
 </script>

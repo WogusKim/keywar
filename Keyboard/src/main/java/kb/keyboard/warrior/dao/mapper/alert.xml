@@ -14,6 +14,8 @@
 		    (a.category = 'like' AND s.like = '1') OR
 		    (a.category = 'comment' AND s.comment = '1') OR
 		    (a.category = 'notice' AND s.notice = '1') OR
+		    (a.category = 'subscribe' AND s.subscribe = '1') OR
+		    (a.category = 'follow' AND s.follow = '1') OR
 		    (a.category = 'calendar' AND s.calendar = '1')
 		);
 		
@@ -42,4 +44,23 @@
 		select * from alert where userno=#{param} and (category = 'comment' or category='like'or category='wiki') 
 		order by senddate desc limit 10;
 	</select>
+	
+	
+	<!-- 팔로우 관련 추가 -->
+	<select id="checkFollow" parameterType="kb.keyboard.warrior.dto.FollowDTO" resultType="kb.keyboard.warrior.dto.FollowDTO"> 
+		select * from follow where userno = #{userno} and targetUserno = #{targetUserno}
+	</select>
+	<insert id="addFollow" parameterType="kb.keyboard.warrior.dto.FollowDTO"> 
+		insert into follow (userno, targetUserno, status)
+		values (#{userno}, #{targetUserno}, '1')
+	</insert>
+	<update id="changeFollowStatus" parameterType="kb.keyboard.warrior.dto.FollowDTO">
+		 UPDATE follow 
+		 SET status = #{status} 
+		 WHERE followId = #{followId}
+	</update>
+	
+	
+	
+	
 </mapper>

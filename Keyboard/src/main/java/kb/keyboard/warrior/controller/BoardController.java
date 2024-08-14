@@ -26,6 +26,7 @@ import kb.keyboard.warrior.dao.WikiDao;
 import kb.keyboard.warrior.dto.AlertDTO;
 import kb.keyboard.warrior.dto.BoardDTO;
 import kb.keyboard.warrior.dto.CommentDTO;
+import kb.keyboard.warrior.dto.FollowDTO;
 import kb.keyboard.warrior.dto.LikeDTO;
 import kb.keyboard.warrior.dto.MenuDTO;
 import kb.keyboard.warrior.dto.ResultDTO;
@@ -58,12 +59,23 @@ public class BoardController {
 		List<BoardDTO> list = dao.getMyPost(userno);
 		UserDTO ldto = ldao.isRightUserno(userno);
 		BoardDTO redord = dao.getOnesRecord(userno);
+		AlertDao adao = sqlSession.getMapper(AlertDao.class);
+		//로그인 된 직원의 직원번호 
+		String loginUserno = (String)session.getAttribute("userno");
+		FollowDTO fdto = new FollowDTO(loginUserno, userno);
 		
 		if(list !=null) {
 			model.addAttribute("list", list);
 		}
+		
 		if(ldto!=null)
+			if(adao.checkFollow(fdto)!=null && adao.checkFollow(fdto).getStatus().equals("1")) {
+				ldto.setIsFollow("1");
+			}else {
+				ldto.setIsFollow("0");
+			}
 			model.addAttribute("writer", ldto);
+			
 		if(redord!=null)
 			model.addAttribute("redord", redord);
 		
@@ -235,5 +247,34 @@ public class BoardController {
 		 return "{\"status\":\"success\"}";
 	}
 	
+	
+	//팔로우 상태 바꾸는 메소드
+	@RequestMapping(value ="/followUp" , method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String followUp(Model model, HttpSession session, @RequestBody FollowDTO dto) {
+		AlertDao dao = sqlSession.getMapper(AlertDao.class);
+		System.out.println("넘겨 받은 userno : " +dto.getUserno());
+		System.out.println("넘겨 받은 getTargetUserno : " +dto.getTargetUserno());
+		System.out.println("넘겨 받은 status : " +dto.getStatus());
+		
+		FollowDTO dbDTO = dao.checkFollow(dto);
+		if(dbDTO == null) {
+			dao.addFollow(dto);
+			return "{\"status\":\"success\"}";
+		}else {
+			if(dbDTO.getStatus().equals("1")) {
+				dbDTO.setStatus("0");
+				System.out.println("언팔로우함.");
+				dao.changeFollowStatus(dbDTO);
+				 return "{\"status\":\"unFollow\"}";
+			}else {
+				dbDTO.setStatus("1");
+				System.out.println("팔로우함.");
+				dao.changeFollowStatus(dbDTO);
+				 return "{\"status\":\"success\"}";
+			}
+		}
+
+	}
 	
 }
