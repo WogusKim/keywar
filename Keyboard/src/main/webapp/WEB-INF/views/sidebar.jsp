@@ -46,16 +46,18 @@
     margin-left: 6px;
     margin-bottom: 5px;
     padding-left: 0;
+    align-items: center;
 }
 
 .icon {
     display: inline-block;
-    width: 16px;
-    height: 16px;
+    width: 17px;
+    height: 17px;
     background-size: contain;
     background-repeat: no-repeat;
     margin-right: 6px;
-    margin-top: 2px;
+    /* margin-top: 2px; */
+    margin-bottom: 2px;
     vertical-align: middle; /* 이 설정은 flex를 사용할 때는 불필요할 수 있습니다 */
 }
 
@@ -564,7 +566,7 @@ $(document).ready(function() {
         localStorage.setItem('isCollapsed', 'false'); // 상태 저장
     });
     
- 	// 검색 아이콘에 마우스를 가져다 대면 검색창 표시
+    // 검색 아이콘에 마우스를 가져다 대면 검색창 표시
     $('.search-icon').hover(
         function() {
             $('#searchInput').fadeIn(200, function() {
@@ -580,36 +582,41 @@ $(document).ready(function() {
         },
         function() {
             $(this).fadeOut(200).blur(); // 마우스를 빼면 검색창을 숨기고 포커스를 제거
+            clearHighlight(); // 하이라이트 제거
         }
     );
-
-    // 검색창과 아이콘이 아닌 다른 곳을 클릭하면 검색창 숨기기
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('.search-icon, #searchInput').length) {
-            $('#searchInput').fadeOut(200).blur(); // 검색창을 숨기고 포커스를 제거
-        }
-    });
-
 
     // 검색창에서 입력이 일어날 때마다 필터링
     $('#searchInput').on('input', function() {
         var searchValue = $(this).val().toLowerCase();
-
-        // 모든 메뉴 아이템에 대해 반복
-        $('.menu-tree li span').each(function() {
-            var itemTitle = $(this).text().toLowerCase();
-            if (searchValue !== "" && itemTitle.includes(searchValue)) {
-                $(this).css('background-color', '#ffeb3b'); // 하이라이트 (노란색 배경)
-            } else {
-                $(this).css('background-color', ''); // 하이라이트 제거
-            }
-        });
+        if (searchValue.trim() === "") {
+            clearHighlight(); // 공백일 경우 하이라이트 제거
+        } else {
+            // 모든 메뉴 아이템에 대해 반복
+            $('.menu-tree li span').each(function() {
+                var itemTitle = $(this).text().toLowerCase();
+                if (itemTitle.includes(searchValue)) {
+                    $(this).css('background-color', '#ffeb3b'); // 하이라이트 (노란색 배경)
+                } else {]
+                    $(this).css('background-color', ''); // 하이라이트 제거
+                }
+            });
+        }
     });
 
-    // 검색창에서 포커스를 잃으면 검색창을 숨김
-    $('#searchInput').blur(function() {
-        $(this).fadeOut(200);
+    // 페이지의 다른 곳을 클릭하면 검색창 숨기고 하이라이트 제거
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.search-icon, #searchInput').length) {
+            $('#searchInput').fadeOut(200).blur(); // 검색창을 숨기고 포커스를 제거
+            clearHighlight(); // 하이라이트 제거
+            $('#searchInput').val(''); // 검색창 내용 지우기
+        }
     });
+
+    // 하이라이트 제거 함수
+    function clearHighlight() {
+        $('.menu-tree li span').css('background-color', ''); // 모든 하이라이트 제거
+    }
     
 });
 
