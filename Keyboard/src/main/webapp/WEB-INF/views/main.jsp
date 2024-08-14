@@ -639,7 +639,7 @@ label {
 #first {
     position: absolute;
     top: calc(25% - 33px); /* top 위치를 비율 + 고정 값으로 계산 */
-    left: calc(50% - 43.69px); /* left 위치를 비율 + 고정 값으로 계산 */
+    /* left: calc(50% - 43.69px); /* left 위치를 비율 + 고정 값으로 계산 */ */
     text-align: center;
 }
 
@@ -685,7 +685,7 @@ label {
 												src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[0].userno}"
 												alt="Profile Picture">
 										</div>
-										<span style="font-size: small; font-weight: bold;">${bestWriter[0].nickname}</span>
+										<span id="first_nickName" style="font-size: small; font-weight: bold;">${bestWriter[0].nickname}</span>
 										<br>
 										<%-- 좋아요
 										0.
@@ -871,6 +871,24 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 완료 현황 업데이트
   //  updateTodoCount();
+    
+    var firstElement = document.getElementById('first_nickName');
+	console.log(firstElement);
+	
+    var nicknameWidth = firstElement.offsetWidth;
+
+    console.log("Nickname Width:", nicknameWidth); // 닉네임의 폭 확인
+
+    var halfWidth = nicknameWidth / 2; // 닉네임 폭의 절반 계산
+    var leftValue = `calc(50% - \${halfWidth}px)`;
+
+    console.log("halfWidth:", halfWidth); // 계산된 left 값을 확인
+    console.log("Calculated Left Value:", leftValue); // 계산된 left 값을 확인
+
+    var parent_div = document.getElementById('first');
+    parent_div.style.left = leftValue;
+    
+    
 });
 
 
@@ -980,6 +998,16 @@ document.getElementById("branchMemoButton").onclick = function() {
     document.getElementById("myMemoArea").style.display = "none";
     document.getElementById("branchMemoArea").style.display = "block";
 };
+
+
+
+
+
+
+
+
+
+
 </script>
 </body>
 </html>
