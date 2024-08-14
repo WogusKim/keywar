@@ -24,7 +24,7 @@
 	align-items: center;
 }
 .cruuencyCalinnerbox{
-	background-color: #D9D9D9; 
+	background-color: #F4F4F4; 
 	height: 100%; 
 	width: 100%; 
 	border-radius: 10px; 
