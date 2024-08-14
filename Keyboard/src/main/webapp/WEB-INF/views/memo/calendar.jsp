@@ -60,6 +60,41 @@
 	.modal {
     z-index: 9999 !important;
 	}
+	.fc-shareGroup-button {
+    background: url("${pageContext.request.contextPath}/resources/images/icons/calendar_group.png") no-repeat center center !important;
+    background-size: contain !important;
+    width: 38.78px !important; /* 이미지 크기에 맞게 너비 조정 */
+    height: 38.78px !important; /* 이미지 크기에 맞게 높이 조정 */
+    border: none !important; /* 버튼의 테두리를 없앱니다 */
+    box-shadow: none !important; /* 버튼의 그림자를 없앱니다 */
+    background-color: transparent !important; /* 배경색을 투명하게 만듭니다 */
+    padding: 0 !important; /* 여백 제거 */
+    margin: 0 !important; /* 외부 여백 제거 */
+    cursor: pointer !important; /* 커서를 포인터로 변경 */
+}
+
+.fc-todoList-button {
+    position: relative;
+    background: url("${pageContext.request.contextPath}/resources/images/icons/calendar_todo.png") no-repeat center center !important;
+    background-size: contain !important;
+    width: 60px !important; /* 너비 고정 */
+    height: 38.78px !important; /* 높이 고정 */
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-indent: -9999px; /* 텍스트 숨김 */
+    overflow: hidden; /* 텍스트가 버튼 크기를 넘지 않도록 */
+}
+
+
+
+
 </style>
 
 </head>
@@ -908,13 +943,13 @@
              },
              customButtons: {
                  shareGroup: {
-                     text: '설정',
+                     text: '',
                      click: function() { 
                          $('#settingsOptionsModal').modal('show');
                      }
                  },
                  todoList: {
-                     text: 'todoList',
+                	 text: 'todolist',
                      click: function() {
                          window.location.href = '/todo';
                      }
