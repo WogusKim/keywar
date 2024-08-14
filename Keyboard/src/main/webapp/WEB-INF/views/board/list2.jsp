@@ -297,6 +297,7 @@ function setupPagination() {
 window.onload = function() {
     renderTable(1);  // Render the first page
     setupPagination();  // Setup pagination buttons
+    loginCheck();
 };
 
 
