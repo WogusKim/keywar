@@ -930,7 +930,13 @@
              events: formatEvents(data),
              eventClick: handleEventClick,
              eventDrop: handleEventDropTo,
-             dateClick: handleDateClickTo,
+             dateClick: // handleDateClickTo,
+            	 function(info) {
+                 // 클릭된 요소가 todo-count 클래스를 가진 요소의 자식이 아닌지 확인
+                 if (!info.jsEvent.target.closest('.todo-count')) {
+                     handleDateClickTo(info);
+                 }
+             },
              dayCellDidMount: function(arg) {
                  const date = arg.date.toISOString().split('T')[0];
                  const todoCount = todoCountData[date];
@@ -941,7 +947,8 @@
                      
                      countElement.style.cursor = 'pointer'; // 커서 모양을 포인터로 변경
                      // 클릭 이벤트 리스너 추가
-                     countElement.addEventListener('click', function() {
+                     countElement.addEventListener('click', function(e) {
+                         e.stopPropagation(); // 이벤트 전파 중단
                          window.location.href = '/todo';
                      });
                      
