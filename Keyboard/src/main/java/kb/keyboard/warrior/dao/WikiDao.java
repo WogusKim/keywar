@@ -80,7 +80,7 @@ public interface WikiDao {
 	List<ImageSizeDTO> getAllSizeOfImg(int id);
 	
 	
-
+	
 	
 	//--------------------------------위키상세관련--------------------------------//
 	
@@ -108,7 +108,7 @@ public interface WikiDao {
 	
 
 	
-
+	public BoardDTO getPostInfo(String postId);
 	
 
 

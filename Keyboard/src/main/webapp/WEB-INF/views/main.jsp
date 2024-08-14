@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				</div>
 				<div class="board_inner" id="interests">
 					<div class="card_top">
-						<div class="title_and_link d iv_underline">
+						<div class="title_and_link div_underline">
 							<h2 class="card_title">금리</h2>
 							<a href="${pageContext.request.contextPath}/interestRate"
 								class="link-icon">바로가기</a>
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
 						<div class="rates_box">
 							<!-- Toggle -->
 							<div class="rate-toggle-buttons"
-								style="display: flex; overflow: hidden;">
+								style="display: flex; overflow: hidden;"> 
 								<button class="toggle-button No-line-break"
 									onclick="toggleRateTable('mor')">MOR</button>
 								<button class="toggle-button No-line-break"

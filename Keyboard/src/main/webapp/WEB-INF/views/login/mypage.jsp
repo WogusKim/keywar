@@ -192,7 +192,7 @@ min-width: 100px;
 					 
 					 
 					 </div>
-					 <!-- 일단 팔로우 영역 잡아놈 -->
+					 <!-- 팔로우 영역 잡아놈 -->
 					<div class="switchBox" id="switchBox3" style="display: none;">
 						<table style="width: 100%; table-layout: fixed; padding: 5px;">
 						<c:forEach var="myFollowing" items="${myFollowing}">

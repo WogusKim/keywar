@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>메인 페이지</title>
+<title>김국민의 업무노트 : 게시글 작성하기</title>
 <!-- jQuery 라이브러리 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -255,9 +255,11 @@ async function saveData() {
         .then(response => response.json())
         .then(data => {
             console.log('저장 성공:', data);
+            alert("성공적으로 저장하였습니다.");
         })
         .catch(error => {
             console.error('저장 실패:', error);
+            alert("저장 중 에러가 발생하였습니다.");
         });
     } catch (error) {
         console.error('에디터 데이터 저장 실패:', error);
