@@ -162,10 +162,10 @@ tr:last-child td {
 		<span style="color: gray; font-size: small; margin: 0px; margin-left: 5px;">${writer.username}(${writer.userno})</span>
 	
 		<div style ="display: flex; margin-top: 10px; margin-left: 5px;" >
-		작성한 게시글 ${redord.note_count}개 
-		<img class="mini-icons" src="${pageContext.request.contextPath}/resources/images/heart16.png"> 좋아요 ${redord.like_count} 
-		<img class="mini-icons" src="${pageContext.request.contextPath}/resources/images/chat16.png"> 댓글 ${redord.comment_count} 
-		<img class="mini-icons" src="${pageContext.request.contextPath}/resources/images/eyes.png"> 조회수 ${redord.hits_count} 
+		작성한 게시글 ${redord.note_count}<c:if test="${ empty redord.note_count}">0</c:if>개 
+		<img class="mini-icons" src="${pageContext.request.contextPath}/resources/images/heart16.png"> 좋아요 ${redord.like_count} <c:if test="${ empty redord.like_count}">0</c:if>
+		<img class="mini-icons" src="${pageContext.request.contextPath}/resources/images/chat16.png"> 댓글 ${redord.comment_count} <c:if test="${ empty redord.comment_count}">0</c:if>
+		<img class="mini-icons" src="${pageContext.request.contextPath}/resources/images/eyes.png"> 조회수 ${redord.hits_count} <c:if test="${ empty redord.hits_count}">0</c:if>
 		
 		</div>
 		</div>

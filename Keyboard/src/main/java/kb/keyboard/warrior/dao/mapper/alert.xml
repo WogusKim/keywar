@@ -65,13 +65,29 @@
 		from follow 
 		where targetUserno = #{param} and status = '1' 
 	</select>
-	<!-- 내가 팔로우 하고 있는 사람 -->
+	<!-- 내가 팔로우 하고 있는 사람  (마이페이지에서 사용) -->
 	<select id="checkMyFollowing" resultType="kb.keyboard.warrior.dto.UserDTO"> 
-		select f.targetUserno as userno, u.username, u.nickname, u.picture
+		select f.targetUserno as userno, u.username, u.nickname, 
+		CASE 
+        WHEN u.picture IS NOT NULL THEN u.userno 
+        ELSE '1234567'
+		END AS picture -- null이면 기본사진
 		from follow f
 		join user u
 		on f.targetUserno = u.userno
 		where f.userno =  #{param} and f.status ='1'
+	</select>
+	<!-- 나를 팔로우 하고 있는 사람 (마이페이지에서 사용) -->
+	<select id="checkMyFollower" resultType="kb.keyboard.warrior.dto.UserDTO"> 
+		select f.userno as userno, u.username, u.nickname, 
+		CASE 
+        WHEN u.picture IS NOT NULL THEN u.userno 
+        ELSE '1234567'
+		END AS picture -- null이면 기본사진
+		from follow f
+		join user u
+		on f.userno = u.userno
+		where f.targetUserno =  #{param} and f.status ='1'
 	</select>
 	<insert id="addFollow" parameterType="kb.keyboard.warrior.dto.FollowDTO"> 
 		insert into follow (userno, targetUserno, status)
