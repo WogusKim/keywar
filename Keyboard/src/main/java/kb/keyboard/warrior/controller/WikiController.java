@@ -368,7 +368,7 @@ public class WikiController {
             success = false;
         }
         
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<String, Object>();
         
         if (success) {
             response.put("success", true);
@@ -377,7 +377,7 @@ public class WikiController {
             response.put("message", "더 이상 순서를 변경할 수 없습니다.");
         }
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
     private void swapItems(List<MenuDTO> items, int index1, int index2) {
