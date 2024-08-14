@@ -285,11 +285,13 @@
 
 	<select id="getLikedPost"
 		resultType="kb.keyboard.warrior.dto.BoardDTO">
-		select l.targetid as id, l.userno, m.titleShare
+		select l.targetid as id, l.userno, m.titleShare, u.nickname
 		from
 		liketable l
 		join Menu m
 		on l.targetid = m.id
+		join user u
+		on m.userno = u.userno
 		where l.userno = #{param1}
 	</select>
 	<select id="getBestPost"
@@ -377,7 +379,7 @@
 	</select>
 	<select id="getOnesRecord" resultType="kb.keyboard.warrior.dto.BoardDTO" >
 		SELECT
-		u.userno, sum(hits) as hits_count, sum(l.like_count) as like_count,  sum(c.comment_count) as comment_count, count(e.id) as note_count
+		u.userno, sum(hits) as hits_count, sum(l.like_count) as like_count, sum(c.comment_count) as comment_count, count(e.id) as note_count
 		from
 		EditorData e
 		join Menu m on e.id = m.id
@@ -398,5 +400,12 @@
 		on c.targetid = e.id
 		where m.isOpen = 1 and u.userno = #{param}
 		group by u.userno;
+	</select>
+	<select id="getPostInfo" resultType="kb.keyboard.warrior.dto.BoardDTO">
+		select m.id, m.titleShare, u.username, u.nickname
+		from Menu m
+		join user u
+		on m.userno = u.userno
+		where m.id = #{param}
 	</select>
 </mapper>

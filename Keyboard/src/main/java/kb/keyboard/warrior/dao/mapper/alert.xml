@@ -40,6 +40,10 @@
 		insert into alert (userno, message, category, detail)
 		values (#{userno}, #{message}, 'like', #{detail})
 	</insert>
+	<insert id="addSubscribeAlert" parameterType="kb.keyboard.warrior.dto.AlertDTO">
+		insert into alert (userno, message, category, detail)
+		values (#{userno}, #{message}, 'subscribe', #{detail})
+	</insert>
 	<select id="getRecentlyAlert" resultType="kb.keyboard.warrior.dto.AlertDTO">
 		select * from alert where userno=#{param} and (category = 'comment' or category='like'or category='wiki') 
 		order by senddate desc limit 10;
@@ -50,6 +54,21 @@
 	<select id="checkFollow" parameterType="kb.keyboard.warrior.dto.FollowDTO" resultType="kb.keyboard.warrior.dto.FollowDTO"> 
 		select * from follow where userno = #{userno} and targetUserno = #{targetUserno}
 	</select>
+	<!-- 총 팔로우 명 수  /int로 반환 --> 
+	<select id="checkMyFollowers" resultType="java.lang.Integer" > 
+		select 
+        COALESCE(count(*), 0) AS follower
+		from follow 
+		where targetUserno = #{param} and status = '1' 
+	</select>
+	<!-- 내가 팔로우 하고 있는 사람 -->
+	<select id="checkMyFollowing" resultType="kb.keyboard.warrior.dto.UserDTO"> 
+		select f.targetUserno as userno, u.username, u.nickname, u.picture
+		from follow f
+		join user u
+		on f.targetUserno = u.userno
+		where f.userno =  #{param} and f.status ='1'
+	</select>
 	<insert id="addFollow" parameterType="kb.keyboard.warrior.dto.FollowDTO"> 
 		insert into follow (userno, targetUserno, status)
 		values (#{userno}, #{targetUserno}, '1')
@@ -59,6 +78,10 @@
 		 SET status = #{status} 
 		 WHERE followId = #{followId}
 	</update>
+	<select id="sortMyFollower" resultType="string">
+		select userno from follow 
+		where targetUserno = #{param} and status ='1'
+	</select>
 	
 	
 	

@@ -26,8 +26,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import kb.keyboard.warrior.dao.AlertDao;
 import kb.keyboard.warrior.dao.ScheduleDao;
 import kb.keyboard.warrior.dao.WikiDao;
+import kb.keyboard.warrior.dto.AlertDTO;
+import kb.keyboard.warrior.dto.BoardDTO;
 import kb.keyboard.warrior.dto.ScheduleDTO;
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -86,11 +89,25 @@ public class WikiDetailController {
 	public ResponseEntity<String> saveEditorData(@RequestBody String editorData, HttpSession session) {
 	    Integer wikiId = (Integer) session.getAttribute("WikiId");
 	    WikiDao dao = sqlSession.getMapper(WikiDao.class);
+	    AlertDao adao = sqlSession.getMapper(AlertDao.class);
+	    String userno = (String)session.getAttribute("userno");
+	    
 	    try {
 	        if (dao.getData(wikiId) == null) {
+	        	// 최초 저장시
 	            dao.insertWiki(wikiId, editorData);
+	            //알림을 보낼 팔로워 리스트 가져오는 동작
+	            List<String> followers = adao.sortMyFollower(userno);
+	            // 걔네를 대상으로 알림 추가
+	            BoardDTO bdto = dao.getPostInfo(wikiId+""); 
+	            String message = "구독 : " +bdto.getNickname() +"님이 새로운 게시물을 작성하였습니다. ("+bdto.getTitleShare()+")";
+	            for(String follower : followers) {
+	            	AlertDTO adto = new AlertDTO(follower, message, wikiId+"");
+	            	adao.addSubscribeAlert(adto);
+	            }
 	        } else {
 	            dao.updateWiki(wikiId, editorData);
+	            //수정시에는 딱히 알림 보내지 않음
 	        }
 	     // 데이터 저장 성공 시
 	        return new ResponseEntity("{\"message\":\"Data received successfully\"}", HttpStatus.OK);

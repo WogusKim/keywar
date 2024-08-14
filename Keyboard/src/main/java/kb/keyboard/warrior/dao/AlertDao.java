@@ -11,6 +11,7 @@ public interface AlertDao {
 	public void addWikiAlert(AlertDTO dto);
 	public void addCommentAlert(AlertDTO dto);
 	public void addLikeAlert(AlertDTO dto);
+	public void addSubscribeAlert(AlertDTO dto);
 	public List<AlertDTO> getRecentlyAlert(String userno);
 	
 	
@@ -18,6 +19,10 @@ public interface AlertDao {
 	public FollowDTO checkFollow(FollowDTO dto);
 	public void addFollow(FollowDTO dto);
 	public void changeFollowStatus(FollowDTO dto);
-	
+	public int checkMyFollowers(String userno);
+	public List<UserDTO> checkMyFollowing(String userno);
+	// 알림 보낼 유저들 (나의 팔로워) 가져오기
+	public List<String> sortMyFollower(String userno);
 	
 }
+

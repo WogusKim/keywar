@@ -24,6 +24,11 @@ public class AlertDTO {
 
  public AlertDTO() {
  }
+ public AlertDTO(String userno, String message, String detail) {
+     this.userno = userno;
+     this.message = message;
+     this.detail = detail;
+ }
 
  public AlertDTO(String alertid, String userno, String message, String senddate, String isread) {
      this.alertid = alertid;
