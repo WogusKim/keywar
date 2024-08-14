@@ -12,6 +12,20 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <style>
+.card_titlee {
+	display: flex;
+	align-items: center; /* 요소들을 동일한 높이에 맞춰줍니다 */
+	justify-content: space-between; /* 텍스트와 버튼이 양쪽 끝에 배치되도록 합니다 */
+	margin: 5px 0; /* 상하 여백을 줄입니다 */
+	padding: 0 20px; /* 좌우에 약간의 패딩을 추가합니다 */
+	height: 40px; /* 높이를 줄여서 세로 공간을 줄입니다 */
+}
+
+.title-button {
+	width: 24px; /* 버튼 크기를 적절히 조정하세요 */
+	height: 24px; /* 버튼 크기를 적절히 조정하세요 */
+	cursor: pointer;
+}
 
 .board_memo3 { /* yeji */
 	border-radius: 10px;
@@ -20,7 +34,7 @@
 	padding: 10px;
 	margin-bottom: 10px;
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-	height: 92%; /* 높이 설정 */
+	height: 100%; /* 높이 설정 */
 }
 
 .board_memo4 { /* yeji */
@@ -30,7 +44,7 @@
 	padding: 10px;
 	margin-bottom: 10px;
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-	height: 92%; /* 높이 설정 */
+	height: 100%; /* 높이 설정 */
 }
 
 /* 메모 리스트의 왼쪽 패딩 제거 */
@@ -192,98 +206,126 @@
 }
 </style>
 <script>
-	function openPopup(popupId) {
-		document.getElementById("popupOverlay").style.display = "block";
-		document.getElementById(popupId).style.display = "block";
-	}
+function openPopup(popupId) {
+    document.getElementById("popupOverlay").style.display = "block";
+    document.getElementById(popupId).style.display = "block";
+}
 
-	function closePopup(popupId) {
-		document.getElementById("popupOverlay").style.display = "none";
-		document.getElementById(popupId).style.display = "none";
-	}
-	
-	$(document).ready(function() {
-	    $('#mySearchButton').click(function() {
-	        var keyword = $('#mySearchInput').val();
-	        var userno = '${sessionScope.userno}'; // 세션에서 사용자 번호를 가져옴
+function closePopup(popupId) {
+    document.getElementById("popupOverlay").style.display = "none";
+    document.getElementById(popupId).style.display = "none";
+}
 
-	        $.ajax({
-	            url: '${pageContext.request.contextPath}/searchMyMemo',
-	            type: 'GET',
-	            data: {
-	                keyword: encodeURIComponent(keyword),
-	                userno: userno
-	            },
-	            success: function(response) {
-	                $('#myMemoList').empty();
-	                if (response.memos && response.memos.length > 0) {
-	                    $.each(response.memos, function(i, memo) {
-	                        console.log('Color:', memo.color);
-	                        console.log('Createdate:', memo.createdate);
-
-	                        var color = memo.color || '#F7F8FB'; // 컬러가 없을 경우 기본값으로 설정
-	                        var createdate = memo.createdate || '날짜 없음';
-
-	                        var listItem = `<li style="background-color: \${color};">
-	                                            \${memo.content}
-	                                            <span class="createdate">\${createdate}</span>
-	                                        </li>`;
-
-	                                        
-	                                        console.log(listItem);  // 생성된 HTML 요소를 콘솔에 출력
-	                                        
-	                        $('#myMemoList').append(listItem);
-	                    });
-	                } else {
-	                    $('#myMemoList').append('<li>검색 결과가 없습니다.</li>');
-	                }
-	            },
+$(document).ready(function() {
+    // Add the click handlers again if needed (if there is any AJAX or DOM manipulation after page load)
+    $('.title-button').click(function() {
+        var popupId = $(this).attr('data-popup-id');
+        openPopup(popupId);
+    });
+});
 
 
-	            error: function() {
-	                alert('검색 처리 중 오류가 발생했습니다.');
-	            }
-	        });
-	    });
-	    
-	    
-	    $('#searchDeptButton').click(function() {
-	        var keyword = $('#deptSearchInput').val();
-	        var deptno = '${sessionScope.deptno}'; 
 
-	        $.ajax({
-	            url: '${pageContext.request.contextPath}/searchDeptMemo',
-	            type: 'GET',
-	            data: {
-	                keyword: encodeURIComponent(keyword),
-	                deptno: deptno
-	            },
-	            success: function(response) {
-	                $('#deptMemoList').empty();
-	                if (response.memos && response.memos.length > 0) {
-	                    $.each(response.memos, function(i, memo) {
-	                        var color = memo.color || '#F7F8FB';
-	                        var createdate = memo.createdate || '날짜 없음';
+$(document).ready(function() {
+    // 나의 메모 검색 버튼 클릭 이벤트
+    $('#mySearchButton').click(function() {
+        searchMyMemo();
+    });
 
-	                        var listItem = `<li style="background-color: \${color};">
-	                                            \${memo.content}
-	                                            <span class="createdate">\${createdate}</span>
-	                                        </li>`;
-	                        $('#deptMemoList').append(listItem);
-	                    });
-	                } else {
-	                    $('#deptMemoList').append('<li>검색 결과가 없습니다.</li>');
-	                }
-	            },
-	            error: function() {
-	                alert('검색 처리 중 오류가 발생했습니다.');
-	            }
-	        });
-	    });
-	    
-	    
-	    
-	});
+    // 부점 메모 검색 버튼 클릭 이벤트
+    $('#searchDeptButton').click(function() {
+        searchDeptMemo();
+    });
+
+    // 나의 메모 검색 입력 필드에서 엔터 키 눌렀을 때 검색 버튼 클릭
+    $('#mySearchInput').keypress(function(event) {
+        if (event.which == 13) { // 13은 Enter 키의 코드입니다.
+            event.preventDefault(); // 폼 제출 방지
+            $('#mySearchButton').click(); // 검색 버튼 클릭
+        }
+    });
+
+    // 부점 메모 검색 입력 필드에서 엔터 키 눌렀을 때 검색 버튼 클릭
+    $('#deptSearchInput').keypress(function(event) {
+        if (event.which == 13) { // 13은 Enter 키의 코드입니다.
+            event.preventDefault(); // 폼 제출 방지
+            $('#searchDeptButton').click(); // 검색 버튼 클릭
+        }
+    });
+
+    function searchMyMemo() {
+        var keyword = $('#mySearchInput').val();
+        var userno = '${sessionScope.userno}'; // 세션에서 사용자 번호를 가져옴
+
+        $.ajax({
+            url: '${pageContext.request.contextPath}/searchMyMemo',
+            type: 'GET',
+            data: {
+                keyword: encodeURIComponent(keyword),
+                userno: userno
+            },
+            success: function(response) {
+                $('#myMemoList').empty();
+                if (response.memos && response.memos.length > 0) {
+                    $.each(response.memos, function(i, memo) {
+                        console.log('Color:', memo.color);
+                        console.log('Createdate:', memo.createdate);
+
+                        var color = memo.color || '#F7F8FB'; // 컬러가 없을 경우 기본값으로 설정
+                        var createdate = memo.createdate || '날짜 없음';
+
+                        var listItem = `<li style="background-color: \${color};">
+                                            \${memo.content}
+                                            <span class="createdate">\${createdate}</span>
+                                        </li>`;
+
+                        $('#myMemoList').append(listItem);
+                    });
+                } else {
+                    $('#myMemoList').append('<li>검색 결과가 없습니다.</li>');
+                }
+            },
+            error: function() {
+                alert('검색 처리 중 오류가 발생했습니다.');
+            }
+        });
+    }
+
+    function searchDeptMemo() {
+        var keyword = $('#deptSearchInput').val();
+        var deptno = '${sessionScope.deptno}';
+
+        $.ajax({
+            url: '${pageContext.request.contextPath}/searchDeptMemo',
+            type: 'GET',
+            data: {
+                keyword: encodeURIComponent(keyword),
+                deptno: deptno
+            },
+            success: function(response) {
+                $('#deptMemoList').empty();
+                if (response.memos && response.memos.length > 0) {
+                    $.each(response.memos, function(i, memo) {
+                        var color = memo.color || '#F7F8FB';
+                        var createdate = memo.createdate || '날짜 없음';
+
+                        var listItem = `<li style="background-color: \${color};">
+                                            \${memo.content}
+                                            <span class="createdate">\${createdate}</span>
+                                        </li>`;
+                        $('#deptMemoList').append(listItem);
+                    });
+                } else {
+                    $('#deptMemoList').append('<li>검색 결과가 없습니다.</li>');
+                }
+            },
+            error: function() {
+                alert('검색 처리 중 오류가 발생했습니다.');
+            }
+        });
+    }
+});
+
 
 
 
@@ -365,12 +407,16 @@
 					<div class="memoboardDiv">
 						<div class="board_memo3">
 							<!-- 흰 배경 -->
-							<h2 class="card_title">나의 메모</h2>
+							<div class="card_titlee">
+								<h2 style="display: inline;">나의 메모</h2>
+								<img src="${contextPath}/resources/images/icons/plus_item.png"
+									alt="버튼" class="title-button" onclick="openPopup('memoPopup');">
+							</div>
 							<hr>
 							<!-- 검색바 추가 -->
 							<div class="search-container">
-								<input type="text" placeholder="나의 메모 검색어를 입력해주세요." name="mySearch"
-									id="mySearchInput"> <input type="image"
+								<input type="text" placeholder="나의 메모 검색어를 입력해주세요."
+									name="mySearch" id="mySearchInput"> <input type="image"
 									src="${contextPath}/resources/images/icons/search.png" alt="검색"
 									id="mySearchButton">
 							</div>
@@ -390,16 +436,18 @@
 								</ul>
 							</div>
 						</div>
-						<input type="button" value="추가하기" class="addButton"
-							onclick="openPopup('memoPopup');">
 					</div>
 
 					<div class="memoboardDiv">
 						<div class="board_memo4">
 							<!-- 흰 배경 -->
-							<h2 class="card_title">부점 메모</h2>
+							<div class="card_titlee">
+								<h2 style="display: inline;">부점 메모</h2>
+								<img src="${contextPath}/resources/images/icons/plus_item.png"
+									alt="버튼" class="title-button"
+									onclick="openPopup('deptMemoPopup');">
+							</div>
 							<hr>
-
 							<div class="search-container">
 								<input type="text" placeholder="부점 메모 검색어를 입력해주세요."
 									name="deptSearch" id="deptSearchInput"> <input
@@ -422,8 +470,6 @@
 								</ul>
 							</div>
 						</div>
-						<input type="button" value="추가하기" class="addButton"
-							onclick="openPopup('deptMemoPopup');">
 					</div>
 				</div>
 
