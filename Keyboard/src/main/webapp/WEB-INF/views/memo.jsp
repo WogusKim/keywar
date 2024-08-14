@@ -203,8 +203,8 @@
 	}
 	
 	$(document).ready(function() {
-	    $('#searchButton').click(function() {
-	        var keyword = $('#searchInput').val();
+	    $('#mySearchButton').click(function() {
+	        var keyword = $('#mySearchInput').val();
 	        var userno = '${sessionScope.userno}'; // 세션에서 사용자 번호를 가져옴
 
 	        $.ajax({
@@ -215,7 +215,7 @@
 	                userno: userno
 	            },
 	            success: function(response) {
-	                $('#memoList').empty();
+	                $('#myMemoList').empty();
 	                if (response.memos && response.memos.length > 0) {
 	                    $.each(response.memos, function(i, memo) {
 	                        console.log('Color:', memo.color);
@@ -232,10 +232,10 @@
 	                                        
 	                                        console.log(listItem);  // 생성된 HTML 요소를 콘솔에 출력
 	                                        
-	                        $('#memoList').append(listItem);
+	                        $('#myMemoList').append(listItem);
 	                    });
 	                } else {
-	                    $('#memoList').append('<li>검색 결과가 없습니다.</li>');
+	                    $('#myMemoList').append('<li>검색 결과가 없습니다.</li>');
 	                }
 	            },
 
@@ -369,16 +369,16 @@
 							<hr>
 							<!-- 검색바 추가 -->
 							<div class="search-container">
-								<input type="text" placeholder="나의 메모 검색어를 입력해주세요." name="search"
-									id="searchInput"> <input type="image"
+								<input type="text" placeholder="나의 메모 검색어를 입력해주세요." name="mySearch"
+									id="mySearchInput"> <input type="image"
 									src="${contextPath}/resources/images/icons/search.png" alt="검색"
-									id="searchButton">
+									id="mySearchButton">
 							</div>
 
 							<!-- 검색 결과를 표시할 부분 -->
-							<div id="searchResults"
+							<div id="mySearchResults"
 								style="overflow-y: auto; height: calc(90% - 50px);">
-								<ul id="memoList">
+								<ul id="myMemoList">
 									<!-- 검색 결과가 여기에 동적으로 삽입됩니다 -->
 									<c:forEach items="${memo1}" var="dto1">
 										<li style="background-color: ${dto1.color};">${dto1.content}&nbsp;<span
