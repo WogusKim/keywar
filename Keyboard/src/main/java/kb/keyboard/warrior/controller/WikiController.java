@@ -368,7 +368,7 @@ public class WikiController {
             success = false;
         }
         
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<String, Object>();
         
         if (success) {
             response.put("success", true);
@@ -377,7 +377,7 @@ public class WikiController {
             response.put("message", "더 이상 순서를 변경할 수 없습니다.");
         }
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
     private void swapItems(List<MenuDTO> items, int index1, int index2) {
@@ -393,10 +393,10 @@ public class WikiController {
         
         WikiDao dao = sqlSession.getMapper(WikiDao.class);
 
-        System.out.println("변경메서드!!!!!!!!!!!!!!!!");
-        System.out.println("변경할 ID: " + items.get(index1).getId() + ", 새로운 Order: " + items.get(index1).getMenuOrder());
-        System.out.println("변경할 ID: " + items.get(index2).getId() + ", 새로운 Order: " + items.get(index2).getMenuOrder());
-        System.out.println("변경메서드!!!!!!!!!!!!!!!!");
+//        System.out.println("변경메서드!!!!!!!!!!!!!!!!");
+//        System.out.println("변경할 ID: " + items.get(index1).getId() + ", 새로운 Order: " + items.get(index1).getMenuOrder());
+//        System.out.println("변경할 ID: " + items.get(index2).getId() + ", 새로운 Order: " + items.get(index2).getMenuOrder());
+//        System.out.println("변경메서드!!!!!!!!!!!!!!!!");
 
         // 교환된 후의 ID와 순서를 각각의 아이템에 대해 올바르게 매핑하여 업데이트
         dao.updateMenuOrder(items.get(index1).getId(), items.get(index1).getMenuOrder());
@@ -431,15 +431,15 @@ public class WikiController {
         
         
         //이따 삭제하세요~
-        System.out.println("==================빠른메뉴추가 테스트중==================");
-        System.out.println("선택한 폴더 id: " + selectedId);
-        System.out.println("폴더타입 재확인: " + selectedType);
-        System.out.println("depth 재확인: " + selectedDepth);
-        
-        System.out.println("타이틀: " + title);
-        System.out.println("sharedTitle: " + sharedTitle);
-        System.out.println("공개여부 " + isOpen);
-        System.out.println("==================빠른메뉴추가 테스트중==================");
+//        System.out.println("==================빠른메뉴추가 테스트중==================");
+//        System.out.println("선택한 폴더 id: " + selectedId);
+//        System.out.println("폴더타입 재확인: " + selectedType);
+//        System.out.println("depth 재확인: " + selectedDepth);
+//        
+//        System.out.println("타이틀: " + title);
+//        System.out.println("sharedTitle: " + sharedTitle);
+//        System.out.println("공개여부 " + isOpen);
+//        System.out.println("==================빠른메뉴추가 테스트중==================");
         
         WikiDao dao = sqlSession.getMapper(WikiDao.class);
 
@@ -495,9 +495,9 @@ public class WikiController {
         String selectedType = request.getParameter("selectedType");
         String selectedDepth = request.getParameter("selectedDepth");
         
-        System.out.println("복사할 위치 (부모폴더) : " + selectedId);
-        System.out.println("복사할 타입 (부모폴더) : " + selectedType);
-        System.out.println("복사할 위치 (부모폴더) : " + selectedDepth);
+//        System.out.println("복사할 위치 (부모폴더) : " + selectedId);
+//        System.out.println("복사할 타입 (부모폴더) : " + selectedType);
+//        System.out.println("복사할 위치 (부모폴더) : " + selectedDepth);
         
         
         WikiDao dao = sqlSession.getMapper(WikiDao.class);

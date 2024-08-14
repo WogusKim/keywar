@@ -218,7 +218,7 @@
 		select count(*) as todocount, duedate 
 		from (select date_format(duedate, '%Y-%m-%d') as duedate, userno from todolist
 		where userno = #{userno}
-		and isdone = '0') a
+		and isdone = '0' and status = '1') a
 		group by duedate
 		;
     </select>

@@ -108,13 +108,34 @@ tr:last-child td {
 .sort-buttons form {
 	float: left; /* 검색 폼을 왼쪽으로 정렬 */
 	margin-right: 10px; /* 오른쪽 버튼과의 간격 */
+	    /* 아래 속성 추가 */
+    white-space: nowrap;
+    display: inline-block;
 }
 
+.sort-buttons form input[type="text"] {
+    /* 검색창의 너비 조정 */
+    width: 200px; /* 또는 적절한 값 */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.sort-buttons form button[type="submit"] {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.sort-buttons button.sort-button {
+    float: right;
+    margin-left: 5px;
+}
+
+/* 
 .sort-buttons button {
-	float: right; /* 정렬 버튼들을 오른쪽으로 정렬 */
-	margin-left: 5px; /* 버튼 사이 간격 */
+	float: right; 
+	margin-left: 5px; 
 }
-
+ */
 /* 필요하다면 추가적인 스타일링을 적용 */
 input[type="text"] {
 	padding: 5px;
@@ -169,9 +190,8 @@ button[type="submit"]:hover {
 			<hr>
 			<div style="width: 100%; height: 85%;">
 				<div class="sort-buttons">
-					<form onsubmit="searchPosts(event)">
-						<input type="text" id="searchInput" placeholder="제목 검색..."
-							required>
+					<form onsubmit="searchPostsCool(event)">
+						<input type="text" id="searchInputCool" placeholder="제목 검색...">
 						<button type="submit">검색</button>
 					</form>
 					
@@ -185,14 +205,16 @@ button[type="submit"]:hover {
 				<table>
 					<colgroup>
 						<col style="width: 10%;">
-						<col style="width: 50%;">
-						<col style="width: 20%;">
+						<col style="width: 10%;">
+						<col style="width: 45%;">
+						<col style="width: 15%;">
 						<col style="width: 10%;">
 						<col style="width: 10%;">
 					</colgroup>
 					<thead style="font-size: large;">
 						<tr>
 							<th scope="col">관리번호</th>
+							<th scope="col">카테고리</th>
 							<th scope="col" style="text-align: left;">제목</th>
 							<th scope="col" style="text-align: left;">작성자</th>
 							<th scope="col">좋아요</th>
@@ -218,6 +240,7 @@ var dataList = [
     <c:forEach var="item" items="${list}" varStatus="status">
     {
         management_number: "${item.management_number}",
+        category: "${item.category}",
         id: ${item.id},
         titleShare: "${item.titleShare}",
         nickname: "${item.nickname}",
@@ -230,29 +253,29 @@ var dataList = [
     </c:forEach>
 ];
 
-console.log('datalist: ');
-console.log(dataList);
+var filteredDataList = null; // 새로운 전역 변수
+
 
 let currentPage = 1;
 const recordsPerPage = 10;
-
-
 
 //페이지 로드 시 초기 테이블 렌더링
 document.addEventListener('DOMContentLoaded', function() {
     renderTable(1);
 });
-
-
-
+ 
 function renderTable(page) {
 	
 	currentPage = page; // 현재 페이지 업데이트
+    const dataToUse = filteredDataList || dataList; // 필터링된 데이터가 있으면 사용, 없으면 전체 데이터 사용
+
 	
     console.log(`Rendering page: ${page}`); // 현재 렌더링하는 페이지 번호를 로그로 확인
     const start = (page - 1) * recordsPerPage;
     const end = start + recordsPerPage;
-    const paginatedItems = dataList.slice(start, end);
+//    const paginatedItems = dataList.slice(start, end);
+    const paginatedItems = dataToUse.slice(start, end);
+
     console.log(`Items from ${start} to ${end}:`, paginatedItems); // 페이지에 표시될 아이템 범위 로그
 
     let tableBody = document.getElementById("tableBody");
@@ -261,11 +284,13 @@ function renderTable(page) {
     paginatedItems.forEach(item => {
         let row = `<tr>
             <td>\${item.management_number}</td>
+
+            <td>\${item.category}</td>
             <td class="title_td"><a href="${pageContext.request.contextPath}/detailNote?id=\${item.id}" class="styled-link">\${item.titleShare}
             <span class="comment-area">[\${item.comment_count}]</span></a></td>
             <td>
-                <div class="writer_td" onclick="goToProfile('\${item.userno}')">
-                    <img class="profile-pic" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=\${item.picture}" />
+                <div class="writer_td" onclick="goToProfile(\${item.userno})">
+                    <img class="profile-pic" src="${contextPath}/getUserProfilePicture2?userno=\${item.picture}" />
                     \${item.nickname} 
                 </div>
             </td>
@@ -275,11 +300,13 @@ function renderTable(page) {
         tableBody.innerHTML += row;
     });
     
-    setupPagination();
+    //setupPagination();
+    setupPagination(dataToUse.length);
+
 }
 
-function setupPagination() {
-    const pageCount = Math.ceil(dataList.length / recordsPerPage);
+function setupPagination(totalItems) {
+    const pageCount = Math.ceil(totalItems / recordsPerPage);
     let paginationHTML = '';
     for (let i = 1; i <= pageCount; i++) {
         paginationHTML += `<button class="\${i === currentPage ? 'active2' : ''}" onclick="renderTable(\${i})">\${i}</button>`;
@@ -289,19 +316,32 @@ function setupPagination() {
 
 window.onload = function() {
     renderTable(1);  // Render the first page
-    setupPagination();  // Setup pagination buttons
+    //setupPagination();  // Setup pagination buttons
 };
 
-
-
-
-function searchPosts(e) {
+/* function searchPosts(e) {
     e.preventDefault(); // 폼 제출 방지
     const searchText = document.getElementById('searchInput').value.toLowerCase();
 
     // dataList는 페이지 로딩 시 전체 데이터를 가지고 있어야 합니다.
     const filteredData = dataList.filter(item => item.titleShare.toLowerCase().includes(searchText));
+    
+    currentPage = 1; // 검색 후 첫 페이지로 리셋
     renderFilteredTable(filteredData);
+} */
+
+function searchPostsCool(e) {
+    e.preventDefault(); // 폼 제출 방지
+    console.log('form submitted');
+    const searchInputCool = document.getElementById('searchInputCool');
+    console.log(searchInputCool); // searchInput 요소 확인
+    const searchTextCool = document.getElementById('searchInputCool').value.toLowerCase();
+	console.log(searchTextCool);
+    // 전역 변수로 필터링된 데이터를 저장
+    window.filteredDataList = dataList.filter(item => item.titleShare.toLowerCase().includes(searchTextCool));
+    console.log(window.filteredDataList);
+    currentPage = 1; // 검색 후 첫 페이지로 리셋
+    renderTable(1); // 기존의 renderTable 함수를 사용
 }
 
 function renderFilteredTable(data) {
@@ -312,7 +352,9 @@ function renderFilteredTable(data) {
 
         let row = '<tr>' +
         '<td>' + (item.management_number || '') + '</td>' +
+        '<td>' + (item.category || '') + '</td>' +
         '<td class="title_td"><a href="' + (contextPath || '') + '/detailNote?id=' + (item.id || '') + '" class="styled-link">' + (item.titleShare || '') + (item.comment_count||'')+'</a></td>' +
+
         '<td>' +
             '<div class="writer_td" onclick="goToProfile(${item.userno})">' +
                 '<img class="profile-pic" src="' + (contextPath || '') + '/getUserProfilePicture2?userno=' + (item.picture || '') + '" />' +
@@ -332,16 +374,26 @@ function renderFilteredTable(data) {
     }
 }
 
-
-
-function sortPosts(criteria) {
+/* function sortPosts(criteria) {
     if (criteria === 'hits_count') {
         dataList.sort((a, b) => b.hits_count - a.hits_count);
     } else if (criteria === 'like_count') {
         dataList.sort((a, b) => b.like_count - a.like_count);
     }
     renderTable(1); // 정렬 후 첫 페이지를 보여줍니다.
+} */
+
+function sortPosts(criteria) {
+    const dataToSort = window.filteredDataList || dataList;
+    if (criteria === 'hits_count') {
+        dataToSort.sort((a, b) => b.hits_count - a.hits_count);
+    } else if (criteria === 'like_count') {
+        dataToSort.sort((a, b) => b.like_count - a.like_count);
+    }
+    window.filteredDataList = dataToSort;
+    renderTable(1); // 정렬 후 첫 페이지를 보여줍니다.
 }
+
 function goToProfile(userno){
 	window.location.href = '${pageContext.request.contextPath}/profile?userno='+userno;
 	

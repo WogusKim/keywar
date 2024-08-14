@@ -47,6 +47,7 @@
     margin-bottom: 5px;
     padding-left: 0;
 }
+
 .icon {
     display: inline-block;
     width: 16px;
@@ -83,11 +84,11 @@
 
 .menu_setting {
     position: absolute; /* 절대 위치 */
-    bottom: 10px; /* 하단에 고정 */
-    right: 10px; /* 우측에 고정 */
+    bottom: 20px; /* 하단에 고정 */
+    right: 15px; /* 우측에 고정 */
     background-color: #97838330; /* 반투명 배경 */
     border-radius: 5px;
-    width: 75px; /* 부모 컨테이너의 전체 너비 */
+    width: 105px; /* 부모 컨테이너의 전체 너비 */
     padding: 6px; /* 내부 여백 */
     z-index: 2; /* 다른 요소 위에 오도록 설정 */
     text-align: right;
@@ -259,96 +260,31 @@ input[type="text"], input[type="radio"] {
 /* 모달팝업관련 */
 
 
-/* 검색용모달 */
-
-.modal-search {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content-search {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 50%;
-    border-radius: 10px;
-}
-
-.close-search {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close-search:hover,
-.close-search:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-#searchInput {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
 .item-title {
     color: #5f5f79; /* 아이템 타이틀에 강조 효과 */
 }
-/* 검색용모달 */
-/* 검색 결과 항목 스타일 */
-.search-result-item {
-    padding: 10px;
-    margin-bottom: 8px;
-    border: 1px solid #ddd;
+
+#searchInput {
+    padding: 5px;
     border-radius: 5px;
-    background-color: #f9f9f9;
-    transition: background-color 0.3s ease;
-}
-
-/* 검색 결과 항목 링크 스타일 */
-.search-result-item a {
-    text-decoration: none;
-    color: #007BFF;
-    font-weight: bold;
-    font-size: 16px;
-}
-
-/* 검색 결과 항목 호버 시 스타일 */
-.search-result-item:hover {
-    background-color: #e2e6ea;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* 검색 결과 영역에 약간의 여백 추가 */
-#searchResults {
-    margin-top: 20px;
-}
-
-/* 검색 결과가 없을 때의 스타일 */
-#searchResults p {
-    color: #999;
-    text-align: center;
+    border: 1px solid #ccc;
+    outline: none;
 }
 
 </style>
 </head>
 <body>
 <div class="content_left">
+
+	
     <div class="menu-tree">
+	    <div class="menu_header">
+			<span class="menu_header_title">마이 업무노트</span>
+			<span class="icon-setting search-icon"></span>
+		</div>
+		<div class="searchBar">
+			<input type="text" id="searchInput" placeholder="검색어를 입력하세요..." style="width: 90%; margin-top: 10px; display:none;">
+		</div>
         <ul>
             <c:forEach var="menu" items="${menus}">
                 <li>
@@ -488,26 +424,13 @@ input[type="text"], input[type="radio"] {
 		</c:if>
     </div>
 	<div class="menu_setting">
-		<div class="icon-setting search-icon"></div>
-	    <a href="#" class="aTag searchTag" style="margin-right: 5px; vertical-align: middle;">검색</a><br>
 	    <div class="icon-setting menu-icon"></div>
-	    <a href="${pageContext.request.contextPath}/menuSetting" class="aTag" style="margin-right: 5px; vertical-align: middle;">설정</a>
+	    <a href="${pageContext.request.contextPath}/menuSetting" class="aTag" style="margin-right: 5px; vertical-align: middle;">메뉴 설정</a>
 	</div>
 	<div class="menu_onoff">
 		<div class="icon-fold fold-icon mgt-5"></div>
 		<div class="icon-fold unfold-icon" style="display:none;"></div>
 	</div>
-</div>
-<!-- 검색 모달 -->
-<div id="searchModal" class="modal-search">
-    <div class="modal-content-search">
-        <span class="close-search">&times;</span>
-        <h3>노트 검색</h3>
-        <input type="text" id="searchInput" placeholder="검색어를 입력하세요..." onkeyup="searchMenu()">
-        <div id="searchResults">
-            <!-- 검색 결과가 여기에 표시됩니다 -->
-        </div>
-    </div>
 </div>
 
 
@@ -571,63 +494,6 @@ input[type="text"], input[type="radio"] {
 
 
 <script>
-
-document.querySelector('.searchTag').addEventListener('click', function() {
-    document.getElementById('searchModal').style.display = 'block';
-});
-
-document.querySelector('.close-search').addEventListener('click', function() {
-    document.getElementById('searchModal').style.display = 'none';
-});
-
-window.onclick = function(event) {
-    if (event.target == document.getElementById('searchModal')) {
-        document.getElementById('searchModal').style.display = 'none';
-    }
-}
-
-function searchMenu() {
-    // 검색어를 가져옵니다.
-    var searchQuery = document.getElementById('searchInput').value.toLowerCase();
-    
-    // 아이템 타이틀에 해당하는 모든 메뉴의 제목을 가져옵니다.
-    var menuItems = document.querySelectorAll('.item-title');
-    var searchResultsContainer = document.getElementById('searchResults');
-
-    // 검색 결과를 초기화합니다.
-    searchResultsContainer.innerHTML = '';
-
-    // 검색어와 일치하는 메뉴를 결과 영역에 추가합니다.
-    menuItems.forEach(function(item) {
-        var title = item.textContent.toLowerCase();
-        
-        if (title.includes(searchQuery)) {
-            // 검색어가 포함된 항목을 복사하여 결과 컨테이너에 추가
-            var resultItem = document.createElement('div');
-            resultItem.classList.add('search-result-item');
-            
-            // 검색된 항목을 클릭했을 때 이동할 수 있도록 기존 링크를 복사
-            var parentLi = item.closest('li');
-            var link = parentLi.querySelector('a');
-            
-            if (link) {
-                var resultLink = document.createElement('a');
-                resultLink.href = link.href;
-                resultLink.textContent = item.textContent;
-                resultItem.appendChild(resultLink);
-            } else {
-                resultItem.textContent = item.textContent;
-            }
-            
-            searchResultsContainer.appendChild(resultItem);
-        }
-    });
-
-    // 검색 결과가 없을 경우의 처리
-    if (searchResultsContainer.innerHTML === '') {
-        searchResultsContainer.innerHTML = '<p>검색 결과가 없습니다.</p>';
-    }
-}
 
 
 function toggleFolder(element) {
@@ -697,7 +563,54 @@ $(document).ready(function() {
         $('.fold-icon').show();
         localStorage.setItem('isCollapsed', 'false'); // 상태 저장
     });
+    
+ 	// 검색 아이콘에 마우스를 가져다 대면 검색창 표시
+    $('.search-icon').hover(
+        function() {
+            $('#searchInput').fadeIn(200, function() {
+                $(this).focus(); // 검색창이 표시된 후 포커스를 맞춤
+            });
+        }
+    );
 
+    // 검색창에 마우스를 가져다 대면 유지
+    $('#searchInput').hover(
+        function() {
+            $(this).stop(true).fadeIn(200);
+        },
+        function() {
+            $(this).fadeOut(200).blur(); // 마우스를 빼면 검색창을 숨기고 포커스를 제거
+        }
+    );
+
+    // 검색창과 아이콘이 아닌 다른 곳을 클릭하면 검색창 숨기기
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.search-icon, #searchInput').length) {
+            $('#searchInput').fadeOut(200).blur(); // 검색창을 숨기고 포커스를 제거
+        }
+    });
+
+
+    // 검색창에서 입력이 일어날 때마다 필터링
+    $('#searchInput').on('input', function() {
+        var searchValue = $(this).val().toLowerCase();
+
+        // 모든 메뉴 아이템에 대해 반복
+        $('.menu-tree li span').each(function() {
+            var itemTitle = $(this).text().toLowerCase();
+            if (searchValue !== "" && itemTitle.includes(searchValue)) {
+                $(this).css('background-color', '#ffeb3b'); // 하이라이트 (노란색 배경)
+            } else {
+                $(this).css('background-color', ''); // 하이라이트 제거
+            }
+        });
+    });
+
+    // 검색창에서 포커스를 잃으면 검색창을 숨김
+    $('#searchInput').blur(function() {
+        $(this).fadeOut(200);
+    });
+    
 });
 
 // 아이템 추가 함수

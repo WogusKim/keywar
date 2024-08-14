@@ -63,6 +63,25 @@
     
 </head>
 <style>
+
+.menu-tree2 {
+    overflow-y: auto; /* 스크롤 가능하도록 설정 */
+    flex-grow: 1; /* 남은 공간 모두 사용 */
+    height: 87%;
+}
+
+.menu-tree2 ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 6px;
+}
+
+.menu-tree2 li {
+    margin-left: 6px;
+    margin-bottom: 5px;
+    padding-left: 0;
+}
+
 .final-outline{
 	overflow-y: auto;
 	width: 100%;
@@ -120,13 +139,14 @@
 	text-align: center;
 }
 .styled-button {
-    background: linear-gradient(90deg, #007BFF, #007BFF);
+    background: var(--main-bgcolor);
     border: none;
-    border-radius: 30px;
-    color: white;
+    border-radius: 20px;
+    color: var(--todo-checked);
     cursor: pointer;
     font-size: 16px;
-    padding: 15px 30px;
+    font-weight: bold;
+    padding: 15px 15px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -135,8 +155,6 @@
 }
 
 .styled-button:hover {
-    background: linear-gradient(#007BFF, #007BFF, #007BFF);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
     transform: translateY(-2px);
 }
 /* mypage profile image */
@@ -166,31 +184,12 @@
 	padding: 10px 20px;
 	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-.styled-button {
-    background: linear-gradient(to right, #6a82fb, #fc5c7d); /* 그라디언트 색상 업데이트 */
-    border: none;
-    border-radius: 30px;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-    padding: 12px 25px; /* 패딩 조정 */
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    margin: 20px 0px; /* 마진 상단 추가 */
-}
 
-.styled-button:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    transform: translateY(-3px); /* 변환 값 조정 */
-}
 
 
 /* 업무노트 훔쳐오기를 위한 모달 팝업 관련 css */
 /* 모달 스타일 */
-.modal {
+.modal3 {
     display: none;
     position: fixed;
     z-index: 1;
@@ -203,22 +202,22 @@
     background-color: rgba(0,0,0,0.4);
     padding-top: 60px;
 }
-.modal-content {
+.modal-content3 {
     background-color: #fefefe;
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 50%;
-    height: 100%;
+    width: 35%;
+    height: 800px;
 }
-.close {
+.close2 {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
 }
-.close:hover,
-.close:focus {
+.close2:hover,
+.close2:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
@@ -230,23 +229,27 @@
 }
 
 .section1 {
-	width : 50%;
-	height: 70%;
+	width : 60%;
+	height: 600px;
 	border-radius: 20px;
 	padding: 20px 10px;
 	background-color: #d9d9d985;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-	
+     /* 세로 스크롤만 허용 */
 }
 
 .section2 {
-	width: 40%;
+	width: 60%;
 	height: 100%;
 	margin: auto 10px;
 	border-radius: 20px;
-	padding: 20px 10px;
+	padding: 40px 20px;
 	background-color: #d9d9d985;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.edit_input2 {
+	width: 80%;
 }
 
 .selected {
@@ -366,16 +369,18 @@
     </form>
     
     <!-- 모달 팝업 HTML 추가 -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
+    <div id="myModal" class="modal3">
+        <div class="modal-content3">
+            <span class="close2">&times;</span>
             <h3>업무노트 훔치기</h3>
             <form id="copyNoteForm" action="${pageContext.request.contextPath}/copyNote?copyId=${menuDto.id}" method="post">
                 <hr>
                 <div class="selectAndInput">
-	                <div class="menu-tree section1">
-	                    <h4>폴더 선택</h4>
-						
+	                <div class="section1">
+	                    <h4 style="margin-top: 5px; margin-bottom: 5px;">폴더 선택</h4>
+	                    <span style="font-size: 15px; color: grey;">※ 폴더만 선택 가능합니다.</span>
+	                    <hr>
+						<div class="menu-tree2">
 						<!-- 세션에서 로그인 사용자의 메뉴 리스트보여주기 -->
 				        <ul>
 				            <c:forEach var="menu" items="${menus}">
@@ -435,26 +440,27 @@
 				                </li>
 				            </c:forEach>
 				        </ul>
+				        </div>
 				        <!-- 세션에서 로그인 사용자의 메뉴 리스트보여주기 -->
 	                </div>
-	                <div class="input_outer section2">
+	                <div class="section2">
 					<input type="hidden" id="selectedId2" name="selectedId">
 					<input type="hidden" id="selectedType2" name="selectedType">
 					<input type="hidden" id="selectedDepth2" name="selectedDepth">
 	
-	                    <div class="edit_field">
-	                        <label class="label-fixed-width">노트 제목:</label>
-	                        <input type="text" id="title" name="title" class="edit_input" required>
+	                    <div>
+	                        <label class="label-fixed-width">노트 제목:</label><br>
+	                        <input type="text" id="title" name="title" class="edit_input2" style="height:23px; width: 100%; margin-top:10px;" required>
 	                    </div>
 	
-	                    <div class="edit_field">
-	                        <label class="label-fixed-width">공유용 제목:</label> 
-	                        <input type="text" name="sharedTitle" class="edit_input">
+	                    <div>
+	                        <label class="label-fixed-width" style="margin-top:25px;">공유용 제목:</label> <br>
+	                        <input type="text" name="sharedTitle" class="edit_input2" style="height:23px; width: 100%; margin-top:10px;">
 	                    </div>
 			                    
-		                <div class="edit_field">
-		                    <label class="label-fixed-width">카테고리:</label>
-		                    <select name="category" class="edit_input">
+		                <div>
+		                    <label class="label-fixed-width" style="margin-top:25px;">카테고리:</label><br>
+		                    <select name="category" class="edit_input2" style="height:25px; width: 100%; margin-top:10px;">
 		                        <option value="기타">기타</option>
 		                        <option value="수신">수신</option>
 		                        <option value="개인여신">개인여신</option>
@@ -478,12 +484,51 @@
     
 <script type="text/javascript">   
  
-  
+$(document).ready(function() {
+	// 모든 ul 요소의 기본 display를 block으로 설정
+    $('. ul').css('display', 'block');
+
+    // 페이지 로드 시 저장된 사이드바 상태 확인
+    var isCollapsed = localStorage.getItem('isCollapsed') === 'true';
+
+    if (isCollapsed) {
+        // 사이드바를 접은 상태로 설정
+        $('., .menu_setting').hide();
+        $('.content_left').css('width', '75px');
+        $('.fold-icon').hide();
+        $('.unfold-icon').show();
+    } else {
+        // 사이드바를 펼친 상태로 설정
+        $('., .menu_setting').show();
+        $('.content_left').css('width', '20%');
+        $('.unfold-icon').hide();
+        $('.fold-icon').show();
+    }
+
+    // 접기 버튼 클릭 이벤트
+    $('.menu_onoff .fold-icon').click(function() {
+        $('., .menu_setting').slideUp(300);
+        $('.content_left').animate({ width: '75px' }, 300);
+        $('.fold-icon').hide();
+        $('.unfold-icon').show();
+        localStorage.setItem('isCollapsed', 'true'); // 상태 저장
+    });
+
+    // 펼치기 버튼 클릭 이벤트
+    $('.menu_onoff .unfold-icon').click(function() {
+        $('., .menu_setting').slideDown(300);
+        $('.content_left').animate({ width: '20%' }, 300);
+        $('.unfold-icon').hide();
+        $('.fold-icon').show();
+        localStorage.setItem('isCollapsed', 'false'); // 상태 저장
+    });
+
+});
 
 // 모달 열기/닫기 스크립트
 var modal = document.getElementById("myModal");
 var btn = document.getElementById("copyNoteBtn");
-var span = document.getElementsByClassName("close")[0];
+var span = document.getElementsByClassName("close2")[0];
 
 btn.onclick = function() {
     modal.style.display = "block";
