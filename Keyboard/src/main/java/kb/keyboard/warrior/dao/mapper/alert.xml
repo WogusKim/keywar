@@ -44,6 +44,10 @@
 		insert into alert (userno, message, category, detail)
 		values (#{userno}, #{message}, 'subscribe', #{detail})
 	</insert>
+	<insert id="addFollowAlert" parameterType="kb.keyboard.warrior.dto.AlertDTO">
+		insert into alert (userno, message, category)
+		values (#{userno}, #{message}, 'follow')
+	</insert>
 	<select id="getRecentlyAlert" resultType="kb.keyboard.warrior.dto.AlertDTO">
 		select * from alert where userno=#{param} and (category = 'comment' or category='like'or category='wiki') 
 		order by senddate desc limit 10;
