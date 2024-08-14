@@ -15,6 +15,7 @@ public class UserDTO {
     private String regdate;   // �����
     private String nickname;  // �г���
     private String profile;  // 마이페이지 프로필 사진용 일단 대충 추가했음
+    private String isFollow;  // 마이페이지 프로필 사진용 일단 대충 추가했음
     private byte[] picture; //����
     
     public UserDTO() {
@@ -151,6 +152,14 @@ public class UserDTO {
 
 	public void setProfile(String profile) {
 		this.profile = profile;
+	}
+
+	public String getIsFollow() {
+		return isFollow;
+	}
+
+	public void setIsFollow(String isFollow) {
+		this.isFollow = isFollow;
 	}
     
     

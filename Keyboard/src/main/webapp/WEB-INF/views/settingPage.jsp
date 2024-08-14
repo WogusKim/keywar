@@ -142,6 +142,10 @@ input:checked + .slider:before {
 								<span  class="alertSetting">일정</span>
 								<label class="switch"><input type="checkbox" ${alert.calendar == 1 ? 'checked' : ''} onclick="switchAlert('calendar', this.checked)"><span class="slider round"></span></label>
 							</div>
+							<div class="display-flex">
+								<span  class="alertSetting">구독</span>
+								<label class="switch"><input type="checkbox" ${alert.subscribe == 1 ? 'checked' : ''} onclick="switchAlert('subscribe', this.checked)"><span class="slider round"></span></label>
+							</div>
 						</div>
 					</div>
 				</div><!-- 알림 설정 끝 -->

@@ -184,6 +184,10 @@ width: 100%;
     		nextpage = nextpage+ 'detailNote?id=' + detail;
     	}else if(category == 'notice'){
     		nextpage = nextpage + 'notice';
+    	}else if(category == 'subscribe'){
+    		nextpage = nextpage + 'detailNote?id='  + detail;
+    	}else if(category == 'follow'){
+    		nextpage = nextpage + 'mypage';
     	}
     	
     	window.location.href = nextpage;

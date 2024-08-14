@@ -170,6 +170,10 @@ button[type="submit"]:hover {
 	background-color: #007BFF; /* 호버 또는 활성화 시 배경색 */
 	color: white; /* 호버 또는 활성화 시 텍스트 색상 */
 }
+.comment-area{
+	font-size: small;
+	color: red;
+}
 
 </style>
 </head>
@@ -243,6 +247,7 @@ var dataList = [
         userno: "${item.userno}",
         like_count: ${item.like_count},
         hits_count: ${item.hits_count},
+        comment_count: ${item.comment_count},
         picture: "${item.picture}"
     }${not status.last ? ',' : ''}
     </c:forEach>
@@ -279,8 +284,10 @@ function renderTable(page) {
     paginatedItems.forEach(item => {
         let row = `<tr>
             <td>\${item.management_number}</td>
+
             <td>\${item.category}</td>
-            <td class="title_td"><a href="${contextPath}/detailNote?id=\${item.id}" class="styled-link">\${item.titleShare}</a></td>
+            <td class="title_td"><a href="${pageContext.request.contextPath}/detailNote?id=\${item.id}" class="styled-link">\${item.titleShare}
+            <span class="comment-area">[\${item.comment_count}]</span></a></td>
             <td>
                 <div class="writer_td" onclick="goToProfile(\${item.userno})">
                     <img class="profile-pic" src="${contextPath}/getUserProfilePicture2?userno=\${item.picture}" />
@@ -346,7 +353,8 @@ function renderFilteredTable(data) {
         let row = '<tr>' +
         '<td>' + (item.management_number || '') + '</td>' +
         '<td>' + (item.category || '') + '</td>' +
-        '<td class="title_td"><a href="' + (contextPath || '') + '/detailNote?id=' + (item.id || '') + '" class="styled-link">' + (item.titleShare || '') + '</a></td>' +
+        '<td class="title_td"><a href="' + (contextPath || '') + '/detailNote?id=' + (item.id || '') + '" class="styled-link">' + (item.titleShare || '') + (item.comment_count||'')+'</a></td>' +
+
         '<td>' +
             '<div class="writer_td" onclick="goToProfile(${item.userno})">' +
                 '<img class="profile-pic" src="' + (contextPath || '') + '/getUserProfilePicture2?userno=' + (item.picture || '') + '" />' +

@@ -15,6 +15,7 @@ public class AlertDTO {
  private String notice;    // 알림 수신 여부
  private String calendar;    // 알림 수신 여부
  private String checkStatus;    //동의 여부
+ private String subscribe;    //동의 여부
  
  
  
@@ -127,6 +128,14 @@ public String getCheckStatus() {
 
 public void setCheckStatus(String checkStatus) {
 	this.checkStatus = checkStatus;
+}
+
+public String getSubscribe() {
+	return subscribe;
+}
+
+public void setSubscribe(String subscribe) {
+	this.subscribe = subscribe;
 }
  
 }
