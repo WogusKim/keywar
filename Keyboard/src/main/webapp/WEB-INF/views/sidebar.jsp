@@ -597,7 +597,7 @@ $(document).ready(function() {
                 var itemTitle = $(this).text().toLowerCase();
                 if (itemTitle.includes(searchValue)) {
                     $(this).css('background-color', '#ffeb3b'); // 하이라이트 (노란색 배경)
-                } else {]
+                } else {
                     $(this).css('background-color', ''); // 하이라이트 제거
                 }
             });
