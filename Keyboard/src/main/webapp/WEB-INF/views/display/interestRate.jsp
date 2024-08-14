@@ -71,11 +71,13 @@ tr:hover {
 }
 
 .tab-button {
-    background-color: #f2f2f2; /* 기본 배경색 */
+    background-color: #878787cf; /* 활성 탭의 배경색 */
+    color: white; /* 활성 탭의 텍스트 색상 */
+
     border: 2px solid #ccc; /* 경계선 */
     padding: 10px 20px; /* 내부 여백 */
     cursor: pointer; /* 커서 스타일 */
-    font-weight: bold; /* 폰트 굵기 */
+    
     transition: background-color 0.3s; /* 배경색 전환 효과 */
     border-radius: 5px 5px 0 0; /* 위쪽 모서리 둥글게 */
     margin-right: 2px; /* 오른쪽 마진 */
@@ -86,9 +88,10 @@ tr:hover {
 }
 
 .tab-button.active {
-    background-color: #878787cf; /* 활성 탭의 배경색 */
-    color: white; /* 활성 탭의 텍스트 색상 */
-    border-bottom: 2px solid #007bff; /* 활성 탭의 하단 테두리 강조 */
+    background-color: #f2f2f2; /* 기본 배경색 */
+    color: black;
+    font-weight: bold; /* 폰트 굵기 */
+    border-bottom: 4px solid #007bff; /* 활성 탭의 하단 테두리 강조 */
 }
 
 .Box {

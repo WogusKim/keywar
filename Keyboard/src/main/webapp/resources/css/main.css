@@ -90,6 +90,27 @@ body{
     margin-right: 10px;
 }
 
+.menu_header {
+    display: flex;
+    justify-content: space-between; /* 양쪽 끝에 컨텐츠 배치 */
+    align-items: center; /* 컨텐츠를 수직 중앙에 정렬 */
+    padding: 0 5px 10px 5px;
+    border-bottom: 2px solid #ddd; /* 아래쪽에 얇은 경계선 추가 */
+    margin: 0 10px;
+}
+
+.searchBar {
+    display: flex;
+    justify-content: center; /* 수평 가운데 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+}
+
+.menu_header_title {
+    font-size: 18px; /* 제목 크기를 적절히 조정 */
+    font-weight: bold; /* 굵게 표시 */
+    color: #333; /* 텍스트 색상 (원하는 색상으로 변경 가능) */
+    text-transform: uppercase; /* 대문자로 표시 (원하지 않으면 제거 가능) */
+}
 .menuSetting_l {
 	position: relative; /* 부모 요소를 상대적 위치 컨테이너로 설정 */
 	display: flex;

@@ -133,7 +133,7 @@
 		UPDATE Menu SET menu_order = #{param2} WHERE id = #{param1}
 	</update>
 	
-	<select id="getNewCopyId" resultType="String">
+	<select id="getNewCopyId" resultType="Integer">
 		SELECT MAX(id) FROM Menu WHERE userno = #{param} 
 	</select>
 
