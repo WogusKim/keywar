@@ -179,8 +179,19 @@ button[type="submit"]:hover {
 	<div class="content_outline">
 		<jsp:include page="/WEB-INF/views/sidebar.jsp" />
 		<div class="content_right">
-			<div style="width: 100%; text-align: left;">
+			<div style="width: 50%; text-align: left;">
 				<b style="font-size: 25px;">Cool Tip 게시판</b>
+				<select name="categoryCool" id="categoryCool" style="margin-left: 10px;" onchange="filterByCategory()">
+				    <option value="" ${selectedCategory == null || selectedCategory == '' ? 'selected' : ''}>전체</option>
+				    <option value="수신" ${selectedCategory == '수신' ? 'selected' : ''}>수신</option>
+				    <option value="개인여신" ${selectedCategory == '개인여신' ? 'selected' : ''}>개인여신</option>
+				    <option value="기업여신" ${selectedCategory == '기업여신' ? 'selected' : ''}>기업여신</option>
+				    <option value="외환" ${selectedCategory == '외환' ? 'selected' : ''}>외환</option>
+				    <option value="신용카드" ${selectedCategory == '신용카드' ? 'selected' : ''}>신용카드</option>
+				    <option value="퇴직연금" ${selectedCategory == '퇴직연금' ? 'selected' : ''}>퇴직연금</option>
+				    <option value="WM" ${selectedCategory == 'WM' ? 'selected' : ''}>WM</option>
+				    <option value="기타" ${selectedCategory == '기타' ? 'selected' : ''}>기타</option>
+				</select>
 			</div>
 			<hr>
 			<div style="width: 100%; height: 85%;">
@@ -248,7 +259,40 @@ var dataList = [
 ];
 
 var filteredDataList = null; // 새로운 전역 변수
+var originalDataList = [...dataList]; // 원본 데이터 복사본 저장
 
+function likeUp(){
+	
+	
+	fetch('${pageContext.request.contextPath}/likeUp', {   
+      	method: 'POST',
+    	headers: {
+        	'Content-Type': 'application/json'
+      	},
+    	body: JSON.stringify({
+	      	targetid : id,
+      	})
+  	})
+  	.then(response => response.json())
+  	.then(data => {
+      	console.log('Success:', data);
+      	if(data.status == "success"){
+      		location.reload();
+      	}else if(data.status == "duplicate"){
+      		alert("이미 좋아하는 게시물입니다.");
+      	}else{
+      		
+      	}
+  	})
+  	.catch((error) => {
+      	console.error('Error:', error);
+  	});
+}
+
+function filterByCategory() {
+    var category = document.getElementById("categoryCool").value;
+    window.location.href = "hotNote?category=" + encodeURIComponent(category);
+}
 
 let currentPage = 1;
 const recordsPerPage = 10;
@@ -307,6 +351,8 @@ function setupPagination(totalItems) {
 }
 
 window.onload = function() {
+    originalDataList = [...dataList]; // 원본 데이터 복사본 저장
+
     renderTable(1);  // Render the first page
     //setupPagination();  // Setup pagination buttons
 };
@@ -330,7 +376,9 @@ function searchPostsCool(e) {
     const searchTextCool = document.getElementById('searchInputCool').value.toLowerCase();
 	console.log(searchTextCool);
     // 전역 변수로 필터링된 데이터를 저장
-    window.filteredDataList = dataList.filter(item => item.titleShare.toLowerCase().includes(searchTextCool));
+    //window.filteredDataList = dataList.filter(item => item.titleShare.toLowerCase().includes(searchTextCool));
+    filteredDataList = originalDataList.filter(item => item.titleShare.toLowerCase().includes(searchTextCool));
+
     console.log(window.filteredDataList);
     currentPage = 1; // 검색 후 첫 페이지로 리셋
     renderTable(1); // 기존의 renderTable 함수를 사용
@@ -381,7 +429,10 @@ function sortPosts(criteria) {
     } else if (criteria === 'like_count') {
         dataToSort.sort((a, b) => b.like_count - a.like_count);
     }
-    window.filteredDataList = dataToSort;
+    
+//    window.filteredDataList = dataToSort;
+    filteredDataList = dataToSort;
+
     renderTable(1); // 정렬 후 첫 페이지를 보여줍니다.
 }
 

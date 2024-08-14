@@ -38,15 +38,27 @@ public class BoardController {
 	public SqlSession sqlSession;
 
 	@RequestMapping("/hotNote")
-	public String wikiDetail(Model model, HttpSession session) {
+	public String wikiDetail(@RequestParam(value = "category", required = false) String category, Model model, HttpSession session) {
+
 		System.out.println("hotNote창 진입");
 		WikiDao dao = sqlSession.getMapper(WikiDao.class);
-		List<BoardDTO> list = dao.getAllPost();
+		List<BoardDTO> list;
+		
+		
+	    if (category != null && !category.isEmpty()) {
+	        list = dao.getFilteredPost(category);
+	    } else {
+	        list = dao.getAllPost();
+	    }
 		
 		if(list !=null) {
 			model.addAttribute("list", list);
 		}
 		
+	    model.addAttribute("selectedCategory", category);
+		System.out.println("선택카테고리: "+category);
+
+
 		return "board/list";
 	}
 	
