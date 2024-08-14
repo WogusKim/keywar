@@ -118,12 +118,13 @@
 					<div class="aa">
 						<c:forEach items="${notice}" var="dto">
 							<div class="notice" data-id="${dto.noticeid}"
+								data-userno="${dto.userno}"
 								style="position: absolute; left: ${dto.positionX}px; top: ${dto.positionY}px; background-color: ${dto.color}; z-index: ${dto.zindex}; width: ${dto.width}px; height: ${dto.height}px;">
 								<div class="title">${dto.title}</div>
 								${dto.content}
 								<div class="createdate">${dto.createdate}</div>
 								<a
-									href="./noticeDelete?noticeid=${dto.noticeid}&userno=${dto.userno}"
+									href="#"
 									class="deleteButton1">X</a>
 							</div>
 						</c:forEach>
@@ -137,6 +138,68 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 	<script>
+
+	$(document).ready(function() {
+	    $('.deleteButton1').on('click', function(e) {
+
+	        var noticeId = $(this).closest('.notice').data('id');
+	        var noticeOwner = $(this).closest('.notice').data('userno').toString(); // 공지 작성자 ID, 문자열로 변환
+	        var currentUserId = '${sessionScope.userno}'; // 현재 로그인한 사용자의 ID, 문자열 상태 유지
+
+	        console.log('notice 번호 뭔데', noticeId);
+	        console.log('notice 작성자 누군데', noticeOwner);
+	        console.log('currentUserId', currentUserId);
+	        
+	        // 작성자 ID와 현재 로그인한 사용자 ID 비교
+	        if (currentUserId !== noticeOwner) {
+	            alert("본인이 작성한 공지사항만 삭제 가능합니다!");
+	            e.preventDefault(); // 기본 앵커 이동 이벤트 방지
+	            
+	        } else {
+				
+	            fetch('${pageContext.request.contextPath}/noticeDelete', {
+	                method: 'POST',
+	                headers: {
+	                    'Content-Type': 'application/json'
+	                },
+	                body: JSON.stringify({
+	                    noticeid: noticeId
+	                })
+	            })
+	            .then(response => response.json())
+	            .then(data => {
+	                if (data.status === 'success') {
+	                    console.log('오류1');
+	                } else {
+	                    console.error('오류2', data);
+	                }
+	            })
+	            .catch(error => console.error('Error:', error));
+	            
+	            deleteNoticeInView(noticeId, currentUserId);
+	            
+	        }	
+	    });
+	});
+
+
+	function deleteNoticeInView(noticeId, userNo) {
+	    // 공지사항 요소를 선택
+	    var noticeSelector = 'div.notice[data-id="' + noticeId + '"][data-userno="' + userNo + '"]';
+	    var noticeElement = $(noticeSelector);
+
+	    // 요소가 존재하는지 확인
+	    if (noticeElement.length) {
+	        // 요소가 존재하면 페이지에서 제거
+	        noticeElement.remove();
+	        console.log('공지사항이 성공적으로 삭제되었습니다:', noticeId);
+	    } else {
+	        // 요소가 없으면 콘솔에 메시지 출력
+	        console.error('삭제할 공지사항을 찾을 수 없습니다:', noticeId);
+	    }
+	}
+
+	
 $(function() {
     var maxZ = 100; // 초기 z-index 최대값 설정
 
@@ -240,6 +303,8 @@ $(function() {
             maxHeightInRow = Math.max(maxHeightInRow, noticeHeight);
         });
     });
+    
+    
 });
 </script>
 </body>

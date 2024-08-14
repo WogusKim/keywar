@@ -428,19 +428,17 @@ public class MemoController {
     }
 
     @RequestMapping("/noticeDelete")
-    public String noticeDelete(HttpSession session, HttpServletRequest request, Model model) {
+    public String noticeDelete(@RequestBody NoticeDTO noticeDTO) {
         System.out.println("noticeDelete()");
 
-        String userno = (String) session.getAttribute("userno");
-        System.out.println("noticedelete userno: " + userno);
-        model.addAttribute("request", request);
-        if (userno != null) {
-            noticeDeleteCommand command = new noticeDeleteCommand();
-            command.execute(model, userno);
-        } else {
-            System.out.println("User number not found in session.");
-        }
-        return "redirect:notice";
+        
+        String noticeid = noticeDTO.getNoticeid();
+        
+        MemoDao dao = sqlSession.getMapper(MemoDao.class);
+        dao.noticeDelete(noticeid);
+                  
+
+        return "{\"status\":\"success\"}";
     }
 
     @RequestMapping("/mymemoWrite")
