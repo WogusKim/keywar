@@ -118,8 +118,8 @@ String userno = (String) session.getAttribute("userno");
 }
 
 .writer_profile {
-	width: 50px; /* 이미지 크기 설정 */
-	height: 50px; /* 이미지 높이 설정 */
+	width: 45px; /* 이미지 크기 설정 */
+	height: 45px; /* 이미지 높이 설정 */
 	border-radius: 50%; /* 원형으로 표시 */
 	object-fit: cover; /* 이미지 비율 유지 */
 	margin-bottom: 10px; /* 이미지와 텍스트 간 간격 */
@@ -148,9 +148,14 @@ String userno = (String) session.getAttribute("userno");
 }
 
 .editor-button-area {
-	margin: 30px 0;
-	text-align: center;
+    display: flex; /* flexbox 레이아웃 적용 */
+    flex-direction: column; /* 자식 요소들을 세로로 정렬 */
+    align-items: center; /* 중앙 정렬 */
+    justify-content: space-around; /* 내부 요소 사이에 공간 균등 배분 */
+    margin: 30px 0; /* 상하 마진 조정 */
+    text-align: center; /* 텍스트 중앙 정렬 */
 }
+
 
 .styled-button {
 	background: var(- -main-bgcolor);
@@ -158,7 +163,7 @@ String userno = (String) session.getAttribute("userno");
 	border-radius: 20px;
 	color: var(- -todo-checked);
 	cursor: pointer;
-	font-size: 16px;
+	font-size: 17px;
 	font-weight: bold;
 	padding: 15px 15px;
 	text-align: center;
@@ -276,6 +281,47 @@ String userno = (String) session.getAttribute("userno");
 	color: #007BFF; /* 파란색 텍스트 */
 	font-weight: bold; /* 볼드체 */
 }
+
+.writer-profile-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 간격을 좀 더 조절 */
+    margin-top: 10px; /* 위쪽 여백 조정 */
+    margin-bottom: 5px; /* 아래쪽 여백 조정 */
+    margin-left: 50px; /* 왼쪽 여백 유지 */
+}
+
+
+.writer-nickname {
+    font-size: 18px; /* 글씨 크기를 좀 더 작게 */
+    color: #2c3e50;
+    font-weight: bold;
+    margin-left: 10px; /* 이름과 이미지 사이의 간격 조정 */
+}
+
+.title-style {
+    font-size: 28px; /* 제목 글씨 크기 조정 */
+    font-weight: bold;
+    color: #34495e;
+    margin-left: 50px; /* 제목의 왼쪽 여백 일치 */
+    margin-top: 0; /* 제목과 작성자 정보 사이의 여백 제거 */
+}
+
+.like-counter {
+    padding: 5px 15px; /* 패딩 설정 */
+    color: #E74C3C; /* 글자 색상 */
+    background-color: #FDEDEC; /* 배경색 */
+    border-radius: 15px; /* 테두리 둥글게 */
+    font-size: 17px; /* 폰트 크기 */
+    font-weight: bold; /* 폰트 굵기 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 박스 그림자 */
+    margin-top: 20px; /* 상단 여백 */
+    display: inline-block; /* 인라인 블록으로 표시 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+
+
 /* 업무노트 훔쳐오기를 위한 모달 팝업 관련 css */
 </style>
 <body>
@@ -298,28 +344,27 @@ String userno = (String) session.getAttribute("userno");
 				<div class="others_wikiTitle">
 					<div class="otherWikiTitle">
 
-						<div style="display: flex; align-items: center; gap: 20px; margin-top:20px; margin-left:50px;">
-							<img class="writer_profile"
-								src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${writer.profile}"
-								alt="Writer's Profile Picture">
+ <div class="writer-profile-container">
+            <img class="writer_profile"
+                src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${writer.profile}"
+                alt="Writer's Profile Picture">
+            <h2 class="writer-nickname">${writer.nickname}님의 메뉴얼</h2>
+        </div>
 
-							<h2>${writer.nickname}님의 메뉴얼</h2>
-
-						</div>
-
-						<div>
-							<h1>${menuDto.titleShare}</h1>
-							<div>
-								<img class="mini_icon" src="/resources/images/heart16.png"
-									alt="likes"> 좋아요 ${like}&nbsp;&nbsp; <img
-									class="mini_icon" src="/resources/images/chat16.png"
-									alt="comments"> 댓글
-								<c:out value="${fn:length(comments)}" />
-								&nbsp;&nbsp; <img class="mini_icon"
-									src="/resources/images/eyes.png" alt="views"> 조회수 ${hits}
-							</div>
-						</div>
-					</div>
+        <div>
+            <h1 class="title-style">${menuDto.titleShare}</h1>
+        </div>
+        
+        <div style="text-align: right; width: 100%; padding-right: 20px;">
+            <img class="mini_icon" src="/resources/images/heart16.png"
+                alt="likes"> 좋아요 ${like}&nbsp;&nbsp; <img
+                class="mini_icon" src="/resources/images/chat16.png"
+                alt="comments"> 댓글
+            <c:out value="${fn:length(comments)}" />
+            &nbsp;&nbsp; <img class="mini_icon"
+                src="/resources/images/eyes.png" alt="views"> 조회수 ${hits}
+        </div>
+    </div>
 
 					<!-- Editor 영역 -->
 					<div id="myEditor" class="editor_outline"></div>
@@ -333,7 +378,7 @@ String userno = (String) session.getAttribute("userno");
 
 
 
-					<div style="position: relative; display: inline-block;"
+					<div style="position: relative; display: inline-block; cursor: pointer;" 
 						onclick="likeUp()">
 						<div style="width: 150px; height: 150px; position: relative;">
 							<iframe src="https://giphy.com/embed/05IRAGzP2Q6EY4E9eg"
@@ -345,7 +390,7 @@ String userno = (String) session.getAttribute("userno");
 					</div>
 
 					<%-- 			<a href="${pageContext.request.contextPath}/likeUp?id=<%= currentId %>"><img src="${pageContext.request.contextPath}/resources/images/like.png"  id="likeUp" ></a> --%>
-					<p style="font-size: 30px; margin: 0px;">${like}</p>
+					 <div class="like-counter">해당 게시글은 좋아요를 ${like}번 받았어요!</div> <!-- 스타일 적용된 텍스트 -->
 
 				</div>
 				<c:set var="sessionUserno" value="<%=userno%>" />
@@ -374,7 +419,11 @@ String userno = (String) session.getAttribute("userno");
 									<c:if test="${sessionUserno eq comment.userno}">
 										<a
 											href="${pageContext.request.contextPath}/deleteComment?commentid=${comment.commentid}&id=<%= currentId %>"
-											onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+											onclick="return confirm('정말 삭제하시겠습니까?');"> <img
+											src="${pageContext.request.contextPath}/resources/images/delete.png"
+											alt="Delete"
+											style="vertical-align: middle; margin-right: 5px; width: 17px; height: 17px;">삭제
+										</a>
 									</c:if>
 								</div>
 
@@ -395,7 +444,7 @@ String userno = (String) session.getAttribute("userno");
 					<div
 						style="width: 100%; display: flex; justify-content: space-between;">
 						<textarea id="comment-input" rows="4" cols="50"
-							placeholder="댓글을 입력하세요"
+							placeholder="댓글을 남겨보세요!"
 							style="width: 90%; height: 60px; resize: none;"></textarea>
 						<button id="comment-btn" class="styled-button" onclick="test()">등록하기</button>
 					</div>
