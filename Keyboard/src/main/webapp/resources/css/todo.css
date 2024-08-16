@@ -198,7 +198,7 @@
 .mainTodoContentOutline{
 	
 	background-color: white; 
-	padding : 15px; 
+	padding : 7px; 
 	border-radius: 10px; 
 	width : 100%; 
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
@@ -208,8 +208,8 @@
 	width: 100%; 
 	height: 95%;  
 	overflow-y: auto; 
-	padding-left: 10px;  
-	padding-right: 10px;
+	padding-left: 5px;  
+	padding-right: 5px;
 }
 .mainTodoNotFountOutline{
 	width: 100%; 

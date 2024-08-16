@@ -17,7 +17,7 @@
     justify-content: space-between; /* 첫 번째 요소는 위에, 마지막 요소는 아래에 위치 */
     border-radius: 10px;
     background-color: white;
-    padding: 20px 5px;
+    padding: 20px 10px 0px 0px;
     width: 20%;
     height: 100%;
     margin-right: 15px;
@@ -31,9 +31,15 @@
 	position: relative; /* 상대 위치 설정 */
 }
 
-.menu-tree {
+.menu-tree-wrapper {
+	height: 92%;
+	padding: 5px 15px;
     overflow-y: auto; /* 스크롤 가능하도록 설정 */
     flex-grow: 1; /* 남은 공간 모두 사용 */
+}
+
+.menu-tree {
+	height: 100%;
 }
 
 .menu-tree ul {
@@ -284,8 +290,10 @@ input[type="text"], input[type="radio"] {
 			<span class="menu_header_title">마이 업무노트</span>
 			<span class="icon-setting search-icon"></span>
 		</div>
+
+		<div class="menu-tree-wrapper">
 		<div class="searchBar">
-			<input type="text" id="searchInput" placeholder="검색어를 입력하세요..." style="width: 90%; margin-top: 10px; display:none;">
+			<input type="text" id="searchInput" placeholder="검색어를 입력하세요..." style="width: 95%; margin-top: 10px; display:none;">
 		</div>
         <ul>
             <c:forEach var="menu" items="${menus}">
@@ -409,6 +417,7 @@ input[type="text"], input[type="radio"] {
                 </li>
             </c:forEach>
         </ul>
+        </div>
 		<c:if test="${empty menus}">	
 		<div>
 			<div style="text-align: center;margin-top: 55%;">
