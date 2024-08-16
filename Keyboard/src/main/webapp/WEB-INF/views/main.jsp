@@ -173,7 +173,7 @@ input[type="checkbox"][id^="check"]:checked + label {
 							</div>
 						</div>
 						<hr>
-						<div class="todo_list" style="height: 85%;">
+						<div class="todo_list" style="height: 80%;">
 							<c:choose>
 								<c:when test="${empty todoList}">
 									<div class="mainTodoNotFountOutline" style="overflow-y: auto;">
@@ -578,7 +578,7 @@ input[type="checkbox"][id^="check"]:checked + label {
 								</c:when>
 								<c:otherwise>
 									<div class="mainTodoInnerBox" style="padding: 0px;">
-										<div style="padding: 5px; overflow-y: auto; height: 100%;">
+										<div style="padding: 0px 5px 5px 5px; overflow-y: auto; height: 100%;">
 											<c:forEach var="notice" items="${noticeList}">
 												<div class="mainTodoContentOutline">
 													<div class="arrangeBox" style="width: 100%;">
