@@ -56,6 +56,12 @@ public class BoardController {
 			model.addAttribute("list", list);
 		}
 		
+		System.out.println("리스트 길이 : " + list.size());
+		
+//		for (BoardDTO dto : list) {
+//			System.out.println(dto.getTitle());
+//		}
+		
 	    model.addAttribute("selectedCategory", category);
 		System.out.println("선택카테고리: "+category);
 
