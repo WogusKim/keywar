@@ -1,260 +1,295 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>일정 관리</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>일정 관리</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js'></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/calendar.css">
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+<script	src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
+<script	src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js'></script>
+<script	src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js'></script>
+<link rel="stylesheet"	href="${pageContext.request.contextPath}/resources/css/calendar.css">
+<link	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-	.btn-mint {
-	    background-color: #C6EFCE;
-	    border-color: #C6EFCE;
-	    color: #006100;
-	}
-	.btn-mint:hover {
-	    background-color: #A8CBBA;
-	    border-color: #A8CBBA;
-	    color: black;
-	} 
-	.btn-pastel-pink {
-	    background-color: #FFC7CE;
-	    border-color: #FFC7CE;
-	    color: #9C0006;
-	}
-	.btn-pastel-pink:hover {
-	    background-color: #FFA0AB;
-	    border-color: #FFA0AB;
-	    color: #9C0006;
-	}
-	/* todolist 스타일 */
-	.todo-count {
-	    position: absolute;
-	    top: 5px;
-	    left: 5px;
-	    width: 20px;
-	    height: 20px;
-	    background-color: #007bff;
-	    color: white;
-	    border-radius: 50%;
-	    display: flex;
-	    align-items: center;
-	    justify-content: center;
-	    font-size: 12px;
-	    font-weight: bold;
-	    z-index: 10; /* 다른 요소들보다 위에 표시되도록 함 */
-	}
-	
-	.fc-daygrid-day-top {
-	    position: relative;
-	}
-	.modal {
-    z-index: 9999 !important;
-	}
-	.fc-shareGroup-button {
-    background: url("${pageContext.request.contextPath}/resources/images/icons/calendar_group.png") no-repeat center center !important;
-    background-size: contain !important;
-    width: 38.78px !important; /* 이미지 크기에 맞게 너비 조정 */
-    height: 38.78px !important; /* 이미지 크기에 맞게 높이 조정 */
-    border: none !important; /* 버튼의 테두리를 없앱니다 */
-    box-shadow: none !important; /* 버튼의 그림자를 없앱니다 */
-    background-color: transparent !important; /* 배경색을 투명하게 만듭니다 */
-    padding: 0 !important; /* 여백 제거 */
-    margin: 0 !important; /* 외부 여백 제거 */
-    cursor: pointer !important; /* 커서를 포인터로 변경 */
+.btn-mint {
+	background-color: #C6EFCE;
+	border-color: #C6EFCE;
+	color: #006100;
+}
+
+.btn-mint:hover {
+	background-color: #A8CBBA;
+	border-color: #A8CBBA;
+	color: black;
+}
+
+.btn-pastel-pink {
+	background-color: #FFC7CE;
+	border-color: #FFC7CE;
+	color: #9C0006;
+}
+
+.btn-pastel-pink:hover {
+	background-color: #FFA0AB;
+	border-color: #FFA0AB;
+	color: #9C0006;
+}
+/* todolist 스타일 */
+.todo-count {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	width: 20px;
+	height: 20px;
+	background-color: #007bff;
+	color: white;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 12px;
+	font-weight: bold;
+	z-index: 10; /* 다른 요소들보다 위에 표시되도록 함 */
+}
+
+.fc-daygrid-day-top {
+	position: relative;
+}
+
+.modal {
+	z-index: 9999 !important;
+}
+
+.fc-shareGroup-button {
+	background:
+		url("${pageContext.request.contextPath}/resources/images/icons/calendar_group.png")
+		no-repeat center center !important;
+	background-size: contain !important;
+	width: 38.78px !important; /* 이미지 크기에 맞게 너비 조정 */
+	height: 38.78px !important; /* 이미지 크기에 맞게 높이 조정 */
+	border: none !important; /* 버튼의 테두리를 없앱니다 */
+	box-shadow: none !important; /* 버튼의 그림자를 없앱니다 */
+	background-color: transparent !important; /* 배경색을 투명하게 만듭니다 */
+	padding: 0 !important; /* 여백 제거 */
+	margin: 0 !important; /* 외부 여백 제거 */
+	cursor: pointer !important; /* 커서를 포인터로 변경 */
 }
 
 .fc-todoList-button {
-    position: relative;
-    background: url("${pageContext.request.contextPath}/resources/images/icons/calendar_todo.png") no-repeat center center !important;
-    background-size: contain !important;
-    width: 60px !important; /* 너비 고정 */
-    height: 38.78px !important; /* 높이 고정 */
-    border: none !important;
-    box-shadow: none !important;
-    background-color: transparent !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    cursor: pointer !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-indent: -9999px; /* 텍스트 숨김 */
-    overflow: hidden; /* 텍스트가 버튼 크기를 넘지 않도록 */
+	position: relative;
+	background:
+		url("${pageContext.request.contextPath}/resources/images/icons/calendar_todo.png")
+		no-repeat center center !important;
+	background-size: contain !important;
+	width: 60px !important; /* 너비 고정 */
+	height: 38.78px !important; /* 높이 고정 */
+	border: none !important;
+	box-shadow: none !important;
+	background-color: transparent !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	cursor: pointer !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-indent: -9999px; /* 텍스트 숨김 */
+	overflow: hidden; /* 텍스트가 버튼 크기를 넘지 않도록 */
 }
-
-
-
-
 </style>
 
 </head>
 <body>
 
-<%@ include file="/WEB-INF/views/header.jsp" %>
+	<%@ include file="/WEB-INF/views/header.jsp"%>
 
-<div class="content_outline">
-    <%@ include file="/WEB-INF/views/sidebar.jsp" %>
-    <div class="content_right">
-        <div id="calendar"></div> <!-- 일정 캘린더가 표시될 부분 -->
-    </div> 
-</div>
-<!-- 일정 추가 모달 -->
-<div class="modal fade" id="addScheduleModal" tabindex="-1" role="dialog" aria-labelledby="addScheduleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addScheduleModalLabel">일정 추가</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- 일정 추가 폼 -->
-                <form id="addScheduleForm">
-                    <div class="form-group">
-                        <label for="scheduleTitle">제목</label>
-                        <input type="text" class="form-control" id="scheduleTitle" name="title">
-                    </div>
-                    <div class="form-group">
-                        <label for="scheduleStartDate">시작 날짜</label>
-                        <input type="date" class="form-control" id="scheduleStartDate" name="startDate">
-                    </div>
-                    <div class="form-group">
-                        <label for="scheduleEndDate">종료 날짜</label>
-                        <input type="date" class="form-control" id="scheduleEndDate" name="endDate">
-                    </div>
-                    <div class="form-group">
-                        <label for="scheduleContent">내용</label>
-                        <input type="text" class="form-control" id="scheduleContent" name="content">
-                    </div>
-                    <div class="form-group">
-                        <label for="scheduleShareto">공유 대상</label>
-                        <select class="form-control" id="scheduleShareto" name="shareto">
-                            <option value="개인">개인</option>
-                            <option value="팀">팀</option>
-                            <option value="부서">부서</option>
-                            <option value="사용자 설정">사용자 설정</option>
-                        </select>
-                    </div>
-                    <!-- 추가적인 드롭다운은 기본적으로 숨김 -->
-                    <div class="form-group" id="customSharetoGroup" style="display: none;">
-                        <label for="customShareto">사용자 설정 공유 대상</label>
-                        <select class="form-control" id="customShareto" name="customShareto">
-                            <!-- 여기에 사용자 설정 항목을 추가하세요 
+	<div class="content_outline">
+		<%@ include file="/WEB-INF/views/sidebar.jsp"%>
+		<div class="content_right">
+			<div id="calendar"></div>
+			<!-- 일정 캘린더가 표시될 부분 -->
+		</div>
+	</div>
+	<!-- 일정 추가 모달 -->
+	<div class="modal fade" id="addScheduleModal" tabindex="-1"
+		role="dialog" aria-labelledby="addScheduleModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="addScheduleModalLabel">일정 추가</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<!-- 일정 추가 폼 -->
+					<form id="addScheduleForm">
+						<div class="form-group">
+							<label for="scheduleTitle">제목</label> <input type="text"
+								class="form-control" id="scheduleTitle" name="title">
+						</div>
+						<div class="form-group">
+							<label for="scheduleStartDate">시작 날짜</label> <input type="date"
+								class="form-control" id="scheduleStartDate" name="startDate">
+						</div>
+						<div class="form-group">
+							<label for="scheduleEndDate">종료 날짜</label> <input type="date"
+								class="form-control" id="scheduleEndDate" name="endDate">
+						</div>
+						<div class="form-group">
+							<label for="scheduleContent">내용</label> <input type="text"
+								class="form-control" id="scheduleContent" name="content">
+						</div>
+						<div class="form-group">
+							<label for="scheduleShareto">공유 대상</label> <select
+								class="form-control" id="scheduleShareto" name="shareto">
+								<option value="개인">개인</option>
+								<option value="팀">팀</option>
+								<option value="부서">부서</option>
+								<option value="사용자 설정">사용자 설정</option>
+							</select>
+						</div>
+						<!-- 추가적인 드롭다운은 기본적으로 숨김 -->
+						<div class="form-group" id="customSharetoGroup"
+							style="display: none;">
+							<label for="customShareto">사용자 설정 공유 대상</label> <select
+								class="form-control" id="customShareto" name="customShareto">
+								<!-- 여기에 사용자 설정 항목을 추가하세요 
                             <option value="user1">User 1</option>
                             <option value="user2">User 2</option>
                             <option value="user3">User 3</option>
                             -->
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                <button type="button" class="btn btn-primary" onclick="saveSchedule()">저장</button>
-            </div>
-        </div>
-    </div>
-</div>
+							</select>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-primary"
+						onclick="saveSchedule()">저장</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<!-- 일정 상세 모달 -->
-<div class="modal fade" id="eventDetailModal" tabindex="-1" role="dialog" aria-labelledby="eventDetailModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="eventDetailModalLabel">일정 상세</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- 일정 상세 내용 표시 영역 -->
-                <p><strong>제목:</strong> <span id="eventTitle"></span></p>
-                <p><strong>시작 날짜:</strong> <span id="eventStartDate"></span></p>
-                <p><strong>종료 날짜:</strong> <span id="eventEndDate"></span></p>
-                <p><strong>내용:</strong> <span id="eventContent"></span></p>
-                <p><strong>공유 대상:</strong> <span id="eventShareto"></span></p>
-            </div>
-            <div class="modal-footer">
-            	<button type="button" class="btn btn-primary" id="deleteEventButton" style="display: none;">삭제</button>
-                <button type="button" class="btn btn-primary" id="editEventButton" style="display: none;">수정</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
+	<!-- 일정 상세 모달 -->
+	<div class="modal fade" id="eventDetailModal" tabindex="-1"
+		role="dialog" aria-labelledby="eventDetailModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document" style="margin-top: 10%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="eventDetailModalLabel">일정 상세</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<!-- 일정 상세 내용 표시 영역 -->
+					<p>
+						<strong>제목:</strong> <span id="eventTitle"></span>
+					</p>
+					<p>
+						<strong>시작 날짜:</strong> <span id="eventStartDate"></span>
+					</p>
+					<p>
+						<strong>종료 날짜:</strong> <span id="eventEndDate"></span>
+					</p>
+					<p>
+						<strong>내용:</strong> <span id="eventContent"></span>
+					</p>
+					<p>
+						<strong>공유 대상:</strong> <span id="eventShareto"></span>
+					</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						id="deleteEventButton" style="display: none;">삭제</button>
+					<button type="button" class="btn btn-primary" id="editEventButton"
+						style="display: none;">수정</button>
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<!-- 일정 수정 모달 -->
-<div class="modal fade" id="editEventModal" tabindex="-1" role="dialog" aria-labelledby="editEventModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editEventModalLabel">일정 수정</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- 일정 수정 폼 영역 -->
-                <form id="editEventForm">
-                    <input type="hidden" id="editEventId">
-                    <div class="form-group">
-                        <label for="editEventTitle">제목</label>
-                        <input type="text" class="form-control" id="editEventTitle">
-                    </div>
-                    <div class="form-group">
-                        <label for="editEventStartDate">시작일</label>
-                        <input type="date" class="form-control" id="editEventStartDate">
-                    </div>
-                    <div class="form-group">
-                        <label for="editEventEndDate">종료일</label>
-                        <input type="date" class="form-control" id="editEventEndDate">
-                    </div>
-                    <div class="form-group">
-                        <label for="editEventContent">내용</label>
-                        <input type="text" class="form-control" id="editEventContent">
-                    </div>
-                    <div class="form-group">
-                        <label for="editEventShareto">공유 대상</label>
-                        <select class="form-control" id="editEventShareto">
-                            <option value="개인">개인</option>
-                            <option value="팀">팀</option>
-                            <option value="부서">부서</option>
-                            <option value="사용자 설정">사용자 설정</option>
-                        </select>
-                    </div>
-                    <!-- 추가적인 드롭다운은 기본적으로 숨김 -->
-					<div class="form-group" id="customSharetoGroupEdit" style="display: none;">
-					    <label for="customSharetoEdit">사용자 설정 공유 대상</label>
-					    <select class="form-control" id="customSharetoEdit" name="customSharetoEdit">
-					    </select>
-					</div>
-					<button type="submit" class="btn btn-primary">저장</button>
-                    <!-- <button type="button" class="btn btn-primary" onclick="updateSchedule()">저장</button> -->
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+	<!-- 일정 수정 모달 -->
+	<div class="modal fade" id="editEventModal" tabindex="-1" role="dialog"
+		aria-labelledby="editEventModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="editEventModalLabel">일정 수정</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<!-- 일정 수정 폼 영역 -->
+					<form id="editEventForm">
+						<input type="hidden" id="editEventId">
+						<div class="form-group">
+							<label for="editEventTitle">제목</label> <input type="text"
+								class="form-control" id="editEventTitle">
+						</div>
+						<div class="form-group">
+							<label for="editEventStartDate">시작일</label> <input type="date"
+								class="form-control" id="editEventStartDate">
+						</div>
+						<div class="form-group">
+							<label for="editEventEndDate">종료일</label> <input type="date"
+								class="form-control" id="editEventEndDate">
+						</div>
+						<div class="form-group">
+							<label for="editEventContent">내용</label> <input type="text"
+								class="form-control" id="editEventContent">
+						</div>
+						<div class="form-group">
+							<label for="editEventShareto">공유 대상</label> <select
+								class="form-control" id="editEventShareto">
+								<option value="개인">개인</option>
+								<option value="팀">팀</option>
+								<option value="부서">부서</option>
+								<option value="사용자 설정">사용자 설정</option>
+							</select>
+						</div>
+						<!-- 추가적인 드롭다운은 기본적으로 숨김 -->
+						<div class="form-group" id="customSharetoGroupEdit"
+							style="display: none;">
+							<label for="customSharetoEdit">사용자 설정 공유 대상</label> <select
+								class="form-control" id="customSharetoEdit"
+								name="customSharetoEdit">
+							</select>
+						</div>
+						<button type="submit" class="btn btn-primary">저장</button>
+						<!-- <button type="button" class="btn btn-primary" onclick="updateSchedule()">저장</button> -->
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<!-- 사용자 설정 그룹 관련 설정 옵션 모달 -->
-<div class="modal fade" id="settingsOptionsModal" tabindex="-1" role="dialog" aria-labelledby="settingsOptionsModalLabel" aria-hidden="true" style="margin : auto;">
+	<!-- 사용자 설정 그룹 관련 설정 옵션 모달 -->
+	<div class="modal fade" id="settingsOptionsModal" tabindex="-1"
+		role="dialog" aria-labelledby="settingsOptionsModalLabel"
+		aria-hidden="true" style="margin: auto;">
 		<div class="modal-dialog" role="document" style="margin-top: 10%">
-			<div class="modal-content" style=""> 
-				<div class="modal-header"> 
+			<div class="modal-content" style="">
+				<div class="modal-header">
 					<h5 class="modal-title" id="settingsOptionsModalLabel">설정 옵션</h5>
 					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close"> 
+						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
@@ -275,152 +310,185 @@
 		</div>
 	</div>
 <style>
-.searchArea{
-width: 100%; 
-max-height: 100px; 
-overflow-y : auto; 
-padding: 10px; 
-background-color: #F2F2F2;
-border-radius: 10px;
+.searchArea {
+	width: 100%;
+	max-height: 100px;
+	overflow-y: auto;
+	padding: 10px;
+	background-color: #F2F2F2;
+	border-radius: 10px;
 }
-.delete-btn-seongeun{
-background-color : #DA3343; 
-border: none; 
-color: #ffffff; 
-border-radius: 5px; 
-font-size: small;
-/* width: 25px;
+
+.delete-btn-seongeun {
+	background-color: #DA3343;
+	border: none;
+	color: #ffffff;
+	border-radius: 5px;
+	font-size: small;
+	/* width: 25px;
 height : 25px; */
-text-align: center;
+	text-align: center;
 }
 </style>
-<!--  20240814 성은 여기 수정중 !  -->
-<!-- 사용자 설정 그룹 만들기 모달 -->
-<div class="modal fade" id="createGroupModal" tabindex="-1" role="dialog" aria-labelledby="customGroupModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document" style="margin-top: 10%">
-        <div class="modal-content"> 
-            <div class="modal-header">
-                <h5 class="modal-title" id="customGroupModalLabel">사용자 설정 그룹 만들기</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- 사용자 설정 그룹명 입력 -->
-                <div class="form-group">
-                    <label for="groupName">사용자 설정 그룹명:</label>
-                    <input type="text" class="form-control" id="groupName">
-                </div>
-                <!-- 사용자 초대 검색 -->
-                <div class="form-group">
-                    <label for="userSearch">사용자 초대:</label>
-                    <div style="display: flex;">
-	                    <input type="text" class="form-control" style="width: 87%;" id="userSearch">
-	                    <button type="button" class="btn btn-primary" id="searchUserButton">검색</button>
-                    </div>
-                </div>
-                <!-- 검색 결과 -->
-                <div id="searchResults" style=""></div>
-                <hr id="searchUser-hr" style="display: none;">
-                <!-- 선택된 사용자 목록 -->
-                <div id="selectedUsers" style="width: 100%; max-height: 100px; overflow-y : auto; padding: 10px;"></div>
-                <!-- 색상 선택 -->
-                <div class="form-group">
-                    <label for="colorPicker">색깔 선택:</label>
-                    <!-- 기본 색상 파랑으로 설정 + 칸 너비 좀 더 줘서 클릭 할 수 있도록 유도 -->
-                    <input type="color" class="form-control" id="colorPicker" value="#007BFF" style="height: 38px;">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="saveGroupButton">저장</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
+	<!--  20240814 성은 여기 수정중 !  -->
+	<!-- 사용자 설정 그룹 만들기 모달 -->
+	<div class="modal fade" id="createGroupModal" tabindex="-1"
+		role="dialog" aria-labelledby="customGroupModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document" style="margin-top: 7%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="customGroupModalLabel">사용자 설정 그룹
+						만들기</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close" onclick="closeUserCostomGroup()">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<!-- 사용자 설정 그룹명 입력 -->
+					<div class="form-group">
+						<label for="groupName">사용자 설정 그룹명:</label> <input type="text"
+							class="form-control" id="groupName">
+					</div>
+					<!-- 사용자 초대 검색 -->
+					<div class="form-group">
+						<label for="userSearch">사용자 초대:</label>
+						<div style="display: flex;">
+							<input type="text" class="form-control" style="width: 87%;"
+								id="userSearch">
+							<button type="button" class="btn btn-primary"
+								id="searchUserButton">검색</button>
+						</div>
+					</div>
+					<!-- 검색 결과 -->
+					<div id="searchResults" style=""></div>
+					<hr id="searchUser-hr" style="display: none;">
+					<!-- 선택된 사용자 목록 -->
+					<div id="selectedUsers"
+						style="width: 100%; max-height: 100px; overflow-y: auto; padding: 10px;"></div>
+					<!-- 색상 선택 -->
+					<div class="form-group">
+						<label for="colorPicker">색깔 선택:</label>
+						<!-- 기본 색상 파랑으로 설정 + 칸 너비 좀 더 줘서 클릭 할 수 있도록 유도 -->
+						<input type="color" class="form-control" id="colorPicker"
+							value="#007BFF" style="height: 38px;">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="saveGroupButton">저장</button>
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal" onclick="closeUserCostomGroup()">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 
-<!-- 기존 그룹에 사용자 초대하기 모달 -->
-<div class="modal fade" id="inviteGroupModal" tabindex="-1" role="dialog" aria-labelledby="inviteGroupModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="inviteGroupModalLabel">그룹에 사용자 초대하기</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- 그룹 선택 -->
-                <div class="form-group">
-                    <label for="groupSelect">그룹 선택:</label>
-                    <select class="form-control" id="groupSelect"></select>
-                </div>
-                <!-- 사용자 초대 검색 -->
-                <div class="form-group">
-                    <label for="inviteUserSearch">사용자 초대:</label>
-                    <input type="text" class="form-control" id="inviteUserSearch">
-                    <button type="button" class="btn btn-primary" id="inviteSearchUserButton">검색</button>
-                </div>
-                <!-- 검색 결과 -->
-                <div id="inviteSearchResults"></div>
-                <!-- 선택된 사용자 목록 -->
-                <div id="inviteSelectedUsers"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="inviteUsersButton">초대하기</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
+	<!-- 기존 그룹에 사용자 초대하기 모달 -->
+	<div class="modal fade" id="inviteGroupModal" tabindex="-1"
+		role="dialog" aria-labelledby="inviteGroupModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document" style="margin-top: 10%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="inviteGroupModalLabel">그룹에 사용자
+						초대하기</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<!-- 그룹 선택 -->
+					<div class="form-group">
+						<label for="groupSelect">그룹 선택:</label> <select
+							class="form-control" id="groupSelect"></select>
+					</div>
+					<!-- 사용자 초대 검색 -->
+					<div class="form-group" >
+						<label for="inviteUserSearch">사용자 초대:</label> 
+						<div style="display: flex; ">
+						<input type="text"
+							class="form-control" id="inviteUserSearch" style="width: 87%;">
+						<button type="button" class="btn btn-primary"
+							id="inviteSearchUserButton">검색</button>
+						</div>
+					</div>
+					<!-- 검색 결과 -->
+					<div id="inviteSearchResults"></div>
+					<hr id="inviteSearchUser-hr" style="display: none;">
+					<!-- 선택된 사용자 목록 -->
+					<div id="inviteSelectedUsers" style="width: 100%; max-height: 100px; overflow-y: auto; padding: 10px;"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						id="inviteUsersButton">초대하기</button>
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 
-<!-- 기존 그룹 나가기 모달 -->
-<div class="modal fade" id="leaveGroupModal" tabindex="-1" role="dialog" aria-labelledby="leaveGroupModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="leaveGroupModalLabel">사용자 설정 그룹 나가기</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- 그룹 선택 -->
-                <div class="form-group">
-                    <label for="groupSelectForExit">그룹 선택:</label>
-                    <select class="form-control" id="groupSelectForExit"></select>
-                </div>
-                <!-- 검색 결과 -->
-                <div id="inviteSearchResults"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="leaveButton">그룹 나가기</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
+	<!-- 기존 그룹 나가기 모달 -->
+	<div class="modal fade" id="leaveGroupModal" tabindex="-1"
+		role="dialog" aria-labelledby="leaveGroupModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="leaveGroupModalLabel">사용자 설정 그룹
+						나가기</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<!-- 그룹 선택 -->
+					<div class="form-group">
+						<label for="groupSelectForExit">그룹 선택:</label> <select
+							class="form-control" id="groupSelectForExit"></select>
+					</div>
+					<!-- 검색 결과 -->
+					<div id="inviteSearchResults"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="leaveButton">그룹
+						나가기</button>
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<div id="loading-spinner" class="spinner-overlay">
-    <iframe src="https://giphy.com/embed/yWzaP4UGjYVzFXjlyw" width="150" height="150" style="pointer-events: none;"  frameBorder="0" class="giphy-embed" allowFullScreen class="custom-spinner"></iframe>
-</div> 
+	<div id="loading-spinner" class="spinner-overlay">
+		<iframe src="https://giphy.com/embed/yWzaP4UGjYVzFXjlyw" width="150"
+			height="150" style="pointer-events: none;" frameBorder="0"
+			class="giphy-embed" allowFullScreen class="custom-spinner"></iframe>
+	</div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<script>
+	<script>
     var calendar;
     var currentDate;
     let todoCountData = {};    
-    
+    let selectedUsers = [];
+	let inviteSelectedUsers = [];
     $(document).ready(function() {
-        let selectedUsers = [];
+       //let selectedUsers = [];
 
         // 그룹명 중복 체크
         $('#groupName').on('blur', function() {
@@ -550,7 +618,6 @@ text-align: center;
             console.log('Removing user with userno :'+userno);
             
             selectedUsers = selectedUsers.filter(user => String(user.userno) !== userno);
-            console.log('selectedUsers after deletion:', selectedUsers); // 디버깅 로그
         	
             $(this).closest('.selected-user').remove();
             
@@ -586,6 +653,7 @@ text-align: center;
                     alert('그룹이 성공적으로 생성되었습니다.');
                     $('#customGroupModal').modal('hide');
                     $('#createGroupModal').modal('hide');
+                    closeUserCostomGroup();
                 },
                 error: function(xhr, status, error) {
                     console.error('그룹 저장 중 오류가 발생했습니다:', error);
@@ -595,12 +663,7 @@ text-align: center;
         });
     });
     
-        
-        
-        
-    
-    
-    
+
     
     $(document).ready(function() {
         $('#scheduleShareto').change(function() {
@@ -666,8 +729,34 @@ text-align: center;
                 $('#customSharetoGroupEdit').hide();
             }
         });
-    });
+        
+        // 모달이 닫힐 때 추가 작업을 수행하는 이벤트 리스너
+        $('#createGroupModal').on('hidden.bs.modal', function (e) {
+            closeUserCostomGroup();
+        });
 
+        
+    });
+	//성은 만들고 있는 스크립트(0816)
+	//검색 결과 영역과 선택 사용자 영역을 모두 지워주고, 선택된 사용자 들을 저장하는 배열을 초기화함
+    function closeUserCostomGroup(){
+   	 	console.log('Before clearing selectedUsers:', selectedUsers); // 배열 초기화 전 상태 확인
+    	    
+   	    $("#searchResults").empty();  
+   	    $("#searchResults").removeClass('searchArea');
+   	    $("#selectedUsers").empty();
+   	    $('#searchUser-hr').css('display', 'none');
+   	 	$("#groupName").val('');
+   	 	$("#userSearch").val('');
+   	 
+   	    selectedUsers.length = 0; // 배열 초기화
+   	    
+   	    console.log('After clearing selectedUsers:', selectedUsers); // 배열 초기화 후 상태 확인
+		
+
+    }
+    
+    
     function handleDateClickTo(info) {
     	handleDateClick(info);
     }
@@ -1184,7 +1273,7 @@ text-align: center;
      
      
     
-	let inviteSelectedUsers = [];
+	//let inviteSelectedUsers = [];
      $(document).ready(function() {
     	 
     	 
@@ -1385,20 +1474,23 @@ text-align: center;
 	            console.log('isSelected:', isSelected);
 
 	            const userHtml = 
-	                '<div class="search-result ' + (isSelected ? 'selected' : '') + '">' +
-	                '<input type="checkbox" name="userSelect" value="' + userno + '" ' + (isSelected ? 'checked disabled' : '') + '>' +
-	                '<span>' + name + ' (' + userno + ') - ' + deptname + ' / ' + teamname + '</span>' +
+	                '<div class="search-result ">' +
+	                '<input type="checkbox" name="userSelect" value="' + userno + '" ' + (isSelected ? 'checked ' : '') + '> ' +
+	                '<span> ' + name + ' (' + userno + ') - ' + deptname + ' / ' + teamname + '</span>' +
 	                '</div>';
+	                
 	            console.log('userHtml:', userHtml);
-
 	            resultsContainer.append(userHtml);
 	        });
+            $('#inviteSearchResults').addClass('searchArea');
+            $('#inviteSearchUser-hr').css('display', 'block');
 	    } else {
 	        resultsContainer.append('<p>검색 결과가 없습니다.</p>');
+	        $('#inviteSearchUser-hr').css('display', 'none');
 	    }
 	}
 	
-
+	// 성은 여기 수정 중 0816
 	function handleUserSelection() {
 	    const $this = $(this);
 	    const userno = $this.val();
@@ -1425,31 +1517,33 @@ text-align: center;
 	        const selectedUserHtml = 
 	            '<div class="selected-user" data-userno="' + userno + '">' +
 	            '<span>' + userName + ' (' + userno + ') - ' + deptName + ' / ' + teamName + '</span>' +
-	            '<button type="button" class="btn btn-danger btn-sm remove-user">x</button>' +
+	            ' <button type="button"  class="remove-user delete-btn-seongeun" style="margin-left : 5px; margin-top : 5px;">X</button>' +
 	            '</div>';
 	        
 	        $('#inviteSelectedUsers').append(selectedUserHtml);
 	        
-	        $this.closest('.search-result').addClass('selected');
+	        //$this.closest('.search-result').addClass('selected');
 	    } else {
-	        // 사용자 선택 해제
 	        removeUserFromSelection(userno);
 	    }
 	}
-	
-	
-	
-	
-
 	function removeSelectedUser() {
 	    const userno = $(this).closest('.selected-user').data('userno');
+	    console.log('지우기 버튼 클릭.. !');
 	    removeUserFromSelection(userno);
 	}
 
 	function removeUserFromSelection(userno) {
+		
+		inviteSelectedUsers = inviteSelectedUsers.filter(user => {
+	        return String(user.userno) !== String(userno);
+	    });
+        $(this).closest('.selected-user').remove();
+		
+		
 	    inviteSelectedUsers = inviteSelectedUsers.filter(user => user.userno !== userno);
-	    $('#inviteSelectedUsers').find(`.selected-user[data-userno="${userno}"]`).remove();
-	    $('#inviteSearchResults').find(`input[name="userSelect"][value="${userno}"]`)
+	    $('#inviteSelectedUsers').find('.selected-user[data-userno="'+userno+'"]').remove();
+	    $('#inviteSearchResults').find('input[name="userSelect"][value="'+userno+'"]')
 	        .prop('checked', false)
 	        .closest('.search-result')
 	        .removeClass('selected');
@@ -1566,8 +1660,9 @@ text-align: center;
       
 </script>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 </body>
 

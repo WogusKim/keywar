@@ -731,4 +731,11 @@ public class MemoController {
 		return "{\"status\":\"success\"}";
 	}
 
+	@RequestMapping(value = "/test")
+	public String test(HttpSession session, HttpServletRequest request, Model model) {
+		
+		return "login/testPage";
+	}
+	
+	
 }

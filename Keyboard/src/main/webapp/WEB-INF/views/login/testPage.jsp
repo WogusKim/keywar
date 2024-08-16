@@ -17,8 +17,12 @@
 <div class="content_outline">
 	<%@ include file="/WEB-INF/views/sidebar.jsp" %>
 	<div class="content_right">
- 
+ 		<button style=" ">X</button>
 	</div>
-</div>   
+</div>   	
 </body>
 </html>
+<style>
+
+
+</style>
