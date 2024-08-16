@@ -17,24 +17,24 @@
 
 <style>
 	.btn-mint {
-	    background-color: #BDE2CE;
-	    border-color: #BDE2CE;
-	    color: #ffffff;
+	    background-color: #C6EFCE;
+	    border-color: #C6EFCE;
+	    color: #006100;
 	}
 	.btn-mint:hover {
 	    background-color: #A8CBBA;
 	    border-color: #A8CBBA;
-	    color: #ffffff;
-	}
+	    color: black;
+	} 
 	.btn-pastel-pink {
-	    background-color: #FFB3BA;
-	    border-color: #FFB3BA;
-	    color: #ffffff;
+	    background-color: #FFC7CE;
+	    border-color: #FFC7CE;
+	    color: #9C0006;
 	}
 	.btn-pastel-pink:hover {
 	    background-color: #FFA0AB;
 	    border-color: #FFA0AB;
-	    color: #ffffff;
+	    color: #9C0006;
 	}
 	/* todolist 스타일 */
 	.todo-count {
@@ -248,33 +248,57 @@
 </div>
 
 <!-- 사용자 설정 그룹 관련 설정 옵션 모달 -->
-<div class="modal fade" id="settingsOptionsModal" tabindex="-1" role="dialog" aria-labelledby="settingsOptionsModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="settingsOptionsModalLabel">설정 옵션</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-<!--                 <button type="button" class="btn btn-primary btn-block mb-2" id="createGroupBtn">사용자 설정 그룹 만들기</button>
+<div class="modal fade" id="settingsOptionsModal" tabindex="-1" role="dialog" aria-labelledby="settingsOptionsModalLabel" aria-hidden="true" style="margin : auto;">
+		<div class="modal-dialog" role="document" style="margin-top: 10%">
+			<div class="modal-content" style=""> 
+				<div class="modal-header"> 
+					<h5 class="modal-title" id="settingsOptionsModalLabel">설정 옵션</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close"> 
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<!--                 <button type="button" class="btn btn-primary btn-block mb-2" id="createGroupBtn">사용자 설정 그룹 만들기</button>
                 <button type="button" class="btn btn-danger btn-block" id="inviteGroupBtn">기존 그룹에 사용자 초대하기</button>
                 <button type="button" class="btn btn-danger btn-block" id="leaveGroupBtn">기존 사용자 설정 그룹 나가기</button>
  -->
-                <button type="button" class="btn btn-mint btn-block mb-2" id="createGroupBtn">사용자 설정 그룹 만들기</button>
-                <button type="button" class="btn btn-mint btn-block mb-2" id="inviteGroupBtn">기존 그룹에 사용자 초대하기</button>
-                <button type="button" class="btn btn-pastel-pink btn-block" id="leaveGroupBtn">기존 사용자 설정 그룹 나가기</button>
+					<button type="button" class="btn btn-mint btn-block mb-2"
+						id="createGroupBtn">사용자 설정 그룹 만들기</button>
+					<button type="button" class="btn btn-mint btn-block mb-2"
+						id="inviteGroupBtn">기존 그룹에 사용자 초대하기</button>
+					<button type="button" class="btn btn-pastel-pink btn-block"
+						id="leaveGroupBtn">기존 사용자 설정 그룹 나가기</button>
 
-            </div>
-        </div>
-    </div>
-</div>
-
+				</div>
+			</div>
+		</div>
+	</div>
+<style>
+.searchArea{
+width: 100%; 
+max-height: 100px; 
+overflow-y : auto; 
+padding: 10px; 
+background-color: #F2F2F2;
+border-radius: 10px;
+}
+.delete-btn-seongeun{
+background-color : #DA3343; 
+border: none; 
+color: #ffffff; 
+border-radius: 5px; 
+font-size: small;
+/* width: 25px;
+height : 25px; */
+text-align: center;
+}
+</style>
+<!--  20240814 성은 여기 수정중 !  -->
 <!-- 사용자 설정 그룹 만들기 모달 -->
 <div class="modal fade" id="createGroupModal" tabindex="-1" role="dialog" aria-labelledby="customGroupModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+    <div class="modal-dialog" role="document" style="margin-top: 10%">
+        <div class="modal-content"> 
             <div class="modal-header">
                 <h5 class="modal-title" id="customGroupModalLabel">사용자 설정 그룹 만들기</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -290,17 +314,21 @@
                 <!-- 사용자 초대 검색 -->
                 <div class="form-group">
                     <label for="userSearch">사용자 초대:</label>
-                    <input type="text" class="form-control" id="userSearch">
-                    <button type="button" class="btn btn-primary" id="searchUserButton">검색</button>
+                    <div style="display: flex;">
+	                    <input type="text" class="form-control" style="width: 87%;" id="userSearch">
+	                    <button type="button" class="btn btn-primary" id="searchUserButton">검색</button>
+                    </div>
                 </div>
                 <!-- 검색 결과 -->
-                <div id="searchResults"></div>
+                <div id="searchResults" style=""></div>
+                <hr id="searchUser-hr" style="display: none;">
                 <!-- 선택된 사용자 목록 -->
-                <div id="selectedUsers"></div>
+                <div id="selectedUsers" style="width: 100%; max-height: 100px; overflow-y : auto; padding: 10px;"></div>
                 <!-- 색상 선택 -->
                 <div class="form-group">
                     <label for="colorPicker">색깔 선택:</label>
-                    <input type="color" class="form-control" id="colorPicker">
+                    <!-- 기본 색상 파랑으로 설정 + 칸 너비 좀 더 줘서 클릭 할 수 있도록 유도 -->
+                    <input type="color" class="form-control" id="colorPicker" value="#007BFF" style="height: 38px;">
                 </div>
             </div>
             <div class="modal-footer">
@@ -424,7 +452,8 @@
 		            resultsContainer.empty();
 		
 		            console.log('Server response:', response); // 디버깅을 위한 로그
-		
+		            console.log('selectedUsers:', selectedUsers); // 디버깅을 위한 로그
+					
 		            if (response.users && Array.isArray(response.users) && response.users.length > 0) {
 		                response.users.forEach(user => {
 		                    const userno = user.userno || '';
@@ -440,17 +469,24 @@
 		                    const isSelected = selectedUsers.some(u => u.userno === user.userno);
 		                    console.log('isSelected:', isSelected); // isSelected 값을 확인하기 위한 로그
 		                    
+		                    // 체크 박스 체크 안되게 하는 거 살짝 주석해볼게요 ?
+		                    // 파란 선택 박스도 일단 잠깐 없애봄 
 		                    const userHtml = 
-		                        '<div class="search-result ' + (isSelected ? 'selected' : '') + '">' +
-		                        '<input type="checkbox" name="userSelect" value="' + userno + '" ' + (isSelected ? 'checked disabled' : '') + '>' +
+		                      //  '<div class="search-result ' + (isSelected ? 'selected' : '') + '">' +
+		                        '<div class="search-result ' + '">' +
+		                        '<input type="checkbox" name="userSelect" value="' + userno + '" ' + (isSelected ? 'checked ' : '') + '> ' +
 		                        '<span>' + name + ' (' + userno + ') - ' + deptname + ' / ' + teamname + '</span>' +
 		                        '</div>';
 		                    console.log('userHtml:', userHtml); // userHtml 값을 확인하기 위한 로그
 		
 		                    resultsContainer.append(userHtml);
-		                });
+		                }); 
+		                    $('#searchResults').addClass('searchArea');
+		                    $('#searchUser-hr').css('display', 'block');
 		            } else {
-		                resultsContainer.append('<p>검색 결과가 없습니다.</p>');
+		                resultsContainer.append('<p style="margin : 0px; margin-left : 10px;"> 검색 결과가 없습니다.</p>');
+		                $('#searchUser-hr').css('display', 'none');
+		                
 		            }
 		        },
 		        error: function(xhr, status, error) {
@@ -464,12 +500,13 @@
         $('#searchResults').on('change', 'input[name="userSelect"]', function() {
             const $this = $(this);
         	const userno = $(this).val();
+        	const findUserno = $(this).val(); // 성은 추가
             const userSpan = $(this).next('span');
             const userName = userSpan.text().split('(')[0].trim();
             const deptName = userSpan.text().split('-')[1].split('/')[0].trim();
             const teamName = userSpan.text().split('/')[1].trim();
             console.log('choose userno:', userno); // 디버깅을 위한 로그
-            console.log('choose userName:', name); // 디버깅을 위한 로그
+            console.log('choose userName:', userName); // 디버깅을 위한 로그
             console.log('choose deptName:', deptName); // 디버깅을 위한 로그
             console.log('choose teamName:', teamName); // 디버깅을 위한 로그
 
@@ -491,33 +528,39 @@
                 const selectedUserHtml = 
                     '<div class="selected-user" data-userno="' + userno + '">' +
                     '<span>' + userName + ' (' + userno + ') - ' + deptName + ' / ' + teamName + '</span>' +
-                    '<button type="button" class="btn btn-danger btn-sm remove-user">x</button>' +
+                    ' <button type="button"  class="remove-user delete-btn-seongeun" style="margin-left : 5px; margin-top : 5px;">X</button>' +
                     '</div>';
-                
+                   /* border:none; background-color : #DA3343; */
                 $('#selectedUsers').append(selectedUserHtml);
                 
-                $this.closest('.search-result').addClass('selected');
+                //$this.closest('.search-result').addClass('selected');
             } else {
                 // 사용자 선택 해제
+                // 체크박스 해제될 때 
                 selectedUsers = selectedUsers.filter(user => user.userno !== userno);
-                $('#selectedUsers').find(`.selected-user[data-userno="${userno}"]`).remove();
-                $this.closest('.search-result').removeClass('selected');
+                $('#selectedUsers').find('.selected-user[data-userno="'+findUserno+'"]').remove();
+                $this.closest('.search-result').removeClass('selected'); 
             }
 
         });
 
-        // 사용자 제거
+        // 사용자 제거 (지우는 버튼 눌렀을 때)
         $('#selectedUsers').on('click', '.remove-user', function() {
-            const userno = $(this).closest('.selected-user').data('userno');
-            selectedUsers = selectedUsers.filter(user => user.userno !== userno);
+        	const userno = String($(this).closest('.selected-user').data('userno'));
+            console.log('Removing user with userno :'+userno);
+            
+            selectedUsers = selectedUsers.filter(user => String(user.userno) !== userno);
+            console.log('selectedUsers after deletion:', selectedUsers); // 디버깅 로그
+        	
             $(this).closest('.selected-user').remove();
             
             // 검색 결과에서 해당 사용자의 체크박스 체크 해제 및 'selected' 클래스 제거
-            $('#searchResults').find(`input[name="userSelect"][value="${userno}"]`)
+            $('#searchResults').find('input[name="userSelect"][value='+userno+']') 
                 .prop('checked', false)
                 .closest('.search-result')
                 .removeClass('selected');
         });
+        
 
         // 그룹 저장
         $('#saveGroupButton').on('click', function() {
@@ -542,6 +585,7 @@
                 success: function(response) {
                     alert('그룹이 성공적으로 생성되었습니다.');
                     $('#customGroupModal').modal('hide');
+                    $('#createGroupModal').modal('hide');
                 },
                 error: function(xhr, status, error) {
                     console.error('그룹 저장 중 오류가 발생했습니다:', error);
@@ -1363,7 +1407,7 @@
 	    const deptName = userSpan.text().split('-')[1].split('/')[0].trim();
 	    const teamName = userSpan.text().split('/')[1].trim();
 
-	    if ($this.is(':checked')) {
+	    if ($this.is(':checked')) {  
 	        // 사용자 선택
 	        if (inviteSelectedUsers.some(user => user.userno === userno)) {
 	            alert('이미 선택된 사용자입니다.');
@@ -1392,6 +1436,10 @@
 	        removeUserFromSelection(userno);
 	    }
 	}
+	
+	
+	
+	
 
 	function removeSelectedUser() {
 	    const userno = $(this).closest('.selected-user').data('userno');
