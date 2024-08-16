@@ -34,12 +34,24 @@
 	display: flex;  
 	justify-content: space-between;
 }
- .dropdown {
-	position: relative;
-	display: inline-block;
-	width: 80%;
-	height: 100%;
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 80%;
+    height: 100%;
+    cursor: pointer; /* 드롭다운 영역에 포인터 커서 표시 */
+    background-color: #f9f9f9; /* 기본 배경색 */
+    transition: background-color 0.3s, border-radius 0.3s; /* 배경색 변화 및 둥근 모서리에 대한 부드러운 전환 */
+    border-radius: 5px; /* 기본 둥근 모서리 설정 */
+    box-sizing: border-box; /* padding과 border를 포함한 크기 계산 */
 }
+
+.dropdown:hover {
+    background-color: #e0e0e0; /* 호버 시 배경색 변경 */
+    border-radius: 10px; /* 호버 시 둥근 모서리 적용 */
+    width: 80%; /* 호버 시에도 전체 너비 유지 */
+}
+
 .dropdown-content {
     display: none;
     position: absolute;
@@ -53,7 +65,7 @@
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-    cursor: pointer
+    cursor: pointer;
 }
 
 .dropdown-content div:hover {
@@ -238,9 +250,9 @@
                 <div class="board_currency_inner">
                 	
 					<!--  환율 계산기 영역 설정 --><!-- 환율계산기 이름 다는 왼쪽 + 계산기 있는 오른쪽 -->
-					<div style="height: 30%; width: 100%; padding: 10px; display: flex;  justify-content: space-between; align-items: center; margin-top: 10px;"> 
+					<div style="height: 30%; width: 100%; display: flex;  justify-content: space-between; align-items: center; margin-top: 10px;"> 
 						<!-- 제목 영역 -->
-						<div style="width: 130px; height: 100%;"><h2 class="card_title">환율계산기</h2></div>
+						<div style="width: 130px; height: 100%; padding-top: 35px"><h2 class="card_title">환율 계산기</h2></div>
 						<!-- 여기 환율 계산 영역 -->
 						<div style="width: calc(100% - 130px);height: 100%; text-align: center;">
 						<!--  오른쪽 부분 시작 -->
@@ -314,7 +326,7 @@
 								
 								
 								
-								<div class="dropdown" onclick="toggleDropdown1()" styl e="margin: auto;" > 
+								<div class="dropdown" onclick="toggleDropdown1()" style="margin: auto;" > 
 									<span id="select-result-2-1" onclick="toggleDropdown1()">KRW</span><br>
 									<span id="select-result-2-2" onclick="toggleDropdown1()">대한민국(원)</span>
 									
