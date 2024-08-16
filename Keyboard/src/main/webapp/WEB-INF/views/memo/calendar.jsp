@@ -438,11 +438,10 @@ height : 25px; */
 	<div class="modal fade" id="leaveGroupModal" tabindex="-1"
 		role="dialog" aria-labelledby="leaveGroupModalLabel"
 		aria-hidden="true">
-		<div class="modal-dialog" role="document">
+		<div class="modal-dialog" role="document" style="margin-top: 10%;">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="leaveGroupModalLabel">사용자 설정 그룹
-						나가기</h5>
+					<h5 class="modal-title" id="leaveGroupModalLabel">사용자 설정 그룹 나가기</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -457,9 +456,8 @@ height : 25px; */
 					<!-- 검색 결과 -->
 					<div id="inviteSearchResults"></div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" id="leaveButton">그룹
-						나가기</button>
+				<div class="modal-footer"><!-- 08161534 -->
+					<button type="button" class="btn btn-primary btn-pastel-pink" id="leaveButton">그룹 나가기</button>
 					<button type="button" class="btn btn-secondary"
 						data-dismiss="modal">닫기</button>
 				</div>
@@ -474,12 +472,9 @@ height : 25px; */
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+	<script	src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 	<script>
     var calendar;
@@ -853,6 +848,7 @@ height : 25px; */
                 });
                 //calendar.refetchEvents();
                 $('#addScheduleModal').modal('hide');
+                calendar.refetchEvents();
                 location.reload(); // 페이지 새로고침
             },
             error: function(xhr, status, error) {
@@ -899,7 +895,7 @@ height : 25px; */
             shareto: shareto,
             customShare: customShare
         };
-
+        
         console.log('Sending event data:', eventData);  // 데이터 확인용 로그
         
         $.ajax({
@@ -940,10 +936,10 @@ height : 25px; */
                         }));
 
                         calendar.addEventSource(events);
-                        
-                        // 현재 날짜로 캘린더 이동
+                       	                         
+                        // 현재 날짜 말고 수정한 위치로 이동.
                         if (calendar && currentDate) {
-                            calendar.gotoDate(currentDate);
+                            calendar.gotoDate(eventData.startDate); 
                         }
                     },
                     error: function(xhr, status, error) {
@@ -1011,11 +1007,12 @@ height : 25px; */
             contentType: 'application/json',
             data: JSON.stringify(eventData),
             success: function(response) {
-                console.log('일정이 성공적으로 업데이트되었습니다.');
+                console.log('일정이 성공적으로 업데이트 되었습니다.');
                 //location.reload();
                 calendar.refetchEvents();
                 // 필요에 따라 모달 숨기기 등의 추가 작업을 할 수 있습니다.
                 if (currentDate) {
+                //console.log(eventData.endDate);
                 calendar.gotoDate(currentDate);
             	}
             },
