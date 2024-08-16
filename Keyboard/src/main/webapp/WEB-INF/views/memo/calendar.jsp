@@ -169,7 +169,7 @@
 
 <!-- 일정 상세 모달 -->
 <div class="modal fade" id="eventDetailModal" tabindex="-1" role="dialog" aria-labelledby="eventDetailModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document" style="margin-top: 10%;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="eventDetailModalLabel">일정 상세</h5>
