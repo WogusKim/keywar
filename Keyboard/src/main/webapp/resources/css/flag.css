@@ -2,8 +2,10 @@
     display: inline-block;
     width: 50px; /* 새로운 너비 */
     height: 34px; /* 새로운 높이 */
+    background-position: center; /* 이미지를 중앙에 위치 */
+	background-size: contain; /* 이미지가 라벨 크기에 맞게 조정되도록 설정 */
     background: url('${pageContext.request.contextPath}/resources/images/flags/flag_all.png') no-repeat;
-    background-size: 290px 760px; /* background-size 조정 */
+    /* background-size: 290px 760px; */ /* background-size 조정 */
 }
 .flag-krw {
     background-position: 0 0;

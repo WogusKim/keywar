@@ -37,9 +37,45 @@
 		SET display1 = #{param2}, display2 = #{param3}, display3 = #{param4}
 		WHERE userno = #{param1}
 	</update>
+	
 	<insert id="insertDisplayOrder">
 		INSERT INTO UserDisplayOrder VALUES
 		(#{param1}, #{param2}, #{param3}, #{param4})
 	</insert>
-
+	
+	<select id="getOrderDisplayAll" resultType="kb.keyboard.warrior.dto.OrderDTO">
+		SELECT * FROM UserDisplayOrder2 WHERE userno = #{param}
+	</select>
+	
+	<update id="updateDisplayOrderTodoDisplay">
+		UPDATE UserDisplayOrder2 SET todo3display = #{param2} WHERE userno = #{param1}
+	</update>
+	
+	<insert id="insertDisplayOrderTodoDisplay">
+		INSERT INTO UserDisplayOrder2 VALUES (#{param1}, #{param2}, 0, 0, 0)
+	</insert>
+	
+	<update id="updateDisplayOrderTopBottom">
+		UPDATE UserDisplayOrder2 SET topBottom = #{param2} WHERE userno = #{param1}
+	</update>
+	
+	<insert id="insertDisplayOrderTopBottom">
+		INSERT INTO UserDisplayOrder2 VALUES (#{param1}, 0, 0, #{param2}, 0)
+	</insert>
+	
+	<update id="updateDisplayOrderTwoBottom">
+		UPDATE UserDisplayOrder2 SET bottomBottom = #{param2} WHERE userno = #{param1}
+	</update>
+	
+	<insert id="insertDisplayOrderTwoBottom">
+		INSERT INTO UserDisplayOrder2 VALUES (#{param1}, 0, 0, 0, #{param2})
+	</insert>
+	
+	<update id="updateDisplayOrderMemoNotice">
+		UPDATE UserDisplayOrder2 SET memoNotice = #{param2} WHERE userno = #{param1}
+	</update>
+	
+	<insert id="insertDisplayOrderMemoNotice">
+		INSERT INTO UserDisplayOrder2 VALUES (#{param1}, 0, #{param2}, 0, 0)
+	</insert>
 </mapper>

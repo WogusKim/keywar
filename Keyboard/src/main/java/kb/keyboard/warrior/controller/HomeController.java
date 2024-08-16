@@ -39,6 +39,7 @@ import kb.keyboard.warrior.dto.MenuDTO;
 import kb.keyboard.warrior.dto.MorCoffixDTO;
 import kb.keyboard.warrior.dto.MyMemoDTO;
 import kb.keyboard.warrior.dto.NoticeDTO;
+import kb.keyboard.warrior.dto.OrderDTO;
 import kb.keyboard.warrior.dto.SoosinRateDTO;
 import kb.keyboard.warrior.dto.SoosinRateDTO2;
 import kb.keyboard.warrior.dto.StockDTO;
@@ -266,6 +267,10 @@ public class HomeController {
             e.printStackTrace(); // JSON 변환 중 오류 처리
         }
         
+        //전광판을 제외한 나머지 순서
+        OrderDTO orderAll = displayDao.getOrderDisplayAll(userno);
+        model.addAttribute("orderAll", orderAll);
+
         WikiDao wdao = sqlSession.getMapper(WikiDao.class);
         List<BoardDTO> bestPost = wdao.getBestPost();
         if(bestPost!=null)
@@ -309,8 +314,6 @@ public class HomeController {
             	displayDao.insertDisplayOrder(userno, displays[0], displays[1], displays[2]);
             }
             
-            
-            
         } else {
             System.out.println("Invalid display order received.");
         }
@@ -318,8 +321,186 @@ public class HomeController {
         return "{\"status\":\"success\"}";
     }
 	
-	
+    @RequestMapping(value = "/updateDisplayOrder2", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateDisplayOrder2(@RequestBody String newOrderJson, HttpSession session) {
+    	
+    	// TODO <---> 전광판
+    	
+    	String userno = (String) session.getAttribute("userno");
+    	
+        // JSON 문자열 파싱
+        JSONObject json = new JSONObject(newOrderJson);
+        String order = json.getString("order");  // "currency,stock,interests"
+        
+        // 순서 정보 파싱
+        String[] displays = order.split(",");
+        if (displays.length == 2) {
+            System.out.println("Display 1: " + displays[0]);
+            System.out.println("Display 2: " + displays[1]);
+            
+            DisplayDao displayDao = sqlSession.getMapper(DisplayDao.class);
+            OrderDTO orderDto = displayDao.getOrderDisplayAll(userno);
+            
+            if(orderDto != null) {
+            	//업데이트
+            	if (displays[0].equals("todo")) {
+            		displayDao.updateDisplayOrderTodoDisplay(userno, 0);
+            	} else {
+            		displayDao.updateDisplayOrderTodoDisplay(userno, 1);
+            	}
+            	
+            } else {
+            	//업데이트
+            	if (displays[0].equals("todo")) {
+            		displayDao.insertDisplayOrderTodoDisplay(userno, 0);
+            	} else {
+            		displayDao.insertDisplayOrderTodoDisplay(userno, 1);
+            	}
+            }
+            
+        } else {
+            System.out.println("Invalid display order received.");
+        }
+        
+        return "{\"status\":\"success\"}";
+    }
 
+    @RequestMapping(value = "/updateDisplayOrder3", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateDisplayOrder3(@RequestBody String newOrderJson, HttpSession session) {
+    	
+    	// 위 <------> 아래
+    	String userno = (String) session.getAttribute("userno");
+    	
+        // JSON 문자열 파싱
+        JSONObject json = new JSONObject(newOrderJson);
+        String order = json.getString("order");  // "currency,stock,interests"
+        
+        // 순서 정보 파싱
+        String[] displays = order.split(",");
+        if (displays.length == 2) {
+            System.out.println("위아래 순서 Display 1: " + displays[0]);
+            System.out.println("위아래 순서 Display 2: " + displays[1]);
+            
+            DisplayDao displayDao = sqlSession.getMapper(DisplayDao.class);
+            OrderDTO orderDto = displayDao.getOrderDisplayAll(userno);
+            
+            if(orderDto != null) {
+            	//업데이트
+            	if (displays[0].equals("defaultTop")) {
+            		displayDao.updateDisplayOrderTopBottom(userno, 0);
+            	} else {
+            		displayDao.updateDisplayOrderTopBottom(userno, 1);
+            	}
+            	
+            } else {
+            	//인서트
+            	if (displays[0].equals("defaultTop")) {
+            		displayDao.insertDisplayOrderTopBottom(userno, 0);
+            	} else {
+            		displayDao.insertDisplayOrderTopBottom(userno, 1);
+            	}
+            }
+            
+        } else {
+            System.out.println("Invalid display order received.");
+        }
+        
+        return "{\"status\":\"success\"}";
+    }
+    
+    
+    
+    //아래 두 친구의 순서를 바꿔주는애
+    @RequestMapping(value = "/updateDisplayOrder4", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateDisplayOrder4(@RequestBody String newOrderJson, HttpSession session) {
+    	
+    	String userno = (String) session.getAttribute("userno");
+    	
+        // JSON 문자열 파싱
+        JSONObject json = new JSONObject(newOrderJson);
+        String order = json.getString("order");  // "currency,stock,interests"
+        
+        // 순서 정보 파싱
+        String[] displays = order.split(",");
+        if (displays.length == 2) {
+            System.out.println("아래 두친구 순서 Display 1: " + displays[0]);
+            System.out.println("아래 두친구 순서 Display 2: " + displays[1]);
+            
+            DisplayDao displayDao = sqlSession.getMapper(DisplayDao.class);
+            OrderDTO orderDto = displayDao.getOrderDisplayAll(userno);
+            
+            if(orderDto != null) {
+            	//업데이트
+            	if (displays[0].equals("bottom1")) {
+            		displayDao.updateDisplayOrderTwoBottom(userno, 0);
+            	} else {
+            		displayDao.updateDisplayOrderTwoBottom(userno, 1);
+            	}
+            	
+            } else {
+            	//인서트
+            	if (displays[0].equals("bottom1")) {
+            		displayDao.insertDisplayOrderTwoBottom(userno, 0);
+            	} else {
+            		displayDao.insertDisplayOrderTwoBottom(userno, 1);
+            	}
+            }
+            
+        } else {
+            System.out.println("Invalid display order received.");
+        }
+        
+        return "{\"status\":\"success\"}";
+    }
+    
+    //메모 - 노티스
+    @RequestMapping(value = "/updateDisplayOrder5", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateDisplayOrder5(@RequestBody String newOrderJson, HttpSession session) {
+    	
+    	String userno = (String) session.getAttribute("userno");
+    	
+        // JSON 문자열 파싱
+        JSONObject json = new JSONObject(newOrderJson);
+        String order = json.getString("order");  // "currency,stock,interests"
+        
+        // 순서 정보 파싱
+        String[] displays = order.split(",");
+        if (displays.length == 2) {
+            System.out.println("아래 두친구 순서 Display 1: " + displays[0]);
+            System.out.println("아래 두친구 순서 Display 2: " + displays[1]);
+            
+            DisplayDao displayDao = sqlSession.getMapper(DisplayDao.class);
+            OrderDTO orderDto = displayDao.getOrderDisplayAll(userno);
+            
+            if(orderDto != null) {
+            	//업데이트
+            	if (displays[0].equals("memo")) {
+            		displayDao.updateDisplayOrderMemoNotice(userno, 0);
+            	} else {
+            		displayDao.updateDisplayOrderMemoNotice(userno, 1);
+            	}
+            	
+            } else {
+            	//인서트
+            	if (displays[0].equals("bottom1")) {
+            		displayDao.insertDisplayOrderMemoNotice(userno, 0);
+            	} else {
+            		displayDao.insertDisplayOrderMemoNotice(userno, 1);
+            	}
+            }
+            
+        } else {
+            System.out.println("Invalid display order received.");
+        }
+        
+        return "{\"status\":\"success\"}";
+    }
+    
+    
 	public void setMenuDepth(List<MenuDTO> menus) {
 
 		// // 메뉴 ID와 메뉴 객체를 매핑하는 Map을 생성

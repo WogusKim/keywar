@@ -45,47 +45,32 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <style>
-.best-posts-list ul {
-	list-style-type: none; /* 리스트 스타일 없음 */
-	padding-left: 5px; /* 왼쪽 패딩 */
-	padding-right: 5px; /* 왼쪽 패딩 */
-	margin-left: 0; /* 왼쪽 마진 없음 */
+.best-posts-list {
+    padding: 0px;
+    border-radius: 10px;
 }
 
-.best-posts-list li {
-    margin-bottom: 10px; /* 각 아이템 하단에 여백 추가 */
-    padding: 15px 15px 20px 15px; /* 위쪽 패딩을 줄이고, 아래쪽 패딩을 더해 제목을 위로 */
-    background-color: #ffffff; /* 배경색 */
-    border-radius: 5px; /* 모서리 둥글게 */
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    /* 전환 효과 */
-    color: #333; /* 텍스트 색상 */
-    text-decoration: none; /* 밑줄 제거 */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 박스 그림자 두껍게 */
+.best-post-item {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 7px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    height: 33%;
 }
 
-.best-posts-list li:hover {
-    background-color: #f1f1f1; /* 마우스 오버 시 li 배경색 */
-    transform: translateY(-2px); /* 마우스 오버 시 살짝 위로 이동 */
-}
-
-.best-post-item a {
-    display: block; /* 블록 디스플레이로 전체 클릭 가능 */
-    height: 100%; /* li의 높이에 맞게 a 요소가 전체를 채우도록 */
-    color: inherit; /* 부모 요소의 텍스트 색상 상속 */
-    text-decoration: none; /* a 요소의 밑줄 제거 */
-}
-
-
-.best-post-item a:active {
-    background-color: #e9e9e9; /* 클릭 시 배경색 */
-    transform: translateY(0); /* 클릭 시 원래 위치로 */
+.best-post-item:hover {
+    transform: translateY(-2px);
 }
 
 .post-title {
     display: inline-block;
     vertical-align: middle;
-    margin-bottom: 3px; /* 제목과 닉네임 사이에 여백 추가 */
+    margin-bottom: 1.5px; /* 제목과 닉네임 사이에 여백 추가 */
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .post-nickname {
@@ -93,6 +78,79 @@ document.addEventListener('DOMContentLoaded', function() {
     font-size: small; /* 글씨 크기 작게 */
     color: #888888; /* 글씨 색상 회색 */
     vertical-align: middle; /* 텍스트 수직 정렬 */
+}
+
+
+/* 기본 체크박스 감춤 */
+input[type="checkbox"][id^="check"] {
+	display: none;
+}
+
+/* off 상태의 스타일 */
+input[type="checkbox"][id^="check"] + label {
+	background-repeat: no-repeat; /* 반복 방지 */
+	background-position: center; /* 이미지를 중앙에 위치 */
+	background-size: contain; /* 이미지가 라벨 크기에 맞게 조정되도록 설정 */
+	background-image: url('${pageContext.request.contextPath}/resources/images/checkbox.png'); /* off 이미지 */
+	width: 20px; /* 라벨의 너비 설정 */
+	height: 20px; /* 라벨의 높이 설정 */
+	margin-right: 5px;
+	cursor: pointer; /* 마우스 오버 시 커서 변경 */
+}
+
+/* on 상태의 스타일 */
+input[type="checkbox"][id^="check"]:checked + label {
+	background-repeat: no-repeat; /* 반복 방지 */
+	background-position: center; /* 이미지를 중앙에 위치 */
+	background-size: contain; /* 이미지가 라벨 크기에 맞게 조정되도록 설정 */
+	background-image: url('${pageContext.request.contextPath}/resources/images/checked.png'); /* on 이미지 */
+}
+
+.box {
+	width: 45px;
+	height: 45px;
+	border-radius: 70%;
+	overflow: hidden;
+	margin: auto;
+}
+/* mypage profile image */
+.profile {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+#crown {
+	position: absolute;
+	top: calc(8% - 22.5px);
+	left: calc(50% - 22.5px);
+	text-align: center;
+	width: 45px;
+	height: 45px;
+	background-image: url('${pageContext.request.contextPath}/resources/images/crown.png');
+	background-size: cover;
+	background-position: center top;
+	z-index: 999;"
+}
+
+#first {
+    position: absolute;
+    top: calc(30% - 33px); /* top 위치를 비율 + 고정 값으로 계산 */
+    /* left: calc(50% - 43.69px); /* left 위치를 비율 + 고정 값으로 계산 */ */
+    text-align: center;
+}
+
+#second {
+    position: absolute;
+    top: calc(45% - 33px);
+    left: calc(20% - 22.885px);
+    text-align: center;
+}
+
+#third {
+    position: absolute;
+    top: calc(50% - 33px);
+    left: calc(80% - 22.5px);
+    text-align: center;
 }
 
 </style>
@@ -104,8 +162,69 @@ document.addEventListener('DOMContentLoaded', function() {
 	<div class="content_outline">
 		<jsp:include page="/WEB-INF/views/sidebar.jsp" />
 		<div class="content_right">
+		<div class="top_wrapper top_bottom" id="defaultTop">
+			<div class="board_top_left top_l_r" id="todo">
+					<div class="board_inner_todo">
+						<div class="card_top">
+							<div class="title_and_link">
+								<h2 class="card_title No-line-break">Today's tasks</h2>
+								<a href="${pageContext.request.contextPath}/todo"
+									class="link-icon">바로가기</a>
+							</div>
+						</div>
+						<hr>
+						<div class="todo_list" style="height: 85%;">
+							<c:choose>
+								<c:when test="${empty todoList}">
+									<div class="mainTodoNotFountOutline" style="overflow-y: auto;">
+										<div
+											style="width: 50%; height: 0; padding-bottom: 50%; position: relative;">
+											<iframe src="https://giphy.com/embed/SkJRWt1Mo9CSlgrHcE"
+												width="100%" height="100%"
+												style="position: absolute; pointer-events: none;"
+												frameBorder="0" class="giphy-embed" allowFullScreen>
+											</iframe>
+											<div
+												style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
+										</div>
+										<%-- <img src="${pageContext.request.contextPath}/resources/images/not-found.png" /> --%>
+										<div style="color: #727272;">
+											오늘이 마감일인 <br> 미완료 상태의 할 일이 없습니다.<br> 자세한 오늘의 할 일을
+											보고 싶으시면 <br> 위의 상세보기를 눌러주세요.
+										</div>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div class="mainTodoInnerBox">
+										<c:forEach var="dto" items="${todoList}">
+											<div
+												class="mainTodoContentOutline ${dto.checkstatus == 0 ? 'past-to-do' : ''}">
+												<div class="arrangeBox" style="width: 100%;">
+													<div
+														style="display: flex; text-align: center; text-align: center; width: 100%;">
+														<input type="checkbox"
+															onclick="checkTodo(${dto.todoid}, this.checked)"
+															${dto.isdone == 1 ? 'checked' : ''}
+															data-todoid="${dto.todoid}" data-done="${dto.isdone}"
+															id="check-${dto.todoid}"> <label
+															for="check-${dto.todoid}"></label>
+														<div
+															style="text-align: left; height: 25px; vertical-align: middle; width: 90%;"
+															class="No-line-break">${dto.task}</div>
+													</div>
+												</div>
+												<div
+													style="color: gray; font-size: small; margin-left: 5px; text-align: right;">${dto.duedate}</div>
+											</div>
+										</c:forEach>
+									</div>
 
-			<div class="board_top">
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+			</div>
+			<div class="board_top top_l_r" id="3display">
 				<div class="board_inner" id="currency">
 					<div class="card_top">
 						<div class="title_and_link div_underline">
@@ -113,23 +232,29 @@ document.addEventListener('DOMContentLoaded', function() {
 							<a href="${pageContext.request.contextPath}/currency"
 								class="link-icon">바로가기</a>
 						</div>
-
-						<div class="currency-body">
-							<div class="currency-row1">
-								<span>&nbsp;</span> <span class="No-line-break">국가</span> <span
-									class="No-line-break">매도</span> <span class="No-line-break">매입</span>
-								<span class="No-line-break">기준환율</span>
-							</div>
-							<c:forEach var="rate" items="${ratesFavorite}">
-								<div class="currency-row">
-									<div class="flag flag-${fn:toLowerCase(rate.currencyCode)}"></div>
-									<span>${rate.currencyCode}</span> <span><fmt:formatNumber
-											value="${rate.cashBuy}" type="number" /></span> <span><fmt:formatNumber
-											value="${rate.cashSell}" type="number" /></span> <span><fmt:formatNumber
-											value="${rate.standardRate}" type="number" /></span>
-								</div>
-							</c:forEach>
-						</div>
+						
+					    <table class="currency-table">
+					        <thead>
+					            <tr>
+					                <th class="rate-header" style="height: 40px;">&nbsp;</th>
+					                <th class="rate-header" style="height: 40px;" >국가</th>
+					                <th class="rate-header" style="height: 40px;">매도</th>
+					                <th class="rate-header" style="height: 40px;">매입</th>
+					                <th class="rate-header" style="height: 40px;">기준환율</th>
+					            </tr>
+					        </thead>
+					        <tbody>
+					            <c:forEach var="rate" items="${ratesFavorite}">
+					                <tr>
+					                    <td><div class="flag flag-${fn:toLowerCase(rate.currencyCode)}"></div></td>
+					                    <td style="font-weight: bold;">${rate.currencyCode}</td>
+					                    <td><fmt:formatNumber value="${rate.cashBuy}" type="number" /></td>
+					                    <td><fmt:formatNumber value="${rate.cashSell}" type="number" /></td>
+					                    <td><fmt:formatNumber value="${rate.standardRate}" type="number" /></td>
+					                </tr>
+					            </c:forEach>
+					        </tbody>
+					    </table>
 					</div>
 				</div>
 				<div class="board_inner" id="stock">
@@ -140,73 +265,32 @@ document.addEventListener('DOMContentLoaded', function() {
 								class="link-icon">바로가기</a>
 						</div>
 
-						<div class="stock-body">
-							<div class="stock-row1">
-								<span class="No-line-break">지수</span> <span
-									class="No-line-break">현재가</span> <span class="No-line-break">변동수치</span>
-								<span class="No-line-break">변동폭</span>
-							</div>
-
-							<c:forEach var="stockrate" items="${stockFavorite}">
-								<div class='stock-row'>
-									<span class="No-line-break">${stockrate.indexName}</span> <span
-										class="${stockrate.changePercentage >= 0 ? 'positive' : 'negative'}">
-										<fmt:formatNumber value="${stockrate.currentPrice}"
-											pattern="#,##0.00" />
-									</span> <span
-										class="${stockrate.changePercentage >= 0 ? 'positive' : 'negative'}">
-										<fmt:formatNumber value="${stockrate.priceChange}"
-											pattern="${stockrate.changePercentage >= 0 ? '+' : ''}#,##0.00" />
-									</span> <span
-										class="${stockrate.changePercentage >= 0 ? 'positive' : 'negative'}">
-										<fmt:formatNumber value="${stockrate.changePercentage}"
-											pattern="${stockrate.changePercentage >= 0 ? '+' : ''}#,##0.00" />%
-									</span>
-								</div>
-							</c:forEach>
-
-							<%
-							/*  StockKoreaCrawler koreaCrawler = new StockKoreaCrawler();
-							 List<StockDTO> koreaStocks = koreaCrawler.fetchIndexData();
-
-							 StockInterCrawler interCrawler = new StockInterCrawler();
-							 List<StockDTO> interStocks = interCrawler.fetchIndexData();
-							 
-							 // 숫자 포맷터 생성
-							 NumberFormat numberFormat = NumberFormat.getNumberInstance();
-
-							 for (StockDTO stock : koreaStocks) {
-							     if (stock.getIndexName().contains("코스피") || stock.getIndexName().contains("코스닥")) {
-							         String changeClass = stock.getChangePercentage() >= 0 ? "positive" : "negative";
-							         // 결정된 부호를 붙일 변수
-							         String priceChangePrefix = stock.getChangePercentage() >= 0 ? "+" : "-";
-							         // String formattedPriceChange = priceChangePrefix + numberFormat.format(stock.getPriceChange());
-							         
-							         out.println("<div class='stock-row'>");
-							         out.println("<span>" + stock.getIndexName() + "</span>");
-							         out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getCurrentPrice()) + "</span>");
-							         out.println("<span class='" + changeClass + "'>" + priceChangePrefix + numberFormat.format(stock.getPriceChange()) + "</span>");
-							         out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getChangePercentage()) + "%</span>");
-							         out.println("</div>");
-							     }
-							 }
-
-							 for (StockDTO stock : interStocks) {
-							     if (stock.getIndexName().contains("S&P 500") || stock.getIndexName().contains("나스닥")) {
-							         String changeClass = stock.getChangePercentage() >= 0 ? "positive" : "negative";
-							         out.println("<div class='stock-row'>");
-							         out.println("<span>" + stock.getIndexName() + "</span>");
-							         out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getCurrentPrice()) + "</span>");
-							         out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getPriceChange()) + "</span>");
-							         out.println("<span class='" + changeClass + "'>" + numberFormat.format(stock.getChangePercentage()) + "%</span>");
-							         out.println("</div>");
-							     }
-							 } */
-							%>
-						</div>
-
-
-
+						    <table class="stock-table">
+						        <thead>
+						            <tr style="font-size: 15px; padding: 5px;">
+						                <th>지수</th>
+						                <th>현재가</th>
+						                <th>변동수치</th>
+						                <th>변동폭</th>
+						            </tr>
+						        </thead>
+						        <tbody>
+						            <c:forEach var="stockrate" items="${stockFavorite}">
+						                <tr>
+						                    <td class="No-line-break2" style="font-weight: bold;">${stockrate.indexName}</td>
+						                    <td class="${stockrate.changePercentage >= 0 ? 'positive' : 'negative'}">
+						                        <fmt:formatNumber value="${stockrate.currentPrice}" pattern="#,##0.00"/>
+						                    </td>
+						                    <td class="${stockrate.changePercentage >= 0 ? 'positive' : 'negative'}">
+						                        <fmt:formatNumber value="${stockrate.priceChange}" pattern="${stockrate.changePercentage >= 0 ? '+' : ''}#,##0.00"/>
+						                    </td>
+						                    <td class="${stockrate.changePercentage >= 0 ? 'positive' : 'negative'}">
+						                        <fmt:formatNumber value="${stockrate.changePercentage}" pattern="${stockrate.changePercentage >= 0 ? '+' : ''}#,##0.00"/>%
+						                    </td>
+						                </tr>
+						            </c:forEach>
+						        </tbody>
+						    </table>
 
 					</div>
 				</div>
@@ -292,31 +376,31 @@ document.addEventListener('DOMContentLoaded', function() {
 								</tr>
 								<tr>
 									<th class="rate-header">기간(개월)</th>
-									<th class="rate-header">만기지급식</th>
-									<th class="rate-header">월이자지급식</th>
-									<th class="rate-header">월이자복리식</th>
+									<th class="rate-header" style="font-size: 13px; padding: 5px;">만기지급식</th>
+									<th class="rate-header" style="font-size: 13px; padding: 5px;">월이자지급식</th>
+									<th class="rate-header" style="font-size: 13px; padding: 5px;">월이자복리식</th>
 								</tr>
 								<tr>
-									<td class="rate-header">1~3개월 미만</td>
+									<td class="rate-header">1~3개월</td>
 									<td class="rate-cell">${superRates[0].fixedRate}</td>
 									<td class="rate-cell">${superRates[0].monthlyInterestRate}</td>
 									<td class="rate-cell">${superRates[0].compoundMonthlyRate}</td>
 								</tr>
 								<tr>
-									<td class="rate-header">3~6개월 미만</td>
+									<td class="rate-header">3~6개월</td>
 									<td class="rate-cell">${superRates[1].fixedRate}</td>
 									<td class="rate-cell">${superRates[1].monthlyInterestRate}</td>
 									<td class="rate-cell">${superRates[1].compoundMonthlyRate}</td>
 								</tr>
 								<tr>
-									<td class="rate-header">6~12개월 미만</td>
+									<td class="rate-header">6~12개월</td>
 									<td class="rate-cell">${superRates[2].fixedRate}</td>
 									<td class="rate-cell">${superRates[2].monthlyInterestRate}</td>
 									<td class="rate-cell">${superRates[2].compoundMonthlyRate}</td>
 								</tr>
 
 								<tr>
-									<td class="rate-header">12~24개월 미만</td>
+									<td class="rate-header">12~24개월</td>
 									<td class="rate-cell">${superRates[3].fixedRate}</td>
 									<td class="rate-cell">${superRates[3].monthlyInterestRate}</td>
 									<td class="rate-cell">${superRates[3].compoundMonthlyRate}</td>
@@ -372,124 +456,34 @@ document.addEventListener('DOMContentLoaded', function() {
 					</div>
 				</div>
 			</div>
-
-			<style>
-/* 기본 체크박스 감춤 */
-input[type="checkbox"][id^="check"] {
-	display: none;
-}
-/* off */
-input[type="checkbox"][id^="check"]+label {
-	background-repeat: no-repeat; /* 반복 방지 */
-	background-image:
-		url('${pageContext.request.contextPath}/resources/images/checkbox.png');
-	/* off 이미지 */
-}
-/* on */
-input[type="checkbox"][id^="check"]:checked+label {
-	background-repeat: no-repeat; /* 반복 방지 */
-	background-image:
-		url('${pageContext.request.contextPath}/resources/images/checked.png');
-	/* on 이미지 */
-}
-
-label {
-	display: block;
-	width: 30px;
-	height: 30px;
-}
-</style>
+		</div>
 
 
-			<div class="board_bottom">
-				<div class="board_inner2" style="width: 64%;">
-					<div class="board_inner_inner">
-						<div class="card_top">
-							<div class="title_and_link">
-								<h2 class="card_title No-line-break">Today's tasks</h2>
-								<a href="${pageContext.request.contextPath}/todo"
-									class="link-icon">바로가기</a>
-							</div>
-						</div>
-						<hr>
-						<div class="todo_list" style="height: 85%;">
-							<c:choose>
-								<c:when test="${empty todoList}">
-									<div class="mainTodoNotFountOutline" style="overflow-y: auto;">
-										<div
-											style="width: 50%; height: 0; padding-bottom: 50%; position: relative;">
-											<iframe src="https://giphy.com/embed/SkJRWt1Mo9CSlgrHcE"
-												width="100%" height="100%"
-												style="position: absolute; pointer-events: none;"
-												frameBorder="0" class="giphy-embed" allowFullScreen>
-											</iframe>
-											<div
-												style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
-										</div>
-										<%-- <img src="${pageContext.request.contextPath}/resources/images/not-found.png" /> --%>
-										<div style="color: #727272;">
-											오늘이 마감일인 <br> 미완료 상태의 할 일이 없습니다.<br> 자세한 오늘의 할 일을
-											보고 싶으시면 <br> 위의 상세보기를 눌러주세요.
-										</div>
-									</div>
-								</c:when>
-								<c:otherwise>
-									<div class="mainTodoInnerBox">
-										<c:forEach var="dto" items="${todoList}">
-											<div
-												class="mainTodoContentOutline ${dto.checkstatus == 0 ? 'past-to-do' : ''}">
-												<div class="arrangeBox" style="width: 100%;">
-													<div
-														style="display: flex; text-align: center; text-align: center; width: 100%;">
-														<input type="checkbox"
-															onclick="checkTodo(${dto.todoid}, this.checked)"
-															${dto.isdone == 1 ? 'checked' : ''}
-															data-todoid="${dto.todoid}" data-done="${dto.isdone}"
-															id="check-${dto.todoid}"> <label
-															for="check-${dto.todoid}"></label>
-														<div
-															style="text-align: left; height: 30px; vertical-align: middle; width: 90%;"
-															class="No-line-break">${dto.task}</div>
-													</div>
-												</div>
-												<div
-													style="color: gray; font-size: small; margin-left: 5px;"
-													class="No-line-break">마감 기일 : ${dto.duedate}</div>
-											</div>
-										</c:forEach>
-									</div>
 
-								</c:otherwise>
-							</c:choose>
-						</div>
-					</div>
-
+			<div class="board_bottom top_bottom" id="defaultBottom">
+				<div class="board_inner2 board_inner_two" id="bottom1">
 					<!-- 메모 영역 -->
-					<div class="board_inner_inner">
+					<div class="board_inner_inner" id="memo">
 						<div class="card_top">
-							<div class="title_and_link">
-								<h2 class="card_title No-line-break">Memo</h2>
-								<a href="${pageContext.request.contextPath}/memo"
-									class="link-icon">바로가기</a>
-							</div>
+						    <div class="title_and_link">
+						        <!-- <h2 class="card_title No-line-break">Memo</h2> -->
+						        <div style="background-color: #ffffff73; height: 36px;  display: flex; justify-content: space-between; border-radius: 10px; margin-bottom: 0px;">
+						            <div id="myMemoButton" style="width: 50%; padding: 7px; text-align: center; cursor: pointer;"
+						                class="No-line-break">
+						                <b style="font-size: 18px;">나의 메모</b>
+						            </div>
+						            <div id="branchMemoButton" style="width: 50%; padding: 7px; text-align: center; cursor: pointer;"
+						                class="No-line-break">
+						                <b style="font-size: 18px;">부점 메모</b>
+						            </div>
+						        </div>
+						        <a href="${pageContext.request.contextPath}/memo" class="link-icon">바로가기</a>
+						    </div>
 						</div>
 						<hr>
 						<!--  탭 버튼 영역 -->
-						<div
-							style="background-color: #ffffff73; widows: 100%; display: flex; justify-content: space-between; border-radius: 10px; margin-bottom: 10px;">
-							<div id="myMemoButton"
-								style="width: 50%; padding: 10px; text-align: center; cursor: pointer;"
-								class="No-line-break">
-								<b>나의 메모</b>
-							</div>
-							<div id="branchMemoButton"
-								style="width: 50%; padding: 10px; text-align: center; cursor: pointer;"
-								class="No-line-break">
-								<b>부점 메모</b>
-							</div>
-						</div>
 						<div class="memo_list"
-							style="padding: 0px; margin: 0px; height: 65%; padding: 0px; padding-right: 5px;">
+							style="padding: 0px; margin: 0px; height: 80%; padding-left: 5px; padding-right: 5px;">
 							<!-- 탭 전환시 보여질 영역(1, 나의 메모) -->
 							<div id="myMemoArea" style="padding-bottom: 10px;">
 								<c:forEach var="memo" items="${memo1}" begin="0" end="4">
@@ -499,8 +493,7 @@ label {
 												style="text-align: left; vertical-align: middle; width: 100%; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
 												${memo.content}</div>
 										</div>
-										<div style="color: gray; font-size: small;"
-											class="No-line-break">메모 등록일자 : ${memo.createdate}</div>
+										<div style="color: gray; font-size: small; text-align: right;">${memo.createdate}</div>
 									</div>
 								</c:forEach>
 								<c:if test="${empty memo1 }">
@@ -529,8 +522,7 @@ label {
 												style="text-align: left; vertical-align: middle; width: 100%; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
 												${memo.content}</div>
 										</div>
-										<div style="color: gray; font-size: small;"
-											class="No-line-break">메모 등록일자 : ${memo.createdate}</div>
+										<div style="color: gray; font-size: small; text-align: right;">${memo.createdate}</div>
 									</div>
 								</c:forEach>
 								<c:if test="${empty memo2 }">
@@ -553,7 +545,7 @@ label {
 					</div>
 
 					<!-- 공지 영역 시작 -->
-					<div class="board_inner_inner">
+					<div class="board_inner_inner" id="notice">
 						<div class="card_top">
 							<div class="title_and_link">
 								<h2 class="card_title No-line-break">Notice</h2>
@@ -594,8 +586,7 @@ label {
 															style="text-align: left; vertical-align: middle; width: 100%; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
 															${notice.title}</div>
 													</div>
-													<div style="color: gray; font-size: small;"
-														class="No-line-break">공지 등록일자 : ${notice.createdate}</div>
+													<div style="color: gray; font-size: small; text-align: right;">${notice.createdate}</div>
 												</div>
 											</c:forEach>
 										</div>
@@ -609,57 +600,8 @@ label {
 					<!--  탭3 끝 -->
 
 				</div>
-				<style>
-.box {
-	width: 45px;
-	height: 45px;
-	border-radius: 70%;
-	overflow: hidden;
-	margin: auto;
-}
-/* mypage profile image */
-.profile {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-#crown {
-	position: absolute;
-	top: calc(7% - 22.5px);
-	left: calc(50% - 22.5px);
-	text-align: center;
-	width: 45px;
-	height: 45px;
-	background-image: url('${pageContext.request.contextPath}/resources/images/crown.png');
-	background-size: cover;
-	background-position: center top;
-	z-index: 999;"
-}
 
-#first {
-    position: absolute;
-    top: calc(25% - 33px); /* top 위치를 비율 + 고정 값으로 계산 */
-    /* left: calc(50% - 43.69px); /* left 위치를 비율 + 고정 값으로 계산 */ */
-    text-align: center;
-}
-
-#second {
-    position: absolute;
-    top: calc(30% - 33px);
-    left: calc(20% - 22.885px);
-    text-align: center;
-}
-
-#third {
-    position: absolute;
-    top: calc(37% - 33px);
-    left: calc(80% - 22.5px);
-    text-align: center;
-}
-
-</style>
-
-				<div class="board_inner3">
+				<div class="board_inner3 board_inner_two" id="bottom2">
 					<!-- 탭(선택영역) -->
 					<div class="tab_area">
 						<span class="tab No-line-break" data-tab="tab1">랭킹</span> <span
@@ -674,7 +616,7 @@ label {
 								<hr>
 								<!-- 새로운 영역 시작 -->
 								<div id="outt"
-									style="position: relative; background-image: url('${pageContext.request.contextPath}/resources/images/leaderboard.png'); background-size: cover; background-repeat: no-repeat; background-position: center; width: auto; height: 95%;">
+									style="position: relative; background-image: url('${pageContext.request.contextPath}/resources/images/leaderboard2.png'); background-size: cover; background-repeat: no-repeat; background-position: bottom; width: auto; height: 85%;">
 									<div id="crown"></div>
 
 
@@ -719,26 +661,29 @@ label {
 									</div>
 								</div>
 							</div>
+							
 							<div class="rankbox best-posts">
-								<div style="display: flex; justify-content: space-between;">
-									<h4 class="card_title">⭐BEST 게시글⭐</h4>
-									<a href="${pageContext.request.contextPath}/hotNote"
-										class="link-icon">바로가기</a>
-								</div>
-								<hr>
-								<div class="best-posts-list"
-									style="height: 80%; overflow-y: auto;">
-									<ul
-										style="list-style-type: none; padding-left: 10px; margin-left: 0;">
-										<c:forEach var="bestPost" items="${bestPost}">
-											<li class="best-post-item"><a class="aTag"
-												href="${pageContext.request.contextPath}/detailNote?id=${bestPost.id}">
-													<span class="post-title">${bestPost.titleShare}</span><br/> <span
-													class="post-nickname">${bestPost.nickname}</span>
-											</a></li>
-										</c:forEach>
-									</ul>
-								</div>
+							    <div style="display: flex; justify-content: space-between; align-items: center;">
+							        <h4 class="card_title">⭐BEST 게시글⭐</h4>
+							        <a href="${pageContext.request.contextPath}/hotNote" class="link-icon">바로가기</a>
+							    </div>
+							    <hr>
+							    <div class="best-posts-list" style="height: 80%;">
+							        <ul style="list-style-type: none; padding: 0;">
+							            <c:forEach var="bestPost" items="${bestPost}" varStatus="status">
+							                <c:if test="${status.index < 3}">
+							                    <li class="best-post-item" style="display: flex; align-items: center; margin-bottom: 7px;">
+							                        <img src="/resources/images/icons/rank${status.index + 1}.png" alt="Rank ${status.index + 1}" style="width: 40px; height: 40px; margin-right: 10px;">
+							                        <a class="aTag" href="${pageContext.request.contextPath}/detailNote?id=${bestPost.id}" style="flex-grow: 1;">
+							                            <span class="post-title No-line-break3">${bestPost.titleShare}</span>
+							                            <br>
+							                            <span class="post-nickname">by. ${bestPost.nickname}</span>
+							                        </a>
+							                    </li>
+							                </c:if>
+							            </c:forEach>
+							        </ul>
+							    </div>
 							</div>
 
 						</div>
@@ -773,14 +718,13 @@ label {
 									<div class="tab_table">
 										<c:forEach var="comment" items="${comment}">
 											<div class="mainTodoContentOutline"
-												onclick="goToDeatil('${comment.detail}')">
+												onclick="goToDeatil('${comment.detail}')" style="padding: 10px;">
 												<div class="arrangeBox" style="width: 100%;">
 													<div
 														style="text-align: left; vertical-align: middle; width: 100%; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
 														${comment.message}</div>
 												</div>
-												<div style="color: gray; font-size: small;"
-													class="No-line-break">등록일자 : ${comment.senddate}</div>
+												<div style="color: gray; font-size: small;  text-align: right;">${comment.senddate}</div>
 											</div>
 										</c:forEach>
 									</div>
@@ -808,7 +752,7 @@ label {
         });
     });
 </script>
-	<script>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
 
     var displayOrder = JSON.parse('${displayOrderJson}'); // JSON 문자열을 JavaScript 객체로 파싱
@@ -823,7 +767,47 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 	
-
+    var orderData = {
+	        todo3display: ${orderAll.todo3display},
+	        memoNotice: ${orderAll.memoNotice},
+	        topBottom: ${orderAll.topBottom},
+	        bottomBottom: ${orderAll.bottomBottom}
+	    };
+    
+    console.log(orderData);
+    
+    if (orderData.todo3display === 1) {
+        // 투두리스트와 3개 표시부의 위치를 바꿉니다.
+        var todoDiv = document.getElementById('todo');
+        var displayDiv = document.getElementById('3display');
+        var parent = todoDiv.parentNode;
+        parent.insertBefore(displayDiv, todoDiv);
+    }
+    
+    if (orderData.memoNotice === 1) {
+        // 메모와 공지의 위치를 바꿉니다.
+        var memoDiv = document.getElementById('memo');
+        var noticeDiv = document.getElementById('notice');
+        var parent = memoDiv.parentNode;
+        parent.insertBefore(noticeDiv, memoDiv);
+    }
+    
+    if (orderData.topBottom === 1) {
+        // 상단과 하단의 위치를 바꿉니다.
+        var topDiv = document.getElementById('defaultTop');
+        var bottomDiv = document.getElementById('defaultBottom');
+        var contentRight = topDiv.parentNode;
+        contentRight.insertBefore(bottomDiv, topDiv);
+    }
+    
+    if (orderData.bottomBottom === 1) {
+        // 하단의 내부 섹션들의 위치를 바꿉니다.
+        var bottom1 = document.getElementById('bottom1');
+        var bottom2 = document.getElementById('bottom2');
+        var boardBottom = bottom1.parentNode;
+        boardBottom.insertBefore(bottom2, bottom1);
+    }
+    
     
     // 탭 활성화 로직
     const tabs = document.querySelectorAll('.tab');
@@ -958,9 +942,9 @@ function goToDeatil(detail){
 } */
 </script>
 
-	<!-- 드래그앤드랍을 위한 테스트중 -->
-	<script>
+<script>
 
+////////////////전광판간의 순서 조절////////////////
 function updateSectionOrder(newOrder) {
     console.log("Updating order to:", newOrder); // 로그 출력으로 확인
     $.ajax({
@@ -977,7 +961,6 @@ function updateSectionOrder(newOrder) {
     });
 }
 
-
 $(document).ready(function() {
     $(".board_top").sortable({
         placeholder: "ui-state-highlight",
@@ -989,6 +972,121 @@ $(document).ready(function() {
     $(".board_inner").disableSelection();
 });
 
+////////////////투두 - 전광판 순서 바꾸기////////////////
+function updateSectionOrder2(newOrder) {
+    console.log("Updating order to:", newOrder); // 로그 출력으로 확인
+    $.ajax({
+        url: contextPath + '/updateDisplayOrder2',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({order: newOrder}),
+        success: function(response) {
+            console.log("Order update response:", response);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error updating order:", error);
+        }
+    });
+}
+
+$(document).ready(function() {
+    $(".top_wrapper").sortable({
+        placeholder: "ui-state-highlight",
+        update: function(event, ui) {
+            var newOrder = $(this).sortable('toArray').toString();
+            updateSectionOrder2(newOrder);
+        }
+    });
+    $(".top_l_r").disableSelection();
+});
+
+////////////////탑-바텀 순서 조절////////////////
+function updateSectionOrder3(newOrder) {
+    console.log("Updating order to:", newOrder); // 로그 출력으로 확인
+    $.ajax({
+        url: contextPath + '/updateDisplayOrder3',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({order: newOrder}),
+        success: function(response) {
+            console.log("Order update response:", response);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error updating order:", error);
+        }
+    });
+}
+
+$(document).ready(function() {
+    $(".content_right").sortable({
+        placeholder: "ui-state-highlight",
+        update: function(event, ui) {
+            var newOrder = $(this).sortable('toArray').toString();
+            updateSectionOrder3(newOrder);
+        }
+    });
+    $(".top_bottom").disableSelection();
+});
+
+////////////////아래에 두 친구 서로 바꾸기////////////////
+function updateSectionOrder4(newOrder) {
+    console.log("Updating order to:", newOrder); // 로그 출력으로 확인
+    $.ajax({
+        url: contextPath + '/updateDisplayOrder4',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({order: newOrder}),
+        success: function(response) {
+            console.log("Order update response:", response);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error updating order:", error);
+        }
+    });
+}
+
+$(document).ready(function() {
+    $(".board_bottom").sortable({
+        placeholder: "ui-state-highlight",
+        update: function(event, ui) {
+            var newOrder = $(this).sortable('toArray').toString();
+            updateSectionOrder4(newOrder);
+        }
+    });
+    $(".board_inner_two").disableSelection();
+});
+
+////////////////메모 - 노티스////////////////
+function updateSectionOrder5(newOrder) {
+    console.log("Updating order to:", newOrder); // 로그 출력으로 확인
+    $.ajax({
+        url: contextPath + '/updateDisplayOrder5',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({order: newOrder}),
+        success: function(response) {
+            console.log("Order update response:", response);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error updating order:", error);
+        }
+    });
+}
+
+$(document).ready(function() {
+    $(".board_inner2").sortable({
+        placeholder: "ui-state-highlight",
+        update: function(event, ui) {
+            var newOrder = $(this).sortable('toArray').toString();
+            updateSectionOrder5(newOrder);
+        }
+    });
+    $(".board_inner_inner").disableSelection();
+});
+
+
+
+
 document.getElementById("myMemoButton").onclick = function() {
     document.getElementById("myMemoArea").style.display = "block";
     document.getElementById("branchMemoArea").style.display = "none";
@@ -998,14 +1096,6 @@ document.getElementById("branchMemoButton").onclick = function() {
     document.getElementById("myMemoArea").style.display = "none";
     document.getElementById("branchMemoArea").style.display = "block";
 };
-
-
-
-
-
-
-
-
 
 
 </script>
