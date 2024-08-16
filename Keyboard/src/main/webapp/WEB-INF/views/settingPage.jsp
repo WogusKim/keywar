@@ -87,41 +87,22 @@ input:checked + .slider:before {
 		<%@ include file="/WEB-INF/views/sidebar.jsp"%>
 		<div class="content_right">
 			<!-- 주 콘텐츠 -->
-			<div style="display: flex; height: 100%; ">
-			<div class="settingPage" style=" height: 53%;">
-				<div class="innerSetting">
-					<h2>색상설정</h2> 
-					<hr>
-		            <form class="color-selection" action="${pageContext.request.contextPath}/submitColor" method="post">
-		                <label>
-		                    <input type="radio" name="setting_color" value="green" id="green-radio">
-		                    <div class="color-circle" id="green" style="background-color: #BDE2CE;"></div>
-		                </label>
-		                <label>
-		                    <input type="radio" name="setting_color" value="red" id="red-radio">
-		                    <div class="color-circle" id="red" style="background-color: #ff1b1bcf;"></div>
-		                </label>
-		                <label>
-		                    <input type="radio" name="setting_color" value="orange" id="orange-radio">
-		                    <div class="color-circle" id="orange" style="background-color: #ef803bad;"></div>
-		                </label>
-		                <label>
-		                    <input type="radio" name="setting_color" value="blue" id="blue-radio">
-		                    <div class="color-circle" id="blue" style="background-color: #40a0e7;"></div>
-		                </label>
-		                <label>
-		                    <input type="radio" name="setting_color" value="yellow" id="yellow-radio">
-		                    <div class="color-circle" id="yellow" style="background-color: #e2ff005e;"></div>
-		                </label>
-		                <label>
-		                    <input type="radio" name="setting_color" value="purple" id="purple-radio">
-		                    <div class="color-circle" id="purple" style="background-color: #d862eb4f;"></div>
-		                </label>
-		                <button type="submit">저장</button>
-		            </form> 
+			<div class="settings-container" style="display: flex; height: 100%; ">
+				<div class="settingPage2" style="height: 55%;">
+				    <div class="innerSetting" style="padding-bottom: 20px;">
+				        <h2>색상 테마 설정</h2> 
+				        <hr>
+				        <div id="colors-choice-container">
+				            <img class="colors-choice" data-color="pink" src="${pageContext.request.contextPath}/resources/images/1star-kiki.png">
+				            <img class="colors-choice" data-color="lightgreen" src="${pageContext.request.contextPath}/resources/images/2star-agor.png">
+				            <img class="colors-choice" data-color="brown" src="${pageContext.request.contextPath}/resources/images/3star-bibi.png">
+				            <img class="colors-choice" data-color="yellow" src="${pageContext.request.contextPath}/resources/images/4star-ramu.png">
+				            <img class="colors-choice" data-color="green" src="${pageContext.request.contextPath}/resources/images/5star-coli.png">
+				            <div id="highlight-box"></div>
+				        </div>
+				    </div>
 				</div>
-			</div>  
-				<div class="settingPage" style="margin-left: 10px; height: 53%;">
+				<div class="settingPage" style="margin-left: 10px; height: 55%;">
 					<div class="innerSetting" style="padding-bottom: 20px;">
 						<h2>알림 설정</h2>
 						<hr>
@@ -169,6 +150,85 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const colorsChoices = document.querySelectorAll('.colors-choice');
+    const colorMap = {
+        'green': '#A8E2D2',
+        'pink': '#F4A6B8',
+        'lightgreen': '#B7D98D',
+        'brown': '#D1B7B0',
+        'yellow': '#F9E59B'
+    };
+
+    // 세션에서 저장된 색상 값 가져오기
+    var selectedColor = '${sessionScope.bgcolor}';
+
+    function updateBackgroundColor(color) {
+        colorsChoices.forEach((choice) => {
+            if (choice.dataset.color === color) {
+                choice.style.backgroundColor = colorMap[color];
+            } else {
+                choice.style.backgroundColor = '';
+            }
+        });
+        // 페이지 배경색 즉시 변경
+        document.body.style.backgroundColor = colorMap[color];
+        document.documentElement.style.setProperty('--main-bgcolor', colorMap[color]);
+    }
+
+    function applyColor(color) {
+        // 먼저 UI를 업데이트
+        selectedColor = color;
+        updateBackgroundColor(color);
+
+        // 그 다음 서버에 변경사항 저장
+        fetch('${pageContext.request.contextPath}/submitColor', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'setting_color=' + color
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log(data.message);
+            } else {
+                console.error(data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+
+    // 초기 선택된 색상 적용
+    if (selectedColor) {
+        updateBackgroundColor(selectedColor);
+    }
+
+    colorsChoices.forEach((choice) => {
+        choice.addEventListener('mouseover', function() {
+            const color = this.dataset.color;
+            if (color !== selectedColor) {
+                this.style.backgroundColor = colorMap[color];
+            }
+        });
+
+        choice.addEventListener('mouseout', function() {
+            if (this.dataset.color !== selectedColor) {
+                this.style.backgroundColor = '';
+            }
+        });
+
+        choice.addEventListener('click', function() {
+            const color = this.dataset.color;
+            applyColor(color);
+        });
+    });
+});
+
 
 function switchAlert(alertCategory, isChecked) {
     console.log("Todo ID:", alertCategory);

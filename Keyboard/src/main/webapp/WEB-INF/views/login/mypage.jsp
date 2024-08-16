@@ -209,7 +209,11 @@ min-width: 100px;
 .writer_td {
 	display: flex;
 	align-items: center;
-	justify-content: flex-start; /* 왼쪽 정렬 */
+	justify-content: flex-start; /* 왼쪽 정렬 */	
+}
+
+.profile_link {
+	cursor: pointer;
 }
 
 .profile-pic {
@@ -254,7 +258,7 @@ min-width: 100px;
 				
 						<c:forEach var="myFollowing" items="${myFollowing}">
 						 <div class="writer_td" style="display: flex; justify-content: space-between;">
-                    		<div style="display: flex; " onclick="goToProfile(${myFollowing.userno})">
+                    		<div class="profile_link" style="display: flex; " onclick="goToProfile(${myFollowing.userno})">
 	                    		<div>
 	                    			<img class="profile-pic" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${myFollowing.userno}" />
 	                    		</div>
