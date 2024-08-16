@@ -1,5 +1,8 @@
 package kb.keyboard.warrior.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -36,31 +39,40 @@ public class SettingController {
     }
     
     @RequestMapping("/submitColor")
-    public String changeColor(HttpServletRequest request, HttpSession session) {
-    	
-    	//id 체크
-    	String userno = (String) session.getAttribute("userno");
-    	
-    	//request 에서 새로 선택한 컬러
-    	String newColor = request.getParameter("setting_color");
-    	System.out.println("새로 선택한 컬러 : "+newColor);
-    	
-    	
-    	LoginDao dao = sqlSession.getMapper(LoginDao.class);
-    	SettingDao settingDao = sqlSession.getMapper(SettingDao.class);
-    	
-    	String beforeColor = dao.getColor(userno); //기존 세팅값 존재여부 체크
-    	if (beforeColor != null) {
-    		//update
-    		settingDao.updateColor(newColor, userno);
-    	} else {
-    		//insert
-    		settingDao.insertColor(newColor, userno);
-    	}
-    	
-    	session.setAttribute("bgcolor", newColor);
-    	
-    	return "redirect:setting";
+    @ResponseBody
+    public Map<String, Object> changeColor(HttpServletRequest request, HttpSession session) {
+        Map<String, Object> response = new HashMap<String, Object>();
+        
+        try {
+            //id 체크
+            String userno = (String) session.getAttribute("userno");
+            
+            //request 에서 새로 선택한 컬러
+            String newColor = request.getParameter("setting_color");
+            System.out.println("새로 선택한 컬러 : "+newColor);
+            
+            LoginDao dao = sqlSession.getMapper(LoginDao.class);
+            SettingDao settingDao = sqlSession.getMapper(SettingDao.class);
+            
+            String beforeColor = dao.getColor(userno); //기존 세팅값 존재여부 체크
+            if (beforeColor != null) {
+                //update
+                settingDao.updateColor(newColor, userno);
+            } else {
+                //insert
+                settingDao.insertColor(newColor, userno);
+            }
+            
+            session.setAttribute("bgcolor", newColor);
+            
+            response.put("success", true);
+            response.put("message", "Color updated successfully");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error updating color: " + e.getMessage());
+        }
+        
+        return response;
     }
     
     // 알림 설정 비동기 처리

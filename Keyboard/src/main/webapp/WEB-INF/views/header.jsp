@@ -90,21 +90,20 @@ width: 100%;
 
         // 색상 값을 매핑합니다.
         var colorMap = {
-            'green': '#BDE2CE',
-            'red': '#ff1b1bcf',
-            'orange': '#ef803bad',
-            'blue': '#ADCDFF',
-            'yellow': '#e2ff005e',
-            'purple': '#d862eb4f'
+       		'green': '#A8E2D2',      // 파스텔 녹색
+       		'pink': '#F4A6B8',       // 파스텔 핑크
+       		'lightgreen': '#B7D98D', // 파스텔 연두색
+       		'brown': '#D1B7B0',      // 파스텔 갈색
+       		'yellow': '#F9E59B'      // 파스텔 노란색
         };
 
         // 루트 CSS 변수 업데이트
         document.documentElement.style.setProperty('--main-bgcolor', colorMap[bgColor] || colorMap['green']);
         
         //red의 경우 checked 글자도 변경
-        if (bgColor === 'red' || bgColor === 'orange' || bgColor === 'blue') {
+/*         if (bgColor === 'red' || bgColor === 'orange' || bgColor === 'blue') {
         	document.documentElement.style.setProperty('--todo-checked', '#fff');	
-        }
+        } */
         
     });
     
