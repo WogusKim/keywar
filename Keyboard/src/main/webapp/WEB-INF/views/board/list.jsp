@@ -259,6 +259,8 @@ var dataList = [
     </c:forEach>
 ];
 
+console.log(dataList);
+
 var filteredDataList = null; // 새로운 전역 변수
 var originalDataList = [...dataList]; // 원본 데이터 복사본 저장
 

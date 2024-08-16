@@ -410,9 +410,9 @@ String userno = (String) session.getAttribute("userno");
 											src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${comment.userno}"
 											alt="Profile Picture">
 									</div>
-									<div
-										style="line-height: 40px; height: 40px; margin-left: 10px;"
-										id="writer-nickname">${comment.nickname }</div>
+									<div style="line-height: 40px; height: 40px; margin-left: 10px;" id="writer-nickname" onclick="location.href='${pageContext.request.contextPath}/profile?userno=${comment.userno}'">
+										${comment.nickname}
+									</div>
 								</div>
 								<div id="commentDelete-Btn"
 									style="text-align: right; margin-right: 20px;">

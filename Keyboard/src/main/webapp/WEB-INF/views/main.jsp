@@ -621,7 +621,7 @@ input[type="checkbox"][id^="check"]:checked + label {
 
 
 									<!-- 1등 영역 -->
-									<div id="first">
+									<div id="first" onclick="location.href='${pageContext.request.contextPath}/profile?userno=${bestWriter[0].userno}'">
 										<div class="box" id="profilepicture">
 											<img class="profile"
 												src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[0].userno}"
@@ -636,7 +636,7 @@ input[type="checkbox"][id^="check"]:checked + label {
 									</div>
 									<!-- 2, 3등 영역 -->
 									<div class="arrangeBox">
-										<div id="second">
+										<div id="second"  onclick="location.href='${pageContext.request.contextPath}/profile?userno=${bestWriter[1].userno}'">
 											<div class="box" id="profilepicture">
 												<img class="profile"
 													src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[1].userno}"
@@ -647,7 +647,7 @@ input[type="checkbox"][id^="check"]:checked + label {
 											<%--  좋아요
 											${bestWriter[1].like_count}개 --%>
 										</div>
-										<div id="third">
+										<div id="third" onclick="location.href='${pageContext.request.contextPath}/profile?userno=${bestWriter[2].userno}'">
 											<div class="box" id="profilepicture">
 												<img class="profile"
 													src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${bestWriter[2].userno}"
