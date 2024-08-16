@@ -293,7 +293,7 @@ input[type="text"], input[type="radio"] {
 
 		<div class="menu-tree-wrapper">
 		<div class="searchBar">
-			<input type="text" id="searchInput" placeholder="검색어를 입력하세요..." style="width: 95%; margin-top: 10px; display:none;">
+			<input type="text" id="searchInput" placeholder="검색어를 입력하세요..." style="width: 90%; margin-top: 10px; display:none;">
 		</div>
         <ul>
             <c:forEach var="menu" items="${menus}">

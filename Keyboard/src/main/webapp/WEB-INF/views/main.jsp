@@ -489,9 +489,9 @@ input[type="checkbox"][id^="check"]:checked + label {
 								<c:forEach var="memo" items="${memo1}" begin="0" end="4">
 									<div class="mainTodoContentOutline">
 										<div class="arrangeBox" style="width: 100%;">
-											<div
-												style="text-align: left; vertical-align: middle; width: 100%; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
-												${memo.content}</div>
+											<div style="text-align: left; vertical-align: middle; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+												${memo.content}
+											</div>
 										</div>
 										<div style="color: gray; font-size: small; text-align: right;">${memo.createdate}</div>
 									</div>
@@ -518,9 +518,9 @@ input[type="checkbox"][id^="check"]:checked + label {
 								<c:forEach var="memo" items="${memo2}" begin="0" end="4">
 									<div class="mainTodoContentOutline">
 										<div class="arrangeBox" style="width: 100%;">
-											<div
-												style="text-align: left; vertical-align: middle; width: 100%; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
-												${memo.content}</div>
+											<div style="text-align: left; vertical-align: middle; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+											    ${memo.content}
+											</div>
 										</div>
 										<div style="color: gray; font-size: small; text-align: right;">${memo.createdate}</div>
 									</div>
@@ -582,9 +582,9 @@ input[type="checkbox"][id^="check"]:checked + label {
 											<c:forEach var="notice" items="${noticeList}">
 												<div class="mainTodoContentOutline">
 													<div class="arrangeBox" style="width: 100%;">
-														<div
-															style="text-align: left; vertical-align: middle; width: 100%; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
-															${notice.title}</div>
+														<div style="text-align: left; vertical-align: middle; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+															${notice.title}
+														</div>
 													</div>
 													<div style="color: gray; font-size: small; text-align: right;">${notice.createdate}</div>
 												</div>
@@ -720,9 +720,9 @@ input[type="checkbox"][id^="check"]:checked + label {
 											<div class="mainTodoContentOutline"
 												onclick="goToDeatil('${comment.detail}')" style="padding: 10px;">
 												<div class="arrangeBox" style="width: 100%;">
-													<div
-														style="text-align: left; vertical-align: middle; width: 100%; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal; line-height: 1.5;">
-														${comment.message}</div>
+													<div style="text-align: left; vertical-align: middle; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+														${comment.message}
+													</div>
 												</div>
 												<div style="color: gray; font-size: small;  text-align: right;">${comment.senddate}</div>
 											</div>
