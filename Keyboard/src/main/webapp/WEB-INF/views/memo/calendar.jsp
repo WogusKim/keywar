@@ -8,22 +8,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>일정 관리</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/main.css">
-<link
-	href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css'
-	rel='stylesheet' />
-<script
-	src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
-<script
-	src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js'></script>
-<script
-	src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js'></script>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/calendar.css">
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />
+<script	src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
+<script	src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js'></script>
+<script	src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js'></script>
+<link rel="stylesheet"	href="${pageContext.request.contextPath}/resources/css/calendar.css">
+<link	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
 .btn-mint {
@@ -399,7 +390,7 @@ height : 25px; */
 	<div class="modal fade" id="inviteGroupModal" tabindex="-1"
 		role="dialog" aria-labelledby="inviteGroupModalLabel"
 		aria-hidden="true">
-		<div class="modal-dialog" role="document">
+		<div class="modal-dialog" role="document" style="margin-top: 10%;">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="inviteGroupModalLabel">그룹에 사용자
@@ -416,16 +407,20 @@ height : 25px; */
 							class="form-control" id="groupSelect"></select>
 					</div>
 					<!-- 사용자 초대 검색 -->
-					<div class="form-group">
-						<label for="inviteUserSearch">사용자 초대:</label> <input type="text"
-							class="form-control" id="inviteUserSearch">
+					<div class="form-group" >
+						<label for="inviteUserSearch">사용자 초대:</label> 
+						<div style="display: flex; ">
+						<input type="text"
+							class="form-control" id="inviteUserSearch" style="width: 87%;">
 						<button type="button" class="btn btn-primary"
 							id="inviteSearchUserButton">검색</button>
+						</div>
 					</div>
 					<!-- 검색 결과 -->
 					<div id="inviteSearchResults"></div>
+					<hr id="inviteSearchUser-hr" style="display: none;">
 					<!-- 선택된 사용자 목록 -->
-					<div id="inviteSelectedUsers"></div>
+					<div id="inviteSelectedUsers" style="width: 100%; max-height: 100px; overflow-y: auto; padding: 10px;"></div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary"
@@ -491,6 +486,7 @@ height : 25px; */
     var currentDate;
     let todoCountData = {};    
     let selectedUsers = [];
+	let inviteSelectedUsers = [];
     $(document).ready(function() {
        //let selectedUsers = [];
 
@@ -622,7 +618,6 @@ height : 25px; */
             console.log('Removing user with userno :'+userno);
             
             selectedUsers = selectedUsers.filter(user => String(user.userno) !== userno);
-            console.log('selectedUsers after deletion:', selectedUsers); // 디버깅 로그
         	
             $(this).closest('.selected-user').remove();
             
@@ -734,6 +729,13 @@ height : 25px; */
                 $('#customSharetoGroupEdit').hide();
             }
         });
+        
+        // 모달이 닫힐 때 추가 작업을 수행하는 이벤트 리스너
+        $('#createGroupModal').on('hidden.bs.modal', function (e) {
+            closeUserCostomGroup();
+        });
+
+        
     });
 	//성은 만들고 있는 스크립트(0816)
 	//검색 결과 영역과 선택 사용자 영역을 모두 지워주고, 선택된 사용자 들을 저장하는 배열을 초기화함
@@ -1271,7 +1273,7 @@ height : 25px; */
      
      
     
-	let inviteSelectedUsers = [];
+	//let inviteSelectedUsers = [];
      $(document).ready(function() {
     	 
     	 
@@ -1472,19 +1474,23 @@ height : 25px; */
 	            console.log('isSelected:', isSelected);
 
 	            const userHtml = 
-	                '<div class="search-result ' + (isSelected ? 'selected' : '') + '">' +
-	                '<input type="checkbox" name="userSelect" value="' + userno + '" ' + (isSelected ? 'checked disabled' : '') + '>' +
-	                '<span>' + name + ' (' + userno + ') - ' + deptname + ' / ' + teamname + '</span>' +
+	                '<div class="search-result ">' +
+	                '<input type="checkbox" name="userSelect" value="' + userno + '" ' + (isSelected ? 'checked ' : '') + '> ' +
+	                '<span> ' + name + ' (' + userno + ') - ' + deptname + ' / ' + teamname + '</span>' +
 	                '</div>';
+	                
 	            console.log('userHtml:', userHtml);
 	            resultsContainer.append(userHtml);
 	        });
+            $('#inviteSearchResults').addClass('searchArea');
+            $('#inviteSearchUser-hr').css('display', 'block');
 	    } else {
 	        resultsContainer.append('<p>검색 결과가 없습니다.</p>');
+	        $('#inviteSearchUser-hr').css('display', 'none');
 	    }
 	}
 	
-
+	// 성은 여기 수정 중 0816
 	function handleUserSelection() {
 	    const $this = $(this);
 	    const userno = $this.val();
@@ -1511,31 +1517,33 @@ height : 25px; */
 	        const selectedUserHtml = 
 	            '<div class="selected-user" data-userno="' + userno + '">' +
 	            '<span>' + userName + ' (' + userno + ') - ' + deptName + ' / ' + teamName + '</span>' +
-	            '<button type="button" class="btn btn-danger btn-sm remove-user">x</button>' +
+	            ' <button type="button"  class="remove-user delete-btn-seongeun" style="margin-left : 5px; margin-top : 5px;">X</button>' +
 	            '</div>';
 	        
 	        $('#inviteSelectedUsers').append(selectedUserHtml);
 	        
-	        $this.closest('.search-result').addClass('selected');
+	        //$this.closest('.search-result').addClass('selected');
 	    } else {
-	        // 사용자 선택 해제
 	        removeUserFromSelection(userno);
 	    }
 	}
-	
-	
-	
-	
-
 	function removeSelectedUser() {
 	    const userno = $(this).closest('.selected-user').data('userno');
+	    console.log('지우기 버튼 클릭.. !');
 	    removeUserFromSelection(userno);
 	}
 
 	function removeUserFromSelection(userno) {
+		
+		inviteSelectedUsers = inviteSelectedUsers.filter(user => {
+	        return String(user.userno) !== String(userno);
+	    });
+        $(this).closest('.selected-user').remove();
+		
+		
 	    inviteSelectedUsers = inviteSelectedUsers.filter(user => user.userno !== userno);
-	    $('#inviteSelectedUsers').find(`.selected-user[data-userno="${userno}"]`).remove();
-	    $('#inviteSearchResults').find(`input[name="userSelect"][value="${userno}"]`)
+	    $('#inviteSelectedUsers').find('.selected-user[data-userno="'+userno+'"]').remove();
+	    $('#inviteSearchResults').find('input[name="userSelect"][value="'+userno+'"]')
 	        .prop('checked', false)
 	        .closest('.search-result')
 	        .removeClass('selected');

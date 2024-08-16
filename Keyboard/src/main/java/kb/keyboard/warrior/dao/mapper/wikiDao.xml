@@ -211,7 +211,7 @@
       on e.id = m.id
   join user u 
       on m.userno = u.userno
-  join WikiHits wh 
+ left outer join WikiHits wh 
       on m.id = wh.wikiId
   left outer join ( 
       SELECT targetid, COUNT(*) AS like_count
