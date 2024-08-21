@@ -398,7 +398,8 @@ label {
         </div>
     </div>
 </div>
-<div id="deleteModal" class="modal2">
+
+<div id="deleteModal" class="modal2" style="z-index:100;">
 	<div style="	background-color: #fefefe; margin : auto; padding: 20px; border: 1px solid #888; width: 30%; height: 30%;  text-align: center;">
 	<span class="close" onclick="closeDeleteModal()">&times;</span>
 	<img src="${pageContext.request.contextPath}/resources/images/warning.png" style="margin-top: 20px;"/>
