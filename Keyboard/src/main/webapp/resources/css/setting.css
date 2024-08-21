@@ -6,6 +6,7 @@
 }
 .settings-container {
     display: flex; /* Flexbox 레이아웃을 사용하여 자식 요소를 가로로 배치 */
+    justify-content: center; /* 세로 방향 중앙 정렬 */
 }
 
 .settingPage {
@@ -15,6 +16,7 @@
     height: 50%;
     padding: 15px;
     margin-right: 10px;
+    margin-top: 10%;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 .settingPage2 {
@@ -24,6 +26,7 @@
     height: 50%;
     padding: 15px;
     margin-right: 10px;
+    margin-top: 10%;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 .innerSetting {

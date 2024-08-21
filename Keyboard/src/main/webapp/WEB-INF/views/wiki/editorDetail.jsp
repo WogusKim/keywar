@@ -133,7 +133,7 @@
     cursor: move;
     width: 25px;
     height: 25px;
-    background: url('${pageContext.request.contextPath}/resources/images/icons/dragIcon.png') no-repeat center center;
+    background: url('${pageContext.request.contextPath}/resources/images/icons/dragIcon2.png') no-repeat center center;
     background-size: cover;
 }
 
@@ -141,6 +141,29 @@
     display: block; /* 호버 시에만 표시 */
 }
 
+.color-handle {
+    display: none; /* 기본적으로 숨김 */
+    position: absolute;
+    top: 50%;
+    right: 17%;
+    transform: translateY(-50%);
+    cursor: move;
+    width: 25px;
+    height: 25px;
+    background: url('${pageContext.request.contextPath}/resources/images/icons/color.png') no-repeat center center;
+    background-size: cover;
+}
+
+.ce-block:hover .color-handle {
+    display: block; /* 호버 시에만 표시 */
+}
+
+.ce-header {
+    padding: 6px 0 6px;
+    margin: 0;
+    line-height: 1.25em;
+    outline: none;
+}
 </style>
 </head>
 
@@ -291,6 +314,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Debounce this function if necessary to avoid performance issues
             setTimeout(() => {
             	addDragHandles();
+            	addColorHandles();
             }, 300);
         },
         onReady: function () { // 에디터 준비 완료 후 모든 이미지 블록에 대해 실행
@@ -299,6 +323,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
             updateFileIcons(); // 파일 아이콘 변경 로직        
             addDragHandles(); //드래그 아이콘 붙이기
+            addColorHandles();
             initializeSorting(); //드래그기능 관련
         
             const blocks = editorData.blocks; // 블록 데이터 접근
@@ -775,9 +800,21 @@ function updateOrderInEditor() {
             editor.blocks.move(currentIndex, i);
         }
     }
-    
     saveData();
+}
 
+function addColorHandles() {
+    const editorContent = document.getElementById('myEditor');
+    const blocks = editorContent.querySelectorAll('.ce-block');
+
+    blocks.forEach(block => {
+        // 드래그 핸들이 이미 있는지 확인
+        if (!block.querySelector('.color-handle')) {
+            const handle = document.createElement('div');
+            handle.className = 'color-handle';
+            block.appendChild(handle);
+        }
+    });
 }
 
 </script>
