@@ -167,7 +167,7 @@
 .modal {
     display: none; /* 기본적으로 숨겨져 있음 */
     position: fixed; /* 고정 위치 */
-    z-index: 100; /* 콘텐츠 위에 표시 */
+    z-index: 10000000000; /* 콘텐츠 위에 표시 */
     left: 0;
     top: 0;
     width: 100%; /* 전체 너비 */
@@ -186,6 +186,7 @@
     border: 1px solid #888;
     width: 500px; /* 대부분의 화면에서 적절한 폭 */
     heigth: 400px;
+    z-index: 1000000000000000;
 }
 
 .input_outer {
@@ -293,7 +294,7 @@ input[type="text"], input[type="radio"] {
 
 		<div class="menu-tree-wrapper">
 		<div class="searchBar">
-			<input type="text" id="searchInput" placeholder="검색어를 입력하세요..." style="width: 90%; margin-top: 10px; display:none;">
+			<input type="text" id="searchInput" placeholder="검색어를 입력하세요..." style="width: 90%; margin-top: 5px; display:none;">
 		</div>
         <ul>
             <c:forEach var="menu" items="${menus}">
@@ -552,7 +553,7 @@ $(document).ready(function() {
     } else {
         // 사이드바를 펼친 상태로 설정
         $('.menu-tree, .menu_setting').show();
-        $('.content_left').css('width', '20%');
+        $('.content_left').css('width', '320px');
         $('.unfold-icon').hide();
         $('.fold-icon').show();
     }

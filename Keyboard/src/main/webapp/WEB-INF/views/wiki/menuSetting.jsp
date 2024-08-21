@@ -55,7 +55,7 @@
 <div class="content_outline">
 	<div class="menuSetting_l">
 	    <div class="menu-tree2">
-	    <h3>My Menu</h3>
+	    <h3 style="margin-top: 0px;">My Menu</h3>
 		    <div class="menu_list">
 		        <!-- <div class="icon folder-icon" onclick="selectFolder(this, 0, 'root', 0, '나의 업무노트')"></div> -->
 		        <span onclick="selectFolder(this, 0, 'root', -1, '나의 업무노트')">나의 업무노트</span>
@@ -266,7 +266,7 @@
 		        
 		        <div class="edit_field">
 		        	<label class="label-fixed-width">공개 여부:</label>
-		        	<input type="radio" name="public" value="yes">
+		        	<input type="radio" name="public" value="yes" checked>
                     <label for="isOpenYes">공개</label>
                     <input type="radio" name="public" value="no">
                     <label for="isOpenNo">비공개</label>
