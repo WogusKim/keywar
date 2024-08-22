@@ -18,7 +18,7 @@
     border-radius: 10px;
     background-color: white;
     padding: 20px 10px 0px 0px;
-    width: 20%;
+    width: 320px;
     height: 100%;
     margin-right: 15px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -570,7 +570,7 @@ $(document).ready(function() {
     // 펼치기 버튼 클릭 이벤트
     $('.menu_onoff .unfold-icon').click(function() {
         $('.menu-tree, .menu_setting').slideDown(300);
-        $('.content_left').animate({ width: '20%' }, 300);
+        $('.content_left').animate({ width: '320px' }, 300);
         $('.unfold-icon').hide();
         $('.fold-icon').show();
         localStorage.setItem('isCollapsed', 'false'); // 상태 저장
