@@ -70,7 +70,12 @@ label {
 				<!-- 민트 배경 -->
 				<div style="height: 100%;" class="board_todo">
 					<!-- 흰 배경 -->
-					<h2 class="card_title" >To-Do List</h2>
+					<div style="display: flex;">
+					<img src="${pageContext.request.contextPath}/resources/images/icons/calendar_todo.png" style="width: 30px;"/> 
+					<div style="height: 100%; margin-left: 10px; margin-top: ">
+					<b style="font-size: 20px;" >To-Do List</b>
+					</div>
+					</div>
 					<hr>
 					<!-- 여기부터 성은 수정 -->
 					
