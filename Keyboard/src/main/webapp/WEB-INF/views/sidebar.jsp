@@ -295,6 +295,21 @@ input[type="text"], input[type="radio"] {
 		<div class="searchBar">
 			<input type="text" id="searchInput" placeholder="검색어를 입력하세요..." style="width: 90%; margin-top: 10px; display:none;">
 		</div>
+		<c:if test="${empty menus}">	
+		<div>
+			<div style="text-align: center;margin-top: 55%;">
+				<iframe src="https://giphy.com/embed/3YJHfSeY06qRFAxE8p" width="170px;" height="170px;" style="pointer-events: none; margin: 0;"  frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+			</div>
+			<div style="text-align: center; color: gray;">
+			나의 메뉴 초기 상태입니다!<br>
+			원하는 대로 메뉴를 커스텀 하세요!<br><br>
+			<div style="text-align: center; font-size: large;">
+				<a href="${pageContext.request.contextPath}/hotNote" class="aTag No-line-break">⭐인기 노트 둘러보기⭐</a><br>
+				<a href="${pageContext.request.contextPath}/menuSetting" class="aTag No-line-break">⚙️사이드바 설정하기⚙️</a>
+			</div>
+			</div>
+		</div>
+		</c:if>
         <ul>
             <c:forEach var="menu" items="${menus}">
                 <li>
@@ -418,21 +433,7 @@ input[type="text"], input[type="radio"] {
             </c:forEach>
         </ul>
         </div>
-		<c:if test="${empty menus}">	
-		<div>
-			<div style="text-align: center;margin-top: 55%;">
-				<iframe src="https://giphy.com/embed/3YJHfSeY06qRFAxE8p" width="170px;" height="170px;" style="pointer-events: none; margin: 0;"  frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
-			</div>
-			<div style="text-align: center; color: gray;">
-			나의 메뉴 초기 상태입니다!<br>
-			원하는 대로 메뉴를 커스텀 하세요!<br><br>
-			<div style="text-align: center; font-size: large;">
-				<a href="${pageContext.request.contextPath}/hotNote" class="aTag No-line-break">⭐인기 노트 둘러보기⭐</a><br>
-				<a href="${pageContext.request.contextPath}/menuSetting" class="aTag No-line-break">⚙️사이드바 설정하기⚙️</a>
-			</div>
-			</div>
-		</div>
-		</c:if>
+		
     </div>
 	<div class="menu_setting">
 	    <div class="icon-setting menu-icon"></div>
