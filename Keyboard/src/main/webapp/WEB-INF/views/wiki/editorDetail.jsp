@@ -28,6 +28,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
 <!-- Header Plug-in-->
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
 <!-- Link embeds-->
 <script
 	src="https://cdn.jsdelivr.net/npm/@editorjs/link@2.5.0/dist/bundle.min.js"></script>
@@ -263,6 +264,13 @@ function updateBlockData(blockId, newSize) {
 async function saveData() {
     try {
         const savedData = await editor.save();
+        
+        // 모든 'paragraph' 타입 블록에 color 속성을 추가
+/*         savedData.blocks.forEach(block => {
+            if (block.type === 'paragraph' && !block.data.color) {
+                block.data.color = 'red';
+            }
+        }); */
 
         // 콘솔에 JSON 형태로 변환된 데이터 출력
         console.log("이게 맞아?", JSON.stringify(savedData));
@@ -313,6 +321,16 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("Changes detected");
             // Debounce this function if necessary to avoid performance issues
             setTimeout(() => {
+/*                 const blocks = editor.save().then(outputData => {
+                    outputData.blocks.forEach(block => {
+                        if (block.type === 'paragraph' && !block.data.color) {
+                            block.data.color = "red"; // 각 단락에 색상 데이터 추가
+                        }
+                    });
+                    console.log("바뀐내용" , JSON.stringify(outputData)); // 색상 데이터가 추가된 블록 구조를 콘솔에 출력
+                }); */
+                
+                
             	addDragHandles();
             	addColorHandles();
             }, 300);
@@ -320,7 +338,8 @@ document.addEventListener('DOMContentLoaded', function () {
         onReady: function () { // 에디터 준비 완료 후 모든 이미지 블록에 대해 실행
         	addClickButtons(); //이미지에 정렬 버튼 붙이기
         	applyImageAlignment(editorData.blocks);
-            
+        	applyColorToParagraphs(editorData.blocks);
+        	
             updateFileIcons(); // 파일 아이콘 변경 로직        
             addDragHandles(); //드래그 아이콘 붙이기
             addColorHandles();
@@ -330,14 +349,18 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("블록확인",blocks);
             blocks.forEach(block => {
             	console.log("블록타입확인",block.type);
+            	
+/*                 if (block.type === 'paragraph' && !block.data.color) {
+                    block.data.color = "red";
+                } */
+                
+                
                 if (block.type === 'image') {
                     // 데이터베이스에서 불러온 크기 정보로 이미지 사이즈를 설정
                     console.log("이미지url", block.data.file.url);
                     const imageElement = document.querySelector(`img[src="\${block.data.file.url}"]`);
                     console.log("이미지url확인",imageElement);
                     if (imageElement) {
-                    	
-                    	
                     	
                         const align = block.data.file.align || 'left'; // 기본 정렬값은 'left'
                         console.log("현재 정렬 확인",align);
@@ -346,9 +369,7 @@ document.addEventListener('DOMContentLoaded', function () {
                          if (alignWrapperDiv) {
                             setAlignment(alignWrapperDiv, align);
                         } 
-                        
-                        
-                        
+
                     	
                     	var newWidth = block.data.file.width;
                     	var newHeight = block.data.file.height;
@@ -382,12 +403,23 @@ document.addEventListener('DOMContentLoaded', function () {
             header: {
                 class: Header,
                 config: {
-                    placeholder: '헤더를 넣으삼',
+                    placeholder: '헤더를 입력하세요.',
                     levels: [1, 2, 3, 4, 5, 6],
                     defaultLevel: 3,
                 },
                 shortcut: 'CMD+SHIFT+H',
             },
+            
+            paragraph: {
+                class: Paragraph,
+                inlineToolbar: true,
+                config: {
+                    placeholder: '내용을 입력하세요.',
+
+                },
+            },
+        
+        
             linkTool: {
                 class: LinkTool,
                 config: {
@@ -430,6 +462,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			                            formData.append('width', width);
 			                            formData.append('height', height);
 			                            formData.append('align', align);
+			                           
 			                            
 			                            
 			                            console.log('@width : ', width, '@height :', height);
@@ -804,18 +837,109 @@ function updateOrderInEditor() {
 }
 
 function addColorHandles() {
-    const editorContent = document.getElementById('myEditor');
-    const blocks = editorContent.querySelectorAll('.ce-block');
-
+    const blocks = document.querySelectorAll('.ce-block');
     blocks.forEach(block => {
-        // 드래그 핸들이 이미 있는지 확인
-        if (!block.querySelector('.color-handle')) {
-            const handle = document.createElement('div');
-            handle.className = 'color-handle';
-            block.appendChild(handle);
+        const colorHandle = block.querySelector('.color-handle');
+        if (!colorHandle) {
+            const newColorHandle = document.createElement('div');
+            newColorHandle.className = 'color-handle';
+            newColorHandle.onclick = function() {
+                showColorPicker(this);
+            };
+            block.appendChild(newColorHandle);
         }
     });
 }
+
+function showColorPicker(colorHandle) {
+    let colorPicker = document.getElementById('colorPicker');
+    if (!colorPicker) {
+        colorPicker = document.createElement('input');
+        colorPicker.type = 'color';
+        colorPicker.id = 'colorPicker';
+        colorPicker.style.display = 'none'; // 초기에는 숨겨져 있음
+        document.body.appendChild(colorPicker);
+        colorPicker.onchange = function() {
+            changeColor(this, colorHandle.closest('.ce-block'));
+            updateBlockColor(this.value, colorHandle.closest('.ce-block').getAttribute('data-id'));
+        };
+    }
+    colorPicker.click(); // 색상 선택기 활성화
+}
+
+function changeColor(picker, block) {
+    const paragraph = block.querySelector('.ce-paragraph');
+    if (paragraph) {
+        paragraph.style.color = picker.value; // 변경되어야 할 속성을 'color'로 지정
+    }
+}
+
+//컬러피커를 통해서 처리가되면, JSON에 color 값을 넣어주기
+function updateBlockColor(colorValue, blockId) {
+	
+	console.log('가져온색상', colorValue);
+	
+    const block = editor.blocks.getById(blockId);
+    console.log('찾은 색상 관련 블록', block);
+    
+    if (block) {
+        block.save().then(data => {
+        	console.log('색사변경대상 글자',data.data.text);
+        	
+            data.data.color = colorValue;
+            console.log('색상변경 완료:', data);
+           
+            
+        }).catch(error => {
+            console.error('색상변경 실패:', error);x
+        });
+    } else {
+        console.error('블록 못찾음');
+    } 
+    
+}
+
+//DB에 있는 애를 가져와서 뷰에다가 그려주는거
+function applyColorToParagraphs(blocks) {
+    console.log('색상찾는중!:', blocks);
+    blocks.forEach(block => {
+        if (block.type === 'paragraph') {
+        	console.log('요놈이 paragraph');
+            // Find the paragraph element using the data-id attribute
+            const paragraphElement = document.querySelector(`div.ce-block[data-id="\${block.id}"] .ce-paragraph`);
+            
+            console.log('찾은 paragraphElement : ', paragraphElement);
+            
+            if (paragraphElement) {
+                // Apply the color style if it exists in the block data
+                const color = block.data.color || 'black'; // Default to black if no color is set
+                paragraphElement.style.color = color;
+                console.log(`Applied color ${color} to paragraph with id ${block.id}`);
+            }
+        }
+    });
+}
+
+
+
+/* function setAlignment(wrapper, align) {
+    if (align === 'left') {
+        wrapper.style.display = 'block';
+        wrapper.style.marginLeft = '0';
+        wrapper.style.marginRight = 'auto';
+    } else if (align === 'center') {
+        wrapper.style.display = 'block';
+        wrapper.style.marginLeft = 'auto';
+        wrapper.style.marginRight = 'auto';
+    } else if (align === 'right') {
+        wrapper.style.display = 'block';
+        wrapper.style.marginLeft = 'auto';
+        wrapper.style.marginRight = '0';
+    }
+}
+ */
+
+
 
 </script>
 
