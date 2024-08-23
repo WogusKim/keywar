@@ -27,11 +27,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import kb.keyboard.warrior.dao.AlertDao;
+import kb.keyboard.warrior.dao.LoginDao;
 import kb.keyboard.warrior.dao.ScheduleDao;
 import kb.keyboard.warrior.dao.WikiDao;
 import kb.keyboard.warrior.dto.AlertDTO;
 import kb.keyboard.warrior.dto.BoardDTO;
 import kb.keyboard.warrior.dto.ScheduleDTO;
+import kb.keyboard.warrior.dto.UserDTO;
 import net.coobird.thumbnailator.Thumbnails;
 
 @Controller
@@ -45,6 +47,7 @@ public class WikiDetailController {
 	public String wikiDetail(Model model, @RequestParam("id") int id, HttpSession session) {
 
 		WikiDao dao = sqlSession.getMapper(WikiDao.class);
+		LoginDao ldao = sqlSession.getMapper(LoginDao.class);
 		System.out.println("선택한 메뉴트리 작성자 유저넘버"+dao.getMenuDetail(id).getUserno());
 		String userno = (String)session.getAttribute("userno");
 		if(!dao.getMenuDetail(id).getUserno().equals(userno)) {
@@ -71,9 +74,13 @@ public class WikiDetailController {
 		String wikiData = dao.getData(id);
 		session.setAttribute("WikiId", id);
 
+		UserDTO userdto = ldao.isRightUserno(userno);
+		String gudie =  "작성자  : " + userdto.getNickname(); 
+		
+		
 		if (wikiData == null) {
 			System.out.println("초기값을 제공합니다.");
-			wikiData = "{\"time\":1721959855696,\"blocks\":[{\"id\":\"h6xL_peWS8\",\"type\":\"header\",\"data\":{\"text\":\"업무노트 개설을 축하합니다.\",\"level\":2}},{\"id\":\"ufod1niYAb\",\"type\":\"paragraph\",\"data\":{\"text\":\"열심히 노트를 작성하여 업무 효율을 높혀보세요!\"}}],\"version\":\"2.30.2\"}";
+			wikiData = "{\"time\":1721959855696,\"blocks\":[{\"id\":\"h6xL_peWS8\",\"type\":\"header\",\"data\":{\"text\":\""+dao.getMenuDetail(id).getTitle()+"\",\"level\":2}},{\"id\":\"ufod1niYAb\",\"type\":\"paragraph\",\"data\":{\"text\":\""+gudie+"\"}}],\"version\":\"2.30.2\"}";
 		}
 		model.addAttribute("editorData", wikiData);
 
