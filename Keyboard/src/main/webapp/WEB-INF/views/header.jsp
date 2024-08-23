@@ -78,10 +78,12 @@ width: 100%;
         document.addEventListener('click', () => {
             if (notificationBox.style.display === 'block') {
                 notificationBox.style.display = 'none';
+                checkForNotifications();
             }
         });
         notificationBox.addEventListener('click', (e) => {
             e.stopPropagation();
+            checkForNotifications();
         });
         
         
@@ -109,6 +111,10 @@ width: 100%;
     
     function checkForNotifications() {
     	
+    	//알림창 켜져있으면 버튼 안바뀌게 처리.
+    	if(notificationBox.style.display === 'block'){
+    		return;
+    	}
     	
     	fetch(`${pageContext.request.contextPath}/ajaxNotification`, {
             method: 'GET', // HTTP 메서드 설정
@@ -150,11 +156,11 @@ width: 100%;
 	        // 네트워크 오류나 JSON 변환 오류 등 예외 처리
 	        console.error('Error:', error);
 	    });
-	        // 다음 체크 주기 설정 (예: 5초)  // 일단 1분으로 해놈~~ 자꾸 떠서
-	        // 다 한 다음에 다음 알림 예약~
-	        setTimeout(checkForNotifications, 60000);
+	        // 다음 체크 주기 설정 (예: 5초)  
+	        setTimeout(checkForNotifications, 5000);
 	    }
 
+    
     // 페이지 로드 시 알림 체크 시작
     window.onload = checkForNotifications;
     
