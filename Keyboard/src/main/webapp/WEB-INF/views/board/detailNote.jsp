@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -407,7 +407,7 @@ String userno = (String) session.getAttribute("userno");
 									style="display: flex; height: 40px; width: 50%;">
 									<div class="box" id="profilepicture">
 										<img class="profile"
-											src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${comment.userno}"
+											src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${comment.profile}"
 											alt="Profile Picture">
 									</div>
 									<div style="line-height: 40px; height: 40px; margin-left: 10px;" id="writer-nickname" onclick="location.href='${pageContext.request.contextPath}/profile?userno=${comment.userno}'">

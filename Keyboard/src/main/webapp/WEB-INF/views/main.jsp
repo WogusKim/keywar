@@ -497,7 +497,7 @@ input[type="checkbox"][id^="check"]:checked + label {
 									</div>
 								</c:forEach>
 								<c:if test="${empty memo1 }">
-									<div style="text-align: center;">
+									<div style="text-align: center; margin-top: 10%;">
 										<iframe src="https://giphy.com/embed/xEpP5fhLTLNMnXLkeQ"
 											width="130px;" height="130px;"
 											style="pointer-events: none; margin: 0;" frameBorder="0"
@@ -526,7 +526,7 @@ input[type="checkbox"][id^="check"]:checked + label {
 									</div>
 								</c:forEach>
 								<c:if test="${empty memo2 }">
-									<div style="text-align: center;">
+									<div style="text-align: center;  margin-top: 10%;">
 										<iframe src="https://giphy.com/embed/C88XS01rDVHsoDxIrZ"
 											width="130px;" height="130px;"
 											style="pointer-events: none; margin: 0;" frameBorder="0"

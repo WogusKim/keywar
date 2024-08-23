@@ -196,6 +196,7 @@ body{
 .content_outline{
     margin-top: 15px;    
     height: 95%;
+    max-height : 95%;
     display: flex;
 }
 

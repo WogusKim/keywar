@@ -91,7 +91,7 @@ function changeNickname() {
                     <div class="white_Box" style="width: 100%; text-align: center;">
                         <div style="height: 15%;"></div>
                         <div class="box" style="background: #BDBDBD;">
-                            <img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture?userno=${dto.userno}" alt="Profile Picture">
+                            <img class="profile" src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${dto.profile}" alt="Profile Picture">
                         </div>
                         <form action="${pageContext.request.contextPath}/uploadProfilePicture" method="post" enctype="multipart/form-data">
                             <input type="file" name="picture" style="display: none;" id="profilePictureInput" />
