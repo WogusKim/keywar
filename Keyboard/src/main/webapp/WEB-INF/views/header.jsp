@@ -42,6 +42,23 @@ width: 100%;
     animation: spin 2s linear infinite; /* 추가적인 애니메이션이 필요하다면 */
 }
 
+#floating-icon {
+    position: fixed;
+    bottom: 30px;
+    right: 40px;
+    width: 65px;
+    height: 65px;
+    background-image: url('${pageContext.request.contextPath}/resources/images/icons/icon_default.png'); /* Update path accordingly */
+    background-size: cover;
+    animation: float 3s ease-in-out infinite;
+    cursor: pointer;
+    z-index: 1000; /* Make sure it's above other content */
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
 
 </style>
 
@@ -256,6 +273,7 @@ width: 100%;
 </head>
 
 <body>
+<div id="floating-icon" onclick="location.href='/hotNote'"></div>
 <header>
 <div class="header_outline">
 <div class="header_innerBox">
@@ -292,7 +310,20 @@ width: 100%;
         
     </div>
     </div>
-
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+	
+    const floatingIcon = document.getElementById('floating-icon');
+    floatingIcon.style.backgroundImage = "url('${pageContext.request.contextPath}/resources/images/icons/icon_default.png')";
+    
+    floatingIcon.onmouseover = function() {
+        this.style.backgroundImage = "url('${pageContext.request.contextPath}/resources/images/icons/icon_hover.png')"; /* Update path accordingly */
+    };
+    floatingIcon.onmouseout = function() {
+        this.style.backgroundImage = "url('${pageContext.request.contextPath}/resources/images/icons/icon_default.png')"; /* Update path accordingly */
+    };
+});
+</script>
 
 </body>
 </html>
