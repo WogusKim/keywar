@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>일정 관리</title>
+<title>김국민의 업무노트 : 일정 관리</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />
 <script	src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
@@ -729,6 +729,10 @@ height : 25px; */
         $('#createGroupModal').on('hidden.bs.modal', function (e) {
             closeUserCostomGroup();
         });
+        // 모달이 닫힐 때 추가 작업을 수행하는 이벤트 리스너
+        $('#inviteGroupModal').on('hidden.bs.modal', function (e) {
+            closeUserCostomGroup2();
+        });
 
         
     });
@@ -747,6 +751,23 @@ height : 25px; */
    	    selectedUsers.length = 0; // 배열 초기화
    	    
    	    console.log('After clearing selectedUsers:', selectedUsers); // 배열 초기화 후 상태 확인
+		
+
+    }
+	//0823 성은 수정
+    function closeUserCostomGroup2(){
+   	 	console.log('Before clearing inviteSelectedUsers:', inviteSelectedUsers); // 배열 초기화 전 상태 확인
+   	 	console.log('제대로 실행되고 있습니다 ! :'); // 배열 초기화 전 상태 확인
+    	    
+   	    $("#inviteSearchResults").empty();  
+   	    $("#inviteSearchResults").removeClass('searchArea');
+   	    $("#inviteSelectedUsers").empty();
+   	    $('#inviteSearchUser-hr').css('display', 'none');
+   	 	$("#inviteUserSearch").val('');
+   	 
+   	 	inviteSelectedUsers.length = 0; // 배열 초기화
+   	    
+   	    console.log('After clearing inviteSelectedUsers:', inviteSelectedUsers); // 배열 초기화 후 상태 확인
 		
 
     }
