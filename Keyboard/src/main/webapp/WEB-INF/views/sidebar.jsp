@@ -477,7 +477,7 @@ input[type="text"], input[type="radio"] {
 
 	            <div class="edit_field">
 	                <label class="label-fixed-width">공유용 제목:</label>
-	                <input type="text" name="sharedTitle" class="edit_input">
+	                <input type="text" id="sharedTitle" class="edit_input">
 	            </div>	   
 	                     
                 <div class="edit_field">
@@ -651,13 +651,23 @@ function addItem(folderId, depth) {
 // 모달을 닫는 함수
 $('.close').click(function() {
     $('#addModal').hide();
+    removeContent();    
 });
 
 $(window).click(function(event) {
     if (event.target == $('#addModal')[0]) {
         $('#addModal').hide();
+        removeContent();
     }
 });
+
+
+function removeContent(){
+	$("#addTitle").val("");
+	$("#sharedTitle").val("");
+	$('select[name="category"]').val('기타');
+	$('input[name="public"]').prop('checked', false);
+}
 
 </script>
 </body>
