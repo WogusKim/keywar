@@ -319,6 +319,16 @@ width: 100%;
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 	
+	//성은
+    var currentPath = window.location.pathname;
+    var hotNotePath = '/hotNote';
+     
+    if(currentPath == hotNotePath){
+		$('#floating-icon').css('display', 'none');
+    	return;
+     }
+     
+     
     const floatingIcon = document.getElementById('floating-icon');
     floatingIcon.style.backgroundImage = "url('${pageContext.request.contextPath}/resources/images/icons/icon_default.png')";
     
