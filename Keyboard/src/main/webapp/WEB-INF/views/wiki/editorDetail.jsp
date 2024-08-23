@@ -28,6 +28,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
 <!-- Header Plug-in-->
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
 <!-- Link embeds-->
 <script
 	src="https://cdn.jsdelivr.net/npm/@editorjs/link@2.5.0/dist/bundle.min.js"></script>
@@ -263,11 +264,19 @@ function updateBlockData(blockId, newSize) {
 async function saveData() {
     try {
         const savedData = await editor.save();
+        
+        
+        // 모든 'paragraph' 타입 블록에 기본 색상을 적용합니다.
+/*         savedData.blocks.forEach(block => {
+            if (block.type === 'paragraph') {
+                // color 키가 없거나 비어있으면 기본 색상을 적용합니다.
+                block.data.color = block.data.color || '#000000';
+            }
+        }); */
 
-        // 콘솔에 JSON 형태로 변환된 데이터 출력
-        console.log("이게 맞아?", JSON.stringify(savedData));
+        console.log("저장할 데이터:", JSON.stringify(savedData));
 
-        // Fetch API를 사용하여 서버로 전송
+        // 데이터를 서버로 전송
         fetch('${pageContext.request.contextPath}/saveEditorData', {
             method: 'POST',
             headers: {
@@ -288,6 +297,8 @@ async function saveData() {
         console.error('에디터 데이터 저장 실패:', error);
     }
 }
+
+
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -313,6 +324,16 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("Changes detected");
             // Debounce this function if necessary to avoid performance issues
             setTimeout(() => {
+/*                 const blocks = editor.save().then(outputData => {
+                    outputData.blocks.forEach(block => {
+                        if (block.type === 'paragraph' && !block.data.color) {
+                            block.data.color = "red"; // 각 단락에 색상 데이터 추가
+                        }
+                    });
+                    console.log("바뀐내용" , JSON.stringify(outputData)); // 색상 데이터가 추가된 블록 구조를 콘솔에 출력
+                }); */
+                
+                
             	addDragHandles();
             	addColorHandles();
             }, 300);
@@ -320,7 +341,8 @@ document.addEventListener('DOMContentLoaded', function () {
         onReady: function () { // 에디터 준비 완료 후 모든 이미지 블록에 대해 실행
         	addClickButtons(); //이미지에 정렬 버튼 붙이기
         	applyImageAlignment(editorData.blocks);
-            
+        	applyColorToParagraphs(editorData.blocks);
+        	
             updateFileIcons(); // 파일 아이콘 변경 로직        
             addDragHandles(); //드래그 아이콘 붙이기
             addColorHandles();
@@ -330,6 +352,12 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("블록확인",blocks);
             blocks.forEach(block => {
             	console.log("블록타입확인",block.type);
+            	
+/*                 if (block.type === 'paragraph' && !block.data.color) {
+                    block.data.color = "red";
+                } */
+                
+                
                 if (block.type === 'image') {
                     // 데이터베이스에서 불러온 크기 정보로 이미지 사이즈를 설정
                     console.log("이미지url", block.data.file.url);
@@ -382,12 +410,24 @@ document.addEventListener('DOMContentLoaded', function () {
             header: {
                 class: Header,
                 config: {
-                    placeholder: '헤더를 넣으삼',
+                    placeholder: '헤더를 입력하세요.',
                     levels: [1, 2, 3, 4, 5, 6],
                     defaultLevel: 3,
                 },
                 shortcut: 'CMD+SHIFT+H',
             },
+            
+            paragraph: {
+                class: Paragraph,
+                inlineToolbar: true,
+                config: {
+                    placeholder: '내용을 입력하세요.',
+                    defaultColor: '#000000' // 기본 색상 설정
+
+                },
+            },
+        
+        
             linkTool: {
                 class: LinkTool,
                 config: {
@@ -430,6 +470,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			                            formData.append('width', width);
 			                            formData.append('height', height);
 			                            formData.append('align', align);
+			                           
 			                            
 			                            
 			                            console.log('@width : ', width, '@height :', height);
@@ -804,18 +845,122 @@ function updateOrderInEditor() {
 }
 
 function addColorHandles() {
-    const editorContent = document.getElementById('myEditor');
-    const blocks = editorContent.querySelectorAll('.ce-block');
-
+    const blocks = document.querySelectorAll('.ce-block');
     blocks.forEach(block => {
-        // 드래그 핸들이 이미 있는지 확인
-        if (!block.querySelector('.color-handle')) {
-            const handle = document.createElement('div');
-            handle.className = 'color-handle';
-            block.appendChild(handle);
+        const colorHandle = block.querySelector('.color-handle');
+        if (!colorHandle) {
+            const newColorHandle = document.createElement('div');
+            newColorHandle.className = 'color-handle';
+            // block.getAttribute('data-id')를 사용하여 data-id 속성 값을 가져옵니다.
+            newColorHandle.setAttribute('data-id', block.getAttribute('data-id'));
+            newColorHandle.onclick = function() {
+                console.log(this);
+                console.log('ㅡㅡ',block.getAttribute('data-id'));
+                showColorPicker(this, block.getAttribute('data-id'));
+            };
+            block.appendChild(newColorHandle);
         }
     });
 }
+
+
+let colorValue;  // 기본 색상은 검정색으로 설정
+let idd; // 상위 스코프에서 idd 선언
+
+function showColorPicker(colorHandle, blockId) {
+    // Always remove the old picker if it exists
+    let oldPicker = document.getElementById('colorPicker');
+    if (oldPicker) {
+        oldPicker.remove();
+    }
+
+    // Create a new color picker
+    let colorPicker = document.createElement('input');
+    colorPicker.type = 'color';
+    colorPicker.id = 'colorPicker';
+    colorPicker.style.display = 'none';
+    document.body.appendChild(colorPicker);
+
+    colorPicker.onchange = function() {
+        changeColor(this, blockId);
+        colorValue = this.value; // Update the color value
+    };
+
+    colorPicker.click(); // Open the color picker
+}
+
+
+
+function changeColor(picker, blockId) {
+    // Query selector을 사용해 매번 블록을 새로 찾습니다.
+    
+    console.log('바꾸기전 id 찾은거', blockId);
+    
+    const block = document.querySelector(`.ce-block[data-id="\${blockId}"]`);
+    console.log('Selected block:', block);
+    const paragraph = block.querySelector('.ce-paragraph');
+    if (paragraph) {
+        paragraph.style.color = picker.value; // 변경되어야 할 속성을 'color'로 지정
+    }
+    updateBlockColor(picker.value, blockId); // 색상 변경을 저장합니다.
+}
+
+
+
+//컬러피커를 통해서 처리가되면, JSON에 color 값을 넣어주기
+function updateBlockColor(colorValue, blockId) {
+	
+	console.log('가져온색상', colorValue);
+	
+    const block = editor.blocks.getById(blockId);
+    console.log('찾은 색상 관련 블록', block);
+    
+    if (block) {
+        block.save().then(data => {
+        	console.log('색사변경대상 글자',data.data.text);
+        	
+            data.data.color = colorValue;
+            console.log('색상변경 완료:', data);
+     		
+            const idd = data.id;
+            console.log('id값 말해봐:', idd);
+        
+            
+        }).catch(error => {
+            console.error('색상변경 실패:', error);x
+        });
+    } else {
+        console.error('블록 못찾음');
+    } 
+    
+}
+
+//DB에 있는 애를 가져와서 뷰에다가 그려주는거
+function applyColorToParagraphs(blocks) {
+    console.log('색상찾는중!:', blocks);
+    blocks.forEach(block => {
+        if (block.type === 'paragraph') {
+        	console.log('요놈이 paragraph');
+            // Find the paragraph element using the data-id attribute
+            const paragraphElement = document.querySelector(`div.ce-block[data-id="\${block.id}"] .ce-paragraph`);
+            
+            console.log('찾은 paragraphElement : ', paragraphElement);
+            
+            if (paragraphElement) {
+                // Apply the color style if it exists in the block data
+                const color = block.data.color || 'black'; // Default to black if no color is set
+                paragraphElement.style.color = color;
+                console.log(`Applied color ${color} to paragraph with id ${block.id}`);
+            }
+        }
+    });
+}
+
+
+
+
+
+
 
 </script>
 
