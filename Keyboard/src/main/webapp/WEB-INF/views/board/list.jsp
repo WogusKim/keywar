@@ -24,6 +24,9 @@ td {
 	padding: 7px 15px; /* 셀 패딩 */
 	text-align: center; /* 텍스트 왼쪽 정렬 */
 	border-bottom: 1px solid #ddd; /* 하단 경계선 */
+	white-space: nowrap;       /* 줄바꿈을 하지 않도록 설정 */
+    overflow: hidden;          /* 넘치는 부분을 숨기도록 설정 */
+    text-overflow: ellipsis;   
 }
 
 th {
@@ -41,12 +44,26 @@ th {
 	align-items: center;
 	justify-content: flex-start; /* 왼쪽 정렬 */
 	cursor: pointer;
+	white-space: nowrap;       /* 줄바꿈을 하지 않도록 설정 */
+    overflow: hidden;          /* 넘치는 부분을 숨기도록 설정 */
+    text-overflow: ellipsis;   /* 넘치는 부분을 ...으로 표시 */
+    max-width: 200px;
 }
 
 .title_td {
 	text-align: left; /* 제목 왼쪽 정렬 */
+	white-space: nowrap;       /* 줄바꿈을 하지 않도록 설정 */
+    overflow: hidden;          /* 넘치는 부분을 숨기도록 설정 */
+    text-overflow: ellipsis;   /* 넘치는 부분을 ...으로 표시 */
+    max-width: 700px;
+    min-width: 300px;
+    
 }
-
+th{
+white-space: nowrap;       /* 줄바꿈을 하지 않도록 설정 */
+    overflow: hidden;          /* 넘치는 부분을 숨기도록 설정 */
+    text-overflow: ellipsis;   
+    }
 tr:hover {
 	background-color: #f9f9f9; /* 마우스 오버 시 배경색 변경 */
 }
