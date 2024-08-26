@@ -630,7 +630,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             underline: {
                 class: Underline
-                //No Config
+                //
             }
         }
         
