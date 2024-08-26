@@ -70,7 +70,12 @@ label {
 				<!-- 민트 배경 -->
 				<div style="height: 100%;" class="board_todo">
 					<!-- 흰 배경 -->
-					<h2 class="card_title" >To-Do List</h2>
+					<div style="display: flex;">
+					<img src="${pageContext.request.contextPath}/resources/images/icons/calendar_todo.png" style="width: 30px;"/> 
+					<div style="height: 100%; margin-left: 10px; margin-top: ">
+					<b style="font-size: 20px;" >To-Do List</b>
+					</div>
+					</div>
 					<hr>
 					<!-- 여기부터 성은 수정 -->
 					
@@ -271,7 +276,7 @@ label {
 	
 	
 <!--  모달창 영역  -->
-<div id="myModal" class="modal">
+<div id="myModal" class="modal0">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <h3>TO DO 수정하기</h3>
@@ -369,7 +374,7 @@ label {
     
 </script>
 <!-- 모달창 영역 2 (추가하기) -->
-<div id="myModal2" class="modal">
+<div id="myModal2" class="modal0">
     <div class="modal-content">
         <span class="close" onclick="closeModal2()">&times;</span>
         <h3>TO DO 추가하기</h3>
@@ -399,7 +404,7 @@ label {
     </div>
 </div>
 
-<div id="deleteModal" class="modal2" style="z-index:100;">
+<div id="deleteModal" class="modal2" >
 	<div style="	background-color: #fefefe; margin : auto; padding: 20px; border: 1px solid #888; width: 30%; height: 30%;  text-align: center;">
 	<span class="close" onclick="closeDeleteModal()">&times;</span>
 	<img src="${pageContext.request.contextPath}/resources/images/warning.png" style="margin-top: 20px;"/>

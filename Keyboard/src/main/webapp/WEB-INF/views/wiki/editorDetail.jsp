@@ -458,7 +458,14 @@ document.addEventListener('DOMContentLoaded', function () {
             },
         
         
-
+            linkTool: {
+                class: LinkTool,
+                config: {
+                    header: '', // get request header 선택사항
+                    //백엔드 데이터 가져오깅( Cross Origin에 주의)
+                    endpoint: 'http://localhost:9004/editor/link',
+                }
+            },
             raw: {
                 class: RawTool,
                 config: {
@@ -555,6 +562,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     defaultStyle: 'unordered'
                 }
             },
+            embed: {
+                class: Embed,
+                inlineToolbar: true,
+                config: {
+                    services: {
+                        youtube: true,
+                        coub: true
+                    }
+                }
+            },
             quote: {
                 class: Quote,
                 inlineToolbar: true,
@@ -584,7 +601,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 class: Delimiter
                 //No Config
             },
-
+            warning: {
+                class: Warning,
+                inlineToolbar: true,
+                shortcut: 'CMD+SHIFT+W',
+                config: {
+                    titlePlaceholder: '제목',
+                    messagePlaceholder: '메시지',
+                },
+            },
+            code: {
+                class: CodeTool,
+                placeholder: "소스코드를 입력할 수 있습니다."
+            },
             attaches: {
                 class: AttachesTool,
                 config: {
@@ -627,10 +656,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             },
             
-
+            marker: {
+                class: Marker,
+                shortcut: 'CMD+SHIFT+M',
+                //No Config
+            },
+            inlineCode: {
+                class: InlineCode,
+                shortcut: 'CMD+SHIFT+C',
+                //No Config
+            },
             underline: {
                 class: Underline
-                //
+                //No Config
+            },
+            alert: {
+                class: Alert,
+                inlineToolbar: true,
+                shortcut: 'CMD+SHIFT+A',
+                config: {
+                    defaultType: 'primary',
+                    messagePlaceholder: 'Enter something',
+                }
+            },
+            code2 : {
+                class: editorjsCodeflask,
             }
         }
         
