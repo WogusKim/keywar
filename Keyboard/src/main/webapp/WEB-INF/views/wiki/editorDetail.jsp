@@ -168,9 +168,22 @@
 	outline: none;
 }
 
-#colorPicker {
+/* #colorPicker { */
     z-index: 1000;
+    /*display: none;  초기에는 숨김 처리 */
+    position: absolute; /* 절대 위치 사용 */
 }
+
+
+#myEditor {
+    position: relative;
+    /* other styles */
+}
+
+body {
+	position: relative;
+}
+
 
 </style>
 </head>
@@ -295,14 +308,12 @@ async function saveData() {
     try {
         const savedData = await editor.save();
         
-
         
         // 모든 'paragraph' 타입 블록에 기본 색상을 적용합니다.
      /*    savedData.blocks.forEach(block => {
             if (block.type === 'paragraph') {
                 // color 키가 없거나 비어있으면 기본 색상을 적용합니다.
                 block.data.color = block.data.color || '#000000';
-
             }
         }); */
 
@@ -397,6 +408,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log("이미지url확인",imageElement);
                     if (imageElement) {
                     	
+                    	
+                    	
                         const align = block.data.file.align || 'left'; // 기본 정렬값은 'left'
                         console.log("현재 정렬 확인",align);
                         const alignWrapperDiv = imageElement.closest('.ui-wrapper');
@@ -404,7 +417,9 @@ document.addEventListener('DOMContentLoaded', function () {
                          if (alignWrapperDiv) {
                             setAlignment(alignWrapperDiv, align);
                         } 
-
+                        
+                        
+                        
                     	
                     	var newWidth = block.data.file.width;
                     	var newHeight = block.data.file.height;
@@ -451,7 +466,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 config: {
                     placeholder: '내용을 입력하세요.',
                     defaultColor: '#000000' // 기본 색상 설정
-
 
                 },
             },
@@ -880,7 +894,6 @@ function addColorHandles() {
         if (!colorHandle) {
             const newColorHandle = document.createElement('div');
             newColorHandle.className = 'color-handle';
-
             // block.getAttribute('data-id')를 사용하여 data-id 속성 값을 가져옵니다.
             newColorHandle.setAttribute('data-id', block.getAttribute('data-id'));
             
@@ -908,26 +921,70 @@ let colorValue;  // 기본 색상은 검정색으로 설정
 let idd; // 상위 스코프에서 idd 선언
 
 function showColorPicker(colorHandle, blockId) {
-    // Always remove the old picker if it exists
-    let oldPicker = document.getElementById('colorPicker');
-    if (oldPicker) {
-        oldPicker.remove();
+	
+	let editorContainer = document.querySelector(`.ce-block[data-id="\${blockId}"]`);
+	console.log('예지야열심히해봐라', editorContainer);
+    //let editorContainer = document.getElementById('myEditor');
+    let oldPickerWrapper = document.getElementById('colorPickerWrapper');
+    if (oldPickerWrapper) {
+    	console.log("colorHandle : ", colorHandle);
+         oldPickerWrapper.remove(); // remove any existing picker
     }
+	
+    
+    // Create wrapper and input for new color picker
+    let colorPickerWrapper = document.createElement('div');
+    colorPickerWrapper.id = 'colorPickerWrapper';
+    colorPickerWrapper.style.position = 'absolute';
+    colorPickerWrapper.style.height = '50px';
+    colorPickerWrapper.style.width = '50px';
+    colorPickerWrapper.style.right = '10%';
+    colorPickerWrapper.style.top = '0%';
+    editorContainer.appendChild(colorPickerWrapper);  // make sure it's added inside the editor container directly
 
-    // Create a new color picker
     let colorPicker = document.createElement('input');
+	//colorPicker.style.position = 'absolute';
+    colorPicker.style.width = '0px';
+    colorPicker.style.height = '0px';
     colorPicker.type = 'color';
-    colorPicker.id = 'colorPicker';
-    colorPicker.style.display = 'none';
-    document.body.appendChild(colorPicker);
+//     colorPicker.id = 'colorPicker';
+    colorPickerWrapper.appendChild(colorPicker);
 
+    // Calculate position based on colorHandle
+    let rect = colorHandle.getBoundingClientRect();
+    let editorRect = editorContainer.getBoundingClientRect();
+
+
+//     colorPickerWrapper.style.left = `${rect.left - editorRect.left + rect.width + 10}px`;
+//     colorPickerWrapper.style.top = `${rect.top - editorRect.top}px`;
+    
+    
     colorPicker.onchange = function() {
         changeColor(this, blockId);
-        colorValue = this.value; // Update the color value
+        colorPickerWrapper.remove(); // remove the picker after change
     };
 
-    colorPicker.click(); // Open the color picker
+     colorPicker.click(); // automatically open the color picker
 }
+
+
+
+
+
+
+
+
+
+function changeColor(picker, blockId) {
+    const block = document.querySelector(`.ce-block[data-id="${blockId}"] .ce-paragraph`);
+    if (block) {
+        block.style.color = picker.value; // Change color
+        updateBlockColor(picker.value, blockId); // Save the new color
+    }
+}
+
+
+
 
 
 
@@ -984,27 +1041,6 @@ function applyColorToParagraphs(blocks) {
         }
     });
 }
-
-
-
-/* function setAlignment(wrapper, align) {
-    if (align === 'left') {
-        wrapper.style.display = 'block';
-        wrapper.style.marginLeft = '0';
-        wrapper.style.marginRight = 'auto';
-    } else if (align === 'center') {
-        wrapper.style.display = 'block';
-        wrapper.style.marginLeft = 'auto';
-        wrapper.style.marginRight = 'auto';
-    } else if (align === 'right') {
-        wrapper.style.display = 'block';
-        wrapper.style.marginLeft = 'auto';
-        wrapper.style.marginRight = '0';
-    }
-}
- */
-
-
 
 </script>
 
