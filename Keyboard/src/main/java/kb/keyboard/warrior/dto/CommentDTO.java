@@ -13,6 +13,7 @@ private String commentstatus;  // ¥Ò±€ ªÛ≈¬ (0: ªË¡¶µ , 1: »∞º∫)
 private byte[] picture;
 private String nickname;
 private String titleShare;
+private String profile;
  
  byte[] getPicture() {
 	return picture;
@@ -97,6 +98,14 @@ public String getTitleShare() {
 
 public void setTitleShare(String titleShare) {
 	this.titleShare = titleShare;
+}
+
+public String getProfile() {
+	return profile;
+}
+
+public void setProfile(String profile) {
+	this.profile = profile;
 }
  
 }

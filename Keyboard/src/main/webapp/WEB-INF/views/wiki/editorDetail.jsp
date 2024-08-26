@@ -295,12 +295,14 @@ async function saveData() {
     try {
         const savedData = await editor.save();
         
+
         
         // 모든 'paragraph' 타입 블록에 기본 색상을 적용합니다.
      /*    savedData.blocks.forEach(block => {
             if (block.type === 'paragraph') {
                 // color 키가 없거나 비어있으면 기본 색상을 적용합니다.
                 block.data.color = block.data.color || '#000000';
+
             }
         }); */
 
@@ -395,8 +397,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log("이미지url확인",imageElement);
                     if (imageElement) {
                     	
-                    	
-                    	
                         const align = block.data.file.align || 'left'; // 기본 정렬값은 'left'
                         console.log("현재 정렬 확인",align);
                         const alignWrapperDiv = imageElement.closest('.ui-wrapper');
@@ -404,9 +404,7 @@ document.addEventListener('DOMContentLoaded', function () {
                          if (alignWrapperDiv) {
                             setAlignment(alignWrapperDiv, align);
                         } 
-                        
-                        
-                        
+
                     	
                     	var newWidth = block.data.file.width;
                     	var newHeight = block.data.file.height;
@@ -453,6 +451,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 config: {
                     placeholder: '내용을 입력하세요.',
                     defaultColor: '#000000' // 기본 색상 설정
+
 
                 },
             },
@@ -881,6 +880,7 @@ function addColorHandles() {
         if (!colorHandle) {
             const newColorHandle = document.createElement('div');
             newColorHandle.className = 'color-handle';
+
             // block.getAttribute('data-id')를 사용하여 data-id 속성 값을 가져옵니다.
             newColorHandle.setAttribute('data-id', block.getAttribute('data-id'));
             
@@ -984,6 +984,27 @@ function applyColorToParagraphs(blocks) {
         }
     });
 }
+
+
+
+/* function setAlignment(wrapper, align) {
+    if (align === 'left') {
+        wrapper.style.display = 'block';
+        wrapper.style.marginLeft = '0';
+        wrapper.style.marginRight = 'auto';
+    } else if (align === 'center') {
+        wrapper.style.display = 'block';
+        wrapper.style.marginLeft = 'auto';
+        wrapper.style.marginRight = 'auto';
+    } else if (align === 'right') {
+        wrapper.style.display = 'block';
+        wrapper.style.marginLeft = 'auto';
+        wrapper.style.marginRight = '0';
+    }
+}
+ */
+
+
 
 </script>
 

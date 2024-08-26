@@ -154,7 +154,7 @@
 	    </div>
 		<div class="menu_back">
 		    <div class="icon-setting back-icon"></div>
-		    <a href="${pageContext.request.contextPath}/">뒤로가기</a>
+		    <a href="${pageContext.request.contextPath}/">홈으로</a>
 		</div>
 		<div class="menu_plus">
 		    <div class="icon-setting plus-icon"></div>

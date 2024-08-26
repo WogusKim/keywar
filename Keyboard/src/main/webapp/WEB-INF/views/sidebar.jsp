@@ -18,7 +18,7 @@
     border-radius: 10px;
     background-color: white;
     padding: 20px 10px 0px 0px;
-    width: 20%;
+    width: 320px;
     height: 100%;
     margin-right: 15px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -296,6 +296,21 @@ input[type="text"], input[type="radio"] {
 		<div class="searchBar">
 			<input type="text" id="searchInput" placeholder="검색어를 입력하세요..." style="width: 90%; margin-top: 5px; display:none;">
 		</div>
+		<c:if test="${empty menus}">	
+		<div>
+			<div style="text-align: center;margin-top: 55%;">
+				<iframe src="https://giphy.com/embed/3YJHfSeY06qRFAxE8p" width="170px;" height="170px;" style="pointer-events: none; margin: 0;"  frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+			</div>
+			<div style="text-align: center; color: gray;">
+			나의 메뉴 초기 상태입니다!<br>
+			원하는 대로 메뉴를 커스텀 하세요!<br><br>
+			<div style="text-align: center; font-size: large;">
+				<a href="${pageContext.request.contextPath}/hotNote" class="aTag No-line-break">⭐인기 노트 둘러보기⭐</a><br>
+				<a href="${pageContext.request.contextPath}/menuSetting" class="aTag No-line-break">⚙️사이드바 설정하기⚙️</a>
+			</div>
+			</div>
+		</div>
+		</c:if>
         <ul>
             <c:forEach var="menu" items="${menus}">
                 <li>
@@ -419,21 +434,7 @@ input[type="text"], input[type="radio"] {
             </c:forEach>
         </ul>
         </div>
-		<c:if test="${empty menus}">	
-		<div>
-			<div style="text-align: center;margin-top: 55%;">
-				<iframe src="https://giphy.com/embed/3YJHfSeY06qRFAxE8p" width="170px;" height="170px;" style="pointer-events: none; margin: 0;"  frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
-			</div>
-			<div style="text-align: center; color: gray;">
-			나의 메뉴 초기 상태입니다!<br>
-			원하는 대로 메뉴를 커스텀 하세요!<br><br>
-			<div style="text-align: center; font-size: large;">
-				<a href="${pageContext.request.contextPath}/hotNote" class="aTag No-line-break">⭐인기 노트 둘러보기⭐</a><br>
-				<a href="${pageContext.request.contextPath}/menuSetting" class="aTag No-line-break">⚙️사이드바 설정하기⚙️</a>
-			</div>
-			</div>
-		</div>
-		</c:if>
+		
     </div>
 	<div class="menu_setting">
 	    <div class="icon-setting menu-icon"></div>
@@ -476,7 +477,7 @@ input[type="text"], input[type="radio"] {
 
 	            <div class="edit_field">
 	                <label class="label-fixed-width">공유용 제목:</label>
-	                <input type="text" name="sharedTitle" class="edit_input">
+	                <input type="text" id="sharedTitle" class="edit_input">
 	            </div>	   
 	                     
                 <div class="edit_field">
@@ -570,7 +571,7 @@ $(document).ready(function() {
     // 펼치기 버튼 클릭 이벤트
     $('.menu_onoff .unfold-icon').click(function() {
         $('.menu-tree, .menu_setting').slideDown(300);
-        $('.content_left').animate({ width: '20%' }, 300);
+        $('.content_left').animate({ width: '320px' }, 300);
         $('.unfold-icon').hide();
         $('.fold-icon').show();
         localStorage.setItem('isCollapsed', 'false'); // 상태 저장
@@ -650,13 +651,23 @@ function addItem(folderId, depth) {
 // 모달을 닫는 함수
 $('.close').click(function() {
     $('#addModal').hide();
+    removeContent();    
 });
 
 $(window).click(function(event) {
     if (event.target == $('#addModal')[0]) {
         $('#addModal').hide();
+        removeContent();
     }
 });
+
+
+function removeContent(){
+	$("#addTitle").val("");
+	$("#sharedTitle").val("");
+	$('select[name="category"]').val('기타');
+	$('input[name="public"]').prop('checked', false);
+}
 
 </script>
 </body>
