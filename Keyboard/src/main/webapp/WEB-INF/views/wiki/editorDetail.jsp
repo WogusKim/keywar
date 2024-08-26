@@ -955,7 +955,6 @@ function showColorPicker(colorHandle, blockId) {
     let editorRect = editorContainer.getBoundingClientRect();
 
 
-    // Adjust the position
 //     colorPickerWrapper.style.left = `${rect.left - editorRect.left + rect.width + 10}px`;
 //     colorPickerWrapper.style.top = `${rect.top - editorRect.top}px`;
     
