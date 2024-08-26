@@ -168,9 +168,22 @@
 	outline: none;
 }
 
-#colorPicker {
+/* #colorPicker { */
     z-index: 1000;
+    /*display: none;  초기에는 숨김 처리 */
+    position: absolute; /* 절대 위치 사용 */
 }
+
+
+#myEditor {
+    position: relative;
+    /* other styles */
+}
+
+body {
+	position: relative;
+}
+
 
 </style>
 </head>
@@ -908,26 +921,73 @@ let colorValue;  // 기본 색상은 검정색으로 설정
 let idd; // 상위 스코프에서 idd 선언
 
 function showColorPicker(colorHandle, blockId) {
-    // Always remove the old picker if it exists
-    let oldPicker = document.getElementById('colorPicker');
-    if (oldPicker) {
-        oldPicker.remove();
+	
+	let editorContainer = document.querySelector(`.ce-block[data-id="\${blockId}"]`);
+	console.log('예지야열심히해봐라', editorContainer);
+    //let editorContainer = document.getElementById('myEditor');
+    let oldPickerWrapper = document.getElementById('colorPickerWrapper');
+    if (oldPickerWrapper) {
+    	console.log("colorHandle : ", colorHandle);
+         oldPickerWrapper.remove(); // remove any existing picker
     }
+	
+    
+    // Create wrapper and input for new color picker
+    let colorPickerWrapper = document.createElement('div');
+    colorPickerWrapper.id = 'colorPickerWrapper';
+    colorPickerWrapper.style.position = 'absolute';
+    colorPickerWrapper.style.height = '50px';
+    colorPickerWrapper.style.width = '50px';
+    colorPickerWrapper.style.right = '10%';
+    colorPickerWrapper.style.top = '0%';
+    editorContainer.appendChild(colorPickerWrapper);  // make sure it's added inside the editor container directly
 
-    // Create a new color picker
     let colorPicker = document.createElement('input');
+	//colorPicker.style.position = 'absolute';
+    colorPicker.style.width = '0px';
+    colorPicker.style.height = '0px';
     colorPicker.type = 'color';
-    colorPicker.id = 'colorPicker';
-    colorPicker.style.display = 'none';
-    document.body.appendChild(colorPicker);
+//     colorPicker.id = 'colorPicker';
+    colorPickerWrapper.appendChild(colorPicker);
 
+    // Calculate position based on colorHandle
+    let rect = colorHandle.getBoundingClientRect();
+    let editorRect = editorContainer.getBoundingClientRect();
+
+
+    // Adjust the position
+//     colorPickerWrapper.style.left = `${rect.left - editorRect.left + rect.width + 10}px`;
+//     colorPickerWrapper.style.top = `${rect.top - editorRect.top}px`;
+    
+//     colorPicker.style.left = `50%`;
+//     colorPicker.style.top = `50%`;
+    
     colorPicker.onchange = function() {
         changeColor(this, blockId);
-        colorValue = this.value; // Update the color value
+        colorPickerWrapper.remove(); // remove the picker after change
     };
 
-    colorPicker.click(); // Open the color picker
+     colorPicker.click(); // automatically open the color picker
 }
+
+
+
+
+
+
+
+
+
+function changeColor(picker, blockId) {
+    const block = document.querySelector(`.ce-block[data-id="${blockId}"] .ce-paragraph`);
+    if (block) {
+        block.style.color = picker.value; // Change color
+        updateBlockColor(picker.value, blockId); // Save the new color
+    }
+}
+
+
+
 
 
 
