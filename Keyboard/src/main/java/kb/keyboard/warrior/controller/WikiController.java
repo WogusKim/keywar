@@ -466,7 +466,7 @@ public class WikiController {
 		setMenuDepth(menus);
 		List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
 
-		session.setAttribute("menus", topLevelMenus); // �꽭�뀡�뿉 硫붾돱 �뜲�씠�꽣 ���옣
+		session.setAttribute("menus", topLevelMenus); 
 
 		model.addAttribute("menus", topLevelMenus);
     	
@@ -522,7 +522,7 @@ public class WikiController {
 		setMenuDepth(menus);
 		List<MenuDTO> topLevelMenus = organizeMenuHierarchy(menus);
 
-		session.setAttribute("menus", topLevelMenus); // �꽭�뀡�뿉 硫붾돱 �뜲�씠�꽣 ���옣
+		session.setAttribute("menus", topLevelMenus); 
 
 		model.addAttribute("menus", topLevelMenus);
         

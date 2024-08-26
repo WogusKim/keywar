@@ -42,50 +42,49 @@ public class WikiDetailController {
 	@Autowired
 	public SqlSession sqlSession;
 
-	// í•¸ë“¤ëŸ¬ ë©”ì†Œë“œ: wiki ìƒì„¸ í˜ì´ì§€ë¥¼ ë¶ˆëŸ¬ì˜¤ëŠ” ë©”ì†Œë“œ
-	@RequestMapping("/wikiDetail")
-	public String wikiDetail(Model model, @RequestParam("id") int id, HttpSession session) {
+    // ¸Ş¼Òµå: wiki »ó¼¼ ÆäÀÌÁö¸¦ ºÒ·¯¿À´Â ¸Ş¼Òµå
+    @RequestMapping("/wikiDetail")
+    public String wikiDetail(Model model, @RequestParam("id") int id, HttpSession session) {
 
-		WikiDao dao = sqlSession.getMapper(WikiDao.class);
-		LoginDao ldao = sqlSession.getMapper(LoginDao.class);
-		System.out.println("ì„ íƒí•œ ë©”ë‰´íŠ¸ë¦¬ ì‘ì„±ì ìœ ì €ë„˜ë²„"+dao.getMenuDetail(id).getUserno());
-		String userno = (String)session.getAttribute("userno");
-		if(!dao.getMenuDetail(id).getUserno().equals(userno)) {
-			System.out.println("ì‘ì„±ìê°€ ì•„ë‹Œ ì˜ëª»ëœ ì ‘ê·¼ì…ë‹ˆë‹¤.");
-			return "redirect:main";
-		}
+        WikiDao dao = sqlSession.getMapper(WikiDao.class);
+        LoginDao ldao = sqlSession.getMapper(LoginDao.class);
+        System.out.println("¼±ÅÃÇÑ ¸Ş´ºÆ®¸® ÀÛ¼ºÀÚ À¯Àú¹øÈ£: " + dao.getMenuDetail(id).getUserno());
+        String userno = (String)session.getAttribute("userno");
+        if(!dao.getMenuDetail(id).getUserno().equals(userno)) {
+            System.out.println("ÀÛ¼ºÀÚ°¡ ¾Æ´Ñ Àß¸øµÈ Á¢±ÙÀÔ´Ï´Ù.");
+            return "redirect:main";
+        }
 		
-		// ê²½ë¡œ ì œê³µì„ ìœ„í•œ ë¶€ëª¨ id íƒìƒ‰
-		List<String> menuDirection = new ArrayList<String>();
-		menuDirection.add(dao.getMenuDetail(id).getTitle()); // ìê¸°ìì‹  íƒ€ì´í‹€ ë„£ê³  ì‹œì‘
-		Integer parentId = dao.getParentid(String.valueOf(id));
+        // °æ·Î Á¦¾î¸¦ À§ÇÑ ºÎ¸ğ id °Ë»ö
+        List<String> menuDirection = new ArrayList<String>();
+        menuDirection.add(dao.getMenuDetail(id).getTitle()); // ÀÛ¼ºÀÚºÎÅÍ Á¦¸ñÀ» ³Ö°í ½ÃÀÛ
+        Integer parentId = dao.getParentid(String.valueOf(id));
 
-		while (parentId != null) {
-			menuDirection.add(dao.getMenuDetail(parentId).getTitle());
-			parentId = dao.getParentid(String.valueOf(parentId));
-		}
+        while (parentId != null) {
+            menuDirection.add(dao.getMenuDetail(parentId).getTitle());
+            parentId = dao.getParentid(String.valueOf(parentId));
+        }
 
-		Collections.reverse(menuDirection); // ì—­ìˆœìœ¼ë¡œ ì •ë ¬
-		for (String item : menuDirection) {
-			System.out.println(item);
-		}
-		model.addAttribute("direction", menuDirection);
+        Collections.reverse(menuDirection); // ¿ª¼øÀ¸·Î Á¤·Ä
+        for (String item : menuDirection) {
+            System.out.println(item);
+        }
+        model.addAttribute("direction", menuDirection);
 
-		String wikiData = dao.getData(id);
-		session.setAttribute("WikiId", id);
+        String wikiData = dao.getData(id);
+        session.setAttribute("WikiId", id);
 
-		UserDTO userdto = ldao.isRightUserno(userno);
-		String gudie =  "ì‘ì„±ì  : " + userdto.getNickname(); 
-		
-		
-		if (wikiData == null) {
-			System.out.println("ì´ˆê¸°ê°’ì„ ì œê³µí•©ë‹ˆë‹¤.");
-			wikiData = "{\"time\":1721959855696,\"blocks\":[{\"id\":\"h6xL_peWS8\",\"type\":\"header\",\"data\":{\"text\":\""+dao.getMenuDetail(id).getTitle()+"\",\"level\":2}},{\"id\":\"ufod1niYAb\",\"type\":\"paragraph\",\"data\":{\"text\":\""+gudie+"\"}}],\"version\":\"2.30.2\"}";
-		}
-		model.addAttribute("editorData", wikiData);
+        UserDTO userdto = ldao.isRightUserno(userno);
+        String guide = "ÀÛ¼ºÀÚ : " + userdto.getNickname(); 
+        
+        if (wikiData == null) {
+            System.out.println("ÃÊ±â°ªÀ» Á¦°øÇÏ°Ú½À´Ï´Ù.");
+            wikiData = "{\"time\":1721959855696,\"blocks\":[{\"id\":\"h6xL_peWS8\",\"type\":\"header\",\"data\":{\"text\":\""+dao.getMenuDetail(id).getTitle()+"\",\"level\":2}},{\"id\":\"ufod1niYAb\",\"type\":\"paragraph\",\"data\":{\"text\":\""+guide+"\"}}],\"version\":\"2.30.2\"}";
+        }
+        model.addAttribute("editorData", wikiData);
 
-		return "wiki/editorDetail";
-	}
+        return "wiki/editorDetail";
+    }
 
 	private String toString(int id) {
 		// TODO Auto-generated method stub
@@ -101,27 +100,27 @@ public class WikiDetailController {
 	    
 	    try {
 	        if (dao.getData(wikiId) == null) {
-	        	// ìµœì´ˆ ì €ì¥ì‹œ
+                // ÃÖÃÊ ÀúÀå ½Ã
 	            dao.insertWiki(wikiId, editorData);
-	            //ì•Œë¦¼ì„ ë³´ë‚¼ íŒ”ë¡œì›Œ ë¦¬ìŠ¤íŠ¸ ê°€ì ¸ì˜¤ëŠ” ë™ì‘
+                // ¾Ë¸²À» º¸³¾ ÆÈ·Î¿ö ¸®½ºÆ® °¡Á®¿À´Â ÀÛ¾÷
 	            List<String> followers = adao.sortMyFollower(userno);
-	            // ê±”ë„¤ë¥¼ ëŒ€ìƒìœ¼ë¡œ ì•Œë¦¼ ì¶”ê°€
+                // ¾Ë¸²À» ±¸µ¶ÀÚ¿¡°Ô Ãß°¡
 	            BoardDTO bdto = dao.getPostInfo(wikiId+""); 
-	            String message = "êµ¬ë… : " +bdto.getNickname() +"ë‹˜ì´ ìƒˆë¡œìš´ ê²Œì‹œë¬¼ì„ ì‘ì„±í•˜ì˜€ìŠµë‹ˆë‹¤. ("+bdto.getTitleShare()+")";
+                String message = "ÀÛ¼ºÀÚ : " + bdto.getNickname() + " ´ÔÀÌ »õ·Î¿î °Ô½Ã¹°À» ÀÛ¼ºÇÏ¿´½À´Ï´Ù. (" + bdto.getTitleShare() + ")";
 	            for(String follower : followers) {
 	            	AlertDTO adto = new AlertDTO(follower, message, wikiId+"");
 	            	adao.addSubscribeAlert(adto);
 	            }
 	        } else {
 	            dao.updateWiki(wikiId, editorData);
-	            //ìˆ˜ì •ì‹œì—ëŠ” ë”±íˆ ì•Œë¦¼ ë³´ë‚´ì§€ ì•ŠìŒ
+                // ¼öÁ¤ ½Ã¿¡´Â º°µµ ¾Ë¸² Àü´Ş ¾È ÇÔ
 	        }
-	     // ë°ì´í„° ì €ì¥ ì„±ê³µ ì‹œ
+            // µ¥ÀÌÅÍ ÀúÀå ¼º°ø ½Ã
 	        return new ResponseEntity("{\"message\":\"Data received successfully\"}", HttpStatus.OK);
 
 
 	    } catch (Exception e) {
-	    	// ì„œë²„ ë‚´ë¶€ ì—ëŸ¬ ë°œìƒ ì‹œ
+            // ¼­¹ö ³»¿¡¼­ ¿À·ù ¹ß»ı ½Ã
 	    	return new ResponseEntity("{\"error\":\"" + e.getMessage() + "\"}", HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	}
@@ -129,14 +128,14 @@ public class WikiDetailController {
 
 
 	
-	// í•¸ë“¤ëŸ¬ ë©”ì†Œë“œ: íŒŒì¼ì„ ì„œë²„ì— ì—…ë¡œë“œ
+    // ¸Ş¼Òµå: ÆÄÀÏÀ» ¼­¹ö¿¡ ¾÷·Îµå
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	public ResponseEntity<HashMap<String, Object>> uploadFile(
 	    @RequestParam("file") MultipartFile file,
 	    @RequestParam(value = "width", required = false) Integer width,
 	    @RequestParam(value = "height", required = false) Integer height,
-	    @RequestParam(value = "align", required = false) String align, // ì •ë ¬ ìƒíƒœ íŒŒë¼ë¯¸í„° ì¶”ê°€
-	    HttpServletRequest request,
+	    @RequestParam(value = "align", required = false) String align, // Á¤·Ä »óÅÂ ÆÄ¶ó¹ÌÅÍ Ãß°¡
+        HttpServletRequest request,
 	    HttpSession session) {
 
 	    Integer wikiId = (Integer) session.getAttribute("WikiId");
@@ -144,7 +143,7 @@ public class WikiDetailController {
 	        try {
 	            String basePath = request.getSession().getServletContext().getRealPath("/resources/upload") + "/" + wikiId;
 	            File dir = new File(basePath);
-	            if (!dir.exists()) dir.mkdirs(); // í´ë”ê°€ ì—†ë‹¤ë©´ ìƒì„±
+                if (!dir.exists()) dir.mkdirs(); // Æú´õ°¡ ¾øÀ¸¸é »ı¼º
 
 	            String originalFilename = file.getOriginalFilename();
 	            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
@@ -175,29 +174,29 @@ public class WikiDetailController {
 	}
 	
 	
-	//íŒŒì¼ì—…ë¡œë“œìš©
+    // ÆÄÀÏ ¾÷·Îµå¿ë
 	@RequestMapping(value = "/uploadFile2", method = RequestMethod.POST)
 	public ResponseEntity<HashMap<String, Object>> uploadFile2(
 	    @RequestParam("file") MultipartFile file,
 	    HttpServletRequest request,
 	    HttpSession session) {
 		
-		System.out.println("ì„œë²„ í…ŒìŠ¤íŠ¸");
+        System.out.println("¼­¹ö Å×½ºÆ®");
 
-	    Integer wikiId = (Integer) session.getAttribute("WikiId"); // ì´ ë¶€ë¶„ì€ ìœ„í‚¤ IDì— ë”°ë¼ ë³€ê²½ ê°€ëŠ¥
+        Integer wikiId = (Integer) session.getAttribute("WikiId"); // ÀÌ ºÎºĞÀº À§Å° ID¿¡ µû¶ó º¯µ¿ Ã³¸®
 	    
 	    if (!file.isEmpty()) {
 	        try {
 	            String basePath = request.getSession().getServletContext().getRealPath("/resources/upload") + "/" + wikiId;
 	            File dir = new File(basePath);
-	            if (!dir.exists()) dir.mkdirs(); // í´ë”ê°€ ì—†ë‹¤ë©´ ìƒì„±
+                if (!dir.exists()) dir.mkdirs(); // Æú´õ°¡ ¾øÀ¸¸é »ı¼º
 
 	            String originalFilename = file.getOriginalFilename();
 	            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
 	            String newFilename = UUID.randomUUID().toString() + fileExtension;
 
 	            File dest = new File(basePath, newFilename);
-	            file.transferTo(dest); // íŒŒì¼ ì €ì¥
+                file.transferTo(dest); // ÆÄÀÏ ÀúÀå
 
 	            HashMap<String, Object> response = new HashMap<String, Object>();
 	            response.put("success", 1);

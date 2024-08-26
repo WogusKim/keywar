@@ -163,25 +163,26 @@
 	</select>
 
 	<!-- 사진정보 INSERT -->
-	<insert id="insertSize">
+<!-- 	<insert id="insertSize">
 		INSERT INTO imageSize VALUES (#{param1}, #{param2},
 		#{param3})
 	</insert>
-
+ -->
 	<!-- 사진정보 UPDATE -->
-	<update id="updateSize">
+<!-- 	<update id="updateSize">
 		UPDATE imageSize
 		SET width = #{param3}
 		WHERE wikiId =
 		#{param1} and url =#{param2}
 	</update>
-
+ -->
+ 
 	<!-- 이미지정보 모두 불러오기 -->
-	<select id="getAllSizeOfImg"
+<!-- 	<select id="getAllSizeOfImg"
 		resultType="kb.keyboard.warrior.dto.ImageSizeDTO">
 		SELECT * FROM imageSize where wikiId = #{param}
 	</select>
-
+ -->
 
 	<!-- 게시글 관련 메소드들 -->
 	<select id="getAllPost"
