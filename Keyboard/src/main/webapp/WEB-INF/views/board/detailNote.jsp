@@ -122,7 +122,7 @@ String userno = (String) session.getAttribute("userno");
 	height: 45px; /* 이미지 높이 설정 */
 	border-radius: 50%; /* 원형으로 표시 */
 	object-fit: cover; /* 이미지 비율 유지 */
-	margin-bottom: 10px; /* 이미지와 텍스트 간 간격 */
+	/* // margin-bottom: 10px; /* 이미지와 텍스트 간 간격 */ */
 	display: inline-block; /* 이미지를 인라인 블록으로 설정 */
 }
 
@@ -287,7 +287,7 @@ String userno = (String) session.getAttribute("userno");
     align-items: center;
     gap: 10px; /* 간격을 좀 더 조절 */
     margin-top: 10px; /* 위쪽 여백 조정 */
-    margin-bottom: 5px; /* 아래쪽 여백 조정 */
+    margin-bottom: 50px; /* 아래쪽 여백 조정 */
     margin-left: 50px; /* 왼쪽 여백 유지 */
 }
 
@@ -295,7 +295,7 @@ String userno = (String) session.getAttribute("userno");
 .writer-nickname {
     font-size: 18px; /* 글씨 크기를 좀 더 작게 */
     color: #2c3e50;
-    font-weight: bold;
+ 
     margin-left: 10px; /* 이름과 이미지 사이의 간격 조정 */
 }
 
@@ -305,6 +305,7 @@ String userno = (String) session.getAttribute("userno");
     color: #34495e;
     margin-left: 50px; /* 제목의 왼쪽 여백 일치 */
     margin-top: 0; /* 제목과 작성자 정보 사이의 여백 제거 */
+    margin-bottom: 10px;
 }
 
 .like-counter {
@@ -344,18 +345,24 @@ String userno = (String) session.getAttribute("userno");
 				<div class="others_wikiTitle">
 					<div class="otherWikiTitle">
 
- <div class="writer-profile-container">
+<%--  		<div class="writer-profile-container">
             <img class="writer_profile"
                 src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${writer.profile}"
                 alt="Writer's Profile Picture">
-            <h2 class="writer-nickname">${writer.nickname}님의 메뉴얼</h2>
-        </div>
-
-        <div>
+            <h2 class="writer-nickname">${writer.nickname}님의 업무노트</h2>
+        </div> --%>
+		
+        <div style="text-align: left; margin-top: 50px;">
             <h1 class="title-style">${menuDto.titleShare}</h1>
         </div>
-        
-        <div style="text-align: right; width: 100%; padding-right: 20px;">
+        <div class="writer-profile-container">
+            <img class="writer_profile"
+                src="${pageContext.request.contextPath}/getUserProfilePicture2?userno=${writer.profile}"
+                alt="Writer's Profile Picture">
+            <div style="display: inline-block; text-align: left; ">
+            <span class="writer-nickname" style="margin-bottom: 5px; margin-top: 0px; font-size: 16px;">${writer.nickname}</span> <!-- 님의 업무노트 -->
+            
+            <div style="text-align: left; padding-left: 5px; color: #34495e;">
             <img class="mini_icon" src="/resources/images/heart16.png"
                 alt="likes"> 좋아요 ${like}&nbsp;&nbsp; <img
                 class="mini_icon" src="/resources/images/chat16.png"
@@ -364,6 +371,19 @@ String userno = (String) session.getAttribute("userno");
             &nbsp;&nbsp; <img class="mini_icon"
                 src="/resources/images/eyes.png" alt="views"> 조회수 ${hits}
         </div>
+        </div>
+        </div>
+   
+<%--         <div style="text-align: left; padding-left: 50px;">
+            <img class="mini_icon" src="/resources/images/heart16.png"
+                alt="likes"> 좋아요 ${like}&nbsp;&nbsp; <img
+                class="mini_icon" src="/resources/images/chat16.png"
+                alt="comments"> 댓글
+            <c:out value="${fn:length(comments)}" />
+            &nbsp;&nbsp; <img class="mini_icon"
+                src="/resources/images/eyes.png" alt="views"> 조회수 ${hits}
+        </div> --%>
+        
     </div>
 
 					<!-- Editor 영역 -->
