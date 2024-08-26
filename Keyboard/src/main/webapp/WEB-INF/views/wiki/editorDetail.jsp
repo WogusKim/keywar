@@ -460,11 +460,8 @@ document.addEventListener('DOMContentLoaded', function () {
        
             simImg: {
                 class: SimpleImage
-                //No Config
             },
             
-            /* 테스트 */
-			/* 테스트 */
 			image: {
 			    class: ImageTool,
 			    config: {
@@ -477,8 +474,6 @@ document.addEventListener('DOMContentLoaded', function () {
 			                        img.onload = () => {
 			                            const width = img.width;
 			                            const height = img.height;
-			                            //나중에 수정하자
-			                            //나중에 수정하자//나중에 수정하자//나중에 수정하자//나중에 수정하자//나중에 수정하자
 			                            const align = 'left';
 			
 			                            const formData = new FormData();
