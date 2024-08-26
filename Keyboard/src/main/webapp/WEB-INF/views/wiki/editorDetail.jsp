@@ -964,7 +964,7 @@ function showColorPicker(colorHandle, blockId) {
         colorPickerWrapper.remove(); // remove the picker after change
     };
 
-     colorPicker.click(); // automatically open the color picker
+     colorPicker.click();
 }
 
 
