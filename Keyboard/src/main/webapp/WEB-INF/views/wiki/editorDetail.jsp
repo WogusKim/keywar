@@ -341,7 +341,42 @@ async function saveData() {
     }
 }
 
+async function saveData2() {
+    try {
+        const savedData = await editor.save();
+        
+        
+        // 모든 'paragraph' 타입 블록에 기본 색상을 적용합니다.
+     /*    savedData.blocks.forEach(block => {
+            if (block.type === 'paragraph') {
+                // color 키가 없거나 비어있으면 기본 색상을 적용합니다.
+                block.data.color = block.data.color || '#000000';
+            }
+        }); */
 
+        console.log("저장할 데이터:", JSON.stringify(savedData));
+
+        // 데이터를 서버로 전송
+        fetch('${pageContext.request.contextPath}/saveEditorData', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(savedData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('저장 성공:', data);
+            //alert("성공적으로 저장하였습니다.");
+        })
+        .catch(error => {
+            console.error('저장 실패:', error);
+            alert("저장 중 에러가 발생하였습니다.");
+        });
+    } catch (error) {
+        console.error('에디터 데이터 저장 실패:', error);
+    }
+}
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -884,7 +919,7 @@ function updateOrderInEditor() {
             editor.blocks.move(currentIndex, i);
         }
     }
-    saveData();
+    saveData2();
 }
 
 function addColorHandles() {
@@ -968,13 +1003,6 @@ function showColorPicker(colorHandle, blockId) {
 }
 
 
-
-
-
-
-
-
-
 function changeColor(picker, blockId) {
     const block = document.querySelector(`.ce-block[data-id="${blockId}"] .ce-paragraph`);
     if (block) {
@@ -982,10 +1010,6 @@ function changeColor(picker, blockId) {
         updateBlockColor(picker.value, blockId); // Save the new color
     }
 }
-
-
-
-
 
 
 function changeColor(picker, blockId) {
