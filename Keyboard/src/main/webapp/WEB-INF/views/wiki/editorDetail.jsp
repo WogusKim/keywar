@@ -82,35 +82,34 @@
 
 <style>
 .image-tool__image {
-    position: relative; /* 상대적 위치 설정 */
+	position: relative; /* 상대적 위치 설정 */
 }
 
 .button-container {
-    background-color: #a3a3a33d;
-    border-radius: 10px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 100;
-    width: 110px;
-    height: 30px;
-    padding: 5px;
-    display: flex; /* 플렉스 컨테이너 설정 */
-    align-items: center; /* 세로 중앙 정렬 */
-    justify-content: space-around; /* 버튼 사이의 간격 균등 배분 */
+	background-color: #a3a3a33d;
+	border-radius: 10px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	z-index: 100;
+	width: 110px;
+	height: 30px;
+	padding: 5px;
+	display: flex; /* 플렉스 컨테이너 설정 */
+	align-items: center; /* 세로 중앙 정렬 */
+	justify-content: space-around; /* 버튼 사이의 간격 균등 배분 */
 }
 
 .custom-button {
-    width: 20px; /* 버튼 크기 */
-    height: 20px; /* 버튼 높이 */
-    background-size: cover; /* 배경 이미지 크기 조정 */
+	width: 20px; /* 버튼 크기 */
+	height: 20px; /* 버튼 높이 */
+	background-size: cover; /* 배경 이미지 크기 조정 */
 }
 
-
 .image-tool__caption {
-    width: 100%; /* 캡션 폭을 이미지 영역과 동일하게 설정 */
-    padding: 8px; /* 패딩으로 내부 여백 추가 */
-    box-sizing: border-box; /* 패딩을 너비에 포함 */
+	width: 100%; /* 캡션 폭을 이미지 영역과 동일하게 설정 */
+	padding: 8px; /* 패딩으로 내부 여백 추가 */
+	box-sizing: border-box; /* 패딩을 너비에 포함 */
 }
 
 .wiki_fileIcon {
@@ -119,52 +118,60 @@
 	margin-right: 12px;
 }
 
-
 .ce-block {
-    position: relative;
-    /* Other styles */
+	position: relative;
+	/* Other styles */
 }
 
 .drag-handle {
-    display: none; /* 기본적으로 숨김 */
-    position: absolute;
-    top: 50%;
-    right: 20%;
-    transform: translateY(-50%);
-    cursor: move;
-    width: 25px;
-    height: 25px;
-    background: url('${pageContext.request.contextPath}/resources/images/icons/dragIcon2.png') no-repeat center center;
-    background-size: cover;
+	display: none; /* 기본적으로 숨김 */
+	position: absolute;
+	top: 50%;
+	right: 20%;
+	transform: translateY(-50%);
+	cursor: move;
+	width: 25px;
+	height: 25px;
+	background:
+		url('${pageContext.request.contextPath}/resources/images/icons/dragIcon2.png')
+		no-repeat center center;
+	background-size: cover;
 }
 
 .ce-block:hover .drag-handle {
-    display: block; /* 호버 시에만 표시 */
+	display: block; /* 호버 시에만 표시 */
 }
 
 .color-handle {
-    display: none; /* 기본적으로 숨김 */
-    position: absolute;
-    top: 50%;
-    right: 17%;
-    transform: translateY(-50%);
-    cursor: move;
-    width: 25px;
-    height: 25px;
-    background: url('${pageContext.request.contextPath}/resources/images/icons/color.png') no-repeat center center;
-    background-size: cover;
+	display: none; /* 기본적으로 숨김 */
+	position: absolute;
+	top: 50%;
+	right: 17%;
+	transform: translateY(-50%);
+	cursor: move;
+	width: 25px;
+	height: 25px;
+	background:
+		url('${pageContext.request.contextPath}/resources/images/icons/color.png')
+		no-repeat center center;
+	background-size: cover;
 }
 
 .ce-block:hover .color-handle {
-    display: block; /* 호버 시에만 표시 */
+	display: block; /* 호버 시에만 표시 */
 }
 
 .ce-header {
-    padding: 6px 0 6px;
-    margin: 0;
-    line-height: 1.25em;
-    outline: none;
+	padding: 6px 0 6px;
+	margin: 0;
+	line-height: 1.25em;
+	outline: none;
 }
+
+#colorPicker {
+    z-index: 1000;
+}
+
 </style>
 </head>
 
@@ -203,6 +210,29 @@
 	</div>
 	<script>
 let editor;
+
+class ColoredParagraph extends Paragraph {
+    constructor({data, config, api, readOnly}) {
+        super({data, config, api, readOnly});
+        // 기본 색상 설정
+        this._data.color = data.color || (config.defaultColor || '#000000');
+    }
+
+    save(blockContent) {
+        let data = super.save(blockContent);
+        // 색상 데이터 추가
+        data.color = this._data.color;
+        return data;
+    }
+
+    render() {
+        const node = super.render();
+        // 렌더링 시에 색상 적용
+        node.style.color = this._data.color;
+        return node;
+    }
+}
+
 
 function makeImagesResizable() {
     $('#myEditor img').resizable({
@@ -265,17 +295,18 @@ async function saveData() {
     try {
         const savedData = await editor.save();
         
-        // 모든 'paragraph' 타입 블록에 color 속성을 추가
-/*         savedData.blocks.forEach(block => {
-            if (block.type === 'paragraph' && !block.data.color) {
-                block.data.color = 'red';
+        
+        // 모든 'paragraph' 타입 블록에 기본 색상을 적용합니다.
+     /*    savedData.blocks.forEach(block => {
+            if (block.type === 'paragraph') {
+                // color 키가 없거나 비어있으면 기본 색상을 적용합니다.
+                block.data.color = block.data.color || '#000000';
             }
         }); */
 
-        // 콘솔에 JSON 형태로 변환된 데이터 출력
-        console.log("이게 맞아?", JSON.stringify(savedData));
+        console.log("저장할 데이터:", JSON.stringify(savedData));
 
-        // Fetch API를 사용하여 서버로 전송
+        // 데이터를 서버로 전송
         fetch('${pageContext.request.contextPath}/saveEditorData', {
             method: 'POST',
             headers: {
@@ -296,6 +327,8 @@ async function saveData() {
         console.error('에디터 데이터 저장 실패:', error);
     }
 }
+
+
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -362,6 +395,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log("이미지url확인",imageElement);
                     if (imageElement) {
                     	
+                    	
+                    	
                         const align = block.data.file.align || 'left'; // 기본 정렬값은 'left'
                         console.log("현재 정렬 확인",align);
                         const alignWrapperDiv = imageElement.closest('.ui-wrapper');
@@ -369,7 +404,9 @@ document.addEventListener('DOMContentLoaded', function () {
                          if (alignWrapperDiv) {
                             setAlignment(alignWrapperDiv, align);
                         } 
-
+                        
+                        
+                        
                     	
                     	var newWidth = block.data.file.width;
                     	var newHeight = block.data.file.height;
@@ -411,23 +448,17 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             
             paragraph: {
-                class: Paragraph,
+            	class: ColoredParagraph,
                 inlineToolbar: true,
                 config: {
                     placeholder: '내용을 입력하세요.',
+                    defaultColor: '#000000' // 기본 색상 설정
 
                 },
             },
         
         
-            linkTool: {
-                class: LinkTool,
-                config: {
-                    header: '', // get request header 선택사항
-                    //백엔드 데이터 가져오깅( Cross Origin에 주의)
-                    endpoint: 'http://localhost:9004/editor/link',
-                }
-            },
+
             raw: {
                 class: RawTool,
                 config: {
@@ -524,16 +555,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     defaultStyle: 'unordered'
                 }
             },
-            embed: {
-                class: Embed,
-                inlineToolbar: true,
-                config: {
-                    services: {
-                        youtube: true,
-                        coub: true
-                    }
-                }
-            },
             quote: {
                 class: Quote,
                 inlineToolbar: true,
@@ -563,19 +584,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 class: Delimiter
                 //No Config
             },
-            warning: {
-                class: Warning,
-                inlineToolbar: true,
-                shortcut: 'CMD+SHIFT+W',
-                config: {
-                    titlePlaceholder: '제목',
-                    messagePlaceholder: '메시지',
-                },
-            },
-            code: {
-                class: CodeTool,
-                placeholder: "소스코드를 입력할 수 있습니다."
-            },
+
             attaches: {
                 class: AttachesTool,
                 config: {
@@ -618,31 +627,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             },
             
-            marker: {
-                class: Marker,
-                shortcut: 'CMD+SHIFT+M',
-                //No Config
-            },
-            inlineCode: {
-                class: InlineCode,
-                shortcut: 'CMD+SHIFT+C',
-                //No Config
-            },
+
             underline: {
                 class: Underline
                 //No Config
-            },
-            alert: {
-                class: Alert,
-                inlineToolbar: true,
-                shortcut: 'CMD+SHIFT+A',
-                config: {
-                    defaultType: 'primary',
-                    messagePlaceholder: 'Enter something',
-                }
-            },
-            code2 : {
-                class: editorjsCodeflask,
             }
         }
         
@@ -843,61 +831,88 @@ function addColorHandles() {
         if (!colorHandle) {
             const newColorHandle = document.createElement('div');
             newColorHandle.className = 'color-handle';
+            // block.getAttribute('data-id')를 사용하여 data-id 속성 값을 가져옵니다.
+            newColorHandle.setAttribute('data-id', block.getAttribute('data-id'));
+            
+            
             newColorHandle.onclick = function() {
-                showColorPicker(this);
+                console.log(this);
+                console.log('ㅡㅡ',block.getAttribute('data-id'));
+                showColorPicker(this, block.getAttribute('data-id'));
             };
-            block.appendChild(newColorHandle);
+            //block.appendChild(newColorHandle);
+            
+            const paragraph = block.querySelector('.ce-paragraph.cdx-block');
+
+            if (paragraph) {
+                block.appendChild(newColorHandle);
+            } 
+            
+            
         }
     });
 }
 
-function showColorPicker(colorHandle) {
-    let colorPicker = document.getElementById('colorPicker');
-    if (!colorPicker) {
-        colorPicker = document.createElement('input');
-        colorPicker.type = 'color';
-        colorPicker.id = 'colorPicker';
-        colorPicker.style.display = 'none'; // 초기에는 숨겨져 있음
-        document.body.appendChild(colorPicker);
-        colorPicker.onchange = function() {
-            changeColor(this, colorHandle.closest('.ce-block'));
-            updateBlockColor(this.value, colorHandle.closest('.ce-block').getAttribute('data-id'));
-        };
+
+let colorValue;  // 기본 색상은 검정색으로 설정
+let idd; // 상위 스코프에서 idd 선언
+
+function showColorPicker(colorHandle, blockId) {
+    // Always remove the old picker if it exists
+    let oldPicker = document.getElementById('colorPicker');
+    if (oldPicker) {
+        oldPicker.remove();
     }
-    colorPicker.click(); // 색상 선택기 활성화
+
+    // Create a new color picker
+    let colorPicker = document.createElement('input');
+    colorPicker.type = 'color';
+    colorPicker.id = 'colorPicker';
+    colorPicker.style.display = 'none';
+    document.body.appendChild(colorPicker);
+
+    colorPicker.onchange = function() {
+        changeColor(this, blockId);
+        colorValue = this.value; // Update the color value
+    };
+
+    colorPicker.click(); // Open the color picker
 }
 
-function changeColor(picker, block) {
+
+
+function changeColor(picker, blockId) {
+    // Query selector을 사용해 매번 블록을 새로 찾습니다.
+    
+    console.log('바꾸기전 id 찾은거', blockId);
+    
+    const block = document.querySelector(`.ce-block[data-id="\${blockId}"]`);
+    console.log('Selected block:', block);
     const paragraph = block.querySelector('.ce-paragraph');
     if (paragraph) {
         paragraph.style.color = picker.value; // 변경되어야 할 속성을 'color'로 지정
     }
+    updateBlockColor(picker.value, blockId); // 색상 변경을 저장합니다.
 }
+
+
 
 //컬러피커를 통해서 처리가되면, JSON에 color 값을 넣어주기
 function updateBlockColor(colorValue, blockId) {
-	
-	console.log('가져온색상', colorValue);
-	
     const block = editor.blocks.getById(blockId);
-    console.log('찾은 색상 관련 블록', block);
-    
     if (block) {
         block.save().then(data => {
-        	console.log('색사변경대상 글자',data.data.text);
-        	
             data.data.color = colorValue;
+            editor.blocks.update(blockId, data.data); // 블록 데이터를 업데이트합니다.
             console.log('색상변경 완료:', data);
-           
-            
         }).catch(error => {
-            console.error('색상변경 실패:', error);x
+            console.error('색상변경 실패:', error);
         });
     } else {
         console.error('블록 못찾음');
-    } 
-    
+    }
 }
+
 
 //DB에 있는 애를 가져와서 뷰에다가 그려주는거
 function applyColorToParagraphs(blocks) {
@@ -919,27 +934,6 @@ function applyColorToParagraphs(blocks) {
         }
     });
 }
-
-
-
-/* function setAlignment(wrapper, align) {
-    if (align === 'left') {
-        wrapper.style.display = 'block';
-        wrapper.style.marginLeft = '0';
-        wrapper.style.marginRight = 'auto';
-    } else if (align === 'center') {
-        wrapper.style.display = 'block';
-        wrapper.style.marginLeft = 'auto';
-        wrapper.style.marginRight = 'auto';
-    } else if (align === 'right') {
-        wrapper.style.display = 'block';
-        wrapper.style.marginLeft = 'auto';
-        wrapper.style.marginRight = '0';
-    }
-}
- */
-
-
 
 </script>
 
