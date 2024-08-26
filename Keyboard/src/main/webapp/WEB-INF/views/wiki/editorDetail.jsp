@@ -959,8 +959,6 @@ function showColorPicker(colorHandle, blockId) {
 //     colorPickerWrapper.style.left = `${rect.left - editorRect.left + rect.width + 10}px`;
 //     colorPickerWrapper.style.top = `${rect.top - editorRect.top}px`;
     
-//     colorPicker.style.left = `50%`;
-//     colorPicker.style.top = `50%`;
     
     colorPicker.onchange = function() {
         changeColor(this, blockId);
