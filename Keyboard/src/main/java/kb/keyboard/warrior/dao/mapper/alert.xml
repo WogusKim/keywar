@@ -17,7 +17,9 @@
 		    (a.category = 'subscribe' AND s.subscribe = '1') OR
 		    (a.category = 'follow' AND s.follow = '1') OR
 		    (a.category = 'calendar' AND s.calendar = '1')
-		);
+		)
+		order by senddate desc
+		;
 		
 <!-- 		select * from alert where userno = #{param1} and isread = 0; -->
 	</select>
