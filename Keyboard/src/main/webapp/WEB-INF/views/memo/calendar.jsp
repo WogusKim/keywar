@@ -101,6 +101,37 @@
 	text-indent: -9999px; /* 텍스트 숨김 */
 	overflow: hidden; /* 텍스트가 버튼 크기를 넘지 않도록 */
 }
+.color-box{
+	width: 18px;
+	height: 18px;
+	border-radius: 70%;
+    overflow: hidden;
+    margin: auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.color-box:hover {
+    transform: scale(1.15); /* 크기를 20% 정도 확대 */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* 마우스 오버 시 그림자 추가 */
+}
+.color-box-container {
+    display: grid; !important;
+    grid-template-columns: repeat(6, 1fr); /* 각 행에 6개의 div */
+    grid-template-rows: repeat(4, auto);   /* 4줄을 자동으로 생성 */
+    gap: 5px; /* div 사이의 간격 */
+    width : 170px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+    padding: 5px; /* 그림자가 더 잘 보이도록 여백 추가 */
+    border-radius: 8px; /* 모서리 둥글게 (선택 사항) */
+    padding-top: 20px;
+    padding-bottom: 20px;
+    z-index: 100;
+}
+.check-icon-inner-color{
+	display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 </style>
 
 </head>
@@ -334,7 +365,7 @@ height : 25px; */
 	<!-- 사용자 설정 그룹 만들기 모달 -->
 	<div class="modal fade" id="createGroupModal" tabindex="-1"
 		role="dialog" aria-labelledby="customGroupModalLabel"
-		aria-hidden="true">
+		aria-hidden="true" style=" ">
 		<div class="modal-dialog" role="document" style="margin-top: 7%;">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -371,8 +402,42 @@ height : 25px; */
 					<div class="form-group">
 						<label for="colorPicker">색깔 선택:</label>
 						<!-- 기본 색상 파랑으로 설정 + 칸 너비 좀 더 줘서 클릭 할 수 있도록 유도 -->
-						<input type="color" class="form-control" id="colorPicker"
-							value="#007BFF" style="height: 38px;">
+						<!-- <input type="color" class="form-control" id="colorPicker"
+							value="#007BFF" style="height: 38px;"> -->
+						<div style="width: 100%; height: 30px; background-color: #AD1457; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);" id="color-viewer"> </div>
+						<div style="display: flex;">
+							<div class="color-box-container"  style="display: none;">
+								<div class="color-box" style="background-color: #AD1457;"><img class="check-icon-inner-color" style="display: block;" src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #F4511E;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #E4C441;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #0B8043;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #3F51B5;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #8E24AA;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								                                                        
+								<div class="color-box" style="background-color: #D81B60;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #EF6C00;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #C0CA33;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #009688;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #7986CB;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #795548;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								                                                        
+								<div class="color-box" style="background-color: #D50000;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #F09300;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #7CB342;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #039BE5;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #B39DDB;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #616161;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+					
+								<div class="color-box" style="background-color: #E67C73;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #F6BF26;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #33B679;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #4285F4;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #9E69AF;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+								<div class="color-box" style="background-color: #A79B8E;"><img class="check-icon-inner-color"  src="${pageContext.request.contextPath}/resources/images/check-mark.png"></div>
+							</div>
+						</div>
+						<input type="hidden" id="colorPicker">
+						
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -431,6 +496,7 @@ height : 25px; */
 			</div>
 		</div>
 	</div>
+		
 
 
 
@@ -471,6 +537,11 @@ height : 25px; */
 			class="giphy-embed" allowFullScreen class="custom-spinner"></iframe>
 	</div>
 
+
+
+
+
+
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 	<script	src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
@@ -482,6 +553,7 @@ height : 25px; */
     let todoCountData = {};    
     let selectedUsers = [];
 	let inviteSelectedUsers = [];
+	
     $(document).ready(function() {
        //let selectedUsers = [];
 
@@ -975,7 +1047,43 @@ height : 25px; */
             }
         });
     }
+    
+    //캘린더 색상 관련 0826(성은)
+    $(document).ready(function() {
+        $('.color-box').on('click', function() {
+        	var bgColor = $(this).css('background-color');
+            // 모든 color-box 내부의 img 요소를 숨김
+            $('.color-box .check-icon-inner-color').css('display', 'none');
+            // 클릭된 color-box 내부의 img 요소만 보이도록 설정
+            $(this).find('.check-icon-inner-color').css('display', 'block');
+            $('.color-box-container').css('display', 'none');
+          	$('#color-viewer').css('background-color', bgColor);
+            $('#colorPicker').val(bgColor);
+            //alert($('#colorPicker').val());
+        });
+    });
+    
+    $(document).ready(function() {
+        $('#color-viewer').click(function() {
+            // 클릭한 위치의 좌표를 가져옴
+            var xPos = event.pageX;
+            var yPos = event.pageY;
 
+            // color-box-container를 클릭한 위치에 위치시키고 display를 block으로 설정
+            $('.color-box-container').css({
+                'display': 'grid',
+                'left': xPos,
+                'top': yPos
+            });
+            
+            
+        });
+    });
+    
+    
+    
+    
+    
     // 캘린더 뷰 업데이트 함수 (예시)
     function updateCalendarView() {
         calendar.refetchEvents();
