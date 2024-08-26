@@ -435,7 +435,6 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         // 도구 설정...
         tools: {
-
             // Header 설정
             header: {
                 class: Header,
