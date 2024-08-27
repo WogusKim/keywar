@@ -366,7 +366,7 @@ height : 25px; */
 	<div class="modal fade" id="createGroupModal" tabindex="-1"
 		role="dialog" aria-labelledby="customGroupModalLabel"
 		aria-hidden="true" style=" ">
-		<div class="modal-dialog" role="document" style="margin-top: 7%;">
+		<div class="modal-dialog" role="document" style="margin-top: 5%;">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="customGroupModalLabel">사용자 설정 그룹
