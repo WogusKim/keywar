@@ -492,7 +492,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     levels: [1, 2, 3, 4, 5, 6],
                     defaultLevel: 3,
                 },
-                shortcut: 'CMD+SHIFT+H',
+                shortcut: 'CMD+ALT+H',
             },
             
             paragraph: {
@@ -505,30 +505,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
             },
         
-        
-            linkTool: {
-                class: LinkTool,
-                config: {
-                    header: '', // get request header 선택사항
-                    //백엔드 데이터 가져오깅( Cross Origin에 주의)
-                    endpoint: 'http://localhost:9004/editor/link',
-                }
-            },
-            raw: {
-                class: RawTool,
-                config: {
-                    placeholder: "플레이스 홀더랑"
-                }
-            },
             simImg: {
                 class: SimpleImage
                 //No Config
             },
-            
-            /* 테스트 */
-			/* 테스트 */
+
 			image: {
 			    class: ImageTool,
+			    shortcut: 'CMD+ALT+I',
 			    config: {
 			        uploader: {
 			            uploadByFile(file) {
@@ -610,27 +594,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     defaultStyle: 'unordered'
                 }
             },
-            embed: {
-                class: Embed,
-                inlineToolbar: true,
-                config: {
-                    services: {
-                        youtube: true,
-                        coub: true
-                    }
-                }
-            },
+
             quote: {
                 class: Quote,
                 inlineToolbar: true,
-                shortcut: 'CMD+SHIFT+O',
                 config: {
                     quotePlaceholder: 'Quote 입력',
-                    captionPlaceholder: 'Quote\'s 작성자들',
+                    captionPlaceholder: 'Quote 입력자 / 주석',
                 },
             },
             table: {
                 class: Table,
+                shortcut: 'CMD+ALT+T',
                 inlineToolbar: true,
                 config: {
                     rows: 2,
@@ -649,21 +624,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 class: Delimiter
                 //No Config
             },
-            warning: {
-                class: Warning,
-                inlineToolbar: true,
-                shortcut: 'CMD+SHIFT+W',
-                config: {
-                    titlePlaceholder: '제목',
-                    messagePlaceholder: '메시지',
-                },
-            },
-            code: {
-                class: CodeTool,
-                placeholder: "소스코드를 입력할 수 있습니다."
-            },
             attaches: {
                 class: AttachesTool,
+                shortcut: 'CMD+ALT+F',
                 config: {
                     uploader: {
                         uploadByFile(file) {
@@ -703,32 +666,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             },
-            
-            marker: {
-                class: Marker,
-                shortcut: 'CMD+SHIFT+M',
-                //No Config
-            },
-            inlineCode: {
-                class: InlineCode,
-                shortcut: 'CMD+SHIFT+C',
-                //No Config
-            },
+
+
             underline: {
                 class: Underline
                 //No Config
-            },
-            alert: {
-                class: Alert,
-                inlineToolbar: true,
-                shortcut: 'CMD+SHIFT+A',
-                config: {
-                    defaultType: 'primary',
-                    messagePlaceholder: 'Enter something',
-                }
-            },
-            code2 : {
-                class: editorjsCodeflask,
             }
         }
         
