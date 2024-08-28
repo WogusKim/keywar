@@ -11,6 +11,10 @@
 
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/main.css">
+	
+<link rel="icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
+<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
+	
 <style>
 .card_titlee {
 	display: flex;

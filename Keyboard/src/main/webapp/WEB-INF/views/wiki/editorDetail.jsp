@@ -6,6 +6,11 @@
 <head>
 <meta charset="UTF-8">
 <title>김국민의 업무노트 : 게시글 작성하기</title>
+
+<link rel="icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
+<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
+
+
 <!-- jQuery 라이브러리 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 

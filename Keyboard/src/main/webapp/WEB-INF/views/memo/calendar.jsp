@@ -16,6 +16,10 @@
 <link rel="stylesheet"	href="${pageContext.request.contextPath}/resources/css/calendar.css">
 <link	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 
+
+<link rel="icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
+<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
+
 <style>
 .btn-mint {
 	background-color: #C6EFCE;
