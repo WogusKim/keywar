@@ -30,7 +30,9 @@
 		select  c.commentid, c.targetid, c.content, c.createdate, m.titleShare
 		from comment c
 		join Menu m on c.targetid = m.id
-		where c.userno = #{param1} and c.commentstatus = 1;
+		where c.userno = #{param1} and c.commentstatus = 1
+		order by createdate desc 
+		;
 	</select>
 	
 	<!-- 좋아요 관련 메소드  -->
