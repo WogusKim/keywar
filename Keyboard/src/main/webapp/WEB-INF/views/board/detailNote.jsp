@@ -816,6 +816,66 @@ document.addEventListener('DOMContentLoaded', function () {
         holder: 'myEditor',
         readOnly: true,
         data: editorData,
+        onReady: function () {
+        	updateFileIcons(); // 파일 아이콘 변경 로직
+        	applyImageAlignment(editorData.blocks);
+        	applyColorToParagraphs(editorData.blocks);
+        	
+        	
+            const blocks = editorData.blocks; // 블록 데이터 접근
+            console.log("블록확인",blocks);
+            blocks.forEach(block => {
+            	console.log("블록타입확인",block.type);
+            	
+/*                 if (block.type === 'paragraph' && !block.data.color) {
+                    block.data.color = "red";
+                } */
+                
+                
+                if (block.type === 'image') {
+                    // 데이터베이스에서 불러온 크기 정보로 이미지 사이즈를 설정
+                    console.log("이미지url", block.data.file.url);
+                    const imageElement = document.querySelector(`img[src="\${block.data.file.url}"]`);
+                    console.log("이미지url확인",imageElement);
+                    if (imageElement) {
+                    	
+                    	
+                    	
+                        const align = block.data.file.align || 'left'; // 기본 정렬값은 'left'
+                        console.log("현재 정렬 확인",align);
+                        const alignWrapperDiv = imageElement.closest('.ui-wrapper');
+                        console.log("정렬 부모 누구야",alignWrapperDiv);
+                         if (alignWrapperDiv) {
+                            setAlignment(alignWrapperDiv, align);
+                        } 
+                    	
+                    	var newWidth = block.data.file.width;
+                    	var newHeight = block.data.file.height;
+                    	
+                    	console.log("FROM DB WIDTH", newWidth);
+                    	console.log("FROM DB HEIGHT", newHeight);
+                    	
+                        console.log("width before?",imageElement.style.width);
+                        console.log("height before?",imageElement.style.height);
+                        
+                        imageElement.style.width = newWidth + "px";
+                        imageElement.style.height = newHeight + "px";
+                        
+                        console.log("width after?",imageElement.style.width);
+                        console.log("height after?",imageElement.style.height);
+                        
+                        const wrapperDiv = imageElement.parentNode;
+                        if (wrapperDiv) {
+                            wrapperDiv.style.width = newWidth + "px";
+                            wrapperDiv.style.height = newHeight + "px";
+                        }
+
+                    }
+                }
+            });
+            
+        	
+        },
         tools: {
             // Header 설정
             header: {
@@ -845,28 +905,73 @@ document.addEventListener('DOMContentLoaded', function () {
                 class: SimpleImage
                 //No Config
             },
-            image: {
-                class: ImageTool,
-                config: {
-                    // Your backend file uploader endpoint
-                    byFile: 'http://localhost:9004/uploadFile',
-
-                    // Your endpoint that provides uploading by Url
-                    byUrl: 'http://localhost:9004/fetchUrl',
-                    buttonContent: "파일을 올립니다.",
-                    actions: [
-                        {
-                            name: 'new_button',
-                            icon: '<svg>...</svg>',
-                            title: 'New Button',
-                            toggle: true,
-                            action: (name) => {
-                                alert(`${name} button clicked`);
-                            }
-                        }
-                    ]
-                }
-            },
+			image: {
+			    class: ImageTool,
+			    shortcut: 'CMD+ALT+I',
+			    config: {
+			        uploader: {
+			            uploadByFile(file) {
+			                return new Promise((resolve, reject) => {
+			                    const reader = new FileReader();
+			                    reader.onload = (event) => {
+			                        const img = new Image();
+			                        img.onload = () => {
+			                            const width = img.width;
+			                            const height = img.height;
+			                            //나중에 수정하자
+			                            //나중에 수정하자//나중에 수정하자//나중에 수정하자//나중에 수정하자//나중에 수정하자
+			                            const align = 'left';
+			
+			                            const formData = new FormData();
+			                            formData.append('file', file);
+			                            formData.append('width', width);
+			                            formData.append('height', height);
+			                            formData.append('align', align);
+			                           
+			                            
+			                            
+			                            console.log('@width : ', width, '@height :', height);
+			                            console.log('@align : ', align);
+			
+			                            fetch('${pageContext.request.contextPath}/uploadFile', {
+			                                method: 'POST',
+			                                body: formData
+			                            })
+			                            .then(response => response.json())
+			                            .then(data => {
+			                                if (data && data.file && data.file.url) {
+			                                    resolve({
+			                                        success: 1,
+			                                        file: {
+			                                            url: data.file.url,
+			                                            width: width,  // 실제 이미지 너비
+			                                            height: height, // 실제 이미지 높이
+			                                            align: align
+			                                        }
+			                                    });
+			                                    
+                                                setTimeout(() => {
+                                                    makeImagesResizable();
+                                                    addClickButtons();
+                                                }, 100);
+			                                    
+			                                    
+			                                } else {
+			                                    reject(new Error('Failed to upload image'));
+			                                }
+			                            })
+			                            .catch(error => {
+			                                reject(error);
+			                            });
+			                        };
+			                        img.src = event.target.result;
+			                    };
+			                    reader.readAsDataURL(file);
+			                });
+			            }
+			        }
+			    }
+			},
             checklist: {
                 class: Checklist,
                 inlineToolbar: true
@@ -990,8 +1095,91 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+function updateFileIcons() {
+    const fileBlocks = document.querySelectorAll('.cdx-attaches');
 
+    fileBlocks.forEach(function(block) {
+    	
+    	const downloadButton = block.querySelector('a.cdx-attaches__download-button');
 
+        if (downloadButton) {
+        	
+            const href = downloadButton.getAttribute('href');
+            const fileExtension = href.split('.').pop().toLowerCase(); // Get the file extension from URL
+            
+            console.log(fileExtension);
+
+            const fileIconContainer = block.querySelector('.cdx-attaches__file-icon');
+			
+            if (fileExtension === 'pdf') {
+            	fileIconContainer.innerHTML = '';
+                fileIconContainer.innerHTML = '<img src="/resources/images/icons/wiki_file/pdf.png" class="wiki_fileIcon" alt="PDF Icon" style="width: 24px; height: 24px;">';
+            } else if (fileExtension === 'ppt' || fileExtension === 'pptx') {
+            	fileIconContainer.innerHTML = '';
+                fileIconContainer.innerHTML = '<img src="/resources/images/icons/wiki_file/ppt.png" class="wiki_fileIcon" alt="PPT Icon" style="width: 24px; height: 24px;">';
+            } else if (fileExtension === 'doc' || fileExtension === 'docx') {
+            	fileIconContainer.innerHTML = '';
+                fileIconContainer.innerHTML = '<img src="/resources/images/icons/wiki_file/doc.png" class="wiki_fileIcon" alt="DOC Icon" style="width: 24px; height: 24px;">';
+            }
+        }
+    });
+}
+
+function applyImageAlignment(blocks) {
+	console.error('블럭 뭔데 말해봐!:', blocks);
+    blocks.forEach(block => {
+        if (block.type === 'image') {
+            const imgElement = document.querySelector(`img[src="\${block.data.file.url}"]`);
+            console.log('급수정중', imgElement);
+            
+            if (imgElement) {
+                const align = block.data.file.align || 'left'; // 기본 정렬값은 'left'
+                const wrapperDiv = imgElement.parentNode;
+                //const wrapperDiv = imgElement;
+                console.log('급수정중', wrapperDiv);
+                if (wrapperDiv) {
+                    setAlignment(wrapperDiv, align);
+                }
+            }
+        }
+    });
+}
+
+function setAlignment(wrapper, align) {
+    if (align === 'left') {
+        wrapper.style.display = 'block';
+        wrapper.style.marginLeft = '0';
+        wrapper.style.marginRight = 'auto';
+    } else if (align === 'center') {
+        wrapper.style.display = 'block';
+        wrapper.style.marginLeft = 'auto';
+        wrapper.style.marginRight = 'auto';
+    } else if (align === 'right') {
+        wrapper.style.display = 'block';
+        wrapper.style.marginLeft = 'auto';
+        wrapper.style.marginRight = '0';
+    }
+}
+
+function applyColorToParagraphs(blocks) {
+    console.log('색상찾는중!:', blocks);
+    blocks.forEach(block => {
+        if (block.type === 'paragraph') {
+        	console.log('요놈이 paragraph');
+            // Find the paragraph element using the data-id attribute
+            const paragraphElement = document.querySelector(`div.ce-block[data-id="\${block.id}"] .ce-paragraph`);
+            
+            console.log('찾은 paragraphElement : ', paragraphElement);
+            
+            if (paragraphElement) {
+                // Apply the color style if it exists in the block data
+                const color = block.data.color || 'black'; // Default to black if no color is set
+                paragraphElement.style.color = color;
+                console.log(`Applied color ${color} to paragraph with id ${block.id}`);
+            }
+        }
+    });
+}
 
 </script>
 </body>
