@@ -8,6 +8,9 @@
 <title>김국민의 업무노트 : 전체 설정</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/setting.css">
+<link rel="icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png" />
+<link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/images/logo_smallSize.png"  />
+
 <% String userno = (String) session.getAttribute("userno"); %>
 </head>
 <style>
