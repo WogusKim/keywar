@@ -322,8 +322,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	//성은
     var currentPath = window.location.pathname;
     var hotNotePath = '/hotNote';
+    var loginPath = '/login';
+    var findPassword = '/findPassword'
+    var setNewPassword = '/setNewPassword'
+    var resetPassword = '/resetPassword'
      
-    if(currentPath == hotNotePath){
+    if(currentPath == hotNotePath||currentPath == loginPath||currentPath == findPassword||currentPath == setNewPassword||currentPath == resetPassword){
 		$('#floating-icon').css('display', 'none');
     	return;
      }
